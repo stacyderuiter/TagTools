@@ -1,0 +1,41 @@
+Cal Type,Input,Description
+pressure,CAL.TCAL,temperature sensor calibration constants (sensor data -> engineering units)
+pressure,CAL.PCAL,pressure sensor calibration constants (sensor data -> engineering units)
+pressure,CAL.PTC,pressure sensor temperature sensitivity calibration constants (p = p_measured + (t-TREF)*PTC) 
+pressure,CAL.TREF,temperature at which calibration was conducted
+pressure,CAL.PB,pressure bridge calibration constants (sensor data -> engineering units (Volts))
+pressure,CAL.VB,battery voltage sensor calibration constants (sensor data -> engineering units (Volts))
+pressure,CAL.Pi0,pressure bridge current
+pressure,CAL.Pr0,current sensing resistor
+pressure,"s(:,7)",raw pressure sensor data
+pressure,"s(:,8)",raw temperature sensor data
+pressure,"s(:,10)",raw battery voltage sensor data
+pressure,"s(:,12)",raw pressure bridge sensor data
+accelerometers,CAL.AK,"sensor samples with indices higher than this value were taken when battery was ""low;"" output from lowbattacomp"
+accelerometers,CAL.VB,battery voltage sensor calibration constants (sensor data -> engineering units (Volts))
+accelerometers,CAL.ACAL,accelerometer calibration constants (sensor data -> engineering units)
+accelerometers,CAL.AXC,cross-axis sensitivity on A
+accelerometers,CAL.APC,accelerometer pressure sensitivity calibration constants (A = A_measured + p*APC) 
+accelerometers,CAL.TREF,temperature at which calibration was conducted
+accelerometers,CAL.ATC,accelerometer temperature sensitivity calibration constants (A = A_measured + (t-TREF)*ATC) 
+accelerometers,"s(:,1:3)",raw accelerometer data
+accelerometers,"s(:,10)",raw battery voltage sensor data
+accelerometers,p,pressure data (in m; output from pressure cal)
+accelerometers,t,temperature data (in Degrees Celsius; output from pressure cal)
+magnetometers,CAL.MK,"sensor samples with indices higher than this value were taken when battery was ""low;"" output from lowbattmcomp"
+magnetometers,CAL.MB,magnetometer bridge calibration constants (sensor data -> engineering units (Volts))
+magnetometers,CAL.VB,battery voltage sensor calibration constants (sensor data -> engineering units (Volts))
+magnetometers,CAL.TCAL,temperature sensor calibration constants (sensor data -> engineering units)
+magnetometers,CAL.MBTREF,magnetometer bridge value in Volts at TREF
+magnetometers,CAL.PCAL,pressure sensor calibration constants (sensor data -> engineering units)
+magnetometers,CAL.MCAL,magnetometer calibration constants (sensor data -> engineering units)
+magnetometers,CAL.MMBC,magnetometer magnetometer-bridge sensitivity calibration constants (M = M_measured + mb*MMBC) 
+magnetometers,CAL.MPC,magnetometer pressure sensitivity calibration constants (M = M_measured + p*MPC) 
+magnetometers,CAL.MXC,cross-axis sensitivity on M
+magnetometers,"s(:,1:3)",raw accelerometer data
+magnetometers,"s(:,4:6)",raw magnetometer data
+magnetometers,"s(:,8)",raw temperature sensor data
+magnetometers,"s(:,10)",raw battery voltage sensor data
+magnetometers,"s(:,11)",raw magnetometer bridge sensor data
+,,
+write,CAL.LASTCAL,autocal functions also write to the cal file the time of last modification of calibration data

@@ -1,0 +1,99 @@
+<HTML>
+<!-- LINK REL="StyleSheet" HREF="styles.css" MEDIA="" -->
+<HEAD>
+<TITLE></TITLE>
+</HEAD><BODY>
+<h3><a href="mgd2000.htm">MGD-2000 Formats</a>: XYZ03</h3>
+
+<PRE>
+U.S. DEPARTMENT OF COMMERCE
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+NATIONAL ENVIRONMENTAL SATELLITE, DATA, AND INFORMATION SERVICE
+
+THE GEODAS BINARY INTEGER XYZ FORMAT - "XYZ03"
+
+Compiled By:
+Dan R. Metzger
+
+
+National Geophysical Data Center
+Boulder, Colorado
+February, 2003
+
+
+INTRODUCTION                   I
+
+GENERAL DESCRIPTION            II
+
+DATA RECORDS                   III
+
+NGDC CONTACTS                  APPENDIX A
+
+
+I.   INTRODUCTION
+
+
+
+   In 2003 the Marine Geology & Geophysics Division of the
+National Geophysical Data Center developed a simple, highly
+efficient format for xyz data. This format can be used for most
+geospacial potential field data.
+
+
+II.   GENERAL DESCRIPTION
+
+   The XYZ03 Format, is a digital format for the storage of xyz
+geospacial potential field data.. It is very efficient format in
+that it is binary and the record size (12 bytes) is small and yet
+contains latitude and longitude precision sufficient for most
+users.  The format contains no headers and thus no documentation
+about the data (such as information about references, methods and
+datums used, etc.).
+   The XYZ03 format can be used for the exchange of xyz data,
+using virtually any media type.
+
+
+III.   DATA RECORDS
+
+XYZ03 files consist of a series of binary records.  Each record
+is 12 bytes and consists of 3 fields, each field being a 4-byte
+binary integer.  These fields are longitude, latitude and value
+as described below.
+
+The following is a detailed description of the XYZ03 Data
+Record fields
+
+
+FIELD NAME     NUMBER TYPE     DESCRIPTION
+________________________________________________________
+
+Longitude      4 Byte Integer  Longitude of the
+                               point, in millionths of degrees
+                               (decimal degrees times 1,000,000)..
+
+
+Latitude       4 Byte Integer  Latitude of the
+                               point, in millionths of degrees
+                               (decimal degrees times 1,000,000).
+
+Value          4 Byte Integer  Value at the point,
+                               in tenths of units.
+                              
+
+APPENDIX A   NGDC CONTACTS
+
+Dan Metzger: (303) 497-6542  Dan.R.Metzger@noaa.gov
+
+National Geophysical Data Center
+NOAA, E/GC3
+325 Broadway
+Boulder, CO 80305
+
+TELEX 592811 NOAA MASC BDR
+FAX (303) 497-6513
+
+____________________________________________________________
+
+</PRE>
+</BODY>
+</HTML>

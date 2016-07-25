@@ -1,0 +1,10 @@
+%clear all; close all;clc;
+f = logspace(1,6);
+w = 2.*pi.*f;
+s = i.*w;
+r =332;
+rf = 3.01e3;
+c = 470e-12;
+g = 1 + (rf./(r.*(rf.*c.*s+1)));
+G = 20.*log10(abs(g));
+semilogx(f,G);grid;axis([10 1e6 10 32]);

@@ -1,0 +1,107 @@
+<DEV class="struct" size="1 1">
+<ID class="char" size="1 8">31031929</ID>
+<NAME class="char" size="1 4">D413</NAME>
+<BUILT class="double" size="1 3">2014 5 7</BUILT>
+<BUILDER class="char" size="1 2">mj</BUILDER>
+<VHF class="double" size="1 1">218.806</VHF>
+<HAS class="cell" size="1 5">
+<cell class="char" size="1 12">stereo#32;audio</cell>
+<cell class="char" size="1 2">hf</cell>
+<cell class="char" size="1 3">gps</cell>
+<cell class="char" size="1 10">big#32;memory</cell>
+<cell class="char" size="1 5">argos</cell>
+</HAS>
+<BADBLOCKS class="double" size="18 2">0 0 1 1 2 2 3 3 4 4 5 5 5 5 6 6 7 7 90 91 90 91 90 91 90 91 90 91 90 91 337 3417 90 91 90 91</BADBLOCKS>
+<CAL class="struct" size="1 1">
+<TEMPR class="struct" size="1 1">
+<TYPE class="char" size="1 14">ntc#32;thermistor</TYPE>
+<USE class="char" size="1 8">conv#95;ntc</USE>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+<METHOD class="char" size="1 4">none</METHOD>
+</TEMPR>
+<BATT class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</BATT>
+<PRESS class="struct" size="1 1">
+<POLY class="double" size="1 2">3519 -137</POLY>
+<METHOD class="char" size="1 5">rough</METHOD>
+<LASTCAL class="double" size="0 0">
+</LASTCAL>
+<TREF class="double" size="1 1">20</TREF>
+<UNIT class="char" size="1 15">meters#32;H20#32;salt</UNIT>
+<TC class="struct" size="1 1">
+<POLY class="double" size="1 1">0</POLY>
+<SRC class="char" size="1 6">BRIDGE</SRC>
+</TC>
+<BRIDGE class="struct" size="1 1">
+<NEG class="struct" size="1 1">
+<POLY class="double" size="1 2">3 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</NEG>
+<POS class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</POS>
+<RSENSE class="double" size="1 1">200</RSENSE>
+<TEMPR class="struct" size="1 1">
+<POLY class="double" size="1 2">314 -634.7</POLY>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+</TEMPR>
+</BRIDGE>
+</PRESS>
+<ACC class="struct" size="1 1">
+<TYPE class="char" size="1 18">MEMS#32;accelerometer</TYPE>
+<POLY class="double" size="3 2">5.18 5.07 4.67 -2.6 -2.57 -2.34</POLY>
+<UNIT class="char" size="1 1">g</UNIT>
+<TREF class="double" size="1 1">20</TREF>
+<TC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">TEMPR</SRC>
+</TC>
+<PC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">PRESS</SRC>
+</PC>
+<XC class="double" size="3 3">0 0 0 0 0 0 0 0 0</XC>
+<MAP class="double" size="3 3">-1 0 0 0 1 0 0 0 1</MAP>
+<MAPRULE class="char" size="1 14">front#45;right#45;up</MAPRULE>
+<METHOD class="char" size="1 5">flips</METHOD>
+<LASTCAL class="double" size="1 3">2014 5 7</LASTCAL>
+</ACC>
+<MAG class="struct" size="1 1">
+<TYPE class="char" size="1 23">magnetoresistive#32;bridge</TYPE>
+<POLY class="double" size="3 2">976.6 976.6 976.6 0 0 0</POLY>
+<UNIT class="char" size="1 10">microTesla</UNIT>
+<TREF class="double" size="1 1">20</TREF>
+<TC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 6">BRIDGE</SRC>
+</TC>
+<PC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">PRESS</SRC>
+</PC>
+<XC class="double" size="3 3">0 0 0 0 0 0 0 0 0</XC>
+<MAP class="double" size="3 3">0 1 0 1 0 0 0 0 1</MAP>
+<MAPRULE class="char" size="1 14">front#45;right#45;up</MAPRULE>
+<METHOD class="char" size="1 6">no#32;cal</METHOD>
+<LASTCAL class="double" size="1 3">0 0 0</LASTCAL>
+<BRIDGE class="struct" size="1 1">
+<NEG class="struct" size="1 1">
+<POLY class="double" size="1 2">3 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</NEG>
+<POS class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</POS>
+<RSENSE class="double" size="1 1">20</RSENSE>
+<TEMPR class="struct" size="1 1">
+<POLY class="double" size="1 2">541.91 -459.24</POLY>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+</TEMPR>
+</BRIDGE>
+</MAG>
+</CAL>
+</DEV>

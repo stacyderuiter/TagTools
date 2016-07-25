@@ -1,0 +1,319 @@
+<HTML>
+<!-- LINK REL="StyleSheet" HREF="styles.css" MEDIA="" -->
+<HEAD>
+<TITLE>THE GEODAS GRIDDED DATA FORMAT - GRD98</TITLE>
+</HEAD><BODY>
+<h3><a href="mgd2000.htm">MGD-2000 Formats</a>: GRD98</h3>
+<PRE>
+U.S. DEPARTMENT OF COMMERCE
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+NATIONAL ENVIRONMENTAL SATELLITE, DATA, AND INFORMATION SERVICE
+
+THE GEODAS GRIDDED DATA FORMAT - "GRD98"
+
+Dan R. Metzger
+
+National Geophysical Data Center
+Boulder, Colorado
+February 1998
+
+
+INTRODUCTION                   I
+
+GENERAL DESCRIPTION            II
+
+THE HEADER                     III
+
+THE DATA                       IV
+
+NGDC CONTACTS                  APPENDIX A
+
+I.   INTRODUCTION
+
+
+
+     During 1998 the Marine Geology & Geophysics Division of the
+National Geophysical Data Center undertook an innovative and
+exciting project. The NGDC Coastal Relief Model Project involves
+gridding the hydrographic survey data compiled by the National
+Ocean Service for US waters and, after combining this with US
+Geological Survey land topography grids, creating a series of 1
+degree grids at a 3 arc-second resolution in US coastal areas.
+Thus a high-quality, high-resolution set of grids covering the
+U.S land/sea coastal zone have become available for the first
+time, allowing detailed study of this important area. This data
+is available on CD/DVD sets with NGDC's GEODAS (GEophysical DAta
+System) software which contains functionality for combining,
+translating and sub-sampling the grids, as well as for creating
+and viewing screen plots of the grid data.
+     During this project a format for storing the grids was
+naturally developed. It was decided, for space, speed and
+simplicity to save the grids in a very utilitarian, no-nonsense
+format, which became known as GRD98. This format is part of the
+MGD-2000 (Marine Geophysical Data 2000) formats, a series of Year
+2000 Compliant formats which also includes MGD77 (Marine
+Geophysical Data Exchange Format), HYD93 (Hydrographic Surveys
+Data Exchange Format) and ARO88 (Aeromagnetic Survey Header
+Format).
+
+
+II.   GENERAL DESCRIPTION
+
+     The GRD98 Format, is a digital format for the storage of
+gridded data. Though developed for bathymetric/topographic data,
+the format can handle virtually any type of gridded data. It is
+very utilitarian format and contains no documentation about the
+grids (such as information about references, methods and datums
+used, etc.). Rather GRD98 formatted files only contain grid-
+structure information followed by the grid cell data values.
+     GRD98 formatted files consist of header information followed
+by a series of grid cell data values. The files contain binary
+data only. The Header values are 4-byte signed integers which
+describe the structure, size and extent of the grid cell values
+that follow. The grid cells themselves can be 1-byte signed
+integer, 2-byte signed  integer, 4-byte signed integer or 4-byte
+floating point values.
+     The grids described by GRD98 are node based. See IV. THE
+DATA below for more information.
+     The GRD98 format can be used for the exchange of grid data,
+using virtually any media type.  The National Geophysical Data
+Center uses CD/DVD disks as its chief method of distribution of
+these data.
+
+
+
+
+
+III.   THE HEADER
+
+     The purpose of the Header  is to enumerate the structure,
+size and extent of the grid cell values which follow it.
+
+     The GRD98 Header is 128 bytes in length and consists of 32
+binary signed 4-byte integers.
+
+     In descriptions below, "original data values" refers to the
+data used to construct the grid.
+
+     Grid-Radius is a method for qualifying the data in grids.
+Simply put, if a grid-radius of n cells is applied to a grid,
+this means that any cells for which the nearest original data
+value is more than n cells distant will be filled with the Empty
+Grid Cell value. If grid-radius is not applied to a grid, all the
+cells in the grid will contain values, no matter how far away the
+nearest original data was.
+
+     The upper-left corner is the origin of the grid. The grid
+progresses row by row, top to bottom until the last row, with no
+special terminating data. Within each row the grid progresses
+column by column, left to right.
+
+     The following is a detailed description of the Header fields
+
+
+Name of Field                  Description
+_____________________________________________________
+
+
+Version
+                    1,000,000,001 = version 1
+
+Length
+                    Length of the Header in bytes (128)
+                    
+Data Type
+                    Describes what the cell values represent.
+                    1 = Data, e.g. interpolated depths
+                    2 = Data Density - density values for each cell,
+                        (number of original data values falling in
+                        the cell, as centered on cell node)
+                    3 - Grid-Radius - grid-radius values for each cell,
+                        (distance, in units of cells, to closest
+                        original data point)
+
+Latitude Degrees
+                    Degrees portion of uppermost cell's latitude
+
+Latitude Minutes
+                    Minutes portion of uppermost cell's latitude
+
+Latitude Seconds
+                    Seconds portion of uppermost cell's latitude
+
+Latitude Cell Size
+                    Latitudinal size (height) of each cell in
+                    seconds (i.e. distance in seconds between
+                    cells)
+
+Latitude Number of Cells
+                    Number of rows in grid
+
+Longitude Degrees
+                    Degrees portion of leftmost cell's longitude
+
+Longitude Minutes
+                    Minutes portion of leftmost cell's longitude
+
+Longitude Seconds
+                    Seconds portion of leftmost cell's longitude
+
+Longitude Cell Size
+                    Longitudinal size (width) of each cell in
+                    seconds (i.e. distance in seconds between
+                    cells)
+
+Longitude Number of Cells
+                    Number columns in grid
+
+Minimum Value
+                    Minimum value of all cells in grid, excluding
+                    empty grid cells. Per precision, i.e. based
+                    on actual numbers found in cells.  E.g.  if
+                    the lowest cell value found is -123 and
+                    precision is 10ths of meters (-12.3 meters)
+                    the Minimum Value is -123
+
+Maximum Value
+                    Maximum value of all cells in grid, excluding
+                    empty grid cells. Per precision (see above)
+
+Grid Radius
+                    The Grid-Radius which was applied to the grid. 
+                    When a Grid-Radius of n is applied this means 
+                    that only cells which are within n cells of 
+                    actual data will be filled with data values.
+                    Cells for which real data is more than n cells 
+                    away will be given the Empty Grid Cell Value. 
+                    If the Grid-Radius equals -1 then Grid-Radius 
+                    was not applied.
+
+Precision
+                    Precision of the cell data values.
+                    1 = whole units
+                    10 = tenths of units
+
+Empty Grid Cell Value
+                    Value placed in a cell with no data (e.g.
+                    grid-radius was applied to a Data Grid). For
+                    Density Grids or Grid-Radius Grids, land (as
+                    opposed to water) cells would contain this
+                    value if density and grid-radius were not
+                    calculated for land cells.
+
+Number Type
+                    Byte size of cell data values, positive =
+                    integers, negative = floats 
+                    (e.g. +2 = 2-byte integers)
+
+Water Datum
+                    The vertical datum used for non-land cell depths.
+                    Local datums could be used for inland lakes, with
+                    land values tied to mean sea level.  Using local 
+                    water datums means that water shore values will be
+                    zero. Using MSL for water means that water shore 
+                    values will match up with land shore values.
+                    0 = Mean Sea Level
+                    1 = Local Vertical Datum used for depths.
+
+
+Data Value Limit
+                    This is the maximum possible value for cell data. 
+                    This is used when there is a limit to the 
+                    calculated values, e.g. to keep values within 
+                    a the range of Number Type. Cell values containing 
+                    this number mean that the value is this large or 
+                    larger.  0 = not applied
+
+Cell Registration
+                   Gridline-registered = 0
+                   Pixel-registered (cell centered) = 1
+                   e.g. a 1 min cell size grid with upper-left
+                   lat/lon = 60 deg 0 min 0 sec / 45 deg 0 min 0 deg
+                   Gridline-registered: 1st value at 60 0 0 / 45 0 0
+                   Pixel-registered: 1st value at 59 59 30 / 45 0 30
+
+
+Unused (10 fields)
+                    Unused field; set to zero. Repeat 10 times
+
+
+
+
+
+IV.   THE DATA
+
+
+
+The GRD98 Header is followed immediately by the grid cell data
+values. The cells progress in a row by row manner, starting with
+the topmost (northernmost) row and continuing downward to the
+bottommost row. Within each row the cells progress column by
+column from leftmost (westernmost) to rightmost. The exact
+structure, size and extent of the data values themselves are
+described by the Header.
+
+What the data values actually represent depends on the Grid Type
+as enumerated in the Header Version. Generally the GRD98 format
+is used for Data Grids, but it can also be used to describe
+Density Grids  and Grid-Radius Grids (see Version in III THE
+HEADER above for details).
+
+GRD98 formatted grids are node based. The lat/lon position for a
+specific grid data value represents the center of a grid "cell"
+which extends half the grid-cell-size in 4 directions. The data
+value corresponds to this exact position (NOT to a position a
+half cell horizontal and a half cell vertical away). These
+positions are set up so that they will match up with exact
+latitude (and longitude) whole-degree values as they progress
+across the rows ( or columns). For example, a grid whose upper
+left corner was at 0 degrees latitude, 0 degrees longitude would
+have as it's first grid cell a lat/lon position at exactly 0,0.
+If this grid had an extent of 1 degree by 1 degree, and latitude
+and longitude cell sizes of 60 and 60 (seconds), the grid would
+be 61 rows by 61 columns.
+
+The data values are one of the following number types (as
+described in the Header):
+     1-byte signed integer
+     2-byte signed integer
+     4-byte signed integer
+     4-byte floating point
+
+The data values must be interpreted as per the Precision
+enumerated in the Header. For example if a data cell value is an
+integer number equal to 12345 and the precision in the Header
+equals 10 (tenths of units), then 1234.5 is the actual real-world
+value for that cell. For floating point grids the data values do
+not depend on the Precision; the value found is the actual real-
+world value as is.
+
+Where the grid cell is meant to contain "no data", the data value
+for that cell will be the Empty Grid Cell Value as enumerated in
+the Header. This can occur when Grid-Radius was applied to the
+grid in order to keep out data values which are too far away from
+original (real) data. For Density Grids and Grid-Radius Grids,
+(see III THE HEADER above) this Empty Grid Cell Value could
+correspond to "land" positions, where density or grid-radius
+values were not calculated.
+
+
+
+
+APPENDIX A   NGDC CONTACTS
+Dan R. Metzger: (303) 497-6542  Dan.R.Metzger@noaa.gov
+  or
+David L. Divins (303) 497-6505  David.Divins@noaa.gov
+  
+National Geophysical Data Center
+NOAA, E/GC3
+325 Broadway
+Boulder, CO 80305-3328
+
+TELEX 592811 NOAA MASC BDR
+FAX (303) 497-6513
+
+____________________________________________________________
+
+</PRE>
+</BODY>
+</HTML>

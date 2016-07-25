@@ -1,0 +1,915 @@
+<HTML>
+<!-- LINK REL="StyleSheet" HREF="styles.css" MEDIA="" -->
+<HEAD>
+<TITLE>THE MARINE GEOPHYSICAL DATA EXCHANGE FORMAT - "MGD77"</TITLE>
+</HEAD><BODY>
+<h3><a href="mgd2000.htm">MGD-2000 Formats</a>: MGD77</h3>
+
+<PRE>
+
+THE MARINE GEOPHYSICAL DATA EXCHANGE FORMAT - "MGD77"
+(Bathymetry, Magnetics, and Gravity)
+
+NATIONAL GEOPHYSICAL DATA CENTER
+NATIONAL ENVIRONMENTAL SATELLITE, DATA, AND INFORMATION SERVICE
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+U.S. DEPARTMENT OF COMMERCE
+
+
+KEY TO GEOPHYSICAL RECORDS DOCUMENTATION NO. 10 (REVISED)
+
+COMPILED BY THE MGD77 TASK GROUP
+Allen M. Hittelman, Chairman
+Robert C. Groman
+Richard T. Haworth
+Troy L. Holcombe
+Graig McHendrie
+Stuart M. Smith
+
+National Geophysical Data Center
+Boulder, Colorado
+September 1977
+December 1981 (Revised by Dan Metzger)
+February 1989 (Revised by Dan Metzger)
+January  1993 (Revised by Dan Metzger)
+October  1995 (Revised by Dan Metzger)
+August   1998 (Revised by Dan Metzger)
+
+
+                                                         
+INTRODUCTION...............................................I
+
+GENERAL DESCRIPTION.......................................II
+
+THE HEADER RECORD........................................III
+
+THE DATA RECORD...........................................IV
+
+10-DEGREE IDENTIFIER CODE.........................APPENDIX A
+
+NGDC CONTACTS.....................................APPENDIX B
+
+
+
+
+
+I.                      INTRODUCTION
+
+
+     In January of 1977, a group of 24 geophysical data
+managers from academia, government, industry and foreign
+countries participated in a workshop at the National
+Geophysical Data Center (NGDC) in Boulder, Colorado.  The
+"Workshop for Marine Geophysical Data Formats" established
+the basic outline of a new format for the exchange of
+digital underway geophysics data.  A six member task force
+was formed to work with NGDC in implementing the decisions
+of the workshop into the new format.  By the end of 1977 the
+"MGD77" format was being disseminated by NGDC as its
+standard exchange format.
+
+     The "MGD77" format has experienced much success over
+the past 15 years.  It has been sanctioned by the Intergov-
+ernmental Oceanographic Commission (IOC) as an accepted
+standard for international data exchange, and it has been
+translated into French, Japanese, and Russian.  Most con-
+tributors of data to NGDC now send transfer data over the
+internet in the "MGD77" format.
+
+     This newest revision makes the MGD77 format "Year 2000
+Compliant", ensuring it's success into 21st Century.     
+
+
+
+
+
+
+II.                  GENERAL DESCRIPTION
+
+
+     The digital format presented, and referred to as
+"MGD77", is an exchange format for marine geophysical data
+(bathymetry, magnetics, and gravity)  It is intended to be
+used for the transmission of data to and from a data center
+and may be useful for the exchange of data to and from a
+data center and may be useful for the exchange of data
+between marine institutions.  Data is to be exchanged in
+files, one file per survey operation.  Generally each survey
+operation is a port-to-port operation of a survey vessel,
+but in some cases several port-to-port operations of the
+same vessel are combined in single survey operation,
+especially if this is the manner of organizing the data at
+the contributing institution.  Data may be exchanged on via
+the Internet or on various mass storage devices such as 8mm
+or 9 track tapes, removable disks.  The National Geophysical
+Data Center uses CD-ROM disks as its chief method of distribution
+of these data.
+
+
+
+Data Exchange
+
+     1. For exchange of MGD77 data via mass storage files on
+     magnetic or optical media participants shall establish type
+     and format of the media to be exchanged.
+
+     2. Each survey operation shall be contained in one file
+     with Header and Data Records, or in 2 files, one Header
+     file and one Data Record file.  If  the media is too small
+     to contain one survey the data may be continued on a second
+     media.
+
+     3. Each survey operation shall have one MGD77 Header 
+     consisting of 24 80-character logical records.
+
+     4. The MGD77 data records are sequentially and chronologically
+     organized until the end of the file.  The data records are 120
+     logical characters.
+
+     5. A survey is defined as all observations that conveniently
+     constitute a survey operation (e.g., a port-to-port survey or
+     in some cases several surveys).  A survey file(s) ideally
+     should not span two media.
+
+      6. For sequential files, the MGD77 Header shall consist of
+      24 sequential records of 80 logical characters each separated
+      by an end-of-record character(s) and, if the data records are
+      in the same file, the Header shall be at the beginning of the
+      file.  The MGD77 Data Records shall be 120 logical characters
+      each.
+
+      7. 9 Track tapes should be recorded as ASCI 1600 or 6250 BPI.
+      The tape structure consists of physical records of 1920
+      characters each, a header followed by data records, separated
+      by inter-record gaps (IRG) and organized into files. The files
+      are separated by end-of-file (EOF) marks (sometimes called
+      tape marks).
+
+
+
+
+
+
+III.                  THE HEADER RECORD
+
+
+     The purpose of the Header Record is to document both
+the content and structure of the geophysical data contained
+within subsequent data records.  In general, documentation
+that is constant throughout the survey will be in the Header
+Record, while documentation that is variable will be in the
+Data Records.
+
+     For sequential files, the MGD77 Header consists of 24
+80-character sequential records.  For 9 track magnetic tapes
+the MGD77 Header is a physical record (block) consisting of
+1,920 characters. In both cases the data records follow
+immediately with no intervening end-of-file marks.
+
+     The Header Record contains fields which are both fixed
+and freely formatted.  All field lengths within the Header
+that have not been coded with information should be blank-
+filled, and all plain language statements should be left-
+justified.  The Header consists of a "sequence" of twenty-
+four 80-character images.  The field lengths within the
+Header Records are designed to allow one to read the
+information (from magnetic tapes) as a series of 120-
+character logical records -- the same logical record length
+as the data records.
+
+     To help the marine geophysical community prepare this
+documentation, a coding pad is available free of charge from
+the National Geophysical Data Center.
+
+
+Format Conventions for the Header Record:
+
+1. All decimal points are implied (e.g. 1234 in 10ths of units means 123.4)
+2. Leading zeros and blanks are equivalent.
+3. Unknown or unused fields are to be blank filled.
+4. All "corrections", such as time zone, diurnal magnetics,
+   and Eotvos, are understood to be added (e.g., time-zone
+   correction is the number of hours which must be added
+   to the recorded time to determine GMT).
+
+
+The following is a detailed description of the Header Record.
+Fields can be of type integer, real or character.  Fields that
+represent whole numbers are integers  Fields that contain a
+decimal component are real, and fields that are alphanumeric
+are character.
+
+            Length
+Character   of      
+Nos.        Field   Type     Description
+_____________________________________________________
+
+Sequence No. 1
+
+
+1           1       int      RECORD TYPE - Set to "4" (Header)
+                         
+2-9         8       char     SURVEY IDENTIFIER 
+                             Identifier supplied by the contributing       
+                             organization, else given by NGDC in
+                             a manner which represents the data.
+                             Identical to that in data record.
+                         
+10-14       5       char     FORMAT ACRONYM - Set to"MGD77"
+                         
+15-22       8       int      DATA CENTER FILE NUMBER   
+                             Survey identifier bestowed by the data    
+                             center.  First 2 chars indicate the
+                             source, first 4 indicate platform. 
+                             
+                         
+27-31       5       int      PARAMETERS SURVEYED CODE 
+                             Status of geophysical parameters for
+                             this survey.
+                         
+                             COLUMN  PARAMETER SURVEYED  
+                             27      bathymetry (e.g., 12 
+                                     kHz or 3.5 kHz used  
+                                     for bathymetry)      
+                             28      magnetics            
+                             29      gravity              
+                             30      high-resolution seismics      
+                                     (e.g., 3.5 kHz)      
+                             31      deep penetration seismics    
+                                     (e.g., large airgun) 
+                           _________________________________
+                         
+                             CODE - (for columns 27-31)
+                             
+                             0 or blank - unspecified
+                             1 - Parameter NOT surveyed
+                             3 - Parameter surveyed,
+                                   not contained in file
+                             5 - Parameter surveyed,
+                                   contained in file
+                         
+                         
+32-39       8       int      FILE CREATION DATE (YYYYMMDD) 
+                             Date data records were last 
+                             altered (including century).
+                         
+40-78       39      char     SOURCE INSTITUTION
+                             Organization which collected the
+                             data. Include contributor if different
+                             from collector.            
+                             
+79-80       2       int      SEQUENCE NUMBER - Set to "01"
+                         
+                         
+Sequence No. 2           
+                         
+                         
+1-18        18      char     COUNTRY 
+                         
+19-39       21      char     PLATFORM NAME
+                         
+40          1       int      PLATFORM TYPE CODE
+                             0 - Unspecified
+                             1 - Surface ship
+                             2 - Submersible ship
+                             3 - Aircraft
+                             4 - Buoy
+                             5 - Mobile land
+                             6 - Fixed land
+                             7 - Deep tow
+                             8 - Anchored seafloor instrument
+                             9 - Other, specify
+                                                      
+41-46       6       char     PLATFORM TYPE 
+                             (e.g., "SHIP","PLANE", "SUB", etc.)
+                         
+47-78       32      char     CHIEF SCIENTIST(S)
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "02"
+                         
+                         
+Sequence No. 3           
+                         
+                         
+1-58        58      char     PROJECT 
+                             (e.g., "SURVOPS 6-69",
+                             "INDOPAC, Leg3")
+                         
+59-78       20      char     FUNDING 
+                             (i.e. agency or institution)
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "03"
+                         
+                         
+Sequence No. 4           
+                         
+                         
+1-8         8       int      SURVEY DEPARTURE DATE (YYYYMMDD)
+                         
+9-40        32      char     PORT OF DEPARTURE 
+                             (i.e. city, country)
+                         
+41-48       8       int      SURVEY ARRIVAL DATE (YYYYMMDD)
+                         
+49-78       30      char     PORT OF ARRIVAL 
+                             (i.e. city, country)
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "04"
+                         
+                         
+Sequence No. 5           
+                         
+                         
+1-40        40      char     NAVIGATION INSTRUMENTATION
+                             (e.g. "SAT/LORAN A/SEXTANT")
+                         
+41-78       38      char     GEODETIC DATUM/POSITION
+                             DETERMINATION METHOD
+                             (e.g. "WGS84/PRIM - SATELLITE,
+                             SEC-LORAN A")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "05"
+                         
+                         
+Sequence No. 6           
+                         
+                         
+1-40        40      char     BATHYMETRY INSTRUMENTATION
+                             Include information such as
+                             frequency, beam width, and sweep
+                             speed of recorder.
+                         
+41-78       38      char     ADDITIONAL FORMS OF BATHYMETRIC DATA
+                             (e.g., "MICROFILM",
+                             "ANALOG RECORDS")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "06"
+                         
+                         
+Sequence No. 7           
+                         
+                         
+1-40        40      char     MAGNETICS INSTRUMENTATION
+                             (e.g., "PROTON PRECESSION
+                             MAG-GEOMETRICS G-801")
+                         
+41-78       38      char     ADDITIONAL FORMS OF MAGNETICS DATA
+                             (e.g., "PUNCH TAPE",
+                             "ANALOG RECORDS")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "07"
+                         
+                         
+Sequence No. 8           
+                         
+                         
+1-40        40      char     GRAVITY INSTRUMENTATION
+                             (e.g., "L and R S-26")
+                         
+41-78       38      char     ADDITIONAL FORMS OF GRAVITY DATA
+                             (e.g., "MICROFILM", "ANALOG
+                             RECORDS")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "08"
+                         
+                         
+Sequence No. 9           
+                         
+                         
+1-40        40      char     SEISMIC INSTRUMENTATION
+                             Include the size of the sound
+                             source, the recording frequency
+                             filters, and the number of
+                             channels (e.g., "1700 cu. in.,
+                             AIRGUN, 8-62 Hz, 36 CHANNELS")
+                         
+41-78       38      char     FORMATS OF SEISMIC DATA
+                             (e.g., "DIGITAL", "MICROFILM",
+                             "NEGATIVES", etc.)
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "09"
+                         
+                         
+Sequence No. 10          
+                         
+                         
+1           1       char     FORMAT TYPE
+                             Set to "A", which means format
+                             contains integers, floating points,
+                             and alphanumerics
+                         
+2-76        75      char     FORMAT DESCRIPTION
+                             This is one method of reading 
+                             (not writing) the data in FORTRAN.
+                             Set to the following: 
+                             "(I1,A8,I3,I4,3I2,F5.3,F8.5,F9.5,I1,F6.4,
+                             F6.1,I2,I1,3F6.1,I1,F5.1,F6.0,F7.1,"
+                             (NOTE: continued in sequence no. 11)
+                         
+79-80       2        int     SEQUENCE NUMBER - Set to "10"
+                         
+                         
+Sequence No. 11          
+                         
+                         
+1-19        19      char     FORMAT DESCRIPTION 
+                             Continued, set to following:
+                             "F6.1,F5.1,A5,A6,I1)"
+                             
+41-43       3       int      TOPMOST LATITUDE OF SURVEY  **
+                             (to next whole degree)
+                         
+44-46       3       int      BOTTOMMOST LATITUDE
+                         
+47-50       4       int      LEFTMOST LONGITUDE
+                         
+51-54       4       int      RIGHTMOST LONGITUDE
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "11"
+                         
+                         
+Sequence No. 12          
+                         
+                         
+1-3         3       real     GENERAL DIGITIZING RATE OF
+                             BATHYMETRY
+                             In tenths of minutes.  
+                             The rate which is present within
+                             the data records (e.g., if values were
+                             coded every 5 minutes, set to "050")
+                         
+4-15        12      char     GENERAL SAMPLING RATE OF
+                             BATHYMETRY 
+                             This rate is instrumentation dependent
+                             (e.g., "1/SECOND")
+                         
+16-20       5       real     ASSUMED SOUND VELOCITY
+                             In tenths of meters per second.
+                             Historically, in the U.S., this
+                             speed has been 800 fathoms/sec,
+                             which equals 1463.0 meters/sec.;
+                             however, some recorders have a
+                             calibration of 1500 meters/sec
+                             (e.g., "14630")
+                         
+21-22       2       int      BATHYMETRIC DATUM CODE -
+                             00 - No correction applied (sea level)
+                             01 - Lowest normal low water
+                             02 - Mean lower low water
+                             03 - Lowest low water
+                             04 - Mean lower low water spring
+                             05 - Indian spring low water
+                             06 - Mean low water spring
+                             07 - Mean sea level
+                             08 - Mean low water
+                             09 - Equatorial spring low water
+                             10 - Tropic lower low water
+                             11 - Lowest astronomical tide
+                             88 - Other, specify in
+                                  additional documentation
+                         
+23-78       56      char     INTERPOLATION SCHEME
+                             This field allows for a description
+                             of the interpolation scheme used,
+                             should some of the data records contain 
+                             interpolated values (e.g., "5-MINUTE
+                             INTERVALS AND PEAKS AND TROUGHS").
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "12"
+                         
+                         
+Sequence No. 13          
+                         
+                         
+1-3         3       real     GENERAL DIGITIZING RATE OF
+                             MAGNETICS 
+                             In tenths of minutes.
+                             The rate which is present
+                             within the data records.
+                         
+4-5         2       int      GENERAL SAMPLING RATE OF
+                             MAGNETICS
+                             In seconds.
+                             This rate isinstrumentation dependent
+                             (e.g., if the pulse rate is every 3 sec,
+                             set to "03")
+                         
+6-9         4       int      MAGNETIC SENSOR TOW DISTANCE
+                             In meters.  
+                             The distance from the navigation 
+                             reference to the leading sensor.
+                         
+10-14       5       real     SENSOR DEPTH
+                             In tenths of meters.
+                             This is the estimated depth of the 
+                             lead magnetic sensor.
+                         
+15-17       3       int      HORIZONTAL SENSOR SEPARATION
+                             In meters.
+                             If two sensors are used.
+                         
+18-19       2       int      REFERENCE FIELD CODE - This is the
+                             reference field used to determine 
+                             the residual magnetics:
+                             00 - Unused
+                             01 - AWC 70
+                             02 - AWC 75
+                             03 - IGRF-65
+                             04 - IGRF-75
+                             05 - GSFC-1266
+                             06 - GSFC (POGO) 0674
+                             07 - UK 75
+                             08 - POGO 0368
+                             09 - POGO 1068
+                             10 - POGO 0869
+                             11 - IGRF-80
+                             12 - IGRF-85
+                             13 - IGRF-90
+                             14 - IGRF-95
+                             15 - IGRF-00
+                             88 - Other, specify
+                                  
+20-31       12      char     REFERENCE FIELD
+                             (e.g., "IGRF-85")
+                         
+32-78       47      char     METHOD OF APPLYING RESIDUAL FIELD
+                             The procedure used in applying
+                             this reduction to the data
+                             (e.g., "LINEAR INTERP. in
+                             60-mile SQUARE")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "13"
+                         
+                         
+Sequence No. 14          
+                         
+                         
+1-3         3       real     GENERAL DIGITIZING RATE OF  GRAVITY
+                             In tenths of minutes. 
+                             The rate present within the data records
+                         
+4-5         2       int      GENERAL SAMPLING RATE OF GRAVITY
+                             In seconds.
+                             This rate is instrumentation dependent.
+                             If recordingis continuous, set to "00"
+                         
+6           1       int      THEORETICAL GRAVITY FORMULA CODE
+                             1 - Heiskanen 1924
+                             2 - International 1930
+                             3 - IAG System 1967
+                             4 - IAG System 1980  
+                             8 - Other, specify
+                         
+7-23        17      char     THEORETICAL GRAVITY FORMULA 
+                             (e.g., "INTERNATIONAL '30", "IAG
+                             SYSTEM (1967)", etc.)
+                         
+24          1       int      REFERENCE SYSTEM CODE
+                             Identifies the reference field:
+                             1 - Local system, specify
+                             2 - Potsdam system
+                             3 - System IGSN 71
+                             9 - Other, specify
+                         
+25-40       16      char     REFERENCE SYSTEM
+                             (e.g., "POTSDAM SYSTEM",
+                             "SYSTEM IGSN 71", etc.)
+                         
+41-78       38      char     CORRECTIONS APPLIED
+                             Drift, tare and bias corrections 
+                             applied. (e.g., "+0.075 MGAL PER DAY")
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "14"
+                         
+                         
+Sequence No. 15          
+                         
+                         
+1-7         7       real     DEPARTURE BASE STATION GRAVITY
+                             In tenths of milligals.
+                             At sea level (Network value preferred.)
+                         
+8-40        33      char     DEPARTURE BASE STATION DESCRIPTION
+                             Indicates name and number of station
+                         
+41-47       7       real     ARRIVAL BASE STATION GRAVITY
+                             In tenths of milligals.
+                             At sea level (Network value preferred.)
+                         
+48-78       31      char     ARRIVAL BASE STATION DESCRIPTION
+                             Indicates name and number of station
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "15"
+                         
+                         
+Sequence No. 16          
+                         
+                         
+1-2         2       int      NUMBER OF 10-DEGREE IDENTIFIERS    **
+                             This is the number of 4-digit
+                             10-degree identifiers, excluding
+                             the "9999" flag, which will
+                             follow this field. (see APPENDIX B)
+                             
+                         
+4-78        75      int     10-DEGREE IDENTIFIERS - This is a
+                             series of 4-digit codes,separated by 
+                             commas, which identify the 10-degree 
+                             squares through which the survey
+                             collected data (see APPENDIX B).
+                             Code "9999" after last identifier.
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "16"
+                         
+                         
+Sequence No. 17          
+                         
+                         
+1-75        75      int      10-DEGREE IDENTIFIERS
+                             Continued
+                         
+79-80       2       int      SEQUENCE NUMBER - Set to "17"
+                         
+                         
+Sequence Nos. 18-24      
+                         
+                         
+1-78        78      char     ADDITIONAL DOCUMENTATION
+                             information concerning this survey
+                             not contained in header fields.
+                         
+79-80       2       int      SEQUENCE NUMBER ("18" thru "24")
+                         
+
+
+
+______________
+
+** Fields 41-54 in sequence Number 11 and Fields 1-78 in
+sequence numbers 16 and 17 may be blank filled by the
+contributing institution.  The data center can determine
+these numbers by a computer search of the latitudes and
+longitudes within the MGD77 file.
+
+
+
+
+
+IV.                    THE DATA RECORD
+
+
+     The data record presents underway marine geophysical
+data in a correlative manner.  Geophysical data (bathymetry,
+magnetics, and gravity) and seismic identification (shot-point
+identification) are presented with a corresponding time and
+position.  Documentation that is variable throughout the
+survey also is included within each data record.  If primary
+navigation exists at a juncture where no geophysical data
+are present, this record should be included with the data
+parameter fields left unused (9s filled).
+
+     The logical record length is 120 characters and the
+blocking factor is 16 logical records per physical record
+(i.e., 1,920 characters).
+
+
+
+Format Conventions:
+
+     1. All decimal points are implied (e.g. 1234 in 10ths of units means 123.4)
+     
+     2. Leading zeros and blanks are equivalent.
+     
+     3. Unknown or unused fields are to be filled with 9s
+     (DO NOT BLANK FILL).
+        
+     4. All "corrections", such as time zone, diurnal
+     magnetics, and Eotvos, are understood to be added
+     (e.g., time-zone correction is the number of hours
+     which must be added to the recorded time to
+     determine GMT).
+
+
+
+            Length
+Character   of      Fortran
+Nos.        Field   code     Description
+____________________________________________________________
+
+1           1       int      DATA RECORD TYPE
+                             Set to "5" for data record.
+                         
+2-9         8       char     SURVEY IDENTIFIER
+                             Identifier supplied by the contributing       
+                             organization, else given by NGDC in
+                             a manner which represents the data.
+                             Identical to that in header record.
+                             
+                             
+                         
+10-12       3       int      TIME-ZONE CORRECTION
+                             Corrects time (in characters 13-27)
+                             to GMT when added: equals zero when 
+                             time is GMT.  Timezone normally falls
+                             between -13 and +12 inclusively.
+                         
+13-16       4       int      YEAR 
+                             including century (e.g. 1972)
+                         
+17-18       2       int      MONTH 
+                             (e.g. May is represented as 05)
+                         
+19-20       2       int      DAY
+                             Day of month
+                         
+21-22       2       int      HOUR
+                             Hour of day
+                         
+23-27       5       real     MINUTES X 1000
+                         
+28-35       8       real     LATITUDE X 100000 
+                             + = North; - = South
+                             Between -9000000 and 9000000
+                         
+36-44       9       real     LONGITUDE X 100000
+                             + = East; - = West
+                             Between -18000000 and 18000000
+                             
+45          1       int      POSITION TYPE CODE
+                             Indicates how lat/lon was obtained:
+                             1 = Observed fix
+                             3 = Interpolated
+                             9 = Unspecified
+                         
+46-51       6       real     BATHYMETRY, 2- WAY TRAVELTIME
+                             In ten-thousandths of seconds.
+                             Corrected for transducer depth and
+                             other such corrections, especially in
+                             shallow water
+                         
+52-57       6       real     BATHYMETRY, CORRECTED DEPTH
+                             In tenths of meters.
+                         
+58-59       2       int      BATHYMETRIC CORRECTION CODE
+                             This code details the procedure
+                             used for determining the sound
+                             velocity correction to depth:
+                             
+                             01-55  Matthews' Zones with zone
+                             59     Matthews' Zones, no zone
+                             60     S. Kuwahara Formula
+                             61     Wilson Formula
+                             62     Del Grosso Formula
+                             63     Carter's Tables
+                             88     Other (see Add. Doc.)
+                             97     Computed using 1500 meters/sec
+                             98     Unknown if Corrected
+                             99     Unspecified
+                         
+60          1       int      BATHYMETRIC TYPE CODE
+                             Indicates how the data record's
+                             bathymetric value was obtained:
+                             1 =    Observed
+                             3 =    Interpolated (Header Seq. 12)
+                             9 =    Unspecified
+                         
+61-66       6       real     MAGNETICS TOTAL FIELD, 1ST SENSOR
+                             In tenths of nanoteslas (gammas). 
+                             For leading sensor.  Use this field
+                             for single sensor.
+                         
+67-72       6       real     MAGNETICS TOTAL FIELD, 2ND SENSOR
+                             In tenths of nanoteslas (gammas). 
+                             For trailing sensor.
+                         
+73-78       6       real     MAGNETICS RESIDUAL FIELD
+                             In tenths of nanoteslas (gammas). 
+                             The reference field used is in
+                             Header Seq. 13.
+                         
+79          1       int      SENSOR FOR RESIDUAL FIELD
+                             1 = 1st or leading sensor
+                             2 = 2nd or trailing sensor
+                             9 = Unspecified
+                         
+80-84       5       real     MAGNETICS DIURNAL CORRECTION -
+                             In tenths of nanoteslas (gammas). 
+                             (In nanoteslas) if 9-filled
+                             (i.e., set to "+9999"), total
+                             and residual fields are assumed
+                             to be uncorrected; if used,
+                             total and residuals are assumed
+                             to have been already corrected.
+                         
+85-90       6       F6.0     DEPTH OR ALTITUDE OF MAGNETICS SENSOR
+                             In meters.
+                             + = Below sealevel
+                             - = Above sealevel
+                         
+91-97       7       real     OBSERVED GRAVITY
+                             In tenths of milligals.
+                             Corrected for Eotvos, drift, and
+                             tares
+                         
+98-103      6       real     EOTVOS CORRECTION
+                             In tenths of milligals.
+                             E = 7.5 V cos phi sin alpha + 
+                             0.0042 V*V 
+                         
+104-108     5       real     FREE-AIR ANOMALY
+                             In tenths of milligals.
+                             Free-air Anomaly = G(observed) -
+                             G(theoretical)
+                         
+109-113     5       char     SEISMIC LINE NUMBER
+                             Used for cross referencing with
+                             seismic data.
+                         
+114-119     6       char     SEISMIC SHOT-POINT NUMBER
+                         
+120         1       int      QUALITY CODE FOR NAVIGATION -
+                             5 - Suspected, by the
+                                 originating institution
+                             6 - Suspected, by the data
+                                 center
+                             9 - No identifiable problem
+                                 found
+                             (NOTE - Institution will most
+                             frequently 9-fill this field;
+                             however, should they wish to
+                             code a "5", the data center will
+                             not contradict.  The data
+                             center's quality control
+                             program, which performs (among
+                             other checks) a vectorial
+                             analysis of the navigation, is
+                             available in a printout form
+                             upon request.)
+                         
+                         
+                         
+
+
+____________________________________________________________
+
+                         
+APPENDIX A      10-DEGREE-SQUARE IDENTIFIER CODE
+
+
+A 10-degree-square area can be easily identified by
+constructing a four-digit number.  The components of this
+number, in order of their construction are described as
+follows:
+
+Quadrant - A one-digit number identifies the quadrant of the
+world with the following significance to each digit:
+
+   1st digit = Quadrant number
+
+   Qc Code         Latitude        Longitude
+   _______         ________        _________
+   
+      1            North           East
+      3            South           East
+      5            South           West
+      7            North           West
+
+10-Degree Square - The next three digits identify a unique
+10-degree square; thus, the significant digits consist of:
+
+           2nd digit = Tens digit of degrees latitude
+           3rd digit = Hundreds digit of degrees longitude
+           4th digit = Tens digit of degrees longitude
+
+
+                                    10-DEGREE SQ IDENT. CODE
+                                    ________________________
+                                      
+EXAMPLES:                                Qc   Lat  Long Long
+  (i) 37 degrees 48'S, 4 degrees 13'E    3    3    0    0
+ (ii) 21.6 degrees S, 14.3 degrees W     5    2    0    1
+(iii) 34 degrees 28'N, 143 degrees 27'W  7    3    1    4
+ (iv) 75 degrees N, 43 degrees E         1    7    0    4
+
+___________________________________________________________
+
+
+APPENDIX B       NGDC CONTACTS
+
+
+Dan R. Metzger: (303) 497-6542  Dan.R.Metzger@noaa.gov
+     or
+John G. Campagnoli : (303) 497-3158  John.G.Campagnoli@noaa.gov
+
+National Geophysical Data Center
+NOAA, E/GC3
+325 Broadway
+Boulder, CO 80303-3328
+
+TELEX 592811 NOAA MASC BDR
+FAX (303) 497-6513
+
+____________________________________________________________
+</PRE>
+</BODY>
+</HTML>

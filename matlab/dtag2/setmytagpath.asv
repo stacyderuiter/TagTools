@@ -1,0 +1,2 @@
+%settagpath('audio','e:/tag/course/data','cal','e:/tag/course/data/cal', 'raw','e:/tag/course/data/raw','prh','e:/tag/course/data/prh');
+settagpath('audio','E:\TagData\tag\data','cal','E:\BRS08_Data\tag\matlab\cals', 'raw','E:\BRS08_Data\tag\data\raw','prh','E:\BRS08_Data\tag\data\prh');

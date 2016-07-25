@@ -1,0 +1,449 @@
+<HTML>
+<!-- LINK REL="StyleSheet" HREF="styles.css" MEDIA="" -->
+<HEAD>
+<TITLE>Aeromagnetic Surveys Format  - ARO88</TITLE>
+</HEAD><BODY>
+<h3><a href="mgd2000.htm">MGD-2000 Formats</a>: ARO88</h3>
+<PRE>
+U.S. DEPARTMENT OF COMMERCE
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+NATIONAL ENVIRONMENTAL SATELLITE, DATA, AND INFORMATION SERVICE
+
+
+THE AROMAGNETIC SURVEYS HEADER FORMAT - "ARO88"
+
+
+
+COMPILED BY THE ARO88 TASK GROUP
+
+Dan R. Metzger
+Ron H. Buhmann
+
+National Geophysical Data Center
+Boulder, Colorado
+December 1993 
+    
+
+                                                         
+INTRODUCTION........................I
+
+GENERAL DESCRIPTION................II
+
+THE ARO88 HEADER RECORD...........III
+
+THE DATA RECORDS...................IV
+
+10 DEGREE ID CODES.........APPENDIX A
+
+NGDC CONTACTS..............APPENDIX B
+     
+     
+
+
+
+
+
+I.                      INTRODUCTION
+
+     During 1988 the National Geophysical Data Center decided
+to integrate it's collection of worldwide aeromagnetic survey 
+data into the already existing GEODAS (GEOphysical DAta System)
+data managment system.  In doing this NGDC created a digital
+header to document key information about these surveys.  As can be
+seen below, the ARO88 header was patterned after the ever popular 
+MGD77 exchange format header.  (It was decided not to attempt to
+introduce a common format for the aeromagnetic data records.)
+Integrating NGDC's aeromagnetic data into GEODAS systems allows 
+for assimilation into an already developed system and a standardized
+software interface for the user.  
+
+
+
+
+
+
+
+II.                  GENERAL DESCRIPTION
+
+
+     The digital format presented, and referred to as "ARO88",
+is a format for aeromagnetic survey headers.  It is intended to 
+be used for the transmission of data to and from a data center
+and may be useful for the exchange of data between marine 
+institutions.  This meta-data can be exchanged as a companion file to
+the aeromagnetic data files, which have various formats, generally being
+in the original format as recieved by NGDC from the source contributor.
+Data may be exchanged on various mass storage devices such as floppy 
+disks, 8mm tape, or optical media or over the Internet.  The National 
+Geophysical Data Center uses CD/DVD disks as its chief method of 
+distribution of these data.
+
+
+  
+
+
+
+
+III.                  THE ARO88 HEADER RECORD
+
+
+     The purpose of the Header Record is to document both
+the content and structure of the aeromagnetic data contained
+within the data records.  In general, documentation that is
+constant throughout the cruise will be in the Header Record,
+while documentation that is variable will be in the Data Records.
+
+     On mass storage media, the ARO88 Header consists of a file
+of 24 80-character sequential records.
+  
+     The Header Record contains fields which are both fixed
+and freely formatted.  All field lengths within the Header
+that have not been coded with information should be blank-
+filled, and all plain language statements should be left-
+justified.  The Header consists of a "sequence" of twenty-
+four 80-character images.
+
+*** CHANGES SINCE LAST REVISION ***
+
+Several changes in the ARO88 Format were required in order to
+make the format "Year 2000 Compliant" (Y2K Compliant):
+
+SEQUENCE   DESCRIPTOR           CHANGE
+______________________________________________-
+
+01         RECORD TYPE           Change from "1" to "4"
+
+01         FILE CREATION DATE    Change to include century
+                                 From 6 digits (col 32-37)
+                                 to 8 digits (col 32-39)
+                               
+01         SOURCE INSTITUTION    Change from 41 chars (col 38-78)
+                                 to 39 chars (col 40-78)
+                                
+04         SURVEY DEPARTURE DATE Change to include century
+                                 From 6 digits (col 1-6)
+                                 to 8 digits (col 1-8)
+                                                            
+04         AIRPORT OF DEPARTURE  Change from 34 chars (col 7-40)                                                        
+                                 to 32 chars (col 9-40)
+                                
+04         SURVEY ARRIVAL DATE   Change to include century                                                          
+                                 From 6 digits (col 41-46)
+                                 to 8 digits (col 41-48)
+                                
+04         AIRPORT OF ARRIVAL    Change from 32 chars (col 47-78)                                                      
+
+
+     The following is a detailed description of the Header
+Record.  
+
+
+            Length
+Character   of      
+Nos.        Field   Type       Description
+_____________________________________________________
+
+Sequence No. 1
+
+
+1           1       integer    RECORD TYPE - ("4")
+
+2-9         8       char       SURVEY IDENTIFIER 
+                               identifier supplied by the contributing
+                               organization, else given by NGDC in a 
+                               manner which represents the data. 
+                               
+10-14       5       char       FORMAT ACRONYM ("ARO88")
+
+15-22       8       integer    DATA CENTER FILE NUMBER 
+                               survey identifier bestowed by the data
+                               center.  First 4 chars indicate the 
+                               project as defined by NGDC. 
+
+27-31       5       char       PARAMETERS SURVEYED CODE
+                               if code is present, parameter is
+                               contained in file.
+                          
+                                __________________________________
+                               |COLUMN|CODE|  PARAMETER SURVEYED  |
+                               |______|____|______________________|
+                               |    1 |  F | Total Field          |
+                               |    2 |  X | xyz Components       |
+                               |    3 |  D | dhz Components       |
+                               |    4 |  R | Residual Field       |
+                               |    5 |  O | Other (radiometrics) |
+                               |______|___________________________|
+                                 
+
+32-39       8       integer    FILE CREATION DATE (YYYYMMDD)
+                               date data records were last 
+                               altered.
+
+40-78      39       char       SOURCE INSTITUTION 
+                               organization which collected the data.
+                               Include contributor if different from 
+                               collector.            
+
+79-80       2       integer    SEQUENCE NUMBER - ("01")
+
+
+
+Sequence No. 2
+
+
+1-18       18       char       COUNTRY
+
+19-39      21       char       PLATFORM NAME
+
+40          1       integer    PLATFORM TYPE CODE
+                               0 - Unspecified Platform
+                               1 - Surface ship
+                               2 - Submersible ship
+                               3 - Aircraft
+                               4 - Buoy
+                               5 - Mobile land
+                               6 - Fixed land
+                               7 - Deep tow
+                               8 - Anchored seafloor
+                               9 - Other, specify
+
+41-46       6       char       PLATFORM TYPE 
+                               (e.g. "SHIP","PLANE",
+                               "SUB", etc.)
+
+47-78      32       char       CHIEF SIENTIST(S)
+
+79-80       2       integer    SEQUENCE NUMBER - ("02")
+
+
+Sequence No. 3
+
+
+1-78       78       char       PROJECT 
+                               (e.g. "China Sea, high density,
+                               1 min")
+
+79-80       2       integer    SEQUENCE NUMBER - ("03")
+
+
+Sequence No. 4
+
+
+1-8         8       char       SURVEY DEPARTURE DATE (YYYYMMDD)
+
+9-40       32       char       AIRPORT OF DEPARTURE
+                               city, country
+                               
+41-48       8       char       SURVEY ARRIVAL DATE (YYYYMMDD)
+
+49-78      30       char       AIRPORT OF ARRIVAL
+                               city, country
+
+79-80       2       integer    SEQUENCE NUMBER - ("04")
+
+
+Sequence No. 5
+
+
+1-40       40       char       FLIGHT LINE SPACINGS
+                               (e.g. NW-SE 37 km.)
+
+41-78      38       char       MAGNETOMETER(S) USED
+                               (e.g. Geometrics G801/3 Proton 
+                               Precession)
+
+79-80       2       integer    SEQUENCE NUMBER ("05")
+
+
+Sequence No. 6
+
+
+1-20       20       char       AIRCRAFT ALTITUDE 
+                               (e.g. 11000 Feet BAR)
+
+21-34      14       char       AIRCRAFT VELOCITY 
+                               (e.g. 120 Knots)
+
+35-37       3       integer    SAMPLING RATE
+                               in seconds
+
+38-44       7       char       SENSOR TOW DISTANCE
+
+45-57      13       char       REFERENCE FIELD 
+                               field used to calculate Residual 
+                               Magnetics. (e.g. IGRF-85)
+
+58-67      10       integer    TOTAL OBSERVATIONS
+
+68-78      11       char       MAGNETIC SENSITIVITY 
+                               (e.g. 0.001)
+
+79-80       2       integer    SEQUENCE NUMBER - "06"
+
+
+Sequence No. 7-11
+
+
+1-78       78       char       DATA PARAMETER FORMAT
+                               AND UNITS DESCRIPTION
+                               defines format of the data file; 
+                               uses Fortran edit descriptors.
+                               (e.g. "TOTAL-MAG-FIELD-nT(F6.1),")
+
+79-80       2       integer    SEQUENCE NUMBER
+                               "07" thru "11"
+
+
+Sequence No. 12
+
+
+1-2         2       integer    NUMBER OF 10-DEGREE IDENTIFIERS
+                               number of 4-digit 10-degree identifiers,
+                               (excluding "9999"), which will follow this
+                               field (see appendix 1)
+
+4-78       75       integers   15 10-DEGREE IDENTIFIERS
+                               a series of 4-digit codes, seperated
+                               by commas or space, which identify the 
+                               10-degree squares through which the survey 
+                               collected data. Last ID is "9999".  
+                               (see appendix 1)
+                               
+79-80       2       integer    SEQUENCE NUMBER - "12"
+
+
+Sequence No. 13-15
+
+
+1-75       75       integers   15 10-DEGREE IDENTIFIERS 
+                               continued
+
+79-80       2       integer    SEQUENCE NUMBER
+                               ("13" thru "15")
+
+
+
+
+Sequence No. 16
+
+
+1-49       49       integers   10 10-DEGREE IDENTIFIERS
+                               continued
+                            
+65-67       3       integer    TOPMOST LATITUDE OF SURVEY 
+                               expand to next whole degree
+
+68-70       3       integer    BOTTOMMOST LATITUDE
+
+71-74       4       integer    LEFTMOST LONGITUDE
+
+75-78       4       integer    RIGHTMOST LONGITUDE
+
+79-80       2       integer    SEQUENCE NUMBER - ("16")
+
+
+Sequence No. 17
+
+
+1           1       integer    ARCHIVE NGDC TAPE LETTER
+
+2-78       77       char       ARCHIVE NGDC TAPE NUMBERS 
+                               
+79-80       2       integer    SEQUENCE NUMBER - ("08")
+
+
+
+Sequence Nos. 18-24
+
+
+1-78       78       char       ADDITIONAL DOCUMENTATION
+                               information concerning this 
+                               survey not contained in header
+                               fields.
+
+79-80       2       integer    SEQUENCE NUMBER
+                               ("18" thru "24")
+
+
+
+
+
+
+
+
+IV.                    THE DATA RECORDS
+
+
+     The Aeromagnetic Survey records at NGDC are organized by survey
+operation, one survey per file.  The data records have been kept in the
+same format as they were recieved in.  They may have been re-worked, but
+generally not re-formatted.  To find out more about these files please
+contact Ron Buhmann or Stuart Racey. (see NGDC CONTACTS below)
+ 
+___________________________________________________________
+
+
+
+
+                        
+APPENDIX A        10-DEGREE-SQUARE IDENTIFIER CODE
+
+A 10-degree-square area can be easily identified by
+constructing a four-digit number.  The components of this
+number, in order of their construction are described as
+follows:
+
+Quadrant - A one-digit number identifies the quadrant of the
+world with the following significance to each digit:
+
+   1st digit = Quadrant number
+
+   Qc Code         Latitude        Longitude
+   _______         ________        _________
+   
+      1            North           East
+      3            South           East
+      5            South           West
+      7            North           West
+
+10-Degree Square - The next three digits identify a unique
+10-degree square; thus, the significant digits consist of:
+
+           2nd digit = Tens digit of degrees latitude
+           3rd digit = Hundreds digit of degrees longitude
+           4th digit = Tens digit of degrees longitude
+
+
+                                    10-DEGREE SQ IDENT. CODE
+                                    ________________________
+                                      
+EXAMPLES:                                Qc   Lat  Long Long
+  (i) 37 degrees 48'S, 4 degrees 13'E    3    3    0    0
+ (ii) 21.6 degrees S, 14.3 degrees W     5    2    0    1
+(iii) 34 degrees 28'N, 143 degrees 27'W  7    3    1    4
+ (iv) 75 degrees N, 43 degrees E         1    7    0    4
+
+                               
+__________________________________________________________________
+
+
+
+APPENDIX B       NGDC CONTACTS
+
+
+Dan R. Metzger: (303) 497-6542  Dan.R.Metzger@noaa.gov
+          or
+Ron W. Buhmann: (303) 497-3158  Ron.W.Buhmann@noaa.gov
+
+National Geophysical Data Center
+NOAA, E/GC3
+325 Broadway
+Boulder, CO 80305-3328
+
+TELEX 592811 NOAA MASC BDR
+FAX (303) 497-6513
+
+__________________________________________________________________________
+
+</PRE></BODY>
+</HTML>

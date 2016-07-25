@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="AUTHOR" content="Dan R. Metzger">
+<meta name="GENERATOR" content="Microsoft FrontPage 2.0">
+<title>GEODAS Help for Design-a-Grid Downloaded Grids</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p align="center"> <i>U.S. National Geophysical Data Center / World Data Center 
+  A for MGG</i> </p>
+
+<h2><img src="gd_sys2.gif" align="center" width="102" height="83"><font
+color="#000080"> </font><font color="#800000">GEODAS Help for Design-a-Grid Downloaded Grids</font></h2>
+
+<hr>
+<h2><a name="HELP_CONTENTS"></a><font color="#000080">CONTENTS</font></h2>
+
+<h3><a href="#RTVG_DATA">Your GEODAS On-line Downloaded Grid(s)</a></h3>
+<h3><a href="#WHAT">What is GEODAS?</a></h3>
+<h3><a href="#SOFTWARE">GEODAS Software</a></h3>
+<h3><a href="#DESIGNAGRID">GEODAS Online Grid Translator - Design-a-Grid</a></h3>
+<h3><a href="#RETRIEVE">GEODAS Grid File Types</a></h3>
+<hr>
+<hr>
+
+<h2><a name="HELP_INDEX"></a><font color="#000080">INDEX</font></h2>
+<p>
+  <a href="#ARCGIS_GRDS">ArcGIS/ArcView Grids</a><br>
+  <a href="#DESIGNAGRID">Design-a-Grid</a><br>
+  <a href="#RETRIEVE">Files</a><br>
+  <a href="#DESIGNAGRID">Formats</a><br>
+  <a href="#WHAT">GEODAS</a><br>
+  <a href="#DESIGNAGRID">GEODAS Gridded Databases</a><br>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3><a name="RTVG_DATA"></a><font color="#000080">Your GEODAS On-line Downloaded Grid(s)</font></h3>
+<p>The grids you downloaded from GEODAS On-line is the data found by you when you ran
+<a href="#DESIGNAGRID">GEODAS On-line Design-a-Grid</a>. The data has been collected together and
+compressed into a single base folder.  Once uncompressed, You will find this base folder [Grid Id]_data with
+several files, and a folder named for your Grid Id. The grid file(s) are in folder named [Grid Id]. 
+Use this help file to understand the <a href="#DESIGNAGRID">data formats and 
+other options</a> you chose when creating the grid(s) on-line. Your grids will have been
+extracted from one of several GEODAS Gridded Databases:<br>
+<a href="http://www.ngdc.noaa.gov/mgg/image/2minrelief.html">ETOPO2 Global Bathymetry</a>, 
+<a href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html">US Coastal Relief Model</a> and 
+<a href="http://www.ngdc.noaa.gov/mgg/greatlakes/greatlakes.html">Great Lakes Bathymetry</a>.
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr>
+<hr>
+<p>&nbsp;</p>
+
+<h3><a name="WHAT"></a><font color="#000080">What is GEODAS?</font></h3>
+
+<p><strong>GEODAS</strong> (<strong>GEO</strong>physical <strong>DA</strong>ta
+<strong>S</strong>ystem) is an interactive database management
+system developed by the <a
+href="http://www.ngdc.noaa.gov/ngdc.html">National Geophysical
+Data Center (NGDC)</a> for use in the assimilation, storage and
+retrieval of geophysical data. The GEODAS software is presently
+being used with several types of data: 
+<a href="http://www.ngdc.noaa.gov/mgg/geodas/trackline.html">Marine Trackline Geophysical Survey Data</a>, 
+<a href="http://www.ngdc.noaa.gov/mgg/bathymetry/hydro.html">Hydrographic (bathymetric) Survey Data</a>, 
+<a href="http://www.ngdc.noaa.gov/seg/potfld/aromag.shtml">Aeromagnetic Survey Data </a>
+and GEODAS Gridded Data including 
+<a href="http://www.ngdc.noaa.gov/mgg/image/2minrelief.html">ETOPO2 Global Bathymetry</a>, 
+<a href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html">US Coastal Relief Model</a> and 
+<a href="http://www.ngdc.noaa.gov/mgg/greatlakes/greatlakes.html">Great Lakes Bathymetry</a>. 
+For survey-based data searches
+by geographic area, year of survey, source,
+platform/project, survey identifier, or data type are available.
+Each survey is comprised of one Header record and multiple Data
+records. The Header record documents both the content and the
+structure of the subsequent Data records, containing that part of
+the data that remains invariant throughout the survey. The Data
+records present geophysical data with corresponding times and
+positions. Documentation that varies within the survey is also
+included with the data records.  GEODAS Gridded Databases come with software with which the user
+can create custom grids.  Other software includes Hydro-Plot data plot viewing, Re-Format application for changing
+formats (including xyz), and Coastline Extractor for viewing and saving coastline files.</p>
+
+<p>GEODAS CD/DVD sets come with
+access software for Microsoft Windows, Macintosh OS-X and UNIX Xwindows systems. The
+latest version of the desktop software can be found at 
+<a href="http://www.ngdc.noaa.gov/mgg/gdas/gx_announce.Html">www.ngdc.noaa.gov/mgg/gdas/gx_announce.Html</a>  
+Or this On-line version can be used for searching and downloading data on-line for free, creating custom bathymetry
+grids for free, or creating your own CD of data for purchase. GEODAS Desktop Software can also access downloaded
+data and grids, though with some limits to functionality for this data.</p>
+
+<p>Contact the National Geophysical Data Center for more
+information. You can now use the <a href="http://www.ngdc.noaa.gov/mgg/announcements/mggstoresearch.html">NOAA National Data Centers Online Store</a> 
+for direct ordering of NGDC data. For more information
+about GEODAS products you can contact 
+<a href="mailto:Robin.R.Warnken@noaa.gov?subject=WWW GEODAS Ordering Info"><i>Robin.R.Warnken@noaa.gov</i></a> 
+For technical assistance contact 
+<a href="mailto:Dan.R.Metzger@noaa.gov?subject=WWW Geodas Tech. Assistance"><i>Dan.R.Metzger@noaa.gov</i></a> or 
+<a href="mailto:John.G.Campagnoli@noaa.gov?subject=WWW Geodas Tech Assistance"><i>John.G.Campagnoli@noaa.gov</i></a>..</p>
+
+<h4><font color="#800000">Cautions about the data:</font></h4>
+
+<p>The data in GEODAS databases are of the best
+quality NGDC can obtain. Most have gone through extensive
+processing at their place of origin. The documentation headers that are
+included provide information on the accuracy of the
+data. NGDC makes no warranty as to the correctness of data values,
+but they are representative of the data as of
+their transfer to NGDC.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr>
+<hr>
+<p>&nbsp;</p>
+<h3><a name="DESIGNAGRID"></a><font color="#000080">GEODAS Grid Translator - Design-a-Grid</font></h3>
+<p>GEODAS Grid Translator - Design-a-Grid application can be run on-line to create a custom 
+grid for several GEODAS Gridded Databases. These include:
+<a href="http://www.ngdc.noaa.gov/mgg/image/2minrelief.html">ETOPO2 Global Bathymetry</a>, 
+<a href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html">US Coastal Relief Model</a> and 
+<a href="http://www.ngdc.noaa.gov/mgg/greatlakes/greatlakes.html">Great Lakes Bathymetry</a>. 
+Users choose the criteria for their custom grid, including lat/lon area, grid cell size, format, number type, etc.
+The number of latitude and longitude cells of your grid will automatically be calculated and displayed at the bottom
+of the Design-a-Grid web page.  When you are satisfied with your options
+click <i>Design-a-Grid</i> button to create the grid. 
+</p>
+<p><font color="#000080"><strong>Grid Id - </strong></font>
+The Grid Id is a user-defined tag identifying the custom grid you create with GEODAS Grid Translator Design-a-Grid.
+It can be any combination of up
+to 8 alphanumeric characters plus "-" and "_" (no embedded spaces). This Id becomes the file prefix of the
+resulting grid file (suffix depends upon grid format).
+ </p>
+<p><font color="#000080"><strong>Grid Database - </strong></font>You
+must choose a GEODAS Gridded Database. This will be the source of the grid
+cells for your custom grid: </p>
+<ol>
+    <li><a href="http://www.ngdc.noaa.gov/mgg/image/2minrelief.html"><strong>ETOPO2 Global Bathy/Topo Grids</strong></a>
+        - Bathymetry and Elevation grids for the entire globe.  Data is gridded at 2 minutes. Custom grids
+		can be created by user.</li>
+    <li><a href="http://www.ngdc.noaa.gov/mgg/coastal/"><strong>US Coastal Relief Model</strong></a>
+        - Bathymetric/Topographic grids at 3 arc-seconds for US coasts, created from the NOS Hydrographic
+        Surveys database. Some sets are available now; more are in progress.</li>
+    <li><a href="http://www.ngdc.noaa.gov/mgg/greatlakes/greatlakes.html"><strong>Great Lakes Bathymetry</strong></a>
+        - Bathymetric/Topographic grids at 3 arc-seconds for the Great Lakes, created from the NOS Hydrographic
+        Surveys database. Custom grids can be created for Lake Erie and Lake Ontario.</li>
+</ol>
+<p><font color="#000080"><strong>Grid Lat/Lon Area Bounds - </strong></font>
+You must choose the latitude/longitude boundaries of your custom grid in degrees and
+minutes. Precision is to the nearest minute. Latitudes must be between 90 degrees North and 90 degrees South.
+Longitude values must be between 180 degrees West and 180 degrees East. Your grid may not cross both 0 degrees and
+180 degrees.  If you wish your grid to span the entire globe longitudinally (only relevent for ETOPO2 Global Topography),
+you can choose bounds of 180W to 180E, or from 0E to 0E. Depending on your source <i>Grid Database</i> and your 
+output <i>Grid Cell Size</i>, you may be restricted in your boundaries.  For example, if you have an output <i>Grid Cell Size</i>
+of 2 minutes, you may not choose a lat/lon minutes value of an odd number (e.g. 3 minutes). 
+Initial values for a particular source <i>Grid Database</i> are the outer bounds of that database.  Extending your
+bounds beyond that will only result in the extra cells being filled with the <i>Empty Grid Cell</i> value (see 
+<i>Grid Cell Value Parameters</i>).</p>
+<p><font color="#000080"><strong>Grid Cell Size - </strong></font>
+You may change the cell size of your custom grid from that of the source <i>Grid Database</i>. 
+However, your cell size must be a mulitple of the source database cell size.  Only acceptable
+cell sizes will be presented in the dialog.  Be aware that cell size and area are related and certain
+combinations will not work.  For example, if you chose a lat/lon bounds minutes value of an odd number (e.g. 3 minutes),
+you would not be able to have a cell size of 2 minutes. 
+</p>
+<p><font color="#000080"><strong>Grid Cell Value Parameters - </strong></font>You
+may choose values for various grid cell parameters, depending upon your source <i>Grid Database</i>.
+Some combinations may cause problems; a given number type/precision combination (i.e. 2-byte integers
+and tenths of meters) may not have sufficient size to hold the topographic values.  The default
+values will suffice if you are not sure. Only relevant parameters will be presented in the dialog:</p>
+
+<ul>
+    <li><strong>Number Type</strong>
+        - Choose from 2-byte integers, 4-byte integers or 4-byte floating point (real) values.
+		Note that this is only used by the binary raster grid format.</li>
+    <li><strong>Precision</strong>
+        - Grid values can be output with a precision of meters or tenths of meters. Note that the ETOPO2 Global database
+		has source values of whole meters.</li>
+    <li><strong>Empty Grid Cell Value</strong>
+        - This is the value which will appear in the grid cells where there is no grid data from the
+		source <i>Grid Database</i>.  This is not relevant to the ETOPO2 Global database, since that database has values for
+		all grid cells.</li>
+	<li><strong>Grid Radius Value</strong>
+        -  This is only relevant to US Coastal Relief Model grids. This option can be used to discard grid data depending 
+		upon the proximity of the actual hydrographic data values. i.e. NGDC has used NOS Hydrographic Survey Data to create 
+		grid data values for the grid cells in each grid. Use a value of -1 if you do not wish the Grid Radius algorithm
+		to be applied. But if you do not wish to use grid values where actual data was not 
+		in close proximity, you may apply the Grid Radius algorithm. If Grid Radius is set to zero or greater and the nearest 
+		actual data was more than Grid Radius grid cells away, the output cell will be given the Empty Grid Cell Value instead 
+		of the value contained in the Coastal Relief Model grid files. Note that Grid-Radius values are based on the Coastal 
+		Relief Model grid cell size (3 arc-seconds), not the output cell size. </li>
+
+</ul>
+
+<p><font color="#000080"><strong>Grid Format - </strong></font>Choose your output Grid Format and
+Format Parameters.</p>
+
+<p><i>Binary Raster Format:</i>  Simply a continuous series of binary depth values.   If you also choose the <i>GRD98 Header</i>, 
+the header will be attached to the beginning of the output file and you will have the
+<a href="http://www.ngdc.noaa.gov/mgg/dat/geodas/docs/grd98.txt">GEODAS Gridded Database Format GRD98</a>,
+part of the <a href="http://www.ngdc.noaa.gov/mgg/dat/geodas/docs/grd98.txt">GEODAS MGD-2000 Exchange Formats</a> package. 
+This format can later be opened in <b>GEODAS Software Application Grid Translator</b> and you can then create 
+new custom grids with different
+lat/lon bounds, cell size, number type, etc.  GRD98 grids can be viewed and edited in <b>GEODAS Application Hydro-Plot</b>.
+GRD98 grids can also be imported directly into <b>GMT (Generic Mapping Tool)</b>
+Version 4.  If you choose the <i>ASCII (Arc) Header</i>, the header will be in a separate file 
+with a file extention of <b>.hdr</b>. This combination (Binary Raster w/ Arc Header) can be opened in <b>GEODAS Hydro-Plot</b>.
+If you chose Floating Pt as your number type this combination can be <a href="#ARCGIS_GRDS">imported directly into ArcGIS</a>,
+and perhaps other GIS systems.
+
+<p><i>ASCII Raster Format:</i> A row by row series of space-delimited ASCII depth values.  Each row ends with an End-of-Line
+indicator. The EOL will be a Carriage-Return/Line-Feed (ASCII Decimal Character Codes 13 and 10) for <b>MS Windows</b> and 
+a New-Line (ASCII Decimal Character Code 10) for <b>UNIX</b> and <b>Macintosh</b>.  You <b>cannot</b> add a <i>GRD98 Header</i> 
+to this format. If you add <i>ASCII (Arc) Header</i>, the header will be attached to the beginning of the output file, and 
+this file can be <a href="#ARCGIS_GRDS">imported directly into ArcGIS</a> and perhaps other GIS systems, and can be viewed and 
+edited in <b>GEODAS Hydro-Plot</b>.</p>
+
+<p><i>XYZ (Delimited lon,lat,depth):</i> Each grid value will be a separate record containing a lon, a lat
+and a depth, the records being terminated by a record delimiter (Carriage-Return/Line-Feed for Windows or New-Line for UNIX
+and Macintosh). The longitude, latitude and depth values are separated by field delimiters (see below). XYZ files can be viewed and 
+edited in <b>GEODAS Hydro-Plot</b> and imported into various GIS systems. If you choose the <i>ASCII (Arc) Header</i>,
+the header will be in a separate file with 
+a file extention of <b>.hdr</b>.</p>
+
+<p><i>GRD98 Header:</i>  This is the header for creating binary raster
+<a href="http://www.ngdc.noaa.gov/mgg/dat/geodas/docs/grd98.txt">GEODAS Gridded Database Format GRD98</a> grids
+</p>
+
+<p><i>ASCII (ArcGIS) Header:</i>  An ASCII grid header in the format used by Arc Systems.  When used with the 
+<b>ASCII Raster Grid Format</b>, the header file is attached to the beginning of the grid file.  
+When used with <b>Binary Raster Format</b> and <b>XYZ Format</b> the  header will be in a separate file with 
+a file extention of <b>.hdr</b>.</p>
+
+<p><i>No Header:</i>  No grid header will be associated with the grid data file.  This is most often used with
+the <b>XYZ (Delimited lon,lat,depth)</b> Format.</p>
+
+<P><i>XYZ Delimiter:</i>
+For grid files of <i>Delimited lon,lat,depth</i> format only, choose <i>space, tab or comma</i> as
+the delimter to be inserted between the fields.</P>
+
+<p><i>Omit Empty Grid Cells:</i>
+For grid files of <i>XYZ (Delimited lon,lat,depth)</i> format you may include or omit the empty grid cell values in your output file.
+The default is to omit these values, which makes for easier importing into other applications.</p>
+
+<p><font color="#000080"><strong>Land/Sea Data Coverage - </strong></font>For US Coastal Relief Model only, 
+Choose to transfer <i>All Cells</i>, <i>Sea Cells Only</i>, 
+or <i>Land Cells Only</i> from the source Coastal Relief Model database.  Un-transferred
+cells will contain the <i>Empty Grid Cell Value</i>.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr>
+<hr>
+<p>&nbsp;</p>
+
+
+
+
+<h3><a name="ARCGIS_GRDS"></a>ArcView/ArcGIS Grids</h3>
+<p>You can use Grid Translator Design-a-Grid to create custom grids in an 
+ASCII or Binary grid format for input into ArcView® and ArcGIS®. 
+<b><font color="Maroon">But you must have Spatial Analyst and/or the 3-D Analyst extension(s) installed.</font></b>
+After creating and downloading your grid, follow these instructions:</p>
+<p><b><font color="#800000">Note:</font></b> When saving your GEODAS Custom Grids for use with Arc, 
+be sure NOT to save the grids in a folder which
+contains spaces.  This causes errors when importing.</p>
+<h3>For ArcGIS 8 ArcMap</h3>
+
+<ol>
+<li>Create your grid using <a href="http://www.ngdc.noaa.gov/mgg/gdas/gd_designagrid.html">GEODAS Grid Translator Design-a-Grid</a>, 
+choosing Output Grid Format as <i>Binary Raster</i> or <i>ASCII Raster</i>, with <i>ASCII (Arc) Header</i>. 
+(If you choose <i>Binary Raster</i> you must have also chosen <i>Floating Pt</i> as Number Type). 
+</li>
+
+<li>Open <b>ArcMap</b><br>
+<i>Start -> Programs -> ArcGIS -> ArcMap</i></li>
+
+<li>Enable 3D Analyst and/or GeoStatistical Analyst and/or Spacial Analyst <br>
+<i>Tools -> Extensions…</i><br></li>
+
+<li>Open <b>ArcToolbox</b><br>
+<i>Start -> Programs -> ArcGIS -> ArcToolbox</i><br></li>
+
+<li>In <b>ArcToolbox</b>:<br>
+<i>Conversion Tools -> Import to raster -> Ascii to Grid</i> <b>or</b> <i>Floating Point Data to Grid</i>
+(ASCII Raster or Binary Raster Format)<br>
+<i>Input File:</i> <b>grid file (.asc or .bin) created with GEODAS</b><br>
+<i>Grid Type (ASCII grids only):</i> <b>Integer</b> or <b>Float</b>: here this means ASCII whole numbers (precision meters)
+or ASCII decimal numbers (precision tenths of meters)<br>
+<i>Output Grid:</i> <b>Path/Name of Arc Grid</b> (this is a folder)<br>
+<i>OK:</i> create the Arc Grid files</li>
+
+<li>In <b>ArcToolbox</b>: Define Arc Grid Parameters<br>
+<i>Data Management Tools -> Projections -> Define Projection Wizard (coverage, grids, TINs)</i><br>
+<i>Define the coordinate system:</i> <b>Define the coordinate system interactively</b><br>
+<i>Dataset:</i> <b>Locate your Output Grid</b> (defined as folder above)<br>
+<i>Projection of your dataset:</i> <b>Geographic</b> (lat/lons)<br>
+<i>Geographic parameters - Units:</i> <b>DD</b> (decimal degrees)<br>
+<i>Datum:</i> <b>NAD 1983 (US-NADCON)</b> (Coastal Relief Model or Great Lakes) or <b>WGS 1984</b> (ETOPO2)<br>
+<i>Finish</i>
+</li>
+<li>Add the Grid to your ArcMap Document<br>
+<i>File -> Add Data...</i> <b>Locate your Output Grid</b> (defined as folder above)<br>
+</li>
+<li>You may now work with the grid in your ArcMap Document</li>
+</ol>
+
+<h3>For ArcView 3</h3>
+<ol>
+<li>Create your grid using <a href="http://www.ngdc.noaa.gov/mgg/gdas/gd_designagrid.html">GEODAS Grid Translator Design-a-Grid</a>, 
+choosing Output Grid Format as <i>ASCII Raster</i>, with <i>ASCII (Arc) Header</i>. 
+</li>
+<li>Open Arcview<br>
+When you open Arcview it asks if you want to add data to the view now. Answer NO</li>
+<li>Open Spatial Analyst or 3-D Analyst (File -&gt; Extensions…).</li>
+<li>If your grid is Integer (you chose Precision Whole Meters) skip to step 9.
+If your grid is floating point (Precision Tenths of Meters), in the project window double click
+on script from the list of icons on the left side.  A new window will open.</li>
+<li>In the script window type the following:<br>
+Number.SetDefFormat( "d.d" ) (<font color="#800000">Note: this is a global setting until you close ArcView.</font>)</li>
+<li>There should be a tool bar across the top of your screen, find the icon that looks like a big check-mark.  
+This is the compile icon, click it.</li>
+<li>Next to the compile icon is the run icon - click it.</li>
+<li>Close the script window</li>
+<li>Note: When defining a projection use <i>Geographic Projection</i> and <i>Decimal Degrees</i>. For horizontal
+datums Coastal Relief Model and Great Lakes Bathymetry are in <i>NAD83</i>, while ETOPO2 is in <i>WGS84</i>.</li>
+<li>In the view window:<br>
+Under file there is an option to import data source - click it</li>
+<li>You will be asked for data format, select ASCII raster;chose the file saved in step 1.</li>
+<li>Are data integers? - select YES if you chose Precision Whole Meters, select NO if you chose Precsion Tenths of Meters.</li>
+<li>Add grid as theme to view  - YES</li>
+<li><b>The grid should now be in ArcView.</b></li>
+</ol>
+
+<p>&nbsp;</p>
+<hr>
+<hr>
+
+<h3><a name="SOFTWARE"><font color="#000080"></font></a><font
+color="#000080">GEODAS Sofware</font></h3>
+<p>GEODAS Software can be used to access your grid data.   If you did not
+include the software when you downloaded your data, and do not have it installed on your computer from earlier 
+downloads or GEODAS CD/DVDs, or if you wish to find the latest version, go to 
+<a href="http://www.ngdc.noaa.gov/mgg/gdas/gx_announce.Html">http://www.ngdc.noaa.gov/mgg/gdas/gx_announce.Html</a>.
+GEODAS applications <b>Grid Translator</b>, <b>Hydro-Plot</b> (MS Windows and Linux-X86) and <b>Coastline Extractor</b>
+are included.  You may use <b>GEODAS Grid Translator</b> to open GRD98 formatted grids and create additional custom grids with
+different lat/lon bounds, cell size, cell parameters and output format.
+If you download the software, find the software and a readme.txt file in the setup folder of your uncompressed download.
+</p>
+<p>&nbsp;</p>
+<hr>
+<hr>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3><a name="RETRIEVE"></a><font color="#000080">Downloaded GEODAS Grid Files</font> </h3>
+<p>The following grid files may be downloaded to your local disk, either by compressing them together
+or downloading individual files: </p>
+<ul>
+  <li><b>[Grid Id].g98</b> Binary Raster GRD98 Grid File (includes GRD98 Header)</li>
+  <li><b>[Grid Id].asc</b> ASCII Raster Grid File (may include Arc Header)</li>
+  <li><b>[Grid Id].bin</b> Binary Raster Grid File (may include separate Arc Header file)</li>
+  <li><b>[Grid Id].xyz</b> Longitude,Latitude,Depth Grid File (may include separate Arc Header file)</li>
+  <li><b>[Grid Id].hdr</b> Arc style ASCII Header for use with Binary Raster or XYZ Grid Files</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr>
+<hr>
+<p>Please address questions or comments to <a
+href="mailto:dmetzger@ngdc.noaa.gov?subject=GEODAS On-Line"><em>dmetzger@ngdc.noaa.gov</em></a></p>
+
+<hr>
+
+<hr>
+</body>
+</html>

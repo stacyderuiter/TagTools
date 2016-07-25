@@ -1,0 +1,14 @@
+%cd e:\tag\data\sbnms04\mn189a
+clear all;close all;clc;
+%N=makecuetab('mn189a',7);
+%savecuetab('mn04_189a',N);
+tag = tagdataworkup(1); %make sure tagdataworkup is updated for correct tag
+loadprh(tag);
+[c,t,s,len,fs,id]=tagcue(0,tag);
+tots=t(4)*3600+t(5)*60+t(6); %tag on time (seconds)
+time = tots + ((1:length(p))./fs)'; %time in seconds
+time = time/(3600*24); %scale to percentage of day - for excel 
+fid = fopen(['d:\tag\data\mn07\TD Plots\' tag '_td.txt'],'w');
+fprintf(fid,'%4.8f %4.8f\r\n',[time'; depth']);
+fclose(fid);
+plot((1:length(p))./.5./3600,-p);grid;

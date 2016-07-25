@@ -1,0 +1,110 @@
+<DEV class="struct" size="1 1">
+<ID class="char" size="1 8">11032B1E</ID>
+<NAME class="char" size="1 4">D417</NAME>
+<BUILT class="double" size="1 3">2013 10 23</BUILT>
+<BUILDER class="char" size="1 2">mj</BUILDER>
+<VHF class="double" size="1 1">0</VHF>
+<HAS class="cell" size="1 4">
+<cell class="char" size="1 12">stereo#32;audio</cell>
+<cell class="char" size="1 2">hf</cell>
+<cell class="char" size="1 13">ecg#32;high#32;rate</cell>
+<cell class="char" size="1 9">ir#32;remote</cell>
+</HAS>
+<BADBLOCKS class="double" size="88 2">0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 4473 6200 341 433 471 1027 1159 1271 1949 2049 2051 2059 2111 2132 2163 2167 2271 2503 2551 2779 2855 3187 3634 3771 3787 4005 4183 4223 4251 4395 4396 4473 4507 4859 4923 4965 5022 5600 5701 5787 5813 6145 6146 6147 6149 6150 6151 6153 6155 6159 6161 6163 6165 6167 6169 6179 6197 6199 6201 6203 6217 6231 6234 6289 6327 6375 6399 6435 6507 6527 6567 6571 6587 6614 6902 6943 6946 7003 7082 7219 7238 7431 7463 7599 7671 8143 8175 783</BADBLOCKS>
+<CAL class="struct" size="1 1">
+<TEMPR class="struct" size="1 1">
+<TYPE class="char" size="1 14">ntc#32;thermistor</TYPE>
+<USE class="char" size="1 8">conv#95;ntc</USE>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+<METHOD class="char" size="1 4">none</METHOD>
+</TEMPR>
+<BATT class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</BATT>
+<PRESS class="struct" size="1 1">
+<POLY class="double" size="1 2">90.65 -6.62</POLY>
+<METHOD class="char" size="1 5">rough</METHOD>
+<LASTCAL class="double" size="0 0">
+</LASTCAL>
+<TREF class="double" size="1 1">20</TREF>
+<UNIT class="char" size="1 15">meters#32;H20#32;salt</UNIT>
+<TC class="struct" size="1 1">
+<POLY class="double" size="1 1">0</POLY>
+<SRC class="char" size="1 6">BRIDGE</SRC>
+</TC>
+<BRIDGE class="struct" size="1 1">
+<NEG class="struct" size="1 1">
+<POLY class="double" size="1 2">3 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</NEG>
+<POS class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</POS>
+<RSENSE class="double" size="1 1">200</RSENSE>
+<TEMPR class="struct" size="1 1">
+<POLY class="double" size="1 2">314 -634.7</POLY>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+</TEMPR>
+</BRIDGE>
+</PRESS>
+<ACC class="struct" size="1 1">
+<TYPE class="char" size="1 18">MEMS#32;accelerometer</TYPE>
+<POLY class="double" size="3 2">5.01 4.92 5 -2.46 -2.48 -2.53</POLY>
+<UNIT class="char" size="1 1">g</UNIT>
+<TREF class="double" size="1 1">20</TREF>
+<TC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">TEMPR</SRC>
+</TC>
+<PC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">PRESS</SRC>
+</PC>
+<XC class="double" size="3 3">0 0 0 0 0 0 0 0 0</XC>
+<MAP class="double" size="3 3">-1 0 0 0 1 0 0 0 1</MAP>
+<MAPRULE class="char" size="1 14">front#45;right#45;up</MAPRULE>
+<METHOD class="char" size="1 5">flips</METHOD>
+<LASTCAL class="double" size="1 3">2013 10 25</LASTCAL>
+</ACC>
+<MAG class="struct" size="1 1">
+<TYPE class="char" size="1 23">magnetoresistive#32;bridge</TYPE>
+<POLY class="double" size="3 2">976.6 976.6 976.6 159.9 217.3 119.9</POLY>
+<UNIT class="char" size="1 10">microTesla</UNIT>
+<TREF class="double" size="1 1">20</TREF>
+<TC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 6">BRIDGE</SRC>
+</TC>
+<PC class="struct" size="1 1">
+<POLY class="double" size="3 1">0 0 0</POLY>
+<SRC class="char" size="1 5">PRESS</SRC>
+</PC>
+<XC class="double" size="3 3">0 0 0 0 0 0 0 0 0</XC>
+<MAP class="double" size="3 3">0 1 0 1 0 0 0 0 1</MAP>
+<MAPRULE class="char" size="1 14">front#45;right#45;up</MAPRULE>
+<METHOD class="char" size="1 6">no#32;cal</METHOD>
+<LASTCAL class="double" size="1 3">0 0 0</LASTCAL>
+<BRIDGE class="struct" size="1 1">
+<NEG class="struct" size="1 1">
+<POLY class="double" size="1 2">3 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</NEG>
+<POS class="struct" size="1 1">
+<POLY class="double" size="1 2">6 0</POLY>
+<UNIT class="char" size="1 4">Volt</UNIT>
+</POS>
+<RSENSE class="double" size="1 1">20</RSENSE>
+<TEMPR class="struct" size="1 1">
+<POLY class="double" size="1 2">541.91 -459.24</POLY>
+<UNIT class="char" size="1 15">degrees#32;Celcius</UNIT>
+</TEMPR>
+</BRIDGE>
+</MAG>
+<ECG1 class="struct" size="1 1">
+<GAIN class="double" size="1 1">37.6</GAIN>
+<FREQ3dB class="double" size="1 2">1.5 4000</FREQ3dB>
+</ECG1>
+</CAL>
+</DEV>

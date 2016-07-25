@@ -1,0 +1,13 @@
+(savecal.m)
+- Modified lines that build up save expression to accomodate spaces in file path
+
+(makefname.m)
+- Modified lines 32-51 so that file name sub-extensions (e.g. RAW, CAL, etc..) are capitalized. This fixes capitalization consistency problems throughout the code where files are named with lower case sub-extensions but later referenced with capitalized sub-extensions (i.e. mn05_181araw.mat versus mn05_181aRAW.mat)
+
+(saveprh.m)
+- Removed parenthesis from save execution statement (MATLAB 7 doesn't seem to like this)
+
+(makeprhfile.m)
+- Changed 't' to 'tempr' in Line 27
+- Added fs as an input to the function call to tag2whale in Line 37. Without this input argument tag2whale just displays its help information. 
+

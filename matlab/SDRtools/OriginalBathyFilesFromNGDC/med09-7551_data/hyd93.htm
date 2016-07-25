@@ -1,0 +1,825 @@
+<HTML>
+<!-- LINK REL="StyleSheet" HREF="styles.css" MEDIA="" -->
+<HEAD>
+<TITLE>Hydrographic Surveys Data Exchange Format - HYD93</TITLE>
+</HEAD><BODY>
+<h3><a href="mgd2000.htm">MGD-2000 Formats</a>: HYD93</h3>
+
+<PRE>
+
+THE HYDROGRAPHIC SURVEYS DATA EXCHANGE FORMAT - "HYD93"
+
+   (Bathymetric Soundings and Hydrographic Features)
+
+
+NATIONAL GEOPHYSICAL DATA CENTER
+NATIONAL ENVIRONMENTAL SATELLITE, DATA, AND INFORMATION SERVICE
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+U.S. DEPARTMENT OF COMMERCE
+
+
+COMPILED BY THE HYD93 TASK GROUP
+Dan R. Metzger
+LT Todd H. Berggren
+LCOR Maureen Kenney
+LT Tom Niichel
+
+
+
+National Geophysical Data Center
+Boulder, Colorado
+December 1993 
+August   1998 - Revised by Dan Metzger
+   (made Y2K compliant)
+October 2000 - Revised by Dan Metzger
+   (Binary HYD93 records added)
+
+
+
+                                                         
+INTRODUCTION                    I
+
+GENERAL DESCRIPTION             II
+
+THE HEADER RECORD               III
+
+THE DATA RECORD                 IV
+
+THE DATA RECORD (Binary HYD93)  V
+
+CARTOGRAPHIC CODES              APPENDIX A
+
+HORIZONTAL DATUM CODES          APPENDIX B
+
+VERTICAL DATUM CODES            APPENDIX C
+
+NGDC CONTACTS                   APPENDIX D
+
+
+
+
+
+I.   INTRODUCTION
+
+     During 1993 the National Geophysical Data Center decided to
+integrate it's collection of National Ocean Service hydrographic 
+survey data into the already existing GEODAS (GEOphysical
+DAta System) data managment system.  In doing this NGDC created
+an exchange format for disseminating this data.  As can be
+seen below, the HYD93 format was patterned after the ever popular 
+MGD77 exchange format.  This allowed relatively easy assimilation
+of the data into the GEODAS system, and a standardized software 
+interface for the user.  
+
+
+
+
+
+II.   GENERAL DESCRIPTION
+
+
+     The digital format presented, and referred to as
+"HYD93", is an exchange format for hydrographic survey data
+(bathymetry soundings and hydrographic features)  It is intended 
+to be used for the transmission of data to and from a data center
+and may be useful for the exchange of data between marine 
+institutions.  Data is to be exchanged in files, two files per 
+survey operation (see below) or in the manner of organizing the data
+at the contributing institution.  Data may be exchanged on magnetic
+tape or on various mass storage devices such as tape or disks, or 
+over the Internet.  The National Geophysical Data Center uses CD-ROM
+disks as its chief method of distribution of these
+data.
+
+The HYD93 format was developed as an ASCII format for both the Header 
+Record and the Data Records, but the Data Records can also be in 
+binary form, called Binary HYD93. This format is a space-saving subset 
+of the data which may have some appeal for users. Binary HYD93 is the 
+format which is used to store the survey files on NGDC's hydrographic 
+survey CD-ROMs.
+
+
+
+A. Data Exchange
+
+     1. For exchange purposes each digital HYD93 survey shall consist 
+of a file containing the HYD93 Header (survey documentation) and a 
+file of HYD93 data records (soundings and features). If the media is 
+too small to contain all the data records a second data record file 
+may be continued on a second media.
+
+     2. A wide range of distribution methods are available.  Densities,
+        blocking, byte order, and computer formats must be explicitly
+        detailed.
+       
+       a. FTP (file transfer protocol) in ASCII or compressed form.
+       
+       b. Magnetic 8mm tape in UNIX tar format or ASCII format.
+       
+       c. Mass storage files on media such as floppy disks, 
+          CD-ROM Write-Once media , removable magnetic/optical
+          disks, etc.
+          
+
+
+
+
+III.                  THE HEADER RECORD
+
+
+     The purpose of the Header Record is to document both
+the content and structure of the hydrographic data contained
+within the data records.  In general, documentation that is
+constant throughout the survey will be in the Header Record,
+while documentation that is variable will be in the Data ReCords.
+
+     On mass storage media, the HYD93 Header consists of a file
+of 24 80-character sequential records.  For magnetic tapes the
+HYD93 Header is a file of one physical record (block) consisting
+of 1,920 characters. 
+
+     The Header Record contains fields which are both fixed
+and freely formatted.  All field lengths within the Header
+that have not been coded with information should be blank-
+filled, and all plain language statements should be left-
+justified.  The Header consists of a "sequence" of twenty-
+four 80-character images.
+
+
+Format Conventions for the Header Record:
+1. All decimal points are explicit characters in the Header
+
+2. Leading zeros and blanks are equivalent.
+
+3. Unknown or unused fields are to be blank filled.
+
+The following is a detailed description of the Header Record.  
+Fields can be of type integer, real or character.  Fields that 
+represent whole numbers are integers  Fields that contain a 
+decimal component are real, and fields that are alphanumeric 
+are character.
+
+
+
+            Length
+Character   of      
+Nos.        Field   Type       Description
+_____________________________________________________
+
+Sequence No. 1
+
+
+1           1       integer    RECORD TYPE - ("4")
+
+2-9         8       char       SURVEY IDENTIFIER 
+                               identifier supplied by the contributing
+                               organization, else given by NGDC in
+                               a manner which represents the data.
+                               Identical to that in data record.
+
+10-14       5       char       FORMAT ACRONYM - ("HYD93")
+
+15-22       8       integer    DATA CENTER FILE NUMBER 
+                               survey identifier bestowed by the data
+                               center.  First 2 chars indicate the
+                               source, first 4 indicate platform.
+
+27-31       5       char       PARAMETERS SURVEYED CODE
+                               if codepresent, parameter is contained in
+                               file.
+
+                               COL CODE  PARAMETER SURVEYED
+                                1    S   bathymetry soundings
+                                2    F   hydrographic features
+                                 
+
+32-39       8       integer    FILE CREATION DATE (YYYYMMDD)
+                               date data records were
+                               last altered.
+
+40-78      39       char       SOURCE INSTITUTION 
+                               organization which collected
+                               the data.  Include contributor
+                               if different from collector.
+
+79-80       2       integer    SEQUENCE NUMBER - ("01")
+
+
+Sequence No. 2
+
+
+1-18       18       char       COUNTRY
+
+19-39      21       char       PLATFORM NAME
+
+40          1       integer    PLATFORM TYPE CODE
+                               0 - Unspecified
+                               1 - Surface ship
+                               2 - Submersible ship
+                               3 - Aircraft
+                               4 - Buoy
+                               5 - Mobile land
+                               6 - Fixed land
+                               7 - Deep tow
+                               8 - Anchored seafloor
+                               9 - Other, specify
+                               
+41-46       6       char       PLATFORM TYPE 
+                               (e.g. "SHIP", "PLANE",
+                               "SUB", etc.)
+
+47-78      32       char       CHIEF HYDROGRAPHER(S)
+
+79-80       2       integer    SEQUENCE NUMBER - ("02")
+
+
+Sequence No. 3
+
+
+1-29       29       char       PROJECT
+                               (e.g. "OPR-K220-WH" or
+                               "Norton Sound Hydro Survey")
+
+30-58      29       char       TYPE OF SURVEY
+                               (e.g. "Basic Hydrographic Survey"
+                               or "Wire-drag field examination")
+
+59-62       4       integer    START YEAR OF SURVEY WORK
+
+63-66       4       integer    END YEAR OF SURVEY WORK
+
+67-78      12       char       SCALE OF SURVEY 
+                               if number is not a ratio,
+                               assume ratio of 1:number.
+                               (e.g. "1:20,000" or "250,000")
+
+79-80       2       integer    SEQUENCE NUMBER - ("03")
+
+
+Sequence No. 4
+
+
+1-26       26       char       AREA (GENERAL) OF SURVEY
+                               (e.g. "Gulf of Mexico")
+
+27-78      52       char       AREA (SPECIFIC) OF SURVEY
+                               (e.g. "Texas Continental 
+                               Shelf")
+
+79-80       2       integer    SEQUENCE NUMBER - ("04")
+
+
+Sequence No. 5
+
+
+1-42       42       char       QUALITY OF SURVEY DESCRIPTION
+                               (e.g. "Adequate, complete")
+
+43-78      36       char       PROCESSING STATUS DESCRIPTION
+                               (e.g. "Evaluated, inspected,
+                               approved")
+
+79-80       2       integer    SEQUENCE NUMBER - ("05")
+
+
+Sequence No. 6
+
+
+1-78       78       char       POSITION DETERMINATION 
+                               method of determining
+                               horizonta position.
+                               (e.g. NAVSTAR GPS System)
+
+79-80       2       integer    SEQUENCE NUMBER - ("06")
+
+
+Sequence No. 7
+
+
+1-5         5       char       HORIZONTAL DATUM CODE (RECORDS)
+                               (e.g. "NOS31") see Appendix B.
+
+6-39       34       char       HORIZONTAL DATUM OF RECORDS
+                               the horizontal datum of the records.
+                               (e.g. North American Datum 1983)
+
+40-44       5       char       HORIZONTAL DATUM CODE (ORIGINAL)
+                               (e.g., "NOS06") see Appendix B.
+
+45-78      34       char       ORIGINAL HORIZONTAL DATUM
+                               the horizontal datum originally used.
+                               (e.g. North American Datum 1927)
+
+79-80       2       integer    SEQUENCE NUMBER - ("07")
+
+
+Sequence No. 8
+
+
+1-2         2       integer    VERTICAL DATUM CODE
+                               (e.g. "04") see Appendix C.
+
+3-53       51       char       VERTICAL DATUM 
+                               (e.g. "Mean Lower Low Water")
+                               
+54-57       4       real       AVERAGE TIDE RANGE
+                               in meters for survey
+                               area. (e.g. "5.30")
+                               
+58-78      21       integer    ORIGINAL SOUNDING UNITS 
+                               (e.g. fathoms and feet)
+
+79-80       2       integer    SEQUENCE NUMBER - ("08")
+
+
+Sequence No. 9
+
+
+1-78       78       char       SOUNDING METHOD 
+                               (e.g. Digital Echo Sounder)
+
+79-80       2       integer    SEQUENCE NUMBER - ("09")
+
+
+Sequence No. 10
+
+
+1           1       integer    SOUND VELOCITY CORRECTION CODE
+                               0 - Undetermined
+                               1 - Corrected
+                               2 - Uncorrected, 1463 meters/sec
+                               3 - Uncorrected, 1500 meters/sec
+                               4 - Uncorrected, unknown vel.
+                               
+2-78       77       char       SOUND VELOCITY CORRECTION
+                               (e.g. Corrected, Carter's Tables)
+
+79-80       2       integer    SEQUENCE NUMBER - ("10")
+
+
+Sequence No. 11
+
+
+1-78       78       char       DATA PROCESSING METHODOLOGY
+                               (e.g. digitized smooth sheets)
+
+79-80       2       integer    SEQUENCE NUMBER - ("11")
+
+
+Sequence No. 12
+
+
+1-52       52       char       FORMAT OF DATA RECORDS 
+                               set to:
+                               SURV,LAT,LON,VAL,TYP,CCODE
+                               (A8,F9.6,F10.6,F6.1,I1,I3)
+                               
+
+53-58       6       real       TOP-MOST LATITUDE OF SURVEY
+                               to hundredth of degree 
+                               (e.g. +29.50)
+
+59-64       6       real       BOTTOM-MOST LATITUDE OF SURVEY
+                               to hundredth of degree 
+                               (e.g. +28.33)
+
+65-71       7       real       LEFT-MOST LONGITUDE OF SURVEY
+                               to hundredth of degree 
+                               (e.g. -101.67)
+
+72-78       7       real       RIGHT-MOST LONGITUDE OF SURVEY
+                               to hundredth of degree 
+                               (e.g. -099.50)
+                               
+                               
+79-80       2       integer    SEQUENCE NUMBER - ("12")
+
+
+Sequence Nos. 13-24
+
+
+1-78       78       char       ADDITIONAL DOCUMENTATION 
+                               other information concerning
+                               this survey.
+
+79-80       2       integer    SEQUENCE NUMBER
+                               ("13" through "24")
+
+
+
+
+________________________________________________________
+
+
+
+
+
+
+IV.                    THE DATA RECORD
+
+
+     Each data record presents a bathymetric sounding value or
+hydrographic feature value with corresponding position, value
+type, and cartographic code.
+
+Format Conventions:
+
+     1. All decimal points are implied (e.g. 1234 in 10ths of units means 123.4)
+     
+     2. Leading zeros and blanks are equivalent.
+     
+     3. Unknown or unused values are filled with 9's.
+
+     4. All Bathymetric Sounding (non-feature) data records include
+        a known depth value, a value type of 0 (actual depth) and a
+        cartographic code of 711 (Sounding in meters and tenths).
+        
+     5. Negative depth values indicate elevations.
+        
+     6. Hydrograpic Feature records with non-zero Value Type may
+        or may not have a known (non 9's) value.
+        
+     7. Hydrographic Feature which are "Line Features" do not include
+        depths. Instead the depth value fields are used for the sequence
+        numbers each record along the line feature (1...n).
+
+The following is a detailed description of the Data Record.  
+Fields can be of type integer, real or character.  Fields that represent 
+whole numbers are integers  Fields that contain a decimal component are 
+real (the decimal point is always implied), and fields that are alphanumeric 
+are character.
+
+           Length
+Character  of      
+Nos.       Field   Type        Description
+____________________________________________________________
+
+1-8         8       char       SURVEY IDENTIFIER
+                               identifier supplied by the contributing   
+                               organization, else given by NGDC in
+                               a manner which represents the data.
+                               Identical to that in header record.
+
+9-17        9       integer    LATITUDE X 1,000,000 
+                               +=North; -=South
+                               i.e. 1234567 = +1.234567 degrees
+  
+18-27      10       integer    LONGITUDE X 1,000,000 
+                               +=East; -=West
+                               i.e. -123456789 = -123.456789 degrees
+
+28-33       6       integer    DEPTH VALUE x 10 IN METERS
+                               (or Line Feature sequence number)
+                               i.e. 1234 = 123.4 meters
+
+34          1       integer    VALUE TYPE CODE 
+                               defines depth type
+                               0 - Known depth (or elevation)
+                               1 - Submerged (below water level)
+                               2 - Awash (about water level)
+                               3 - Visible (above water level)
+
+35-37       3       integer    CARTOGRAPHIC CODE
+                               3 character code
+                               describing the type of record, as
+                               defined by the National Ocean Service.
+                               see Appendix A.
+                                       
+                               
+
+
+
+
+
+
+IV.                    THE DATA RECORD (Binary HYD93)
+
+HYD93 Binary Format is a binary representation of the HYD93 data record.
+It is the format in which files are stored on NGDC's hydrographic 
+survey CD-ROM sets.  The fields included in this format are binary 
+representations of some of the fields in the HYD93 ASCII data record.
+
+Each data record presents a bathymetric sounding value or hydrographic 
+feature value with corresponding position, value type, and cartographic 
+code.  The survey id, which occurs in the ASCII HYD93 data record, is 
+absent in HYD93 Binary Records
+
+Format Conventions for the Binary Data Record:
+
+     1. Unknown or unused fields have a value of 9's:
+        unknown depth = 999999
+        unknown type/carto-code = 9999
+
+     2. All Bathymetric Sounding (non-feature) data records include
+        a known depth value, a value type of 0 (actual depth) and a
+        cartographic code of 711 (Sounding in meters and tenths).
+        
+     3. Negative depth values indicate elevations.
+        
+     4. Hydrograpic Feature records with non-zero Type may
+        or may not have a known (non 9's) value.
+
+     5. Hydrographic Feature which are "Line Features" do not include
+        depths. Instead the depth value fields are used for the sequence
+        numbers each record along the line feature (1...n).
+
+
+
+Field Name              Number Type      Description        
+____________________________________________________________
+
+LATITUDE X 1,000,000    4 Byte Integer   Latitude in millionths of degrees
+                                         +=North; -=South   
+
+LONGITUDE X 1,000,000   4 Byte Integer   Longitude in millionths of degrees 
+                                         +=East; -=West
+  
+DEPTH VALUE X 10        4 Byte Integer   Depth in tenths of meters
+                                         (or Line Feature sequence number)
+TYPE/CARTO CODE         2 Byte Integer   type-code * 1000 + carto-code*
+
+
+*type/carto code combines the type code field with the carto code field by 
+multiplying the type times 1000 and adding the carto code. e.g. a type code 
+of 3 and a carto-code of 123 computes to a TYPE/CARTO CODE value of 3124.
+                                       
+                               
+____________________________________________________________
+
+
+APPENDIX A      CARTOGRAPHIC CODES
+
+002 Shoal/Shallow (area limits)
+009 Reef or Ledge, submerged (area limits)
+010 Dolphin (visible)
+011 Breakers (area limits)
+014 Marsh (area limits)
+016 Pier, floating
+017 Lava (area limits)
+025 Levee, Dike (double line)
+026 Breakwater, jetty (submerged)
+027 Breakwater/Jetty
+029 Breakwater, jetty (area limits)
+030 Pier
+031 Groin
+038 Wharf, bulkhead, seawall, etc
+039 Marine Railway
+040 Drydock
+041 Floating Drydock
+042 Marine Railway (subm. offshore limits)
+043 Lock
+044 Wreck, hulk (visible, to scale)
+055 Ramp
+056 Well, oil or gas (submerged)
+057 Bridge (configuration)
+058 Canal (double line)
+059 Bridge (symbol, single line)
+060 Danger (submerged, area limits)
+065 Dam
+085 Obstruction (visible)
+089 Rock or coral head (submerged or awash)
+090 Wreck (Wire drag clearence)
+091 Rock (wire drag clearance)
+092 Obstruction (wire drag clearance
+094 Rock (no elevation)
+095 Coral (wire drag clearance)
+097 Islet (symbol)
+098 Wreck (visible)
+099 Wreck, masts visible
+100 Wreck (submerged)
+101 Sounding on wreck (whole feet)
+103 Kelp
+104 Rock (no depth)
+105 Pipe (visible)
+106 Stake (visible)
+107 Ruins (submerged, area limits)
+108 Crib (submerged, area limits)
+109 Crib (visible, area limits)
+110 Pile (visible)
+111 Platform - oil or gas
+112 Sand waves (line feature)
+121 Fish trap
+124 Buoy, vertically striped, lighted
+139 Lighthouse
+146 Tide rips (label)
+147 Pipeline, oil or haz. material (subm.)
+165 Rock or Coral Head (visible)
+182 Buoy, horizontal banded, lighted
+200 Structure, lighted (including lighthouses)
+208 Light, front range
+209 Light, rear range
+211 Buoy, diagonally banded, lighted
+212 Buoy, open (symbol)
+214 Buoy, vertical striped
+215 Buoy, mooring
+216 Buoy, horizontal banded
+217 Buoy, diagonally banded
+218 Buoy, checkered
+219 Daybeacon, black
+223 Daybeacon, open
+224 Daybeacon, red
+228 Groin (submerged)
+229 Marker, private (lighted)
+230 Stump
+231 Snag (visible)
+232 Deadhead
+233 Dolphin (submerged)
+234 Pile (submerged)
+235 Pipe (submerged)
+236 Stake (submerged)
+237 Stump (submerged)
+238 Snag (submerged)
+239 Shoal (wire drag clearance)
+241 Crib (symbol)
+243 Hydrographic Station
+248 Platform (survey)
+249 Platform (oil or gas) lighted
+255 Buoy, red
+256 Buoy, black
+257 Buoy, red, lighted
+258 Buoy, black, lighted
+259 Buoy, Open symbol, lighted
+260 Ruins (config. or area limits)
+261 Marker (privately maintained)
+278 Dolphin (awash)
+279 Pile (awash)
+280 Pipe (awash)
+281 Stake (awash)
+282 Stump (awash)
+283 Snag (awash)
+284 Obstruction (awash)
+285 Ruins (awash, area limits)
+286 Crib (awash, symbol)
+287 Obstruction (submerged)
+290 Sounding, on rock, whole feet
+291 Rock with elevation
+438 Fish trap perimiter (area limits)
+472 Buoy, checkered, lighted
+477 Wreckage (area limits)
+480 Anchorage (large vessels)
+481 Buoy, green
+482 Buoy, green, lighted
+498 Buoy, mooring, lighted
+530 Ledge or Reef (line feature)
+535 Rapids, label only
+536 Eddies
+537 Shoal (label)
+538 Foul (label)
+539 Breakers (label)
+548 Rocky
+550 Bottom Sample
+562 Coralhead
+568 Boulders
+591 Oysters
+593 Sponge
+594 Seaweed
+599 Kelp (Label only)
+702 Anchorage (small vessels)
+711 SOUNDING (METERS AND TENTHS)
+767 Daybeacon, green
+787 Buoy, superbuoy, lighted
+801 Pipeline, sewer outfall
+802 Ramp (to scale)
+803 Pipeline, potable water intake
+865 Levee, dike
+869 Living resources, oyster bed/bar (line feature)
+871 Kelp (line feature)
+872 Grass (line feature)
+877 Glacier (area limits)
+883 Piles (visible, row or config)
+884 Ruins (visible, symbol)
+885 Duck blind (visible)
+886 Duck blind ruins (visible)
+889 Oil, gas well (visible)
+890 Crib (submerged, symbol)
+891 Ruins (submerged, symbol)
+892 Crib (awash, area limits)
+893 Ruins (awash, symbol)
+894 Foul (area limits)
+906 Daybeacon, front range
+907 Daybeacon, rear range
+923 Piles (submerged, row or config)  
+925 Piles (awash, row or config)         
+926 Piles (visible, area limits)
+927 Piles (submerged, area limits)
+930 Piles (awash, area limits)
+947 Articulated light
+957 Rock - Side scan sonar depth
+961 Wreck - Side scan sonar depth
+967 Obstruction - Side scan sonar depth
+988 Islet
+____________________________________________________________
+
+
+APPENDIX B      HORIZONTAL DATUM CODES
+
+ NATIONAL OCEAN SERVICE CODES
+
+ NOS01 - Bessel Spheroid 1841-80
+ NOS02 - Clarke Spheroid of 1866
+ NOS03 - Astronomic Datum (General)
+ NOS04 - United States Standard Datum 1901
+ NOS05 - North American Datum 1913
+ NOS06 - North American Datum 1927
+ NOS07 - Old Hawaiian Datum
+ NOS08 - Kauai Datum
+ NOS09 - Lisanski 1931 (Field)
+ NOS10 - Laysan 1930 (Field)
+ NOS11 - Gardners Pinnacles 1929 (Field)
+ NOS12 - French Frigate Shoal 1928 (Field)
+ NOS13 - Necker 1928 Datum
+ NOS14 - Nihoa 1928 Datum
+ NOS15 - Vigan Datum
+ NOS16 - Luzon Datum 1911
+ NOS17 - San Juan Astro Datum 1901
+ NOS18 - Puerto Rico Datum
+ NOS19 - Limon Bay - Colon 1877
+ NOS20 - Panama Harbor Panama Cathedrl 1877
+ NOS21 - Panama - Colon Datum 1911
+ NOS22 - Valdez Datum
+ NOS23 - Unalaska Datum
+ NOS24 - Southeast Alaska Datum
+ NOS25 - Aleutian Islands Datum
+ NOS26 - Nushagak Bay Datum
+ NOS27 - Cape Newenham Datum
+ NOS28 - Norton Sound Datum
+ NOS29 - Port Clarence and Pribilof Islands
+ NOS30 - North American Datum of 1902
+ NOS31 - North American Datum of 1983
+ NOS32 - Guam 1963 Datum
+ NOS33 - World Geodetic System (WGS) 1972
+ NOS34 - World Geodetic System (WGS) 1984
+ NOS35 - Johnston Island 1961 Astro Datum
+ NOS36 - Maro Reef Astro Datum 1930 (Field)
+ NOS37 - Bosun Astronomic Datum 1941 Field
+ NOS38 - Preliminary North American 1927
+ NOS39 - Palmyra Atoll - Astro Datum 1944
+ MGGHA - Early Hawaiian Island Datums
+ MGGPR - Early Puerto Rico Island Datums
+ MGGSL - Early St. Laurence Island Datums
+ MGGSG - Early St. George Island Datums
+ MGGSP - Early St. Paul Island Datums
+ MGGAL - Early Alaska Datums
+ NOSXX - Undetermined Datum
+ 
+
+____________________________________________________________
+
+
+APPENDIX C      VERTICAL DATUM CODES
+
+ 00 - Undetermined vertical datum
+ 01 - Mean Sea Level
+ 02 - Mean Low Water
+ 03 - Mean Low Water Springs
+ 04 - Mean Lower Low Water
+ 05 - Mean Lower Water Springs
+ 06 - Lowest Normal Low Water
+ 07 - Lowest Low Water
+ 08 - Indian Spring Low Water
+ 09 - Great Lakes Low Water
+ 10 - Low Lake Level - Lake Champlain
+ 11 - Normal Pool Level - Cayuga & Seneca Lakes
+ 12 - Hudson River Datum
+ 13 - Normal Lake Level - Franklin D. Roosevelt Lake
+ 14 - Sacramento River - Sacramento to Old Ferry
+ 15 - Columbia River Datum
+ 16 - Local Low Water
+ 17 - Gulf Coast Low Water
+ 18 - Low Water Datum 600.0 ft IGLD-1955 Lake Superior
+ 19 - Low Water Datum 576.8 ft IGLD-1955 L Michigan,Huron
+ 20 - Low Water Datum 571.7 ft IGLD-1955 Lake St. Clair
+ 21 - Low Water Datum 568.6 ft IGLD-1955 Lake Erie
+ 22 - Low Water Datum 242.8 ft IGLD-1955 Lake Ontario
+ 23 - Mystic River Datum
+ 24 - Mean High Water
+ 25 - Low Water Datum 601.1 ft IGLD-1985 Lake Superior
+ 26 - Low Water Datum 577.5 ft IGLD-1985 L Michigan,Huron
+ 27 - Low Water Datum 572.3 ft IGLD-1985 Lake St. Clair
+ 28 - Low Water Datum 569.2 ft IGLD-1985 Lake Erie
+ 29 - Low Water Datum 243.3 ft IGLD-1985 Lake Ontario
+                             
+____________________________________________________________
+
+
+
+
+APPENDIX D       NGDC CONTACTS
+
+
+Dan R. Metzger: (303) 497-6542  Dan.R.Metzger@noaa.gov
+     or
+John G. Campagnoli : (303) 497-3158  John.G.Campagnoli@noaa.gov
+
+National Geophysical Data Center
+NOAA, E/GC3
+325 Broadway
+Boulder, CO 80303-3328
+
+TELEX 592811 NOAA MASC BDR
+FAX (303) 497-6513
+
+____________________________________________________________
+</PRE>
+</BODY>
+</HTML>
