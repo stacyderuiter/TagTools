@@ -1,3 +1,0 @@
-%settagpath('audio','e:/tag/course/data','cal','e:/tag/course/data/cal', 'raw','e:/tag/course/data/raw','prh','e:/tag/course/data/prh');
-settagpath('audio','E:\BRS08_Data\tag\data','cal','E:\BRS08_Data\tag\data\cal', 'raw','E:\BRS08_Data\tag\data\raw','prh','E:\BRS08_Data\tag\data\prh');
-% settagpath('audio','G:\BRS_07\tag\data','cal','G:\BRS_07\tag\data\cal', 'raw','G:\BRS_07\tag\data\raw','prh','G:\BRS_07\tag\data\prh');
