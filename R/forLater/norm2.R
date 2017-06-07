@@ -3,7 +3,7 @@
 #Note that we made no effort to vectorize or use apply...just changed matlab to R code keeping the same general structure.
 #DAS and YJO, June 2017
 
-#function     v=norm2(X)
+#function     v = norm2(X)
 
 #    Returns the row-wise 2-norm of matrix X, i.e., the square-root
 #		 of the sum of the squares for each row. If X is a vector, norm2()
