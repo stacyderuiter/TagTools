@@ -21,7 +21,7 @@
 #    (row or column), v is the vector norm.
 
 #    Example:
-#    sampleMatrix = matrix(c(0.2, 0.4, -0.7,-0.3, 1.1, 0.1) byrow = TRUE, nrow = 2, ncol = 3)
+#    sampleMatrix = matrix(c(0.2, 0.4, -0.7,-0.3, 1.1, 0.1), byrow = TRUE, nrow = 2, ncol = 3)
 #    v = norm2(sampleMatrix)
 #    returns: v = c(0.83066, 1.14455)
 
@@ -37,5 +37,4 @@ norm2 <- function(X){
   else{
     v <- sqrt(rowSums(abs(X)^2))
   }
-  v
 }
