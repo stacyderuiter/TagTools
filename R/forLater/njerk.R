@@ -26,12 +26,12 @@
 #		 Example:
 #		 sampleMatrix = matrix(c(1, 2, 3, 2, 2, 4, 1, -2, 4, 4, 4, 4), byrow = TRUE, nrow = 4, ncol = 3)
 #    njerk(sampleMatrix, 5)
-#		 result is: matrix(c(7.0711, 20.6155, 33.541, 0), 4, 1)
+#		 result is: c(7.0711, 20.6155, 33.541, 0)
 
 #  Valid: Matlab, Octave
 #  markjohnson@st-andrews.ac.uk
 #  Last modified: 15 aug 2012
 
 njerk <- function(A,fs){
-  j <- matrix(c(fs*sqrt(rowSums(diff(A)^2)),0), dim(A)[1], 1)
+  j <- c(fs*sqrt(rowSums(diff(A)^2)),0)
 }
