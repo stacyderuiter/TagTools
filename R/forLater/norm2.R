@@ -21,8 +21,9 @@
 #    (row or column), v is the vector norm.
 
 #    Example:
-#    v = norm2([0.2 0.4 -0.7;-0.3 1.1 0.1])
-#    returns: v=[0.83066;1.14455]
+#    sampleMatrix = matrix(c(0.2, 0.4, -0.7,-0.3, 1.1, 0.1) byrow = TRUE, nrow = 2, ncol = 3)
+#    v = norm2(sampleMatrix)
+#    returns: v = c(0.83066, 1.14455)
 
 #  Valid: Matlab, Octave
 #  markjohnson@st-andrews.ac.uk
