@@ -34,7 +34,7 @@
 
 smooth <- function(x, n) {
   y <- vector(mode = "numeric", length = 0)
-  if nargs() < 2 {
+  if (nargs() < 2) {
     help(smooth)
   }
   nf <- 6 * n
