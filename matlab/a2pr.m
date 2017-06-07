@@ -53,7 +53,6 @@ end
 if nargin==2,
 	A = fir_nodelay(A,round(8/fc),fc) ;
 end
-	
 v = sqrt(sum(A.^2,2)) ;
 
 % compute pitch and roll
