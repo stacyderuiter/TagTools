@@ -33,5 +33,5 @@
 #  Last modified: 15 aug 2012
 
 njerk <- function(A,fs){
-  j <- matrix(c(fs*sqrt(rowSums(diff(A)^2)),0), dim(A)[1], 1)
+  j <- c(fs*sqrt(rowSums(diff(A)^2)),0)
 }
