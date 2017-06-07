@@ -26,7 +26,7 @@
 #		 Example:
 #		 sampleMatrix = matrix(c(1, 2, 3, 2, 2, 4, 1, -2, 4, 4, 4, 4), byrow = TRUE, nrow = 4, ncol = 3)
 #    njerk(sampleMatrix, 5)
-#		 result is: matrix(c(7.0711, 20.6155, 33.541, 0), 4, 1)
+#		 result is: c(7.0711, 20.6155, 33.541, 0)
 
 #  Valid: Matlab, Octave
 #  markjohnson@st-andrews.ac.uk
