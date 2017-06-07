@@ -64,12 +64,11 @@ bodyaxes <- function(A, M, fc) {
   if (size(A, 1) != size(M, 1)) {
     print(sprintf('bodyaxes: A and M must have same number of rows \ n'))
   }
-  if is.null(fc) {
-    fc <- .2
-  }
-  if (nargs() == 3 & size(A, 1) > (8 / fc)) {
-    M <- fir_nodelay(M, round(8 / fc), fc)
-    A <- fir_nodelay(A, round(8 / fc), fc)
+  if (!missing(fc)) {
+    if (nargs() == 3 & size(A, 1) > (8 / fc)) {
+      M <- fir_nodelay(M, round(8 / fc), fc)
+      A <- fir_nodelay(A, round(8 / fc), fc)
+    }
   }
   b <- sqrt(rowSums(M^2))
   g <- sqrt(rowSums(A^2))
@@ -85,9 +84,13 @@ bodyaxes <- function(A, M, fc) {
   Mh <- Mh * repmat(v^(-1), 1, 3) 
   require(RSEIS)  #forxprod() function
   #for FRU axes
-  N <- (-xprod(Mh, A, 2))
+  N = zeros(dim(Mh)[1], dim(Mh)[2])
+  for(i in 1:dim(N)[1]) {
+    N[i, ] <- c(Mh[i,2] * A[i, 3]  -   Mh[i,3] * A[i, 2],     Mh[i,3]*A[i,1]   -   Mh[i,1]*A[i,3],     Mh[i,1]*A[i,2]   - Mh[i,2]*A[i,1])*-1
+  }
   W <- zeros(3, 3, size(A, 1))
-  W[1,,] <- t(M)
+  W[1,,] <- t(Mh)
   W[2,,] <- t(N)
   W[3,,] <- t(A)
+  return(W)
 }
