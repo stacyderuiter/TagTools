@@ -51,36 +51,28 @@ speclev <- function(x,nfft,fs,w,nov) {
     }
   }
   if (length(w) == 1) {
-    require(e1071) #for hanning.window() function
-    w <- e1071::hanning.window(w)
+    require(signal) #for hanning() function
+    w <- signal::hanning(w)
   }
-  require(matlab) #for zeros() and size() functions
+  require(matlab) #for zeros() and size()  and repmat() functions
   P = matlab::zeros(nfft / 2, ncol(x))
-  for k <- 1 : ncol(x) {
-    list(X = X, z = z) = buffer(x(:, k), length(w), nov, 'nodelay')
+  for k in 1 : ncol(x) {
+    list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     #####################????buffer()
+    require(pracma) #for detrend() function
+    X <- detrend(X) * repmat(w, 1, ncol(X))
+    require(stats) #for fft() function
+    F <- abs(fft(X[1: nfft]))^2
+    P[, k] <- rowSums(F[1: (nfft/2),])
   }
+  ndt <- ncol(X)
+  #these two lines give correct output for randn input
+  #SL of randn should be -10*log10(fs/2)
+  slc <- 3 - 10 * log10(fs / nfft) - 10 * log10(sum(w^2) / nfft)
+  #3 is to go from a double-sided spectrum to a single-sided (positive frequecy) spectrum.
+  #fs/nfft is to go from power per bin to power per Hz
+  #sum(w.^2)/nfft corrects for the window
+  SL <- 10 * log10(P) - 10 * log10(ndt) - 20 * log10(nfft) + slc
+  #10*log10(ndt) corrects for the number of spectra summed in P (i.e., turns the sum into a mean)
+  #20*log10(nfft) corrects the nfft scaling in matlab's fft
+  f <- (c(0: nfft) / 2 - 1) / nfft * fs
 }
-                                     [X,z] = buffer(x(:,k),length(w),nov,'nodelay') ;
-                                     X = detrend(X).*repmat(w,1,size(X,2)) ;
-                                     F = abs(fft(X,nfft)).^2 ;
-                                     P(:,k) = sum(F(1:nfft/2,:),2) ;
-                                     end
-                                     
-                                     ndt = size(X,2) ;
-                                     
-                                     % these two lines give correct output for randn input
-                                     % SL of randn should be -10*log10(fs/2)
-                                     
-                                     slc = 3-10*log10(fs/nfft)-10*log10(sum(w.^2)/nfft) ;
-                                     
-                                     % 3 is to go from a double-sided spectrum to a single-sided (positive frequecy) spectrum.
-                                     % fs/nfft is to go from power per bin to power per Hz
-                                     % sum(w.^2)/nfft corrects for the window
-                                     
-                                     SL = 10*log10(P)-10*log10(ndt)-20*log10(nfft)+slc ;
-                                     
-                                     % 10*log10(ndt) corrects for the number of spectra summed in P (i.e., turns the sum into a mean)
-                                     % 20*log10(nfft) corrects the nfft scaling in matlab's fft
-                                     
-                                     f = (0:nfft/2-1)/nfft*fs ;
-                                     
