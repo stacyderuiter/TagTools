@@ -32,6 +32,6 @@
 #  markjohnson@st-andrews.ac.uk
 #  Last modified: 15 aug 2012
 
-njerk <- function(A,fs){
+njerk <- function(A,fs) {
   j <- c(fs*sqrt(rowSums(diff(A)^2)),0)
 }

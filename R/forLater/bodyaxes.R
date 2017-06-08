@@ -51,21 +51,21 @@
 #  Last modified: 10 May 2017
 
 bodyaxes <- function(A, M, fc) {
-  if (nargs() <2) {
+  if (missing(M)) {
     help(bodyaxes)
   }
-  require(matlab) #for size(), repmat(), and zeros() functions
-  if (size(M, 1) * size(M, 2) == 3) {
+  require(matlab) #for repmat(), and zeros() functions
+  if (nrow(M) * ncol(M) == 3) {
     M <- t(M)
   }
-  if (size(A, 1) * size(A,2) == 3) {
+  if (nrow(A) * ncol(A) == 3) {
     A <- t(A)
   }
-  if (size(A, 1) != size(M, 1)) {
+  if (nrow(A) != nrow(M)) {
     print(sprintf('bodyaxes: A and M must have same number of rows \ n'))
   }
   if (!missing(fc)) {
-    if (nargs() == 3 & size(A, 1) > (8 / fc)) {
+    if (nargs() == 3 & nrow(A) > (8 / fc)) {
       M <- fir_nodelay(M, round(8 / fc), fc)
       A <- fir_nodelay(A, round(8 / fc), fc)
     }
@@ -81,14 +81,13 @@ bodyaxes <- function(A, M, fc) {
   Mh <- (M + repmat(sin(I), 1, 3) * A) * repmat(cos(I)^(-1), 1, 3)
   v <- sqrt(rowSums(Mh^2))
   #normalize Mh
-  Mh <- Mh * repmat(v^(-1), 1, 3) 
-  require(RSEIS)  #forxprod() function
+  Mh <- Mh * repmat(v^(-1), 1, 3)
   #for FRU axes
-  N = zeros(dim(Mh)[1], dim(Mh)[2])
+  N = matlab::zeros(dim(Mh)[1], dim(Mh)[2])
   for(i in 1:dim(N)[1]) {
-    N[i, ] <- c(Mh[i,2] * A[i, 3]  -   Mh[i,3] * A[i, 2],     Mh[i,3]*A[i,1]   -   Mh[i,1]*A[i,3],     Mh[i,1]*A[i,2]   - Mh[i,2]*A[i,1])*-1
+    N[i, ] <- c(Mh[i,2] * A[i, 3] - Mh[i, 3] * A[i, 2], Mh[i, 3] * A[i, 1] - Mh[i, 1] * A[i, 3], Mh[i, 1] * A[i, 2] - Mh[i, 2] * A[i, 1]) * -1
   }
-  W <- zeros(3, 3, size(A, 1))
+  W <- matlab::zeros(3, 3, size(A, 1))
   W[1,,] <- t(Mh)
   W[2,,] <- t(N)
   W[3,,] <- t(A)

@@ -20,7 +20,7 @@
 
 #		Example:
 #     make a waveform with two harmonics - one at 1/20 and another at 1/4 of the sampling rate.
-#		   x = sin(2*pi*0.05*(1:100)')+cos(2*pi*0.25*(1:100)');
+#		   x = sin(2* pi * 0.05 * t(c(1: 100)))+cos(2 * pi * 0.25 * t(c(1:100));
 #		   y = smooth(x,4);
 #		   plot([x,y])
    
@@ -34,7 +34,7 @@
 
 smooth <- function(x, n) {
   y <- vector(mode = "numeric", length = 0)
-  if (nargs() < 2) {
+  if (missing(n)) {
     help(smooth)
   }
   nf <- 6 * n
