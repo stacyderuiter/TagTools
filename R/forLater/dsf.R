@@ -52,13 +52,13 @@
 #  markjohnson@st-andrews.ac.uk
 #  Last modified: 10 May 2017
 
-dsf <- function(A,fs,fc,Nfft) {
+dsf <- function(A,fs,fc = NULL,Nfft) {
   #default low-pass filter at 2.5 Hz
-  if (nargs() < 3) {
+  if (is.null(fc)) {
     fc <- 2.5
   }
   #default FFT length
-  if (nargs() < 4) {
+  if (missing(Nfft)) {
     Nfft <- round(20 * fs)
   }
   PCNT <- 20
