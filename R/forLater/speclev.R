@@ -33,7 +33,7 @@
 
 #   markjohnson@st-andrews.ac.uk, 2013
  
-speclev <- function(x,nfft,fs,w,nov) {
+speclev <- function(x, nfft, fs, w, nov) {
   if (missing(nfft)) {
     nfft <- 512
   }
@@ -56,14 +56,15 @@ speclev <- function(x,nfft,fs,w,nov) {
   }
   require(matlab) #for zeros() and size()  and repmat() functions
   P = matlab::zeros(nfft / 2, ncol(x))
-  for k in 1 : ncol(x) {
-    list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     #####################????buffer()
-    require(pracma) #for detrend() function
-    X <- detrend(X) * repmat(w, 1, ncol(X))
+  for k in 1:ncol(x) {
     require(stats) #for fft() function
-    F <- abs(fft(X[1: nfft]))^2
-    P[, k] <- rowSums(F[1: (nfft/2),])
-  }
+    require(pracma) #for detrend() function
+    F <- rollapply(data = x[, k], width = length(w), by = nov, FUN = abs(fft((detrend(X) * repmat(w, 1, ncol(X)))[1 : nfft]))^2, by.column = TRUE, )
+    #list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     #####################????buffer()
+    #X <- detrend(X) * repmat(w, 1, ncol(X))
+    #F <- abs(fft(X[1 : nfft]))^2
+    P[, k] <- rowSums(F[1 : (nfft/2),])
+  } 
   ndt <- ncol(X)
   #these two lines give correct output for randn input
   #SL of randn should be -10*log10(fs/2)
@@ -74,5 +75,5 @@ speclev <- function(x,nfft,fs,w,nov) {
   SL <- 10 * log10(P) - 10 * log10(ndt) - 20 * log10(nfft) + slc
   #10*log10(ndt) corrects for the number of spectra summed in P (i.e., turns the sum into a mean)
   #20*log10(nfft) corrects the nfft scaling in matlab's fft
-  f <- (c(0: nfft) / 2 - 1) / nfft * fs
+  f <- (c(0 : nfft) / 2 - 1) / nfft * fs
 }
