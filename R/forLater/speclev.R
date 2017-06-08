@@ -34,16 +34,16 @@
 #   markjohnson@st-andrews.ac.uk, 2013
  
 speclev <- function(x,nfft,fs,w,nov) {
-  if (nargs() < 2 | missing(nfft)) {
+  if (missing(nfft)) {
     nfft <- 512
   }
-  if (nargs() < 3 | missing(fs)) {
+  if (missing(fs)) {
     fs <- 1
   }
-  if (nargs() < 4 | missing(w)) {
+  if (missing(w)) {
     w <- nfft
   }
-  if (nargs() <5) {
+  if (missing(nov)) {
     if (length(w) == 1) {
       nov <- round(w / 2)
     } else {
