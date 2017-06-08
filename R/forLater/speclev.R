@@ -51,16 +51,15 @@ speclev <- function(x,nfft,fs,w,nov) {
     }
   }
   if (length(w) == 1) {
-    w <- 
+    require(e1071) #for hanning.window() function
+    w <- e1071::hanning.window(w)
+  }
+  require(matlab) #for zeros() and size() functions
+  P = matlab::zeros(nfft / 2, ncol(x))
+  for k <- 1 : ncol(x) {
+    list(X = X, z = z) = buffer(x(:, k), length(w), nov, 'nodelay')
   }
 }
-
-                                     if length(w)==1,
-                                     w = hanning(w) ;
-                                     end
-                                     
-                                     P = zeros(nfft/2,size(x,2)) ;
-                                     for k=1:size(x,2),
                                      [X,z] = buffer(x(:,k),length(w),nov,'nodelay') ;
                                      X = detrend(X).*repmat(w,1,size(X,2)) ;
                                      F = abs(fft(X,nfft)).^2 ;
