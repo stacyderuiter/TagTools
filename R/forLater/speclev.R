@@ -56,10 +56,10 @@ speclev <- function(x, nfft, fs, w, nov) {
   }
   require(matlab) #for zeros() and size()  and repmat() functions
   P = matlab::zeros(nfft / 2, ncol(x))
-  for k in 1:ncol(x) {
+  for (k in 1:ncol(x)) {
     require(stats) #for fft() function
     require(pracma) #for detrend() function
-    F <- rollapply(data = x[, k], width = length(w), by = nov, FUN = abs(fft((detrend(X) * repmat(w, 1, ncol(X)))[1 : nfft]))^2, by.column = TRUE, )
+    F <- rollapply(data = x[, k], width = length(w), by = nov, FUN = abs(fft((detrend(X) * repmat(w, 1, ncol(X)))[1 : nfft]))^2, by.column = TRUE )
     #list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     #####################????buffer()
     #X <- detrend(X) * repmat(w, 1, ncol(X))
     #F <- abs(fft(X[1 : nfft]))^2
