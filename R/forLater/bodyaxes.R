@@ -50,8 +50,8 @@
 #  markjohnson@st-andrews.ac.uk
 #  Last modified: 10 May 2017
 
-bodyaxes <- function(A, M, fc) {
-  if (missing(M)) {
+bodyaxes <- function(A, M, fc = NULL) {
+  if (missing(M) | (missing(A))) {
     help(bodyaxes)
   }
   require(matlab) #for repmat(), and zeros() functions
@@ -64,8 +64,8 @@ bodyaxes <- function(A, M, fc) {
   if (nrow(A) != nrow(M)) {
     print(sprintf('bodyaxes: A and M must have same number of rows \ n'))
   }
-  if (!missing(fc)) {
-    if (nargs() == 3 & nrow(A) > (8 / fc)) {
+  if (!is.null(fc)) {
+    if (nrow(A) > (8 / fc)) {
       M <- fir_nodelay(M, round(8 / fc), fc)
       A <- fir_nodelay(A, round(8 / fc), fc)
     }
