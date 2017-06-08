@@ -52,7 +52,7 @@
 #  markjohnson@st-andrews.ac.uk
 #  Last modified: 10 May 2017
 
-dsf <- function(A,fs,fc = NULL,Nfft) {
+dsf <- function(A, fs, fc = NULL, Nfft) {
   #default low-pass filter at 2.5 Hz
   if (is.null(fc)) {
     fc <- 2.5
