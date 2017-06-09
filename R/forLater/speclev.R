@@ -35,21 +35,16 @@ speclev <- function(x, nfft, fs, w, nov) {
     w <- signal::hanning(w)
   }
   require(matlab) #for zeros() and size()  and repmat() functions
-
-  P = matrix(0,nrow = nfft / 2, ncol = 1)
   if(!is.null(ncol(x))){
     xdim <- ncol(x)
   }
   else{
     xdim <- 1
   }
+  P = matrix(0,nrow = nfft / 2, ncol = xdim)
   for (k in 1:xdim) {
     require(stats) #for fft() function
     require(pracma) #for detrend() function
-    #following if else is partially commented out
-    #Because R is strict on separating vectors and matrices,
-    #and x[,number] is a matrix operation, not a vector operation
-    #Will leave it just in case, but most likely to be erased in complete package
     if(!is.null(ncol(x))){
       X <- buffer_nodelay(x[,k],length(w),nov)
     }
