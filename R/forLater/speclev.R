@@ -1,38 +1,3 @@
-# The following is an attempt to translate Mark Johnson's speclev.m matlab script, from the dtag tool box, to an R script. Note that we made no
-# effort to vectorize or use apply...just changed matlab to R code keeping the same general structure. DAS and YJO, June 2017
-
-# function  list(SL = SL, f = f) = speclev(x,nfft,fs,w,nov)
-
-#    [SL,f]=speclev(x,nfft,fs,w,nov)
-
-#     Spectrum level of a signal x.
-#     This replaces Matlab's psd function and returns units in dB re
-#     root-Hz.
-#     x is a vector containing the signal to be processed. For signals with
-#     multiple channels, each channel should be in a column of x.
-#     nfft is the length of the fft to use. Choose a power of two for
-#     fastest operation. Default value is 512.
-#     fs is the sampling rate of x in Hz. Default value is 1.
-#     w is the window length. The default value is nfft. If w<nfft, each
-#     segment of w samples is zero-padded to nfft.
-#     nov is the number of samples to overlap each segment. The default
-#     value is half of the window length.
-#     Use [] in any argument to access the default value or just don't
-#     specify the trailing arguments if all of the defaults are to be used, e.g.,
-#       list(SL = SL, f = f) = speclev(x,1024) ;
-#       list(SL = SL, f = f) = speclev(x,[],48e3) ;
-#     Returns:
-#      SL is the spectrum level at each frequency in dB RMS re root-Hz.
-#       The spectrum is single-sided and extends to fs/2.
-#       The reference level is 1.0 (i.e., white noise with unit variance
-#       will have a spectrum level of 3-10*log10(fs). The 3dB is because
-#       both the negative and positive spectra are added together so that
-#       the total power in the signal is the same as the total power in 
-#       the spectrum.
-#      fs is the vector of frequencies at which SL is calculated.
-
-#   markjohnson@st-andrews.ac.uk, 2013
- 
 speclev <- function(x, nfft, fs, w, nov) {
   if (missing(nfft)) {
     nfft <- 512
