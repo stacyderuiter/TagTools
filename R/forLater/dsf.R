@@ -46,13 +46,13 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
         index <- i
       }
     }
-    return(list(max, index))
+    return(list(max= max, index = index))
   }
   maxtemplist <- max_w_index(v)
   m <- maxtemplist$max
   n <- maxtemplist$index
-  p <-coef(lm.fit(outer((t(f(n + (-1:1)))), 0:2, '^'), (v(2 + (-1:1)))))
-  fpk <- -p(2) / (2 * p(1))
+  p <-coef(lm.fit(outer((t(f[n + (-1:1)])), 0:2, '^'), (v[n + c(-1:1)])))
+  fpk <- -p[2] / (2 * p[1])
   q <- m / mean(v)
   return(list(fpk = fpk, q = q))
 }
