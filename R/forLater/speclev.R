@@ -1,3 +1,13 @@
+#' Compute the spectrum level of a signal x. This replaces Matlab's psd function and returns units in dB re root-Hz.
+#' 
+#' @param x A vector containing the signal to be processed. For signals with multiple channels, each channel should be in a column of x.
+#' @param nfft The length of the fft to use. Choose a power of two for fastest operation. Default value is 512.
+#' @param fs The sampling rate of x in Hz. Default value is 1. fs is the vector of frequencies at which SL is calculated.
+#' @param w The window length. The default value is nfft. If w<nfft, each segment of w samples is zero-padded to nfft.
+#' @param nov The number of samples to overlap each segment. The default value is half of the window length.
+#' @return SL The spectrum level at each frequency in dB RMS re root-Hz.
+#' The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
+
 speclev <- function(x, nfft, fs, w, nov) {
   if (missing(nfft)) {
     nfft <- 512
