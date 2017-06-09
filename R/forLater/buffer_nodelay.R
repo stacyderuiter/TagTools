@@ -1,5 +1,5 @@
 buffer_nodelay <- function(vec,n,p){
-  m <- floor((length(vec) - n)/(n - p)) + 1
+  m <- abs(floor((length(vec) - n)/(n - p)) + 1)
   buffermatrix <-function(vec, m, n, p){
   retmat <- matrix(0, nrow = m, ncol = n)
   vecindex <- 1

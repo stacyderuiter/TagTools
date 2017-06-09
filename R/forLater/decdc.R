@@ -22,7 +22,7 @@ decdc <- function(x,df) {
   #ensures that the output samples coincide with every df of the input samples
   dc <- flen + floor(flen / 2) - round(df / 2) + (df:df:xlen)
   require(matlab) #for zeros() function
-  y <- matlab::zeros(length(dc),rowSums(x))
+  y <- matrix(0, nrow = length(dc),ncol = rowSums(x))
   for (k in 1:rowSums(x)) {
     xx <-matrix(c(2 * x[1, k] - x[1 + (flen + 1:-1:1), k], x[, k], 2 * x[xlen, k] - x[xlen - (1:flen + 1), k]), ncol = 3, nrow = nrow(x), byrow = TRUE)
     v <- conv(h,xx)

@@ -45,11 +45,12 @@ speclev <- function(x, nfft, fs, w, nov) {
   for (k in 1:xdim) {
     require(stats) #for fft() function
     require(pracma) #for detrend() function
-    if(!is.null(ncol(x))){
-      X <- buffer_nodelay(x[,k],length(w),nov)
-    }
-    else{
+    if(is.null(ncol(x))){
+      
       X <-  buffer_nodelay(x[],length(w),nov)
+    } 
+    else{
+      X <- buffer_nodelay(x[,k],length(w),nov)
     }
     #There is a problem with repmat and hanning, mainly due to the zero padding of hanning
       #which becomes an entire row of 0
@@ -65,7 +66,7 @@ speclev <- function(x, nfft, fs, w, nov) {
     }
     Freq <- abs(fftmatrix(X,nfft))^2
     #F <- rollapply(data = x[, k], width = length(w), by = nov, FUN = abs(fft((detrend(X) * repmat(w, 1, ncol(X)))[1 : nfft]))^2, by.column = TRUE )
-    #list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     #####################????buffer()
+    #list(X = X, z = z) = buffer(x[, k], length(w), nov, 'nodelay')                     
     #X <- detrend(X) * repmat(w, 1, ncol(X))
     #F <- abs(fft(X[1 : nfft]))^2
     P[, k] <- rowSums(Freq[1 :(nfft/2),])

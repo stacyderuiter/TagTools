@@ -12,8 +12,10 @@
 
 dsf <- function(A, fs, fc = NULL, Nfft) {
   #default low-pass filter at 2.5 Hz
+  fcnull <- FALSE
   if (is.null(fc)) {
     fc <- 2.5
+    fcnull <- TRUE
   }
   #default FFT length
   if (missing(Nfft)) {
@@ -25,16 +27,32 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
   }
   #force Nfft to the nearest power of 2
   Nfft <- 2^(round(log(Nfft)/log(2)))
-  if (!is.null(fc)) {
-    Af <- fir_nodelay(diff(A), 6 * fs / fc, fc / (fs / 2))
+  if (!fcnull) {
+    Af <- fir_nodelay(diff(A), 6 * fs / fc, fc / (fs / 2))$y
   } else {
     Af <- diff(A)
   }
-  list(S = S, f = f) <- speclev(Af, Nfft, fs, Nfft, Nfft / 2)
+  templist <- speclev(Af, Nfft, fs, Nfft, Nfft / 2)
+  S <- templist$SL
+  f <- templist$f
   #sum spectral power in the three axes
   v = rowSums(10^(S/10))
-  list(m = m, n = n) <- max(v)
-  p <- coef(lm(v(n + (-1 : 1)) ~ t(f(n+(-1 : 1))) + I(x^2)))
+  max_w_index <- function(v){
+    max <- 0
+    index <- 1
+    for(i in length(v)){
+      if(v[i] > max){
+        max <- v[i]
+        index <- i
+      }
+    }
+    return(list(max, index))
+  }
+  maxtemplist <- max_w_index(v)
+  m <- maxtemplist$max
+  n <- maxtemplist$index
+  p <-coef(lm.fit(outer((t(f(n + (-1:1)))), 0:2, '^'), (v(2 + (-1:1)))))
   fpk <- -p(2) / (2 * p(1))
   q <- m / mean(v)
+  return(list(fpk = fpk, q = q))
 }
