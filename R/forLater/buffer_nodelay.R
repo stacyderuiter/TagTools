@@ -1,7 +1,7 @@
 buffer_nodelay <- function(vec,n,p){
   m <- floor((length(vec) - n)/(n - p)) + 1
   buffermatrix <-function(vec, m, n, p){
-  retmat <- matrix(0L, nrow = m, ncol = n)
+  retmat <- matrix(0, nrow = m, ncol = n)
   vecindex <- 1
   for(i in 1:m){
     if(i == 1){
@@ -20,7 +20,7 @@ buffer_nodelay <- function(vec,n,p){
   }
   return(retmat)
   }
-  realretmat <- matrix(0L, nrow = n, ncol = m)
+  realretmat <- matrix(0, nrow = n, ncol = m)
   realretmat <- t(buffermatrix(vec, m,n,p))
   return(realretmat)
 }
