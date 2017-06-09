@@ -13,4 +13,5 @@ smooth <- function(x, n) {
     nf <- 6 * n
     fp <- 1/n
     y <- fir_nodelay(x, nf, fp)[[1]]
+    return(y)
 }

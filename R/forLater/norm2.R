@@ -16,4 +16,5 @@ norm2 <- function(X) {
         # If X is a matrix, v is the matrix norm.
         v <- sqrt(rowSums(abs(X)^2))
     }
+    return(v)
 }

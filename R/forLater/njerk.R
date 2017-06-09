@@ -10,4 +10,5 @@
 
 njerk <- function(A, fs) {
     j <- c(fs * sqrt(rowSums(diff(A)^2)), 0)
+    return(j)
 }

@@ -55,5 +55,5 @@ bodyaxes <- function(A, M, fc = NULL) {
     W[1, , ] <- t(Mh)
     W[2, , ] <- t(N)
     W[3, , ] <- t(A)
-    return(W)
+    return(W) 
 }

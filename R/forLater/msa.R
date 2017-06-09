@@ -18,5 +18,6 @@ msa <- function(A, ref) {
   if (min(c(nrow(A), ncol(A))) == 1) {
     A <- t(A)
   }
-  m = abs(sqrt(rowSums(A^2)) - ref)
+  m <- abs(sqrt(rowSums(A^2)) - ref)
+  return(m)
 }
