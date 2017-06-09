@@ -5,7 +5,7 @@
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing the axes. The filter cut-off frequency is with respect to 1=Nyquist frequency. The filter length is 8/fc. Filtering adds no group delay. If fc is not specified, no filtering  is performed.
 #' @return W The 3x3xn matrix of body axes where n is the number of rows in M and A. W(:,1,:) are the X or longitudinal (caudo-rostral) axes. W(:,2,:) are the Y or transverse (left-right) axes. W(:,3,:) are the Z or ventro-dorsal axes.
 #' Output sampling rate is the same as the input sampling rate.
-#' This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. This function will only return the animal's cardinal axes if the tag was attached so that the sensor axes aligned with the animal's axes OR if the tag A and M measurements are rotated to account for the orientation of the tag on the animal (see tagorientation() and tag2animal() to do this). Otherwise, the axes returned by this function will be the cardinal axes of the tag, not the animal. 
+#' Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. This function will only return the animal's cardinal axes if the tag was attached so that the sensor axes aligned with the animal's axes OR if the tag A and M measurements are rotated to account for the orientation of the tag on the animal (see tagorientation() and tag2animal() to do this). Otherwise, the axes returned by this function will be the cardinal axes of the tag, not the animal. 
 #' @examples 
 #' bodyaxes(matrix(c(-0.3, 0.52, 0.8, 22, -22, 14), byrow = TRUE, nrow = 2, ncol = 3)
 #' result is:[0.59682 -0.55182 0.58249
