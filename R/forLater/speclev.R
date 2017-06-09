@@ -40,12 +40,12 @@ speclev <- function(x, nfft, fs, w, nov) {
     #Because R is strict on separating vectors and matrices,
     #and x[,number] is a matrix operation, not a vector operation
     #Will leave it just in case, but most likely to be erased in complete package
-    #if(!is.null(xdim)){
-    #  X <- buffer_nodelay(x[,k],length(w),nov)
-    #}
-    #else{
+    if(!is.null(ncol(x))){
+      X <- buffer_nodelay(x[,k],length(w),nov)
+    }
+    else{
       X <-  buffer_nodelay(x[],length(w),nov)
-    #}
+    }
     #There is a problem with repmat and hanning, mainly due to the zero padding of hanning
       #which becomes an entire row of 0
     X <- detrend(X) * matlab::repmat(w, 1, ncol(X))
