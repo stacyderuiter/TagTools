@@ -38,7 +38,6 @@ speclev <- function(x, nfft, fs, w, nov) {
   require(matlab) #for zeros() and size()  and repmat() functions
   if(!is.null(ncol(x))){
     xdim <- ncol(x)
-    ismatrix <- TRUE
   }
   else{
     xdim <- 1
@@ -47,7 +46,7 @@ speclev <- function(x, nfft, fs, w, nov) {
   for (k in 1:xdim) {
     require(stats) #for fft() function
     require(pracma) #for detrend() function
-    if(!ismatrix){
+    if(!is.matrix(x)){
       X <-  buffer_nodelay(x[],length(w),nov)
     } 
     else{
