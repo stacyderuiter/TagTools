@@ -2,3 +2,6 @@
 
 export(block_acf)
 export(cline)
+export(msa)
+export(njerk)
+export(norm2)
