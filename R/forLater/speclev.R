@@ -34,9 +34,11 @@ speclev <- function(x, nfft, fs, w, nov) {
     require(signal) #for hanning() function
     w <- signal::hanning(w)
   }
+  ismatrix <- FALSE
   require(matlab) #for zeros() and size()  and repmat() functions
   if(!is.null(ncol(x))){
     xdim <- ncol(x)
+    ismatrix <- TRUE
   }
   else{
     xdim <- 1
@@ -45,8 +47,7 @@ speclev <- function(x, nfft, fs, w, nov) {
   for (k in 1:xdim) {
     require(stats) #for fft() function
     require(pracma) #for detrend() function
-    if(is.null(ncol(x))){
-      
+    if(!ismatrix){
       X <-  buffer_nodelay(x[],length(w),nov)
     } 
     else{
@@ -81,6 +82,6 @@ speclev <- function(x, nfft, fs, w, nov) {
   SL <- 10 * log10(P) - 10 * log10(ndt) - 20 * log10(nfft) + slc
   #10*log10(ndt) corrects for the number of spectra summed in P (i.e., turns the sum into a mean)
   #20*log10(nfft) corrects the nfft scaling in matlab's fft
-  f <- head((c(0 : (nfft / 2) )) / nfft* fs,-1) 
+  f <- (c(0 : ((nfft / 2)- 1) )) / nfft * fs 
   return(list(SL= SL,  f=f))
 }
