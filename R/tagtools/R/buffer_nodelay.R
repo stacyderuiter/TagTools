@@ -4,16 +4,18 @@
 #' @param n The desired length of data segments (rows).
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix
 #' @return A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p".
+#' @export
 #' @example vec <- c(1:20)
 #'          n <- 5
 #'          p <- 2
-#'  Returns:[1 4 7  10 13 16
-#'           2 5 8  11 14 17
-#'           3 6 9  12 15 18
-#'           4 7 10 13 16 19
-#'           5 8 11 14 17 20]
+#'          buffer(vec, v, p)
+#' # Results: [1 4 7  10 13 16
+#' #           2 5 8  11 14 17
+#' #           3 6 9  12 15 18
+#' #           4 7 10 13 16 19
+#' #           5 8 11 14 17 20]
 
-buffer_nodelay <- function(vec,n,p){
+buffer_nodelay <- function(vec, n, p){
   m <- floor((length(vec) - n)/(n - p)) + 1
   buffermatrix <-function(vec, m, n, p){
   retmat <- matrix(0, nrow = m, ncol = n)
