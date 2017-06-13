@@ -12,21 +12,22 @@
 #' max(abs(s4 - ds))   #i.e, there is almost no difference between s4 and ds.
 #' #Returns: 0.0023
 
-decdc <- functions(x,df) {
+decdc <- function(x,df) {
   if (missing(df)) {
-    warning("missing required value for df.")
+    help("decdc")
   }
   if (nrow(x) < 2) {
     warning("make sure that you have input your data as a column vector or a matrix")
   }
   flen <- 12 * df
-  h <- as.vector(signal::fir1(flen, 0.8 / df))
+  require(signal) #for the fir1() and conv() functions
+  h <- as.vector(fir1(flen, 0.8 / df))
   xlen <- nrow(x)
   #ensures that the output samples coincide with every df of the input samples
-  dc <- flen + floor(flen / 2) - round(df / 2) + seq(from = df, to = xlen, by = df)
+  dc <- flen + floor(flen / 2) - round(df / 2) + seq(df, xlen, df)
   y <- matrix(0, nrow = length(dc),ncol = ncol(x))
   for (k in 1:ncol(x)) {
-    abc <- (2 * x[1, k]) - x[1 + seq(from = (flen + 1), to = 1, by = -1), k]
+    abc <- (2 * x[1, k]) - x[1 + (seq((flen + 1), 1, -1)), k]
     bcd <- x[, k]
     cde <- (2 * x[xlen, k]) - (x[xlen - c(1:(flen + 1),k)])
     xx <- c(abc, bcd, cde)
