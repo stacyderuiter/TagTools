@@ -17,17 +17,18 @@ decdc <- function(x,df) {
   }
   flen <- 12 * df
   require(signal) #for the fir1() and conv() functions
-  h <- t(fir1(flen, 0.8 / df))
+  h <- as.vector(fir1(flen, 0.8 / df))
   xlen <- nrow(x)
   #ensures that the output samples coincide with every df of the input samples
-  dc <- flen + floor(flen / 2) - round(df / 2) + seq(from = df, to = xlen, by = df)
-    y <- matrix(0, nrow = length(dc),ncol = rowSums(x))
+  dc <- flen + floor(flen / 2) - round(df / 2) + seq(df, xlen, df)
+  y <- matrix(0, nrow = length(dc),ncol = ncol(x))
   for (k in 1:ncol(x)) {
     abc <- (2 * x[1, k]) - x[1 + (seq((flen + 1), 1, -1)), k]
-    bcd <-x[1, k]
-    cde <- (2 * x[xlen, k]) - (x[xlen, -c(1:(flen + 1),k)])
-    xx <- rbind(abc, bcd, cde)
-    v <- conv(h,xx)
-    y[,k] <- dc[v]
+    bcd <- x[, k]
+    cde <- (2 * x[xlen, k]) - (x[xlen - c(1:(flen + 1),k)])
+    xx <- c(abc, bcd, cde)
+    v <- pracma::conv(h,xx)
+    y[,k] <- v[dc]
   }
+  return(y)
 }
