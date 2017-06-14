@@ -14,6 +14,7 @@
 #'            t <- c(1, 3)
 
 rms_in_blocks <- function(X, n, nov = NULL) {
+  # input checks-----------------------------------------------------------
   if (is.null(nov) == TRUE) {
     nov <- 0
   }

@@ -12,6 +12,7 @@
 #' @export
 
 speed_from_depth <- function(p,A,fs,fc = NULL, plim = NULL) {
+  # input checks-----------------------------------------------------------
   if (nargs < 2) {
     error("inputs p, A, and fs must all be specified")
   }

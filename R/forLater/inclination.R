@@ -15,6 +15,7 @@
 #' #Results: incl = -0.91595 radians.
 
 inclination <- function(A, M, fc = NULL) {
+  # input checks-----------------------------------------------------------
   if (missing(M)) {
     warning("matrices for both A and M must be defined")
   }
