@@ -37,6 +37,13 @@ inclination <- function(A, M, fc = NULL) {
   }
   #compute magnetic field intensity
   v <- sqrt(rowSums(M^2))
-  incl <- -Re(asin(rowSums(A * M) / v))
+  x <- asin(rowSums(A * M) / v)
+  signvector <- rowSums(A * M) / v
+  for(i in 1: length(x)){
+    if(is.nan(x[i])){
+      x[i]<-asin(1) * sign(signvector[i])
+    }
+  }
+  incl <- -x
   return(incl)
 }

@@ -37,22 +37,10 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
   f <- templist$f
   #sum spectral power in the three axes
   v = rowSums(10^(S/10))
-  max_w_index <- function(v){
-    max <- 0
-    index <- 1
-    for(i in length(v)){
-      if(v[i] > max){
-        max <- v[i]
-        index <- i
-      }
-    }
-    return(list(max= max, index = index))
-  }
-  maxtemplist <- max_w_index(v)
-  m <- maxtemplist$max
-  n <- maxtemplist$index
+  m <- max(v)
+  n <- which.max(v)
   require(pracma) # for polyfit() function
-  p <- polyfit(t(f(n+(-1:1))), v(n+(-1:1)), 2)
+  p <- polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)
   fpk <- -p[2] / (2 * p[1])
   q <- m / mean(v)
   return(list(fpk = fpk, q = q))
