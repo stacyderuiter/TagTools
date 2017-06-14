@@ -8,7 +8,7 @@
 #' @note  Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful. Use rotframe() to achieve this.
 #' @note CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be advected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be  with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
 #' @export
-#' @example list( K = K, s = s) <- findzc(sin(2 * pi * 0.033 * t(c(1:100)), 0.3)
+#' @example list( K = K, s = s) <- findzc(sin(2 * pi * 0.033 * t(c(1:100))), 0.3)
 #'          Returns: K=c(15.143, 30.286, 45.429, 60.628, 75.771, 90.914)
 #'                   s=c(-1, 1, -1, 1, -1, 1)
 
@@ -38,12 +38,12 @@ findzc <- function(x, TH, Tmax = NULL) {
       if (rlang::is_empty(kpl)) {
         break
       }
-      kk <- max(which(knt <= kpl(1)))
+      suppressWarnings(kk <- max(which(knt <= kpl[1])))
       if (!rlang::is_empty(kk) | kk != Inf) {
         cnt <- cnt + 1
         K[cnt,] <- c(knt[kk], kpl[1], SIGN)
         knt <- knt[(kk + 1):length(knt)]
-        knl <- knl[knl > kpl(1)]
+        knl <- knl[knl > kpl[1]]
         kpl <- kpl[2:length(kpl)]
       }
       SIGN <- -1
@@ -51,18 +51,18 @@ findzc <- function(x, TH, Tmax = NULL) {
       if (rlang::is_empty(knl)) {
         break
       }
-      kk <- max(which(kpt <= knl(1)))
+      suppressWarnings(kk <- max(which(kpt <= knl[1])))
       if (!rlang::is_empty(kk) | kk != Inf) {
         cnt <- cnt + 1
         K[cnt,] <- c(kpt[kk], knl[1], SIGN)
         kpt <- kpt[(kk + 1):length(kpt)]
-        kpl <- kpl[kpl > knl(1)]
+        kpl <- kpl[kpl > knl[1]]
         knl <- knl[2:length(knl)]
       }
       SIGN <- 1
     }
   }
-  K <- K[(1:cnnt),length(K)]
+  K <- K[(1:cnt),]
   if (is.null(Tmax) == FALSE) {
     k <- which(K[, 2] - K[, 1] <= Tmax)
     K <- K[k,]
