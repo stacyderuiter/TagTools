@@ -7,6 +7,11 @@
 #' @note Output sampling rate is the same as the input sampling rate so s and v have the same size as p.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A descending animal will have a negative pitch angle.
 #' @export
+#' @example 
+#' X <- matrix(c(1:20), byrow = TRUE, nrow = 4)
+#' rms_in_blocks(X, n = 2, nov = NULL)
+#' # Results: y <- matrix(c(4.30, 5.14, 6.04, 6.96, 7.90, 13.72, 14.71, 15.70, 16.68, 17.67), byrow = TRUE, nrow = 2)
+#'            t <- c(1, 3)
 
 rms_in_blocks <- function(X, n, nov = NULL) {
   if (is.null(nov) == TRUE) {
@@ -20,12 +25,12 @@ rms_in_blocks <- function(X, n, nov = NULL) {
   S <- abs(X^2)
   ss <- buffer_nodelay(S[,1], n, nov)
   Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
-  Y[, 1] <- t(sum(ss))
+  Y[, 1] <- colSums(ss)
   for (k in 2:ncol(X)) {
     ss <- buffer_nodelay(S[,k], n, nov)
-    Y[, k] <- t(sum(ss))
+    Y[, k] <- colSums(ss)
   }
   Y = sqrt(Y / n)
-  t = t(round(n / 2 + (0:nrow(Y) - 1) * (n - nov)))
+  t = round(n / 2 + (0:(nrow(Y)-1)) * (n - nov))
   return(Y)
 }
