@@ -17,18 +17,18 @@
 inclination <- function(A, M, fc = NULL) {
   # input checks-----------------------------------------------------------
   if (missing(M)) {
-    warning("matrices for both A and M must be defined")
+    stop("matrices for both A and M must be defined")
   }
   #catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
-    warning("A must be an acceleration matrix")
+    stop("A must be an acceleration matrix")
   }
   #catch the case of a single magnetometer vector
   if (min(c(nrow(M), ncol(M))) == 1) {
-    warning("M must be a magnetometer matrix")
+    stop("M must be a magnetometer matrix")
   }
   if (nrow(M) != nrow(A)) {
-    warning("A and M must have the same number of rows\n")
+    stop("A and M must have the same number of rows\n")
     incl <- vector(mode = "numeric", length = 0)
   }
   if (is.null(fc) == FALSE) {
