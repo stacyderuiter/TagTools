@@ -28,18 +28,20 @@ findzc <- function(x, TH, Tmax = NULL) {
   K <- matrix(0, nrow = (length(kpl) + length(knl)), ncol = 3)  
   cnt <- 0
   #find which direction zero-crossing comes first
-  if (min(kpl) < min(knl)) {
+  minkpl <- min(kpl)
+  minknl <- min(knl)
+  if (minkpl < minknl) {
     SIGN <- 1
   } else {
     SIGN <- -1
   }
   while(1) {
     if (SIGN == 1) {
-      if (rlang::is_empty(kpl)) {
+      if (is.na(kpl)) {
         break
       }
       suppressWarnings(kk <- max(which(knt <= kpl[1])))
-      if (!rlang::is_empty(kk) | kk != Inf) {
+      if (abs(kk) != Inf) {
         cnt <- cnt + 1
         K[cnt,] <- c(knt[kk], kpl[1], SIGN)
         knt <- knt[(kk + 1):length(knt)]
@@ -48,11 +50,11 @@ findzc <- function(x, TH, Tmax = NULL) {
       }
       SIGN <- -1
     } else {
-      if (rlang::is_empty(knl)) {
+      if (is.na(knl)) {
         break
       }
       suppressWarnings(kk <- max(which(kpt <= knl[1])))
-      if (!rlang::is_empty(kk) | kk != Inf) {
+      if (abs(kk) != Inf) {
         cnt <- cnt + 1
         K[cnt,] <- c(kpt[kk], knl[1], SIGN)
         kpt <- kpt[(kk + 1):length(kpt)]
