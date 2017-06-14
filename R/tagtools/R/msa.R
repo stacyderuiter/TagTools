@@ -18,7 +18,7 @@ msa <- function(A, ref) {
   }
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
-    A <- t(A)
+    warning("A must be an acceleration matrix")
   }
   m <- abs(sqrt(rowSums(A^2)) - ref)
   return(m)

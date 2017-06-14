@@ -7,8 +7,10 @@
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, the magnetic field vector has a positive inclination angle when it points below the horizon. Other frames can be used as long as A and M are in the same frame however the interpretation of incl will differ accordingly.
 #' @example 
-#' A <- c(0.77, -0.6, -0.22)
-#' M <- c(22, -22, 14)
+#' A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7),
+#'            byrow = TRUE, nrow = 3, ncol = 3)
+#' M <- matrix(c(1.3, -0.25, 0.16, 0.78, -0.3, 0.5, 0.5, -0.49, -0.6),
+#'                       byrow = TRUE, nrow = 3, ncol = 3)
 #' incl <- inclination(A, M)
 #' #Results: incl = -0.91595 radians.
 
@@ -18,11 +20,11 @@ inclination <- function(A, M, fc = NULL) {
   }
   #catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
-    A <- t(A)
+    warning("A must be an acceleration matrix")
   }
   #catch the case of a single magnetometer vector
   if (min(c(nrow(M), ncol(M))) == 1) {
-    M <- t(M)
+    warning("M must be a magnetometer matrix")
   }
   if (nrow(M) != nrow(A)) {
     warning("A and M must have the same number of rows\n")
