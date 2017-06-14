@@ -12,66 +12,62 @@
 #'          Returns: K=c(15.143, 30.286, 45.429, 60.628, 75.771, 90.914)
 #'                   s=c(-1, 1, -1, 1, -1, 1)
 
-findzc <- function(x, TH, Tmax) {
+findzc <- function(x, TH, Tmax = NULL) {
   # input checks-----------------------------------------------------------
+  if (missing(TH)) {
+    stop("inputs for both x and TH are required")
+  }
+  #find all positive and negative threshold crossings
+  xtp = diff(x > TH) 
+  xtn = diff(x < -TH) 
+  kpl = which(xtp > 0) + 1   #leading edges of positive threshold crossings
+  kpt = which(xtp < 0)       #trailing edges of positive threshold crossings
+  knl = which(xtn > 0) + 1   #leading edges of negative threshold crossings
+  knt = which(xtn < 0)       #trailing edges of negative threshold crossings
+  #prepare space for the results
+  K <- matrix(0, nrow = (length(kpl) + length(knl)), ncol = 3)  
+  cnt <- 0
+  #find which direction zero-crossing comes first
+  if (min(kpl) < min(knl)) {
+    SIGN <- 1
+  } else {
+    SIGN <- -1
+  }
+  while(1) {
+    if (SIGN == 1) {
+      if (rlang::is_empty(kpl)) {
+        break
+      }
+      kk <- max(which(knt <= kpl(1)))
+      if (!rlang::is_empty(kk) | kk != Inf) {
+        cnt <- cnt + 1
+        K[cnt,] <- c(knt[kk], kpl[1], SIGN)
+        knt <- knt[(kk + 1):length(knt)]
+        knl <- knl[knl > kpl(1)]
+        kpl <- kpl[2:length(kpl)]
+      }
+      SIGN <- -1
+    } else {
+      if (rlang::is_empty(knl)) {
+        break
+      }
+      kk <- max(which(kpt <= knl(1)))
+      if (!rlang::is_empty(kk) | kk != Inf) {
+        cnt <- cnt + 1
+        K[cnt,] <- c(kpt[kk], knl[1], SIGN)
+        kpt <- kpt[(kk + 1):length(kpt)]
+        kpl <- kpl[kpl > knl(1)]
+        knl <- knl[2:length(knl)]
+      }
+      SIGN <- 1
+    }
+  }
+  K <- K[(1:cnnt),length(K)]
+  if (is.null(Tmax) == FALSE) {
+    k <- which(K[, 2] - K[, 1] <= Tmax)
+    K <- K[k,]
+  }
+  s <- K[, 3]
+  X <- c(x[K[, 1]], x[K[, 2]]) 
+  K <- (X[, 2] * K[, 1] - X[, 1] * K[, 2]) / (X[, 2] - X[, 1])
 }
-
-
-                         if nargin<2,
-                         help findzc
-                         return
-                         end
-                         
-                         % find all positive and negative threshold crossings
-                         xtp = diff(x>TH) ;
-                         xtn = diff(x<-TH) ;
-                         kpl = find(xtp>0)+1 ;  % leading edges of positive threshold crossings
-                         kpt = find(xtp<0) ;  % trailing edges of positive threshold crossings
-                         knl = find(xtn>0)+1 ;  % leading edges of negative threshold crossings
-                         knt = find(xtn<0) ;  % trailing edges of negative threshold crossings
-                         
-                         K = zeros(length(kpl)+length(knl),3) ; % prepare space for the results
-                         cnt = 0 ;
-                         if min(kpl)<min(knl),      % find which direction zero-crossing comes first
-                         SIGN = 1 ;
-                         else
-                         SIGN = -1 ;
-                         end
-                         
-                         while 1,
-                         if SIGN==1,
-                         if isempty(kpl), break, end
-                         kk = max(find(knt<=kpl(1))) ;
-                         if ~isempty(kk),
-                         cnt = cnt+1 ;
-                         K(cnt,:) = [knt(kk),kpl(1),SIGN] ;
-                         knt = knt(kk+1:end) ;
-                         knl = knl(knl>kpl(1)) ;
-                         kpl = kpl(2:end) ;
-                         end
-                         SIGN = -1 ;
-                         
-                         else
-                         if isempty(knl), break, end
-                         kk = max(find(kpt<=knl(1))) ;
-                         if ~isempty(kk),
-                         cnt = cnt+1 ;
-                         K(cnt,:) = [kpt(kk),knl(1),SIGN] ;
-                         kpt = kpt(kk+1:end) ;
-                         kpl = kpl(kpl>knl(1)) ;
-                         knl = knl(2:end) ;
-                         end
-                         SIGN = 1 ;
-                         end
-                         end
-                         K = K(1:cnt,:) ;
-                         
-                         if nargin==3,
-                         k = find(K(:,2)-K(:,1)<=Tmax) ;
-                         K = K(k,:) ;
-                         end
-                         
-                         s = K(:,3) ;
-                         X = [x(K(:,1)) x(K(:,2))] ;
-                         K = (X(:,2).*K(:,1)-X(:,1).*K(:,2))./(X(:,2)-X(:,1)) ;
-                         
