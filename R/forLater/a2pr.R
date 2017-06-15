@@ -29,7 +29,5 @@ a2pr <- function(A, fc = NULL) {
   # compute pitch and roll
   p = asin(A[, 1] / v) ;
   r = Re(atan2(A[, 2],A[, 3]))
-  return(p)
-  return(a)
-  return(v)
+  return(list(p = p, r = r, v = v))
 }
