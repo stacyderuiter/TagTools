@@ -20,6 +20,9 @@ Description: High-resolution movement-sensor tags typically include acceleromete
 Depends: R (>= 3.3.2)
 Imports: 
     graphics,
+    matlab,
+    pracma,
+    signal,
     stats,
     utils
 License: GPL (>= 2)
