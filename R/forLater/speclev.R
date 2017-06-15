@@ -28,9 +28,8 @@ speclev <- function(x, nfft, fs, w, nov) {
   if (length(w) == 1) {
     #Fixed the hanning problem, by adding 2 to w before function
     #Then taking out the 1st and last row
-    tempw <- w
     w <- signal::hanning((w+2))
-    w <- w[2:(tempw+1)]
+    w <- w[2:(length(w)-1)]
   }
   ismatrix <- FALSE
   require(matlab) #for zeros() and size()  and repmat() functions

@@ -28,9 +28,7 @@ findzc <- function(x, TH, Tmax = NULL) {
   K <- matrix(0, nrow = (length(kpl) + length(knl)), ncol = 3)  
   cnt <- 0
   #find which direction zero-crossing comes first
-  minkpl <- min(kpl)
-  minknl <- min(knl)
-  if (minkpl < minknl) {
+  if (min(kpl) < min(knl)) {
     SIGN <- 1
   } else {
     SIGN <- -1
@@ -65,7 +63,7 @@ findzc <- function(x, TH, Tmax = NULL) {
     }
   }
   K <- K[(1:cnt),]
-  if (is.null(Tmax) == FALSE) {
+  if (!is.null(Tmax)) {
     k <- which(K[, 2] - K[, 1] <= Tmax)
     K <- K[k,]
   }
