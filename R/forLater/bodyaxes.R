@@ -36,22 +36,23 @@ bodyaxes <- function(A, M, fc = NULL) {
     b <- sqrt(rowSums(M^2))
     g <- sqrt(rowSums(A^2))
     # normalize M to unit magnitude
-    M <- M * repmat(b^(-1), 1, 3)
+    M <- M * matlab::repmat(b^(-1), 1, 3)
     # normalize A to unit magnitude
-    A <- A * repmat(g^(-1), 1, 3)
+    A <- A * matlab::repmat(g^(-1), 1, 3)
     # estimate inclination angle from the data
     I <- acos(rowSums(A * M)) - (pi/2)
-    Mh <- (M + repmat(sin(I), 1, 3) * A) * repmat(cos(I)^(-1), 1, 3)
+    Mh <- (M + matlab::repmat(sin(I), 1, 3) * A) * matlab::repmat(cos(I)^(-1), 1, 3)
     v <- sqrt(rowSums(Mh^2))
     # normalize Mh
-    Mh <- Mh * repmat(v^(-1), 1, 3)
+    Mh <- Mh * matlab::repmat(v^(-1), 1, 3)
     # for FRU axes
-    N = matlab::zeros(dim(Mh)[1], dim(Mh)[2])
+    N <- matrix(0, dim(Mh)[1], dim(Mh)[2])
     for (i in 1:dim(N)[1]) {
         N[i, ] <- c(Mh[i, 2] * A[i, 3] - Mh[i, 3] * A[i, 2], Mh[i, 3] * A[i, 1] - Mh[i, 1] * A[i, 3], Mh[i, 1] * A[i, 
             2] - Mh[i, 2] * A[i, 1]) * -1
     }
-    W <- matlab::zeros(3, 3, size(A, 1))
+    W <- array(0,c(3, 3, size(A, 1)))
+    
     W[1, , ] <- t(Mh)
     W[2, , ] <- t(N)
     W[3, , ] <- t(A)
