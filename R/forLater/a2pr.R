@@ -8,17 +8,19 @@
 #' @return v The 2-norm of the acceleration measurements in the same units as A
 #' Output sampling rate is the same as the input sampling rate.
 #' Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A positive roll angle is a clockwise rotation around the x-axis. A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
+#' @export
 #' @examples 
-#' samplematrix <- matrix(c(0.77, -0.6, -0.22, 0.45, -0.32, 0.99, 0.2, -0.56, 0.5), byrow = TRUE, nrow = 3)
-#' list <- a2pr(samplematrix)
-#' returns: list$p=c(0.8780579, 0.4082165, 0.2603593), 
-#'          list$r=c(-1.9222411, -0.3126323, -0.8419416), 
-#'          list$v=c(1.000650, 1.133578, 0.776917)
+#' samplematrix <- matrix(c(0.77, -0.6, -0.22, 0.45, -0.32, 0.99, 0.2, -0.56, 0.5), 
+#'                        byrow = TRUE, nrow = 3)
+#' a2pr(samplematrix)
+#' #Returns: p=c(0.8780579, 0.4082165, 0.2603593) 
+#'           r=c(-1.9222411, -0.3126323, -0.8419416) 
+#'           v=c(1.000650, 1.133578, 0.776917)
 
 a2pr <- function(A, fc = NULL) {
   # input checks-----------------------------------------------------------
   if (missing(A)) {
-    help("a2pr")
+    stop("Acceleration matrix A is a required input")
   }
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
