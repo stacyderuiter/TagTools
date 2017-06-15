@@ -1,6 +1,6 @@
 #' Make a rotation (or direction cosine) matrix out of sets of Euler angles, pitch, roll, and heading.
 #' 
-#' Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
+#' #Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
 #' @param p The pitch angle in radians.
 #' @param r The roll angle in radians.
 #' @param h The heading or yaw angle in radians.
@@ -9,9 +9,9 @@
 #'          vec2 <- matrix(c(11:20), nrow = 10)
 #'          vec3 <- matrix(c(21:30), nrow = 10)
 #' Q <- euler_to_rotmat(p = vec1, r = vec2, h = vec3)
-#' #Returns: Q[3] <- [0.5275007  0.7994938 -0.2873199
-#'                    0.8377519 -0.4333418  0.3322449
-#'                    0.1411200 -0.4159622 -0.8983655] 
+#' #Returns: first matrix of Q <- [-0.2959394 -0.4645966 -0.834607648
+#'                                  0.4520470  0.7015905 -0.550839682
+#'                                  0.8414710 -0.5402970  0.002391215] 
 
 euler_to_rotmat <- function(p, r, h) {
   # input checks-----------------------------------------------------------
