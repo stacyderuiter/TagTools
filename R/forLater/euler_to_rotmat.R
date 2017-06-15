@@ -1,6 +1,6 @@
 #' Make a rotation (or direction cosine) matrix out of sets of Euler angles, pitch, roll, and heading.
 #' 
-#' Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
+#' #Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
 #' @param p The pitch angle in radians.
 #' @param r The roll angle in radians.
 #' @param h The heading or yaw angle in radians.
