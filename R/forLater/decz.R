@@ -59,7 +59,7 @@ decz <- function(x,Z){
   #     markjohnson@st-andrews.ac.uk
   #     last modified: May 2017
       
-  if(!is.list(Z)){
+  if(!is.data.frame(Z)){
     frbw <- 0.8 
     nf <- 12 
     if (length(Z)>=2){
