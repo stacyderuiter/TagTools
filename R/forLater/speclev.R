@@ -26,13 +26,10 @@ speclev <- function(x, nfft, fs, w, nov) {
     }
   }
   if (length(w) == 1) {
-    #Fixed the hanning problem, by adding 2 to w before function
-    #Then taking out the 1st and last row
     w <- signal::hanning((w+2))
     w <- w[2:(length(w)-1)]
   }
   ismatrix <- FALSE
-  require(matlab) #for zeros() and size()  and repmat() functions
   if(!is.null(ncol(x))){
     xdim <- ncol(x)
   }
@@ -41,23 +38,19 @@ speclev <- function(x, nfft, fs, w, nov) {
   }
   P = matrix(0,nrow = nfft / 2, ncol = xdim)
   for (k in 1:xdim) {
-    require(stats) #for fft() function
-    require(pracma) #for detrend() function
     if(!is.matrix(x)){
       X <-  buffer_nodelay(x[],length(w),nov)
     } 
     else{
       X <- buffer_nodelay(x[,k],length(w),nov)
     }
-    #There is a problem with repmat and hanning, mainly due to the zero padding of hanning
-      #which becomes an entire row of 0
-    X <- detrend(X) * matlab::repmat(w, 1, ncol(X))
+    X <- pracma::detrend(X) * matlab::repmat(w, 1, ncol(X))
     #This is a simple function that copies fft in matlab, and 
     #basically applies fft to every column in the matrix
     fftmatrix <- function(mat, n){
       newmat <- matrix(0L, nrow = nrow(mat), ncol = ncol(mat))
       for(h in 1:ncol(mat)){
-        newmat[,h]<- fft(mat[,h])
+        newmat[,h]<- stats::fft(mat[,h])
       }
       return(newmat)
     }
