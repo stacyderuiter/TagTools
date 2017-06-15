@@ -6,18 +6,19 @@
 #' @return W The 3x3xn matrix of body axes where n is the number of rows in M and A. W(:,1,:) are the X or longitudinal (caudo-rostral) axes. W(:,2,:) are the Y or transverse (left-right) axes. W(:,3,:) are the Z or ventro-dorsal axes.
 #' Output sampling rate is the same as the input sampling rate.
 #' Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. This function will only return the animal's cardinal axes if the tag was attached so that the sensor axes aligned with the animal's axes OR if the tag A and M measurements are rotated to account for the orientation of the tag on the animal (see tagorientation() and tag2animal() to do this). Otherwise, the axes returned by this function will be the cardinal axes of the tag, not the animal. 
+#' @export
 #' @examples 
-#' bodyaxes(matrix(c(-0.3, 0.52, 0.8, 22, -22, 14), byrow = TRUE, nrow = 2, ncol = 3)
-#' result is:[0.59682 -0.55182 0.58249
-#'            0.74420 0.65208 -0.14477 
-#'           -0.29994 0.51990 0.79984]
+#' W <- bodyaxes(matrix(c(-0.3, 0.52, 0.8, 22, -22, 14),
+#'               byrow = TRUE, nrow = 2, ncol = 3)
+#' #Result: [0.59682 -0.55182 0.58249
+#' #         0.74420 0.65208 -0.14477 
+#' #        -0.29994 0.51990 0.79984]
 
 bodyaxes <- function(A, M, fc = NULL) {
     # input checks-----------------------------------------------------------
     if (missing(M) | (missing(A))) {
-        help("bodyaxes")
+        stop("A and M are required inputs")
     }
-    require(matlab)  #for repmat(), and zeros() functions
     if (nrow(M) * ncol(M) == 3) {
         M <- t(M)
     }
@@ -51,7 +52,7 @@ bodyaxes <- function(A, M, fc = NULL) {
         N[i, ] <- c(Mh[i, 2] * A[i, 3] - Mh[i, 3] * A[i, 2], Mh[i, 3] * A[i, 1] - Mh[i, 1] * A[i, 3], Mh[i, 1] * A[i, 
             2] - Mh[i, 2] * A[i, 1]) * -1
     }
-    W <- array(0,c(3, 3, size(A, 1)))
+    W <- array(0,c(3, 3, nrow(A)))
     
     W[1, , ] <- t(Mh)
     W[2, , ] <- t(N)

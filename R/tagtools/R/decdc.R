@@ -6,22 +6,19 @@
 #' @note Decimation is performed by first low-pass filtering x and then keeping 1 sample out of every df. A symmetric FIR filter with length 12*df and cutoff frequency 0.4*fs/df is used. The group delay of the filter is removed. For large decimation factors (e.g., df>>20), it is better to perform several decimations with lower factors. For example to decimate by 120, use: decdc(decdc(x,10),12).
 #' @export
 #' @examples 
-#' s <- sin(2 * pi / 100 * c(0:1000) - 1)   #sine wave at full sampling rate
-#' s4 <- sin(2 * pi * 4 / 100 * c(0:250)-1)   #same sine wave at 1/4 of the sampling rate
-#' ds <- decdc(x = s, df = 4)   #decimate the full rate sine wave
-#' max(abs(s4 - ds))   #i.e, there is almost no difference between s4 and ds.
+#' s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1) 
+#' ds <- decdc(x = s, df = 4)   
 #' #Returns: 0.0023
 
 decdc <- function(x,df) {
   if (missing(df)) {
-    help("decdc")
+    stop("df is a required input")
   }
   if (nrow(x) < 2) {
     warning("make sure that you have input your data as a column vector or a matrix")
   }
   flen <- 12 * df
-  require(signal) #for the fir1() and conv() functions
-  h <- as.vector(fir1(flen, 0.8 / df))
+  h <- as.vector(signal::fir1(flen, 0.8 / df))
   xlen <- nrow(x)
   #ensures that the output samples coincide with every df of the input samples
   dc <- flen + floor(flen / 2) - round(df / 2) + seq(df, xlen, df)
