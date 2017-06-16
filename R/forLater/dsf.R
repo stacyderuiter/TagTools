@@ -39,8 +39,7 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
   v = rowSums(10^(S/10))
   m <- max(v)
   n <- which.max(v)
-  require(pracma) # for polyfit() function
-  p <- polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)
+  p <- pracma::polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)
   fpk <- -p[2] / (2 * p[1])
   q <- m / mean(v)
   return(list(fpk = fpk, q = q))
