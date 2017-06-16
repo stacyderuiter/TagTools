@@ -1,25 +1,14 @@
-mergefields <- function(s1,s2){
-#
-#     s = mergefields(s1,s2)
-#     Merge the fields of two structures. If there are duplicate
-#     fields, the fields in s1 are taken.
-#
-#		Inputs:
-#		s1, s2 are arbitrary structures e.g., containing metadata or settings.
-#
-#		Returns:
-#		s is a structure containing all of the fields in s1 and s2.
-#
-#		Examples:
-  #		s1 = struct('a',1,'b',[2 3 4])
-  #		s2 = struct('b',3,'c','cat')
-  #		s = mergefields(s1,s2)
-  #
-  #     Valid: Matlab, Octave
-  #     markjohnson@st-andrews.ac.uk
-  #     Last modified: 5 May 2017
-  
-  s = [] 
+#' Merge the fields of two structures. If there are duplicate fields, the fields in s1 are taken.
+#'
+#' @param s1 Arbitrary structurese.g., containing metadata or settings.
+#' @param s2 Arbitrary structurese.g., containing metadata or settings.
+#' @return s A structure containing all of the fields in s1 and s2
+#' @example s1 <- struct('a',1,'b',[2 3 4])
+#'          s2 <- struct('b',3,'c','cat')
+#'		      s <- mergefields(s1,s2)
+
+mergefields <- function(s1,s2) {
+  s <- vector(mode = "numeric", length = 0)
   if(missing(s1) | missing(s2)){
     stop("inputs for both s1 and s2 are required")
   }
