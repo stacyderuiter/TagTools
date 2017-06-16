@@ -6,8 +6,6 @@
 #' @param fh The high-pass filter cut-off frequency in Hz. This should be chosen to be about half of the stroking rate for the animal (e.g., using dsa.m). fs and fh are only needed if using the default (FIR filtering) method.
 #' @return e A column vector of ODBA with the same number of rows as A. e has the same units as A.
 #' @note If hoping to use the "vebda" or "wilson" method to calculate odba, use the function odba with inputs A, n, and method
-#' @example A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7), byrow = TRUE, nrow = 3)
-#'          e <- odba(A, fs = 5, fh = .15)
 
 odba_default <- function(A, fs, fh) {
   if (nargs() < 3) {
