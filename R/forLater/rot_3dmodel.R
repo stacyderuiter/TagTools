@@ -8,10 +8,10 @@ rot_3dmodel<- function(F,prh,speed){
   else{
     t = 1/speed 
   }
-  for k=1:size(prh,1){
+  for (k in 1:nrow(prh)){
     Q = t(euler_to_rotmat(prh[k,]))
     tpts = F$P*Q ;
-    set(F$p,'Vertices',cbind(tpts[,1], -tpts[,2] tpts[,3]) );
+    set(F$p,'Vertices',cbind(tpts[,1], -tpts[,2], tpts[,3]) );
     lx = F$LX*Q ;
     set(F$L[1],'xdata' = lx[,1],'ydata' = -lx[,2],'zdata' = lx[,3]);
     set(F$A[1],'xdata' = lx[2,1],'ydata' = -lx[2,2],'zdata',lx[2,3]);
@@ -19,7 +19,7 @@ rot_3dmodel<- function(F,prh,speed){
     set(F$L[2],'xdata' = ly[,1],'ydata' = -ly[,2],'zdata' = ly[,3]);
     set(F$A[2],'xdata' = ly[2,1],'ydata' = -ly[2,2],'zdata' = ly[2,3]);
     lz = F$LX[,t(c(2,3,1))]*Q ;
-    set[F$L[3],'xdata' = lz[,1],'ydata' = -lz[,2],'zdata' = lz[, 3]);
+    set(F$L[3],'xdata' = lz[,1],'ydata' = -lz[,2],'zdata' = lz[, 3]);
     set(F$A[3],'xdata' = lz[2,1],'ydata' = -lz[2,2],'zdata' = lz[2,3]);
     if(is.na(F$C)){
       cx = F$CX*Q ;
