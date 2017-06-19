@@ -71,13 +71,13 @@ decz <- function(x,Z){
   
   
     df <- Z[1] 
-    Z <- list(df = df, z, h) 
+    Z <- data.frame(df = df, z, h) 
     Z$h <- fir1(df*nf,frbw/df) ;
     nh <- length(Z.h) ;
     Z$n <- nh ;
     npre <- floor(nh*0.5) ;
-    Z$z <- [2*x(1,:)-x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
-    x <- x(npre+1:end,:) ;
+    Z$z <- cbind(2*x[1,]-x[1+seq(from = nh-df-npre, by = -1, to =1),],x[1:npre,]) 
+    x <- x[npre+1:end,] ;
   }
   
   nh <- Z$n 
@@ -87,8 +87,8 @@ decz <- function(x,Z){
     # from the filter.
     x <- 2*Z$z[1,]-apply(Z$z[2:ceil(nh/2),], MARGIN = c(nrow(Z$z), ncol(Z$z)), fun = rev) ;
   }
-  for (k in 1:ncol(x)){}
-    list(X,zz,z) = buffer(x(:,k),nh,nh-df,Z.z(:,k)) ;#need to write a function or find a function
+  for (k in 1:ncol(x)){
+    list(X,zz,z) = buffer(x[,k],nh,nh-df,Z$z[,k]) ;#need to write a function or find a function
     if (k==1){
      y = matrix(0,ncol(X),ncol(x)) ;
     }
