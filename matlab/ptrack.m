@@ -1,4 +1,4 @@
-function    T = ptrack(A,M,s,fs,fc)
+function    T = ptrack(A,M,s,fs,fc,p,LPF)
 
 %    T=ptrack(A,M,s,fs,fc)
 %    Simple dead-reckoned track (pseudo-track) estimation based on speed and body 
@@ -19,6 +19,10 @@ function    T = ptrack(A,M,s,fs,fc)
 %		The filter cut-off frequency is in Hz. The filter length is 4*fs/fc.
 %		Filtering adds no group delay. If fc is empty or not given, the default 
 %		value of 0.2 Hz (i.e., a 5 second time constant) is used.
+%    p (optional) is the depth vector of the animal. This input is used in the 
+%       case in which you desire to have a three-dimensioinal output for T
+%     LPF (optional) A specified filter to be used in the generation of a 
+%        butterworth filter, and then it is used in the Zero-phase digital filtering of the output T
 %
 %    Returns:
 %	  T is the estimated track in a local level frame. The track is defined as meters
@@ -56,14 +60,24 @@ if nargin<4,
    return
 end
 
-if nargin<5,
-   fc = [] ;
+if nargin==5,
+   [pitch, roll, v] = a2pr(A,fc);
+   [head, v, incl] = m2h(M,A,fc);
+else
+   [pitch, roll, v] = a2pr(A);
+   [head, v, incl] = m2h(M,A);
 end
 
 T = cumsum((((s/fs).*cos(pitch))*[1 1]).*[cos(head) sin(head)]) ;
 
-if length(p)==length(pitch),
-   T = [T p] ;
+if nargin<6,
+    p = [];
+end
+
+if ~isempty(p),
+   if length(p)==length(pitch),
+      T = [T p] ;
+   end
 end
 
 if nargout>=2,
@@ -72,6 +86,10 @@ end
 
 if nargout==3,
    S = s ;
+end
+
+if nargin<7,
+    LPF = [];
 end
 
 if ~isempty(LPF),

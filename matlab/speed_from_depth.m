@@ -60,12 +60,13 @@ if m==1 & n==1,					% second call type - no A
 	fs = A ;
 	A = [] ;
 else
-	if nargin<na | isempty(fc),
+	if nargin<4 | isempty(fc),
 		fc = 0.2 ;						% default filter cut-off of 0.2 Hz
 	end
 
-if nargin<na+1 | isempty(plim),
+if nargin<5 | isempty(plim),
 	plim = 20/180*pi ;			   % default 20 degree pitch angle cut-off
+end
 end
 
 nf = round(4*fs/fc) ;
