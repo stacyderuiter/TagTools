@@ -35,7 +35,7 @@ findzc <- function(x, TH, Tmax = NULL) {
   }
   while(1) {
     if (SIGN == 1) {
-      if (is.na(kpl)[1]) {
+      if (is.na(kpl)[1]| length(kpl) == 0) {
         break
       }
       suppressWarnings(kk <- max(which(knt <= kpl[1])))
@@ -48,7 +48,7 @@ findzc <- function(x, TH, Tmax = NULL) {
       }
       SIGN <- -1
     } else {
-      if (is.na(knl)[1]) {
+      if (is.na(knl)[1]| length(kpl) == 0) {
         break
       }
       suppressWarnings(kk <- max(which(kpt <= knl[1])))
