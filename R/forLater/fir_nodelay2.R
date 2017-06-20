@@ -5,8 +5,8 @@ fir_nodelay <- function(x,n,fp,qual) {
   } else {
     h = signal::fir1(n,fp)
   }
-  if (nrow(x) == 1) {
-    x <- t(x)
+  if (is.vector(x)) {
+    x <- as.matrix(x)
   }
   noffs = floor(n/2)
   y <- signal::filter(h,1,x=rbind((x[seq(noffs, 2, -1), ]), x, x[nrow(x) + seq(-1, -noffs, -1), ]))

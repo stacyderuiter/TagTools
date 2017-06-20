@@ -39,7 +39,7 @@ speed_from_depth <- function(p,A,fs,fc = NULL, plim = NULL) {
   bcd <- diff(p)
   vec <- c(abc,bcd) * fs
   v <- fir_nodelay(vec, nf, fc / (fs / 2))
-  if (A == vector(mode = "numeric", length = 0)) {
+  if (length(A) == 0 & is.vector(A)) {
     A <- fir_nodelay(A, nf, fc / (fs / 2))
     pitch <- a2pr(A) ;
     pitch[abs(pitch) < plim] = NaN ;
