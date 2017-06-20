@@ -13,7 +13,7 @@
 
 speed_from_depth <- function(p,A,fs,fc = NULL, plim = NULL) {
   # input checks-----------------------------------------------------------
-  if (nargs < 2) {
+  if (nargs() < 3) {
     error("inputs p, A, and fs must all be specified")
   }
   sizearray <- dim(A)
