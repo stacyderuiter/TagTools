@@ -72,12 +72,12 @@ decz <- function(x,Z){
   
     df <- Z[1] 
     Z <- data.frame(df = df, z, h) 
-    Z$h <- fir1(df*nf,frbw/df) ;
-    nh <- length(Z.h) ;
-    Z$n <- nh ;
-    npre <- floor(nh*0.5) ;
+    Z$h <- fir1(df*nf,frbw/df) 
+    nh <- length(Z$h) 
+    Z$n <- nh 
+    npre <- floor(nh*0.5) 
     Z$z <- cbind(2*x[1,]-x[1+seq(from = nh-df-npre, by = -1, to =1),],x[1:npre,]) 
-    x <- x[npre+1:end,] ;
+    x <- x[npre+1:end,] 
   }
   
   nh <- Z$n 

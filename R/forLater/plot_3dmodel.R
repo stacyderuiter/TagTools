@@ -12,14 +12,18 @@ plot_3dmodel <- function(fname = NULL){
   
   # load wire frame
   #warning off
-  P <- load(paste(fname, 'pts.csv', sep = ''))
-  K <- load(paste(fname, 'knx.csv', sep = ''))
+  
+  #I do not know what file format is wanted for here. I went ahead, and used .csv
+  P <- read.csv(paste(fname, 'pts.csv', sep = '')) #go to dolphin.pts and convert it to dolphinpts.csv
+  K <- read.csv(paste(fname, 'knx.csv', sep = ''))#same here. 
   #warning on
-  #clf
+  #clf <- this should be a plot function.
   
   # convert from
-  P = cbind(-P[,1],P[,2:3])
+  P <- cbind(-P[,1],P[,2:3])
+  #Do not know how to make patch in R. Couldn't translate patch.#polygon seems to work a little bit.
   p = patch('faces',K[,1:3]+1, 'vertices',cbind(P[,1], -P[,2], P[,3]))
+  
   set(p, 'facealpha',1)
   colormap(flipud(bone))
   brighten(-0.3)
