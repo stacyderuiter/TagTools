@@ -3,7 +3,7 @@
 #' @description ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the inputaccelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.
 #' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A can be in any frame but the result depends on the method used to compute ODBA. The default method and VeDBA method are rotation independent and so give the same result irrespective of the frame of A. The 1-norm method has a more complex dependency on frame.
 #' @param fs The sampling rate in Hz of the acceleration signals.
-#' @param fh The high-pass filter cut-off frequency in Hz. This should be chosen to be about half of the stroking rate for the animal (e.g., using dsa.m). fs and fh are only needed if using the default (FIR filtering) method.
+#' @param fh The high-pass filter cut-off frequency in Hz. This should be chosen to be about half of the stroking rate for the animal (e.g., using dsf.m). fs and fh are only needed if using the default (FIR filtering) method.
 #' @return e A column vector of ODBA with the same number of rows as A. e has the same units as A.
 #' @note If hoping to use the "vebda" or "wilson" method to calculate odba, use the function odba with inputs A, n, and method
 
