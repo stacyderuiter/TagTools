@@ -17,13 +17,15 @@ cst2hms_or_datenum <- function(tag,cst, d3, TAGON, GMT2LOC, output) {
   #calculate timing
   ttime <- pracma::repmat(t(TAGON), length(cst), 1) #get a matrix of the right size
   ttime[, 6] <- TAGON[6] + cst #last col is seconds.  add cst, which is seconds since tagon, to get time of points in cst
-  if (output == "datenum") {
-    d <- as.numeric(as.Date(paste(ttime[,1], ttime[,2], 1, sep = "-"))) + 719540
+  if (output == "datenum") {#This will give POSIXct date-time object
+    d <- as.POSIXct(ISOdatetime(ttime[,1], ttime[,2],ttime[,3], ttime[,4], ttime[,5], ttime[,6]))
+    #d <- as.numeric(as.Date(paste(ttime[,1], ttime[,2], 1, sep = "-"))) + 719540
     return(d)
   }
   if (output == "datestr") {
-    ttimeser <- as.numeric(as.Date(paste(ttime[,1], ttime[,2], 1, sep = "-"))) + 719540
-    hms <- as.Date(ttimeser, origin = "1970-01-01") - 719540
+    #ttimeser <- as.numeric(as.Date(paste(ttime[,1], ttime[,2], 1, sep = "-"))) + 719540
+    #hms <- as.Date(ttimeser, origin = "1970-01-01") - 719540
+    hms <- as.character.Date(ISOdatetime(ttime[,1], ttime[,2],ttime[,3], ttime[,4], ttime[,5], ttime[,6]))
     return(hms)
   }
 }
