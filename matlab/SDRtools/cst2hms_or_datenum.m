@@ -17,9 +17,9 @@ function hms_or_datenum = cst2hms_or_datenum(tag,cst, d3, TAGON, GMT2LOC, output
 %   in human-legible local time...). If output = 'datestr', this function will 
 %   onvert a time in CST (sec since start of recording) to hours min sec local time.
 %
-% the output for a datenumber, d, is a vector of serial date numbers. 
-% the output for a date/time string, hms, is a matrix of strings where row n 
-%   is a string indicating the local time for entry n of csts. 
+% the output, hms_or_datenum, is either a datenumber (a vector of serial date numbers) 
+% or a date/time string (a matrix of strings where row n 
+%   is a string indicating the local time for entry n of csts) depending on the input for "output". 
 % right now this function required a tag path to be set so that the command
 % "loadcal(tag)" will work; for future d3 cases where that is silly, edit
 % the first lines of the code.
