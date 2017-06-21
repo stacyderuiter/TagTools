@@ -17,6 +17,9 @@ findzc <- function(x, TH, Tmax = NULL) {
   if (missing(TH)) {
     stop("inputs for both x and TH are required")
   }
+  if (ncol(x)>1) {
+    stop("the input for x must be a vector")
+  }
   #find all positive and negative threshold crossings
   xtp = diff(x > TH) 
   xtn = diff(x < -TH) 
