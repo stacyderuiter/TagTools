@@ -14,9 +14,13 @@ cst2hms <- function(tag,cst, d3, TAGON, GMT2LOC) {
   }
   #calculate timing
   ttime <- pracma::repmat(t(TAGON), length(cst), 1) #get a matrix of the right size
-  ttime[, 6] <- TAGON[6] + cst #last col is seconds.  add cst, which is seconds since tagon, to get time of points in cst
+  time_vec <- as.POSIXct(rep(NA, length(cst)))
+  for(i in 1:length(cst)){
+    time_vec[i] = ISOdatetime(ttime[i,1], ttime[i,2],ttime[i,3], ttime[i,4], ttime[i,5], ttime[i,6]) + cst[i]
+  }
+  #ttime[, 6] <- TAGON[6] + cst #last col is seconds.  add cst, which is seconds since tagon, to get time of points in cst
   #This will give POSIXct date-time object
-  d <- as.POSIXct(ISOdatetime(ttime[,1], ttime[,2],ttime[,3], ttime[,4], ttime[,5], ttime[,6]))
+  d <- time_vec
   return(d)
 }
                                                     
