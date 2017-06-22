@@ -7,14 +7,15 @@ fir_nodelay <- function(x,n,fp,qual) {
   }
   isavector <- FALSE
   if (is.vector(x)) {
-    x <- t(as.matrix(x))
+    x <- as.matrix(x)
     isavector <- TRUE
   }
   noffs = floor(n/2)
   if(isavector){
-    y <- signal::filter(h,1,x=rbind((x[seq(noffs, 2, -1) ]), x, x[nrow(x) + seq(-1, -noffs, -1) ]))
+    y <- signal::filter(h,1,x=rbind((x[seq(noffs, 2, -1) ]), x, rev(x[seq(from = -noffs, by = 1,to= 0)][1:(length(x)-noffs-1)]))) 
   }
   else{
+    
     y <- signal::filter(h,1,x=rbind((x[seq(noffs, 2, -1), ]), x, x[nrow(x) + seq(-1, -noffs, -1), ]))
   }
   #y <- signal::filter(h,1,x=rbind((x[seq(noffs, 2, -1), ]), x, x[nrow(x) + seq(-1, -noffs, -1), ]))
@@ -26,5 +27,6 @@ fir_nodelay <- function(x,n,fp,qual) {
   #  y <- y[n - 1 + c(1:nrow(x)), ]
   #}
   y <- y[n - 1 + c(1:nrow(x)), ]
-  return(y)
+  
+  return(list(y=y,h=h))
 }
