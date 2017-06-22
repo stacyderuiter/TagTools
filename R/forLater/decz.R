@@ -85,10 +85,12 @@ decz <- function(x,Z){
   if (isempty(x)){
     # reuse the last few inputs to squeeze some more output
     # from the filter.
-    x <- 2*Z$z[1,]-apply(Z$z[2:ceil(nh/2),], MARGIN = c(nrow(Z$z), ncol(Z$z)), fun = rev) ;
+    x <- 2*Z$z[1,]-apply(Z$z[2:ceiling(nh/2),], MARGIN = c(nrow(Z$z), ncol(Z$z)), fun = rev) ;
   }
   for (k in 1:ncol(x)){
-    list(X,zz,z) = buffer(x[,k],nh,nh-df,Z$z[,k]) ;#need to write a function or find a function
+    listXz <- buffer_opt(x[,k],nh,nh-df,Z$z[,k]) 
+    X <- listXz$X
+    z <- listXz$z
     if (k==1){
      y = matrix(0,ncol(X),ncol(x)) ;
     }
