@@ -7,16 +7,16 @@
 #' @param fc (optional) The cut-off frequency of a low-pass filter to aply to A and M before computing bodypointing angle. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.
 #' @param p (optional) The depth vector of the animal. This input is used in the case in which you desire to have a three-dimensioinal output for T
 #' @param LPF A specified filter to be used in the generation of a butterworth filtering and then used to forward/reverse filter the output "T"
-#' @param include.S Specifies whether you want to receive the output "S". The input can be any number and the default is NULL (meaning you don't receive the output "S")
-#' @param include.pe Specifies whether you want to receive the output "pe". The input can be any number and the default is NULL (meaning you don't receive the output "pe")
+#' @param include_S Specifies whether you want to receive the output "S". The input can be any number and the default is NULL (meaning you don't receive the output "S")
+#' @param include_pe Specifies whether you want to receive the output "pe". The input can be any number and the default is NULL (meaning you don't receive the output "pe")
 #' @return T The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal'sposition at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
 #' @return S The forward speed of the animal after being filtered with the filtfilt() command. The "filt" and "a" inputs in the filtfilt() function are gained from signal::butter(3,LPF/(fs/2))
 #' @return pe Calculated by the function cumsum((s / fs) * sin(pitch)) where "pitch" is obtained using the a2pr function
-#' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful. Use rotframe() to achieve this.
+#' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.
 #' @note CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring theprecise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be advected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
-#' @example
+#' @export
 
-ptrack <- function(A, M, s, fs, fc = NULL, p = NULL, LPF = NULL, include.S = NULL, include.pe = NULL) {
+ptrack <- function(A, M, s, fs, fc = NULL, p = NULL, LPF = NULL, include_S = NULL, include_pe = NULL) {
   #input checks----------------------------------------------------------
   if (nargs() < 4) {
     stop("Inputs for A, M, s, and fs are all required.")
@@ -24,14 +24,18 @@ ptrack <- function(A, M, s, fs, fc = NULL, p = NULL, LPF = NULL, include.S = NUL
   #get pitch and head from a2pr and m2h functions
   head <- m2h(M, A, fc)$h
   pitch <- a2pr(A, fc)$p
-  T <- cumsum(((s / fs) * cos(pitch)) * c(1, 1) * c(cos(head), sin(head)))
+  t1 <- ((s / fs) * cos(pitch)) * cos(head)
+  t2 <- ((s / fs) * cos(pitch)) * sin(head)
+  Ts1 <- cumsum(t1)
+  Ts2 <- cumsum(t2)
+  T <- cbind(Ts1, Ts2)
   if (is.null(p) == FALSE) {
     if (length(p) == length(pitch)) {
       T <- c(T, p)
     }  
   }
-  pe <- cumsum((s / fs) * sin(pitch))
-  if (is.null(include.S) == FALSE) {
+  pe <- -cumsum((s / fs) * sin(pitch))
+  if (is.null(include_S) == FALSE) {
     S <- s
   }
   if (is.null(LPF) == FALSE) {
@@ -47,19 +51,16 @@ ptrack <- function(A, M, s, fs, fc = NULL, p = NULL, LPF = NULL, include.S = NUL
   } else {
     S <- s
   }
-  listts <- list(T = T, S = S, pe = pe)
-  T <- listts$T
-  S <- listts$S
-  pe <- listts$pe
-  if (is.null(include.S) == FALSE & is.null(include.pe) == FALSE) {
+  if (is.null(include_S) == FALSE & is.null(include_pe) == FALSE) {
     return(list(T = T, S = S, pe = pe))
   } else {
-    if (is.null(include.S) == FALSE) {
+    if (is.null(include_S) == FALSE) {
       return(list(T = T, S = S))
     } else {
-      if (is.null(include.pe) == FALSE) {
+      if (is.null(include_pe) == FALSE) {
         return(list(T = T, pe = pe))
       }
     }
   }
+  return(T)
 }
