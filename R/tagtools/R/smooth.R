@@ -8,7 +8,7 @@ smooth <- function(x, n) {
     y <- vector(mode = "numeric", length = 0)
     # input checks-----------------------------------------------------------
     if (missing(n)) {
-        help("smooth")
+        stop("An input for the smoothing parameter, n, is required.")
     }
     nf <- 6 * n
     fp <- 1/n
