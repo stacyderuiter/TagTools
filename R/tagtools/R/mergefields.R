@@ -3,6 +3,7 @@
 #' @param s1 Arbitrary structurese.g., containing metadata or settings.
 #' @param s2 Arbitrary structurese.g., containing metadata or settings.
 #' @return s A structure containing all of the fields in s1 and s2
+#' @export
 #' @example s1 <- data.frame( a = 1, b = c(2,3,4))
 #'          s2 <- data.frame( b = 3, c = 'cat')
 #'		      s <- mergefields(s1,s2)
