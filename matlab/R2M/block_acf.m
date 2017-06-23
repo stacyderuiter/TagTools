@@ -21,7 +21,7 @@ function [block_acf] = block_acf(resids, blocks, max_lag, make_plot)
 %             specify a max_lag longer than the shortest block if you so choose.
 %   make_plot: Logical. Should a plot be produced? Defaults to TRUE.
 
-blocks = as.factor(blocks)
+blocks = as.factor(blocks);
 
 if length(blocks) ~= length(resids)
     warning("blocks and resids must be the same length.")
@@ -37,26 +37,26 @@ if ismissing(max_lag)
 end
     
 %get indices of last element of each block (excluding the last block)
-i1 = cumsum(as.vector(utils::head(tapply(blocks, blocks, length), -1)))
-r = resids
-block_acf = ones(max_lag + 1, 1)
+i1 = cumsum(sort(y));
+r = resids;
+block_acf = ones(max_lag + 1, 1);
 
 for k = 1:max_lag
-    %%%%%%%%%%%%%%%%%%%%%%%%for (b in 1:length(i1)) {
-        %%%%%%%%%%%%%%%%%%%%r <- append(r, NA, i1[b])
-    %%%%%%%%%%%%%%%%%%%%%%%%end
+    for b = 1:length(i1)
+        r = append(r, NA, i1(b));
+    end
     %adjust for the growing r
     %%%%%%%%%%%%%%%%%%%%%%%%i1 = i1 + utils::head(c(0:(-1 + nlevels(blocks))), -1)
     %%%%%%%%%%%%%%%%%%%%%%%%rmmissing(r)
-    this_acf = autocorr(r, max_lag)
-    block_acf(k + 1) = this_acf(k + 1, 1, 1)
+    this_acf = autocorr(r, max_lag);
+    block_acf(k + 1) = this_acf(k + 1, 1, 1);
 end
 
 if ismissing(make_plot) || make_plot == TRUE
     %get an acf object in which the block_acf results will be inserted. Facilitates plotting.
-    A = autocorr(resids, max_lag)
+    A = autocorr(resids, max_lag);
     %insert coefficients from block_acf into A
-    A(:, 1, 1] = block_acf
+    A(:, 1, 1] = block_acf;
     %plot block_acf
     plot(A)
 end
