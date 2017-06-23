@@ -16,6 +16,9 @@
 #'            5 8 11 14 17 20]
 
 buffer_nodelay <- function(vec, n, p){
+  if(!(p < n)){
+    stop("p must be less than n")
+  }
   m <- floor((length(vec) - n)/(n - p)) + 1
   buffer_matrix <-function(vec, m, n, p){
   ret_mat <- matrix(0, nrow = m, ncol = n)
