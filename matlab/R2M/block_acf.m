@@ -21,14 +21,19 @@ function [block_acf] = block_acf(resids, blocks, max_lag, make_plot)
 %             specify a max_lag longer than the shortest block if you so choose.
 %   make_plot: Logical. Should a plot be produced? Defaults to TRUE.
 
-blocks <- as.factor(blocks)
+blocks = as.factor(blocks)
 
 if length(blocks) ~= length(resids)
     warning("blocks and resids must be the same length.")
 end
 
 if ismissing(max_lag)
-    max_lag = min(tapply(blocks, blocks, length))
+    y = zeros(size(unique(blocks)));
+    uniqueX = unique(blocks);
+    for i = 1:length(uniqueX)
+        y(i) = sum(blocks==uniqueX(i));
+    end
+    max_lag = min(y);
 end
     
 %get indices of last element of each block (excluding the last block)
