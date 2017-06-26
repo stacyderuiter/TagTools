@@ -1,4 +1,4 @@
-function [block_acf] = block_acf(resids, blocks, max_lag, make_plot)
+function [block_acf] = block_acf(resids, blocks, make_plot, max_lag)
 % Compute autocorrelation function, respecting grouping by a categorical variable
 %   
 % This function allows calculation of an ACF for a dataset with multiple 
@@ -15,19 +15,22 @@ function [block_acf] = block_acf(resids, blocks, max_lag, make_plot)
 %    blocks: A categorical variable indicating the groupings (must be the 
 %            same length as resids. ACF will be computed only for data 
 %            points within the same block.)
-%    max_lag: ACF will be computed at 0-max_lag lags, ignoring all 
+%    make_plot: Logical. Should a plot be produced?
+%    max_lag: (optional) ACF will be computed at 0-max_lag lags, ignoring all 
 %             observations that span blocks. Defaults to the minimum number 
 %             of observations in any block. The function will allow you to 
 %             specify a max_lag longer than the shortest block if you so choose.
-%   make_plot: Logical. Should a plot be produced? Defaults to TRUE.
 
-blocks = string(blocks);
 
 if length(blocks) ~= length(resids)
     warning("blocks and resids must be the same length.")
 end
 
-if ismissing(max_lag)
+if nargin < 3
+    error('Input for make_plot is required (TRUE or FALSE)')
+end
+
+if nargin < 4
     y = zeros(size(unique(blocks)));
     uniqueX = unique(blocks);
     for i = 1:length(uniqueX)
@@ -43,24 +46,22 @@ r = resids;
 block_acf = ones(max_lag + 1, 1);
 
 for k = 1:max_lag
-    for b = i1(1:end)
-        r = [r(1:b), NaN, r((b+1):end)];
-    end
+    %%%%%%%%%%%%%%%%for b = i1(1:end)
+    %%%%%%%%%%%%%%%%    r = [r(1:b), NaN, r((b+1):end)];
+    %%%%%%%%%%%%%%%%end
     %adjust for the growing r
-    vec = (-1 + unique(blocks));
+    vec = (unique(blocks) - 1);
     vec_end = vec(end);
-    vect = [0:(vec_end)];
+    vect = (0:(vec_end));
     vect_end = vect(1:(end-1));
     i1 = i1 + vect_end;
-    this_acf = autocorr(r, max_lag);
-    block_acf(k + 1) = this_acf(k + 1, 1, 1);
+    this_acf = [1; acf(r', max_lag)];
+    block_acf(k + 1) = this_acf(k + 1, 1);
 end
 
-if ismissing(make_plot) || make_plot == TRUE
-    %get an acf object in which the block_acf results will be inserted. Facilitates plotting.
-    A = autocorr(resids, max_lag);
+if make_plot == TRUE
     %insert coefficients from block_acf into A
-    A(:, 1, 1) = block_acf;
+    A = block_acf;
     %plot block_acf
     plot(A)
 end
