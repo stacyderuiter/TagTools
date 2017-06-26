@@ -59,9 +59,9 @@ for k = 1:max_lag
     block_acf(k + 1) = this_acf(k + 1, 1);
 end
 
-if make_plot == TRUE
+if make_plot,
     %insert coefficients from block_acf into A
     A = block_acf;
     %plot block_acf
-    plot(A)
+    bar(A)
 end
