@@ -20,7 +20,7 @@ pe_end = pe(1:(end - 1)) + 1;
 ps = [1, pe_end]; 
 
 for s = 1:length(ps)
-    p = plot(x(1:ps(s)), y(1:ps(s)));
+    p = plot(x(ps(s):ps(s+1)), y(ps(s):ps(s+1)));
     hold on
     %set colors to line segments between the determined color change locations
     for c = 1:length(color_vector)
