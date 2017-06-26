@@ -27,12 +27,8 @@ for s = 1:length(ps)
     else
         p = plot(x(ps(s):pe(s)), y(ps(s):pe(s)));
         set(p, 'Color', color_vector{s});
-       hold on
-    end
-    %set colors to line segments between the determined color change locations
-   % for c = 1:length(color_vector)
-    %    set(p, 'Color', color_vector{c});
-   % end
+        hold on
+    end 
 end
 
 hold off
