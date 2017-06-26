@@ -7,7 +7,8 @@ function [p] = cline(x, y, z, color_vector)
 %   y: y positions of points to be plotted
 %   z: a factor, the same length as x and y. Line segments in the resulting 
 %     plot will be colored according to the levels of z.
-%   color_vector: a list of colors to use (length should match the number of levels in z).
+%   color_vector: a list of colors to use (length should match the number
+%     of levels in z). This must be in the form of a cell array.
 %
 % Outputs:
 %   p: plot of x and y with the color changes specified by color_vector
