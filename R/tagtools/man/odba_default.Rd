@@ -11,7 +11,7 @@ odba_default(A, fs, fh)
 
 \item{fs}{The sampling rate in Hz of the acceleration signals.}
 
-\item{fh}{The high-pass filter cut-off frequency in Hz. This should be chosen to be about half of the stroking rate for the animal (e.g., using dsf.m). fs and fh are only needed if using the default (FIR filtering) method.}
+\item{fh}{The high-pass filter cut-off frequency in Hz. This should be chosen to be about half of the stroking rate for the animal (e.g., using dsf.m).}
 }
 \value{
 e A column vector of ODBA with the same number of rows as A. e has the same units as A.

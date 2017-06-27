@@ -9,6 +9,7 @@
 #' @note Output sampling rate is the same as the input sampling rate, i.e., h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. North and east are magnetic, not true. In these frames a positive heading is a clockwise rotation around the z-axis. 
 #' @note The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
+#' @export
 #' @example list(h = h, v = v, incl = incl) <- m2h(M = matrix(c(22, -24, 14), nrow = 1), 
 #'                                                 A = matrix(c(-0.3, 0.52, 0.8), nrow = 1), fc = NULL)
 #' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.

@@ -19,8 +19,10 @@ speclev(x, nfft, fs, w, nov)
 }
 \value{
 SL The spectrum level at each frequency in dB RMS re root-Hz.
-The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
 }
 \description{
 Compute the spectrum level of a signal x. This replaces Matlab's psd function and returns units in dB re root-Hz.
+}
+\note{
+The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
 }

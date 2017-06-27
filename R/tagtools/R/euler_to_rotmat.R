@@ -5,13 +5,14 @@
 #' @param r The roll angle in radians.
 #' @param h The heading or yaw angle in radians.
 #' @return Q One or more 3x3 rotation matrices. If p, r, and h are all scalars, Q is a 3x3 matrix, Q = H %*% P %*% R where H, P and R are the cannonical rotation matrices corresponding to the yaw, pitch and roll rotations, respectively. To rotate a vector or matrix of triaxial measurements, pre-multiply by Q. If p, r or h contain multiple values, Q is a 3-dimensional matrix with size 3x3xn where n is the number of Euler angle triples that are input. To access the k'th rotation matrix in Q use drop(Q[,,k]).
+#' @export
 #' @example vec1 <- matrix(c(1:10), nrow = 10)
 #'          vec2 <- matrix(c(11:20), nrow = 10)
 #'          vec3 <- matrix(c(21:30), nrow = 10)
 #' Q <- euler_to_rotmat(p = vec1, r = vec2, h = vec3)
-#' #Returns: first matrix of Q <- [-0.2959394 -0.4645966 -0.834607648
-#' #                                0.4520470  0.7015905 -0.550839682
-#' #                                0.8414710 -0.5402970  0.002391215] 
+#' #Returns: first matrix of Q <- c(-0.2959394, -0.4645966, -0.834607648,
+#'                                   0.4520470,  0.7015905, -0.550839682,
+#'                                   0.8414710, -0.5402970,  0.002391215) 
 
 euler_to_rotmat <- function(p, r, h) {
   # input checks-----------------------------------------------------------

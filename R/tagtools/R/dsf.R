@@ -9,6 +9,8 @@
 #' @return q The quality of the peak measured by the peak power divided by the mean power of the spectra. This is a dimensionless number which is large if there is a clear spectral peak.
 #' @note Frame: This function makes no assumption about accelerometer frame. Data in any frame can be used.
 #' @note Data selection: This function works best if the sensor matrix, A, covers an interval in which propulsion is the main activity. This could be a complete dive or an interval of running or flapping flight. The interval length should be at least Nfft/fs seconds, i.e., 20 s for the default FFT length. 
+#' @export
+
 
 dsf <- function(A, fs, fc = NULL, Nfft) {
   #default low-pass filter at 2.5 Hz
