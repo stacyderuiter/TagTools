@@ -46,30 +46,20 @@ r = resids;
 block_acf = ones(max_lag + 1, 1);
 
 for k = 1:max_lag
-    %%%%%%%%%%%%%%%%for b = i1(1:end)
-    %%%%%%%%%%%%%%%%    r = [r(1:b), NaN, r((b+1):end)];
-    %%%%%%%%%%%%%%%%end
+    for b = i1(1:end)
+        r = [r(1:b), NaN, r((b+1):end)];
+    end
     %adjust for the growing r
-    %l = cell(length(i1),1);
-%for b = 1: length(i1)
-%if b == 1,
- %   l{b} = r(1:i1(b));
-%elseif b < length(i1),
- %   l{b} = r(i1(b-1)+1: i1(b));
-%else
- %   l{b} = r(i1(b) : end);
-%end
-%end
     vec = (unique(blocks) - 1);
     vec_end = vec(end);
     vect = (0:(vec_end));
     vect_end = vect(1:(end-1));
     i1 = i1 + vect_end;
-    this_acf = [1; acf(r', max_lag)];
+    this_acf = nanautocorr(r, max_lag);
     block_acf(k + 1) = this_acf(k + 1, 1);
 end
 
-if make_plot,
+if make_plot
     %insert coefficients from block_acf into A
     A = block_acf;
     %plot block_acf
