@@ -1,57 +1,70 @@
-function acf = acf_nan(x, lmax)
-% Calculates the autocorrelation function while passing over NaN values
-%  This produces the same output as that found from the acf.R function in
-%  the stats package.
-n = size(x, 1);
-ns = size(x, 2);
-nl = lmax;
-acf = zeros(lmax * ns * ns,1);
-d1 = nl+1;
-d2 = ns*d1;
+function ta = acf_nan(data,nlags)
+% NANAUTOCORR, autocorrelation function (ACF) with NaNs 
+% calculates the nlag autocorrelation coefficient for a data vector containing NaN.
+% couples of data including NaNs are excluded from the computation.
+% Here the ACF is calculated using the Pearson's correlation coefficient for each lag. 
+% USAGE:
+% out=nanautocorr(data,nlags) returns a 1xnlags vector of linear
+% coefficients, caluclated on a 1xN or Nx1 data vector.
+% [out,b]=nanautocorr(data,nlags,R) gives the confidence boundaries [b,-b]
+% of the asymptotic normal distribution of the coefficient, using
+% Bartlett's formula.
+% version: 0.1 2013/02
+% author : Fabio Oriani.1, fabio.oriani@unine.ch
+%    (.1 Chyn,University of Neuchâtel)
 
-for u = 1:ns
-    for v = 1:ns
-        for lag = 1:nl+1
-            sum = 0;
-            nu = 0;
-            for i = 1:(n-lag-1)
-                if ~isnan(x(i + lag + (n*u)))
-                    nu = nu +1;
-                    sum = sum + (x(i + lag + (n*u)) * x(i + (n*v)));
-                end
-                if nu > 0 
-                    acf(lag + (d1*u) + (d2*v)) = sum/(nu +lag);
-                else
-                    acf(lag + (d1*u) + (d2*v)) = [];
-                end
-            end
-        end
-    end
+if isrow(data)
+    data=data';
+elseif sum(isnan(data))>sum(not(isnan(data)))/3
+    warning('AC:toomanynans','more than a third of data is NaN! autocorrelation is not reliable')
 end
 
-if n == 1
-    for u = 1:ns
-        acf(0 + (d1*u) + (d2*u)) = 1;
-    end
-else
-    se = zeros(ns,1);
-    for u = 1:ns
-        se(u) = sqrt(acf(0 + (d1*u) + d2*u));
-        for v = 1:ns
-            for lag = 1:nl+1
-                a = acf(lag + (d1*u) + (d2*v)) / (se(u)*se(v));
-                if a > 1
-                    acf(lag + (d1*u) + (d2*v)) = 1;
-                elseif a < -1
-                    acf(lag + (d1*u) + (d2*v)) = -1;
-                else
-                    acf(lag + (d1*u) + (d2*v)) = a;
-                end
-            end
-        end
-    end
+[n1, n2] = size(data) ;
+if n2 ~=1
+    error('Input series y must be an nx1 column vector')
 end
 
+[a1, a2] = size(nlags) ;
+if ~((a1==1 && a2==1) && (nlags<n1))
+    error('Input number of lags p must be a 1x1 scalar, and must be less than length of series y')
+end
 
+% -------------
+% BEGIN CODE
+% -------------
 
-        
+ta = zeros(nlags,1) ;
+global N 
+N = max(size(data)) ;
+global ybar 
+ybar = nanmean(data); 
+
+% Collect ACFs at each lag i
+for i = 1:nlags
+   ta(i) = acf_k(data,i) ; 
+end
+
+% ---------------
+% SUB FUNCTION
+% ---------------
+function ta2 = acf_k(data,nlags)
+% ACF_K - Autocorrelation at Lag k
+% acf(y,k)
+%
+% Inputs:
+% y - series to compute acf for
+% k - which lag to compute acf
+% 
+global ybar
+global N
+cross_sum = zeros(N-nlags,1) ;
+
+% Numerator, unscaled covariance
+for i = (nlags+1):N
+    cross_sum(i) = (data(i)-nanmean(data(1:i)))*(data(i-nlags)-nanmean(data(1:i))) ;
+end
+
+% Denominator, unscaled variance
+yvar = (data-ybar)'*(data-ybar) ;
+
+ta2 = sum(cross_sum) / yvar ;
