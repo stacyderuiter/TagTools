@@ -55,7 +55,7 @@ for k = 1:max_lag
     vect = (0:(vec_end));
     vect_end = vect(1:(end-1));
     i1 = i1 + vect_end;
-    this_acf = nanautocorr(r, max_lag);
+    this_acf = acf_nan(r', max_lag);
     block_acf(k + 1) = this_acf(k + 1, 1);
 end
 
