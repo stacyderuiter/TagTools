@@ -14,7 +14,7 @@ for u = 1:ns
         for lag = 1:nl+1
             sum = 0;
             nu = 0;
-            for i = 1:(n-lag)
+            for i = 1:(n-lag-1)
                 if ~isnan(x(i + lag + (n*u)))
                     nu = nu +1;
                     sum = sum + (x(i + lag + (n*u)) * x(i + (n*v)));
