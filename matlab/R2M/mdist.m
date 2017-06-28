@@ -123,11 +123,49 @@ end
 
 if consec == FALSE
     %doing the following with apply type commands means it could be executed in parallel if needed...
-    comps = rollapply(data, width = W, mean, by= W-O, by.column=TRUE, align="left", fill=NULL, partial=TRUE, na.rm=T); %rolling means, potentially with overlap
+    by = W-O;
+    for cut = data(by:by:size(data,1),1)
+        data(cut,:) = [];
+    end
+    ctls = zeros(size(data,1), size(data,2));
+    for i = 1:W:size(data,1)
+        for j = i+1
+            for k = 1:size(data,2)
+                ctls(i,k) = mean([data(i,k),data(j,k)]);
+            end
+        end
+    end
+    %remove rows of zero from matrix of means
+    l = 1;
+    while l < size(ctls,1),
+        l = l + 1;
+        if ctls(l,:) == 0
+            ctls(l,:) = [];    
+        end     
+    end
     d2 = apply(comps, MARGIN=1, FUN=mahalanobis, cov=bcov, center=ctr, inverted=FALSE);
 else
     i.bcov = inv(bcov); %inverse of the baseline cov matrix
-    ctls = rollapply(data, width = W, mean, by= W-O, by.column=TRUE, align="left", fill=NULL, partial=TRUE, na.rm=T); %rolling means, potentially with overlap
+    by = W-O;
+    for cut = data(by:by:size(data,1),1)
+        data(cut,:) = [];
+    end
+    ctls = zeros(size(data,1), size(data,2));
+    for i = 1:W:size(data,1)
+        for j = i+1
+            for k = 1:size(data,2)
+                ctls(i,k) = mean([data(i,k),data(j,k)]);
+            end
+        end
+    end
+    %remove rows of zero from matrix of means
+    l = 1;
+    while l < size(ctls,1),
+        l = l + 1;
+        if ctls(l,:) == 0
+            ctls(l,:) = [];    
+        end     
+    end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair.diffs = [ctls-comps];
     d2 = apply(pair.diffs, MARGIN=1, FUN=Ma, Sx=i.bcov);
