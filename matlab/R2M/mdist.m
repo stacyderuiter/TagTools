@@ -158,6 +158,23 @@ else
             end
         end
     end
+    %inserted code that works but is commented out
+ %   for n = 1:by:size(dummy,1),
+ %   for i = 1:size(dummy, 2),
+  %      if n+w-1 <= size(dummy,1),
+   %         comps(n, i) = mean(dummy(n:(n + w-1), i));
+   %     else
+    %        comps(n, i) = mean(dummy(n:end, i));
+    %    end
+  %  end 
+%end
+%l = 1;
+%while l < size(comps,1),
+%   l = l + 1;
+   %     if comps(l,:) == 0
+  %          comps(l,:) = [];    
+  %      end     
+% end
     %remove rows of zero from matrix of means
     l = 1;
     while l < size(ctls,1)
