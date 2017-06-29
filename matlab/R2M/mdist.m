@@ -17,14 +17,14 @@ function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expE
 %     resulting distance time series. If not specified or zero, 
 %     there will be no overlap.  Overlap will also be set to zero if 
 %     smoothDur is unspecified or zero.
-%  consec: Logical. If consec=TRUE, then the calculated distances are between
+%  consec: Logical. If consec=true, then the calculated distances are between
 %     consecutive windows of duration smoothDur, sliding forward over 
 %     the data set by a time step of (smoothDur-overlap) minutes.  
 %     If TRUE, baselineStart and baselineEnd inputs will be used to define
-%     the period used to calculate the data covariance matrix. Default is consec=FALSE.  
-%  cumSum: Logical.  If cum_sum=TRUE, then output will be the cumulative 
+%     the period used to calculate the data covariance matrix. Default is consec=false.  
+%  cumSum: Logical.  If cum_sum=true, then output will be the cumulative 
 %     sum of the calculated distances, rather than the distances themselves. 
-%     Default is cum_sum=FALSE.
+%     Default is cum_sum=false.
 %  expStart: Start times (in seconds since start of the data set) of the experimental exposure period(s).  
 %  expEnd: End times (in seconds since start of the data set) of the experimental exposure period(s).
 %     If either or both of exp_start and exp_end are missing, the distance will be
@@ -47,44 +47,44 @@ function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expE
 %     dist: Mahalanobis distances between the specified baseline period and 
 %        the specified "comparison" periods             
 
-if nargin < 2
+if isempty(fs)
     fs = 1;
 end
 
-if nargin < 3
+if isempty(smoothDur)
     smoothDur = 0;
 end
 
-if nargin < 4 || smoothDur == 0
+if isempty(overlap)
     overlap = 0;
 end
 
-if nargin < 5
+if isempty(consec)
     consec = false;
 end
 
-if nargin < 6
+if isempty(cumSum)
     cumSum = false;
 end
 
-if nargin < 8
+if isempty(expStart) || isempty(expEnd) 
     expStart = [];
     expEnd = [];
 end
 
-if nargin < 9
+if isempty(baselineStart)
     baselineStart = 0;
 end
 
-if nargin < 10
+if isempty(baselineEnd)
     baselineEnd = floor(size(data, 1)/fs);
 end
 
-if nargin < 11
+if isempty(parallel)
     parallel = false;
 end
 
-if nargin < 12
+if isempty(BL_COV)
     BL_COV = false;
 end
 
