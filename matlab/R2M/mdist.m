@@ -1,4 +1,4 @@
-function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, parallel, BL.COV)
+function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, parallel, BL_COV)
 % Calculate Mahalanobis distance for a multivariate time series.
 %
 % Inputs: 
@@ -47,65 +47,65 @@ function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expE
 %     dist: Mahalanobis distances between the specified baseline period and 
 %        the specified "comparison" periods             
 
-if ismissing(fs)
+if nargin < 2
     fs = 1;
 end
 
-if ismissing(smoothDur)
+if nargin < 3
     smoothDur = 0;
 end
 
-if ismissing(overlap) || smoothDur == 0
+if nargin < 4 || smoothDur == 0
     overlap = 0;
 end
 
-if ismissing(consec)
-    consec = FALSE;
+if nargin < 5
+    consec = false;
 end
 
-if ismissing(cumSum)
-    cumSum = FALSE;
+if nargin < 6
+    cumSum = false;
 end
 
-if ismissing(expStart) || ismissing(expEnd)
-    expStart = missing;
-    expEnd = missing;
+if nargin < 8
+    expStart = [];
+    expEnd = [];
 end
 
-if ismissing(baselineStart)
+if nargin < 9
     baselineStart = 0;
 end
 
-if ismissing(baselineEnd)
+if nargin < 10
     baselineEnd = floor(size(data, 1)/fs);
 end
 
-if ismissing(parallel)
-    parallel = FALSE;
+if nargin < 11
+    parallel = false;
 end
 
-if ismissing(BL.COV)
-    BL.COV = FALSE;
+if nargin < 12
+    BL_COV = false;
 end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % preliminaries - conversion, preallocate space, etc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-es = floor(fs*expStart) + 1;                       %start of experimental period in samples
-ee = ceil(fs*expEnd);                              %end of experimental period in samples
-bs = floor(fs*baselineStart) + 1;                  %start of baseline period in samples
-be = min( ceil(fs*baselineEnd) , size(data,1) );   %end of baseline period in samples
-W = max(1,smoothDur*fs*60);                        %window length in samples
-O = overlap*fs*60;                                 %overlap between subsequent window, in samples
+es = floor(fs.*expStart) + 1;                       %start of experimental period in samples
+ee = ceil(fs.*expEnd);                              %end of experimental period in samples
+bs = floor(fs.*baselineStart) + 1;                  %start of baseline period in samples
+be = min( ceil(fs.*baselineEnd) , size(data,1) );   %end of baseline period in samples
+W = max(1,smoothDur.*fs.*60);                        %window length in samples
+O = overlap.*fs.*60;                                 %overlap between subsequent window, in samples
 N = ceil(size(data,1)/(W-O));                      %number of start points at which to position the window -- start points are W-O samples apart
 k = (1:N)';                                        %index vector
 ss = (k-1)*(W-O) + 1;                              %start times of comparison windows, in samples
-ps = ((k-1)*(W-O) + 1) + smoothDur*fs*60/2;        %mid points of comparison windows, in samples (times at which distances will be reported)
+ps = ((k-1)*(W-O) + 1) + smoothDur.*fs.*60/2;        %mid points of comparison windows, in samples (times at which distances will be reported)
 t = ps/fs;                                         %mid-point times in seconds
 ctr = mean(data(bs:be,:), 2);                      %mean values during baseline period
 
-if BL.COV
+if BL_COV
     %bcov = cov(data(bs:be,:), use="complete.obs")           #covariance matrix using all data in baseline period
     bcov = cov(data(bs:be, :));
 else
@@ -121,31 +121,31 @@ end
 %cl <- makeCluster(n.cores)
 %}
 
-if consec == FALSE
+if consec == false
     %doing the following with apply type commands means it could be executed in parallel if needed...
     by = W-O;
     for cut = data(by:by:size(data,1),1)
         data(cut,:) = [];
     end
-    ctls = zeros(size(data,1), size(data,2));
+    comps = zeros(size(data,1), size(data,2));
     for i = 1:W:size(data,1)
         for j = i+1
             for k = 1:size(data,2)
-                ctls(i,k) = mean([data(i,k),data(j,k)]);
+                comps(i,k) = mean([data(i,k),data(j,k)]);
             end
         end
     end
     %remove rows of zero from matrix of means
     l = 1;
-    while l < size(ctls,1),
+    while l < size(comps,1)
         l = l + 1;
-        if ctls(l,:) == 0
-            ctls(l,:) = [];    
+        if comps(l,:) == 0
+            comps(l,:) = [];    
         end     
     end
-    d2 = apply(comps, MARGIN=1, FUN=mahalanobis, cov=bcov, center=ctr, inverted=FALSE);
+    d2 = rowfun(mahal, comps);
 else
-    i.bcov = inv(bcov); %inverse of the baseline cov matrix
+    i_bcov = inv(bcov); %inverse of the baseline cov matrix
     by = W-O;
     for cut = data(by:by:size(data,1),1)
         data(cut,:) = [];
@@ -160,15 +160,15 @@ else
     end
     %remove rows of zero from matrix of means
     l = 1;
-    while l < size(ctls,1),
+    while l < size(ctls,1)
         l = l + 1;
         if ctls(l,:) == 0
             ctls(l,:) = [];    
         end     
     end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
-    pair.diffs = [ctls-comps];
-    d2 = apply(pair.diffs, MARGIN=1, FUN=Ma, Sx=i.bcov);
+    pair_diffs = [ctls-comps];
+    d2 = rowfun(Ma, pair_diffs);
     d2 = [NA, d2(1:(length(d2)-1))]; %first dist should be at midpoint of first comp window
 end
 
@@ -194,7 +194,7 @@ D = struct('t',t,'dist',dist);
 end
 
 %----------------------------------------------------------------------------------
-function [D] = Ma(d, Sx)
+function D = Ma(d, Sx)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calculate distances!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,5 +212,6 @@ function [D] = Ma(d, Sx)
 %     dist: Mahalanobis distances between the specified baseline period and 
 %        the specified "comparison" periods
 
-sum((d.*Sx).*d)
+D = sum((d.*Sx).*d);
+
 end
