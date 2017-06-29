@@ -159,30 +159,30 @@ else
         end
     end
     %inserted code that works but is commented out
- %   for n = 1:by:size(dummy,1),
- %   for i = 1:size(dummy, 2),
-  %      if n+w-1 <= size(dummy,1),
-   %         comps(n, i) = mean(dummy(n:(n + w-1), i));
-   %     else
-    %        comps(n, i) = mean(dummy(n:end, i));
-    %    end
-  %  end 
-%end
-%l = 1;
-%while l < size(comps,1),
-%   l = l + 1;
-   %     if comps(l,:) == 0
-  %          comps(l,:) = [];    
-  %      end     
-% end
-    %remove rows of zero from matrix of means
-    l = 1;
-    while l < size(ctls,1)
-        l = l + 1;
+for n = 1:by:size(data,1),
+    for i = 1:size(data, 2),
+        if n+w-1 <= size(data,1),
+            ctls(n, i) = mean(data(n:(n + w-1), i));
+        else
+            ctls(n, i) = mean(data(n:end, i));
+        end
+   end 
+end
+l = 1;
+while l < size(ctls,1),
+   l = l + 1;
         if ctls(l,:) == 0
             ctls(l,:) = [];    
         end     
-    end
+ end
+    %remove rows of zero from matrix of means
+  %  l = 1;
+  %  while l < size(ctls,1)
+    %    l = l + 1;
+      %  if ctls(l,:) == 0
+      %      ctls(l,:) = [];    
+     %   end     
+   % end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
     d2 = zeros(size(pair_diffs,1));
