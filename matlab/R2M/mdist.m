@@ -168,6 +168,10 @@ else
     end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
+    d2 = zeros(size(pair_diffs,1));
+    for q = 1:size(pair_diffs,1)
+        d2(q) = Ma(pair_diffs(q,:), i_bcov);
+    end
     d2 = rowfun(Ma, pair_diffs);
     d2 = [NA, d2(1:(length(d2)-1))]; %first dist should be at midpoint of first comp window
 end
