@@ -59,8 +59,8 @@ if(missing(overlap) | smoothDur == 0){overlap <- 0}
 if(missing(consec)) {consec=FALSE}
 if(missing(cumSum)){cumSum=FALSE}
 if(missing(expStart) | missing(expEnd)){
-    expStart <- na
-    expEnd   <- na}
+    expStart <- NA
+    expEnd   <- NA}
 if(missing(baselineStart)){baselineStart <- 0}
 if(missing(baselineEnd)){baselineEnd <- floor(nrow(data)/fs)}
 if(missing(parallel)){parallel=FALSE}
