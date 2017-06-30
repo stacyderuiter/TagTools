@@ -83,16 +83,16 @@ if isempty(BL_COV)
 end
 
 % preliminaries - conversion, preallocate space, etc.
-es = floor(fs.*expStart) + 1;                       %start of experimental period in samples
-ee = ceil(fs.*expEnd);                              %end of experimental period in samples
-bs = floor(fs.*baselineStart) + 1;                  %start of baseline period in samples
+es = floor(fs.*expStart) + 1;                      %start of experimental period in samples
+ee = ceil(fs.*expEnd);                             %end of experimental period in samples
+bs = floor(fs.*baselineStart) + 1;                 %start of baseline period in samples
 be = min( ceil(fs.*baselineEnd) , size(data,1));   %end of baseline period in samples
-W = max(1,smoothDur.*fs.*60);                        %window length in samples
-O = overlap.*fs.*60;                                 %overlap between subsequent window, in samples
+W = max(1,smoothDur.*fs.*60);                      %window length in samples
+O = overlap.*fs.*60;                               %overlap between subsequent window, in samples
 N = ceil(size(data,1)/(W-O));                      %number of start points at which to position the window -- start points are W-O samples apart
 k = (1:N)';                                        %index vector
 ss = (k-1)*(W-O) + 1;                              %start times of comparison windows, in samples
-ps = ((k-1)*(W-O) + 1) + smoothDur.*fs.*60/2;        %mid points of comparison windows, in samples (times at which distances will be reported)
+ps = ((k-1)*(W-O) + 1) + smoothDur.*fs.*60/2;      %mid points of comparison windows, in samples (times at which distances will be reported)
 t = ps/fs;                                         %mid-point times in seconds
 ctr = mean(data(bs:be,:), 1);                      %mean values during baseline period
 
@@ -142,8 +142,7 @@ else
     for q = 1:size(pair_diffs,1)
         d2(q) = Ma(pair_diffs(q,:), i_bcov);
     end
-    d2 = rowfun(Ma, pair_diffs);
-    d2 = [NA, d2(1:(length(d2)-1))]; %first dist should be at midpoint of first comp window
+    d2 = [NaN; d2(1:(length(d2)-1))]; %first dist should be at midpoint of first comp window
 end
 
 %functions return squared Mahalanobis dist so take sqrt
