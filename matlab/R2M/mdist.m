@@ -125,10 +125,9 @@ if consec == false
             comps(l,:) = [];    
         end     
     end
-    d1 = zeros(size(comps,1),1);
+    d2 = zeros(size(comps,1),1);
     for I = 1:size(comps,1)
-        d1(I) = (comps(I,:)-ctr).*(bcov(1))^(-1);
-        d2 = d1.*(comps(I,:))';
+        d2(I) = (comps(I,:)-ctr).*(bcov(1))^(-1)*(comps(I,:))';
     end
 else
     i_bcov = inv(bcov); %inverse of the baseline cov matrix
