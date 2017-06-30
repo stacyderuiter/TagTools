@@ -118,12 +118,12 @@ if consec == false
             end
         end 
     end
-    p = 1;
-    while p < size(comps,1),
-        if ~(any(comps(p,:))),
-            comps(p,:) = [];    
+    b = 1;
+    while b < size(comps,1),
+        if ~(any(comps(b,:))),
+            comps(b,:) = [];    
         end  
-        p = p + 1;
+        b = b + 1;
     end
     d2 = zeros(size(comps,1),1);
     for I = 1:size(comps,1)
@@ -142,12 +142,12 @@ else
             end
         end 
     end
-    l = 1;
-    while l < size(ctls,1)
-        l = l + 1;
-        if ~(any(ctls(1,:)))
-            ctls(l,:) = [];    
-        end     
+    b = 1;
+    while b < size(ctls,1),
+        if ~(any(ctls(b,:))),
+            ctls(b,:) = [];    
+        end  
+        b = b + 1;
     end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
