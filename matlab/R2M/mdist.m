@@ -1,4 +1,4 @@
-function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, parallel, BL_COV)
+function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV)
 % Calculate Mahalanobis distance for a multivariate time series.
 %
 % Inputs: 
@@ -36,8 +36,6 @@ function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expE
 %  baselineEnd: End time (in seconds since start of the data set) of the baseline period.  
 %     If not specified, the entire data set will be used (baseline_end will 
 %     be the last sampled time-point in the data set).
-%  parallel: logical.  run in parallel?  NOT IMPLEMENTED YET.  would only 
-%     help if I figured out how to do rollapply in parallel...
 %       
 % Outputs:
 %  D: Data structure containing results
@@ -80,10 +78,6 @@ if isempty(baselineEnd)
     baselineEnd = floor(size(data, 1)/fs);
 end
 
-if isempty(parallel)
-    parallel = false;
-end
-
 if isempty(BL_COV)
     BL_COV = false;
 end
@@ -106,36 +100,24 @@ t = ps/fs;                                         %mid-point times in seconds
 ctr = mean(data(bs:be,:), 2);                      %mean values during baseline period
 
 if BL_COV
-    %bcov = cov(data(bs:be,:), use="complete.obs")           #covariance matrix using all data in baseline period
+    %covariance matrix using all data in baseline period
     bcov = cov(data(bs:be, :));
 else
-    %bcov = cov(data, use="complete.obs")
     bcov = cov(data);
 end
-  
-%parallel computing stuff
-%if(parallel=TRUE){
-%require(foreach) %for plyr in parallel
-%require(parallel) %for parallel
-%n.cores<-detectCores()
-%cl <- makeCluster(n.cores)
-%}
 
 if consec == false
-    %doing the following with apply type commands means it could be executed in parallel if needed...
     by = W-O;
-    for cut = data(by:by:size(data,1),1)
-        data(cut,:) = [];
-    end
     comps = zeros(size(data,1), size(data,2));
-    for i = 1:W:size(data,1)
-        for j = i+1
-            for k = 1:size(data,2)
-                comps(i,k) = mean([data(i,k),data(j,k)]);
+    for n = 1:by:size(data,1)
+        for i = 1:size(data, 2)
+            if n+W-1 <= size(data,1)
+                comps(n, i) = mean(data(n:(n + W-1), i));
+            else
+                comps(n, i) = mean(data(n:end, i));
             end
-        end
+        end 
     end
-    %remove rows of zero from matrix of means
     l = 1;
     while l < size(comps,1)
         l = l + 1;
@@ -143,46 +125,31 @@ if consec == false
             comps(l,:) = [];    
         end     
     end
-    d2 = rowfun(mahal, comps);
+    d1 = zeros(size(comps,1),1);
+    for I = 1:size(comps,1)
+        d1(I) = (comps(I,:)-ctr).*(bcov(1))^(-1);
+        d2 = d1.*(comps(I,:))';
+    end
 else
     i_bcov = inv(bcov); %inverse of the baseline cov matrix
     by = W-O;
-    for cut = data(by:by:size(data,1),1)
-        data(cut,:) = [];
-    end
     ctls = zeros(size(data,1), size(data,2));
-    for i = 1:W:size(data,1)
-        for j = i+1
-            for k = 1:size(data,2)
-                ctls(i,k) = mean([data(i,k),data(j,k)]);
+    for n = 1:by:size(data,1)
+        for i = 1:size(data, 2)
+            if n+W-1 <= size(data,1)
+                ctls(n, i) = mean(data(n:(n + W-1), i));
+            else
+                ctls(n, i) = mean(data(n:end, i));
             end
-        end
+        end 
     end
-    %inserted code that works but is commented out
-for n = 1:by:size(data,1),
-    for i = 1:size(data, 2),
-        if n+w-1 <= size(data,1),
-            ctls(n, i) = mean(data(n:(n + w-1), i));
-        else
-            ctls(n, i) = mean(data(n:end, i));
-        end
-   end 
-end
-l = 1;
-while l < size(ctls,1),
-   l = l + 1;
+    l = 1;
+    while l < size(ctls,1)
+        l = l + 1;
         if ctls(l,:) == 0
             ctls(l,:) = [];    
         end     
- end
-    %remove rows of zero from matrix of means
-  %  l = 1;
-  %  while l < size(ctls,1)
-    %    l = l + 1;
-      %  if ctls(l,:) == 0
-      %      ctls(l,:) = [];    
-     %   end     
-   % end
+    end
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
     d2 = zeros(size(pair_diffs,1));
@@ -192,11 +159,6 @@ while l < size(ctls,1),
     d2 = rowfun(Ma, pair_diffs);
     d2 = [NA, d2(1:(length(d2)-1))]; %first dist should be at midpoint of first comp window
 end
-
-%stop cluster if working in parallel
-%if(parallel=TRUE){
-%stopCluster(cl)
-%}
 
 %functions return squared Mahalanobis dist so take sqrt
 dist = sqrt(d2);
