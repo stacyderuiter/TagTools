@@ -1,4 +1,4 @@
-function [D] = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV)
+function D = mdist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV)
 % Calculate Mahalanobis distance for a multivariate time series.
 %
 % Inputs: 
@@ -82,14 +82,11 @@ if isempty(BL_COV)
     BL_COV = false;
 end
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % preliminaries - conversion, preallocate space, etc.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 es = floor(fs.*expStart) + 1;                       %start of experimental period in samples
 ee = ceil(fs.*expEnd);                              %end of experimental period in samples
 bs = floor(fs.*baselineStart) + 1;                  %start of baseline period in samples
-be = min( ceil(fs.*baselineEnd) , size(data,1) );   %end of baseline period in samples
+be = min( ceil(fs.*baselineEnd) , size(data,1));   %end of baseline period in samples
 W = max(1,smoothDur.*fs.*60);                        %window length in samples
 O = overlap.*fs.*60;                                 %overlap between subsequent window, in samples
 N = ceil(size(data,1)/(W-O));                      %number of start points at which to position the window -- start points are W-O samples apart
@@ -97,7 +94,7 @@ k = (1:N)';                                        %index vector
 ss = (k-1)*(W-O) + 1;                              %start times of comparison windows, in samples
 ps = ((k-1)*(W-O) + 1) + smoothDur.*fs.*60/2;        %mid points of comparison windows, in samples (times at which distances will be reported)
 t = ps/fs;                                         %mid-point times in seconds
-ctr = mean(data(bs:be,:), 2);                      %mean values during baseline period
+ctr = mean(data(bs:be,:), 1);                      %mean values during baseline period
 
 if BL_COV
     %covariance matrix using all data in baseline period
@@ -119,10 +116,10 @@ if consec == false
         end 
     end
     compsidx=all(comps==0,2);
-    comps(compsidx,:)= []; % remove same rows from m and x...
+    comps(compsidx,:)= [];
     d2 = zeros(size(comps,1),1);
     for I = 1:size(comps,1)
-        d2(I) = (comps(I,:)-ctr).*(bcov(1))^(-1)*(comps(I,:))';
+        d2(I) = (comps(I,:)-ctr)*inv(bcov)*(comps(I,:)-ctr)';
     end
 else
     i_bcov = inv(bcov); %inverse of the baseline cov matrix
@@ -138,11 +135,10 @@ else
         end 
     end
     ctlsidx=all(ctls==0,2);
-    ctls(ctlsidx,:)= []; % remove same rows from m and x...
-    d2 = zeros(size(comps,1),1);
+    ctls(ctlsidx,:)= []; 
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
-    d2 = zeros(size(pair_diffs,1));
+    d2 = zeros(size(pair_diffs,1),1);
     for q = 1:size(pair_diffs,1)
         d2(q) = Ma(pair_diffs(q,:), i_bcov);
     end
@@ -153,24 +149,19 @@ end
 %functions return squared Mahalanobis dist so take sqrt
 dist = sqrt(d2);
 
-%note: should probably erase the values for partial windows and replace with NAs.  
-%because the distances get bigger for partial windows, not b/c of change, but because of less averaging...
 dist(t > (size(data, 1)/fs - smoothDur.*60)) = missing;
 
 %Calculate cumsum of distances if requested
-if cumSum == TRUE
+if cumSum == true
     dist = cumsum(dist);
-end %this is kind of silly. maybe it'll be more use having this in here if we decide to calculate the cumsum after a specified start time, e.g. from start of exposure...or maybe just better to do later in plotting routines.
+end 
 
-%Ta-Da!
 D = struct('t',t,'dist',dist);
 end
 
 %----------------------------------------------------------------------------------
 function D = Ma(d, Sx)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calculate distances!
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Alternate way of calc Mdist
 %
 % Inputs:
@@ -185,6 +176,6 @@ function D = Ma(d, Sx)
 %     dist: Mahalanobis distances between the specified baseline period and 
 %        the specified "comparison" periods
 
-D = sum((d.*Sx).*d);
+D = sum(((d.*Sx).*d));
 
 end
