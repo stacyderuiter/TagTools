@@ -118,12 +118,12 @@ if consec == false
             end
         end 
     end
-    l = 1;
-    while l < size(comps,1)
-        l = l + 1;
-        if comps(l,:) == 0
-            comps(l,:) = [];    
-        end     
+    p = 1;
+    while p < size(comps,1),
+        if ~(any(comps(p,:))),
+            comps(p,:) = [];    
+        end  
+        p = p + 1;
     end
     d2 = zeros(size(comps,1),1);
     for I = 1:size(comps,1)
@@ -145,7 +145,7 @@ else
     l = 1;
     while l < size(ctls,1)
         l = l + 1;
-        if ctls(l,:) == 0
+        if ~(any(ctls(1,:)))
             ctls(l,:) = [];    
         end     
     end
