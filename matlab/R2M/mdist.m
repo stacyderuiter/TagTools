@@ -118,13 +118,8 @@ if consec == false
             end
         end 
     end
-    b = 1;
-    while b < size(comps,1),
-        if ~(any(comps(b,:))),
-            comps(b,:) = [];    
-        end  
-        b = b + 1;
-    end
+    compsidx=all(comps==0,2);
+    comps(compsidx,:)= []; % remove same rows from m and x...
     d2 = zeros(size(comps,1),1);
     for I = 1:size(comps,1)
         d2(I) = (comps(I,:)-ctr).*(bcov(1))^(-1)*(comps(I,:))';
@@ -142,13 +137,9 @@ else
             end
         end 
     end
-    b = 1;
-    while b < size(ctls,1),
-        if ~(any(ctls(b,:))),
-            ctls(b,:) = [];    
-        end  
-        b = b + 1;
-    end
+    ctlsidx=all(ctls==0,2);
+    ctls(ctlsidx,:)= []; % remove same rows from m and x...
+    d2 = zeros(size(comps,1),1);
     comps = [ctls(2:size(ctls,1),:) ; NaN(1, size(data,2))]; %compare a given control window with the following comparison window.
     pair_diffs = [ctls-comps];
     d2 = zeros(size(pair_diffs,1));
