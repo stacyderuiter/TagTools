@@ -176,6 +176,6 @@ function D = Ma(d, Sx)
 %     dist: Mahalanobis distances between the specified baseline period and 
 %        the specified "comparison" periods
 
-D = sum(((d.*Sx).*d));
+D = sum((d*Sx)*d');
 
 end
