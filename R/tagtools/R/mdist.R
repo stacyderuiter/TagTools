@@ -48,7 +48,7 @@ mdist <- function(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd,
   es <- floor(fs * expStart) + 1                              #start of experimental period in samples
   ee <- ceiling(fs * expEnd)                                  #end of experimental period in samples
   bs <- floor(fs * baselineStart) + 1                         #start of baseline period in samples
-  be <- min(ceiling(fs * baselineEnd) , nrow(data) )          #end of baseline period in samples
+  be <- min(ceiling(fs * baselineEnd) , nrow(data))          #end of baseline period in samples
   W <- max(1, smoothDur * fs * 60)                            #window length in samples
   O <- overlap * fs * 60                                      #overlap between subsequent window, in samples
   N <- ceiling(nrow(data) / (W - O))                          #number of start points at which to position the window -- start points are W-O samples apart
