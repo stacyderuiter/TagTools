@@ -6,7 +6,7 @@
 #' @param fs The sampling rate in Hz of the acceleration signals.
 #' @param method A string containing either "wilson" or "vedba". If the third argument to odba.m is a string, either the classic 1-norm ODBA ('wilson') or the 2-norm VeDBA ('vedba') is computed, in either case with an n-length rectangular window.
 #' @return e A column vector of ODBA with the same number of rows as A. e has the same units as A.
-#' @note If hoping to use the default (FIR filtering) method to calculate odba, use the function odba_default with inputs A, fs, and fh
+#' @note When hoping to use the default (FIR filtering) method to calculate odba, use the function odba_default with inputs A, fs, and fh
 #' @export
 #' @example A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7), byrow = TRUE, nrow = 3)
 #'          e <- odba(A, n = 5, fs = 5, method = "vebda")

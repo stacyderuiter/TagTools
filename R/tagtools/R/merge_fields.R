@@ -12,16 +12,11 @@ mergefields <- function(s1,s2) {
   if(missing(s1) | missing(s2)){
     stop("inputs for both s1 and s2 are required")
   }
-  
-  #if (!is.data.frame(s1) & !is.data.frame(s2)){
   if (!is.list(s1) | !is.list(s2)){
     stop('Both inputs must be data frames in mergefields\n') 
   }
-  
   s <- s2 
-  #s <- cbind(s1,s)
   s <- append(s1,s)
-  #s <- s[, !duplicated(colnames(s))]
   s <- s[!duplicated(names(s))]
   return(s)
 }

@@ -1,4 +1,4 @@
-#' Reduce the sampling rate of a time series by an integer factor. This is similar to decimate() and resample() but is delay freeand DC accurate which are important for sensor data. 
+#' Reduce the sampling rate of a time series by an integer factor.
 #' 
 #' @param x A vector or matrix containing the signal(s) to be decimated. If x is a matrix, each column is decimated separately.
 #' @param df The decimation factor. The output sampling rate is the input sampling rate divided by df. df must be an integer greater than 1.

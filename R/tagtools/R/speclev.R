@@ -1,4 +1,4 @@
-#' Compute the spectrum level of a signal x. This replaces Matlab's psd function and returns units in dB re root-Hz.
+#' Compute the spectrum level of a signal x.
 #' 
 #' @param x A vector containing the signal to be processed. For signals with multiple channels, each channel should be in a column of x.
 #' @param nfft The length of the fft to use. Choose a power of two for fastest operation. Default value is 512.

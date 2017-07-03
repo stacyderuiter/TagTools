@@ -1,12 +1,12 @@
 #' Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #'
-#' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss).
-#' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration canbe in any consistent unit, e.g., g or m/s^2. 
+#' @param M The magnetometer signal matrix, M = [mx, my, mz] in any consistent unit (e.g., in uT or Gauss).
+#' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with respect to 1=Nyquist frequency. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @return h The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
 #' @return v The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
 #' @return incl The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
-#' @note Output sampling rate is the same as the input sampling rate, i.e., h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors.
+#' @note Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. North and east are magnetic, not true. In these frames a positive heading is a clockwise rotation around the z-axis. 
 #' @note The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
 #' @export
