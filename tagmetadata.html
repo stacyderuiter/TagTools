@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+
+var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0]
+function findIndexbyField(str, array){ 
+	var i;
+	arrlength = array.length;
+	for(i = 1; i < arrlength; i++){
+		if(str == array[i][0]){
+			return i;
+		}
+	}
+	return -1;
+};
+
+function myTrim(x) {
+    return x.replace(/^\s+|\s+$/gm,'');
+};
+ function UploadCSV() {
+        var csvFileUpload = document.getElementById("csvFileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(csvFileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+				localStorage.setItem('storeData', e.target.result);
+				document.getElementById("tagdata_form").reset();
+				arr = parseCSV(e.target.result);
+				var i;
+				for(i = 0; i < arr.length; i++){
+					if(arr[i][0] == "info.dephist.deploy.locality"){
+						var temp_entry = arr[i][2];
+						temp_entry = temp_entry.replace(/\'/g, "")
+						temp_entry= temp_entry.replace(/[{}]/g, "");
+						var entry21 = temp_entry.split(",");
+						var n;
+						for(n = 0; n < 4; n++){
+							document.getElementById(arr[i][0] + n).value = myTrim(entry21[n]);
+						}
+					}
+					if(document.getElementById(arr[i][0]) != null && typeof(document.getElementById(arr[i][0])) != 'undefined'){
+						if(arr[i][0] == "info.udm.export"){
+							if(arr[i][2] == 1){
+								document.getElementById(arr[i][0]).checked = true;
+							}
+							else{
+								document.getElementById(arr[i][0]).checked = false;
+							}
+						}
+						else if(arr[i][0] =="info.dephist.device.tzone"){
+							document.getElementById(arr[i][0]).value = arr[i][2];
+							
+						}
+						else{
+							document.getElementById(arr[i][0]).value = arr[i][2];
+						}
+					}
+				}
+					
+					
+			}
+			reader.readAsText(csvFileUpload.files[0]);
+		} 
+		else {
+			alert("This browser does not support HTML5.");
+		}
+	} 
+	else {
+		alert("Please upload a valid CSV file.");
+	}
+};
+
+function parseCSV(str) {
+    var arr = [];
+    var quote = false;  // true means we're inside a quoted field
+
+    // iterate over each character, keep track of current row and column (of the returned array)
+    for (var row = col = c = 0; c < str.length; c++) {
+        var cc = str[c], nc = str[c+1];        // current character, next character
+        arr[row] = arr[row] || [];             // create a new row if necessary
+        arr[row][col] = arr[row][col] || '';   // create a new column (start with empty string) if necessary
+
+        // If the current character is a quotation mark, and we're inside a
+        // quoted field, and the next character is also a quotation mark,
+        // add a quotation mark to the current column and skip the next character
+        if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }  
+
+        // If it's just one quotation mark, begin/end quoted field
+        if (cc == '"') { quote = !quote; continue; }
+
+        // If it's a comma and we're not in a quoted field, move on to the next column
+        if (cc == ',' && !quote) { ++col; continue; }
+		if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+        // If it's a newline and we're not in a quoted field, move on to the next
+        // row and move to column 0 of that new row
+        if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+
+        // Otherwise, append the current character to the current column
+        arr[row][col] += cc;
+    }
+    return arr;
+};
+
+
+function validateForm() {
+	var userinput = ["info.device.serial","info.device.make","info.device.type",
+		"info.device.model","info.device.url","info.sensors.firm","info.sensors.soft","info.animal.id",
+		"info.animal.species.common","info.animal.species.science","info.animal.dbase.url", 
+		"info.dephist.device.tzone","info.dephist.device.datetime.start", "info.dephist.deploy.locality0",
+		"info.dephist.deploy.locality1", "info.dephist.deploy.locality2", "info.dephist.deploy.locality3","info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", 
+		"info.dephist.deploy.datetime.start", "info.dephist.deploy.method","info.project.name", 
+		"info.project.datetime.start", "info.project.datetime.end", "info.provider.name", "info.provider.details", "info.provider.email", 
+		"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
+	var input_length = userinput.length;
+	try{
+		var a = req_field;
+
+		var i;
+		var index;
+		for (i = 0; i < input_length; i++) {
+			if(userinput[i] == "info.dephist.deploy.locality0" 
+			|| userinput[i] =="info.dephist.deploy.locality1"
+			|| userinput[i] == "info.dephist.deploy.locality2"
+			|| userinput[i] =="info.dephist.deploy.locality3"){
+				if(document.getElementById(userinput[i]).value == ""){
+					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
+					return false;
+				}
+			}
+			else{
+				index = findIndexbyField(userinput[i], a);
+				if (document.getElementById(userinput[i]).type == "text" &&
+					document.getElementById(userinput[i]).value == ""&& a[index][1] == 1) {
+					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
+					return false;
+				}
+				else{
+					if(userinput[i] == "info.dephist.deploy.location.lat" || userinput[i] == "info.dephist.deploy.location.lon"){
+						if(parseFloat(document.getElementById(userinput[i]).value).toString().length != document.getElementById(userinput[i]).value.length 
+							|| isNaN(parseFloat(document.getElementById(userinput[i]).value))){
+							window.alert(document.getElementById(userinput[i]).name + " is not a number!");
+							return false;
+						}
+						else{
+							if(userinput[i] == "info.dephist.deploy.location.lat" && (parseFloat(document.getElementById(userinput[i]).value) > 90 
+							|| parseFloat(document.getElementById(userinput[i]).value) < -90)){
+								window.alert(document.getElementById(userinput[i]).name + " must be between -90 and 90!");
+								return false;
+							}
+							if(userinput[i] == "info.dephist.deploy.location.lon" && (parseFloat(document.getElementById(userinput[i]).value) > 180 
+							|| parseFloat(document.getElementById(userinput[i]).value) < -180)){
+								window.alert(document.getElementById(userinput[i]).name + " must be between -180 and 180!");
+								return false;
+								}
+						}
+					}
+					else if(userinput[i] == "info.dephist.device.datetime.start"
+					|| userinput[i] == "info.dephist.deploy.datetime.start"
+					|| userinput[i] == "info.project.datetime.start"
+					|| userinput[i] == "info.project.datetime.end"
+					){
+						if(!isValidDate(document.getElementById(userinput[i]).value)){
+									window.alert(document.getElementById(userinput[i]).name +  "have to be in a valid YYYY-MM-DD or YYYY-MM-DD HH-MM-SS (military or standard) form!");
+									return false;
+							}
+						else{
+							if(isNaN(Date.parse(document.getElementById(userinput[i]).value))){
+								window.alert(document.getElementById(userinput[i]).name +  "is not a date!");
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	catch(err){
+		window.alert("Error encountered!");
+		return false;
+	}
+};
+
+
+
+function loadValue(){
+	try{
+		var retrievedObject = localStorage.getItem('storeData');
+		var a = parseCSV(retrievedObject);
+		document.getElementById("tagdata_form").reset();
+		var i;
+		for(i = 0; i < a.length; i++){
+			if(a[i][0] == "info.dephist.deploy.locality"){
+				var temp_entry = a[i][2];
+				temp_entry = temp_entry.replace(/\'/g, "")
+				temp_entry= temp_entry.replace(/[{}]/g, "");
+				var entry21 = temp_entry.split(",");
+				var n;
+				for(n = 0; n < 4; n++){
+					document.getElementById(a[i][0] + n).value = myTrim(entry21[n]);
+				}
+			}
+			if(document.getElementById(a[i][0]) != null && typeof(document.getElementById(a[i][0])) != 'undefined'){
+				if(a[i][0] == "info.udm.export"){
+					if(a[i][2] == 1){
+						document.getElementById(a[i][0]).checked = true;
+					}
+					else{
+						document.getElementById(a[i][0]).checked = false;
+					}
+				}
+				else if(a[i][0] =="info.dephist.device.tzone"){
+					document.getElementById(a[i][0]).value = a[i][2];					
+				}
+				else{
+					document.getElementById(a[i][0]).value = a[i][2];
+				}
+			}
+		}
+	}
+	catch(err){
+		window.alert("Error in javascript!");
+	}
+};
+
+function saveValues(){
+	if(validateForm()){
+		var a = parseCSV(localStorage.getItem('storeData'));
+		var record = "";
+		var i;
+		for(i = 0; i < a.length; i++){
+			if([i][0] =="info.dephist.device.regset"){
+				continue;
+			}
+			if(a[i][0] == "info.dephist.deploy.locality"){
+				record += '"' + a[i][0] + '"' + "," + a[i][1] + "," + '"' + "{" + "'";
+				var n;
+				for(n = 0; n < 4; n++){
+					if(n != 3){
+						record += document.getElementById(a[i][0]+n).value + ", ";
+					}
+					else{
+						record += document.getElementById(a[i][0]+n).value;
+					}					
+				}
+				record += "'" + "}" + '"' +  "\n" ;
+			}
+			else{
+				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
+					if(a[i][0] == "info.sensors.list"){
+						record += '"' + a[i][0] + '"' + "," + a[i][1] + "," +  '"' + a[i][2] + '"' +  "\n";
+					}
+					else{
+						record += '"' + a[i][0] + '"' + "," + a[i][1] + ",";
+						record += stringOrInt(a[i][2]) + "\n" ;
+					}
+				}
+				else{
+					if(a[i][0] != "info.udm.export"){
+						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
+						record += stringOrInt(document.getElementById(a[i][0]).value) + "\n";
+					}
+					else if(a[i][0] =="info.dephist.device.tzone"){
+						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
+						record += calculateDST(parseInt(document.getElementById(a[i][0]).value)) + "\n";
+					}
+					else{
+						var check;
+						if(document.getElementById("info.udm.export").checked){
+							check = 1;
+						}
+						else{
+							check = 0;
+						}
+						record += "info.udm.export" + "," + 0 + "," + check;
+					}
+				}
+			}
+		}
+	localStorage.setItem('storeData', record);
+	var link = document.createElement("a");
+	link.setAttribute('href', 'data:text/plain;charset=utf-8,' + 
+		encodeURIComponent(record));
+   var name_of_file;
+   if(document.getElementById("name_of_file").value == ""){
+		name_of_file = 'export.csv';
+   }
+   
+   else{
+		if(document.getElementById("name_of_file").value.substr(document.getElementById("name_of_file").value.length - 4) == ".csv"){
+			name_of_file = document.getElementById("name_of_file").value;
+		}
+		else{
+			name_of_file = document.getElementById("name_of_file").value + ".csv";
+		}
+   }
+	link.setAttribute("download", name_of_file);
+	link.style.visibility = 'hidden';
+	document.body.appendChild(link);
+	link.click();
+
+	}
+};
+function stringOrInt(value){
+	if(parseFloat(value).toString().length == value.length && !isNaN(parseFloat(value))){
+		return value;
+	}
+	else{
+		return '"' + value + '"';
+	}
+};
+
+function calculateDST(timezone){
+	var today = new Date();
+	if (today.dst()){
+		return timezone += 1;
+	}
+	else{
+		return timezone;
+	}
+}
+
+function isValidDate(dateString) {
+
+	var rgx = /^\d{4}-\d{2}-\d{2}$/;
+	var rgx2 =  /^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01]) (1[0-2]|0?[1-9]):([0-5]\d):([0-5]\d) ([AaPp][Mm])$/;
+	var rgx3 =  /^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01]) ([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+	return dateString.match(rgx) != null || (dateString.match(rgx2) != null || dateString.match(rgx3) != null) ;
+  };
+
+Date.prototype.stdTimezoneOffset = function() {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+};
+
+Date.prototype.dst = function() {
+    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+};
+
+</script>
+</head>
+<body>
+<h1>Tag Metadata Form</h1><br />
+<form name="tagdata_form" id = "tagdata_form" action="javascript:null">
+  <p>
+  <h2> Device information </h2>
+    Device Serial Number: <input name="Device Serial Number" type="text" id = "info.device.serial"/><br /><br />
+    Device manufacturer: <input name="Device manufacturer:" type="text" id = "info.device.make"/><br /><br />
+	Type of device: <input name="Type of device" type="text" id="info.device.type"/><br /><br />
+    Model Name and Version: <input name="Model Name and Version" type="text" id="info.device.model"/><br /><br />
+	URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="info.device.url"/><br /><br />
+	Device firmware version: <input name="Device firmware version" type="text" id="info.sensors.firm"/><br /><br />
+	Software off loader version: <input name="Software off loader version" type="text" id="info.sensors.soft"/><br /><br />
+	<h2> Tag and animal information </h2>
+	Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="info.animal.id"/><br /><br />
+	Describe how the tag was attached (e.g. glued, implanted, suction cups): <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="info.dephist.deploy.method"/><br /><br />
+	Common name of species: <input name="Common name of species" type="text" id="info.animal.species.common"/><br /><br />
+	Scientific name: <input name="Scientific name" type="text" id="info.animal.species.science"/><br /><br />
+	<h2> Timezone and time information </h2>
+	Time zone of device (without daylight savings time) (+- HRS UTC): <select name="Timezone of device" id="info.dephist.device.tzone">
+	<option timeZoneId="1" UTCAdjustment="UTC-12:00" useDaylightTime="0" value="-12">(UTC-12:00) International Date Line West</option>
+	<option timeZoneId="2" UTCAdjustment="UTC-11:00" useDaylightTime="0" value="-11">(UTC-11:00) Midway Island, Samoa</option>
+	<option timeZoneId="3" UTCAdjustment="UTC-10:00" useDaylightTime="0" value="-10">(UTC-10:00) Hawaii</option>
+	<option timeZoneId="4" UTCAdjustment="UTC-09:00" useDaylightTime="1" value="-9" >(UTC-09:00) Alaska</option>
+	<option timeZoneId="5" UTCAdjustment="UTC-08:00" useDaylightTime="1" value="-8">(UTC-08:00) Pacific Time (US & Canada)</option>
+	<option timeZoneId="6" UTCAdjustment="UTC-08:00" useDaylightTime="1" value="-8">(UTC-08:00) Tijuana, Baja California</option>
+	<option timeZoneId="7" UTCAdjustment="UTC-07:00" useDaylightTime="0" value="-7">(UTC-07:00) Arizona</option>
+	<option timeZoneId="8" UTCAdjustment="UTC-07:00" useDaylightTime="1" value="-7">(UTC-07:00) Chihuahua, La Paz, Mazatlan</option>
+	<option timeZoneId="9" UTCAdjustment="UTC-07:00" useDaylightTime="1" value="-7">(UTC-07:00) Mountain Time (US & Canada)</option>
+	<option timeZoneId="10" UTCAdjustment="UTC-06:00" useDaylightTime="0" value="-6">(UTC-06:00) Central America</option>
+	<option timeZoneId="11" UTCAdjustment="UTC-06:00" useDaylightTime="1" value="-6">(UTC-06:00) Central Time (US & Canada)</option>
+	<option timeZoneId="12" UTCAdjustment="UTC-06:00" useDaylightTime="1" value="-6">(UTC-06:00) Guadalajara, Mexico City, Monterrey</option>
+	<option timeZoneId="13" UTCAdjustment="UTC-06:00" useDaylightTime="0" value="-6">(UTC-06:00) Saskatchewan</option>
+	<option timeZoneId="14" UTCAdjustment="UTC-05:00" useDaylightTime="0" value="-5">(UTC-05:00) Bogota, Lima, Quito, Rio Branco</option>
+	<option timeZoneId="15" UTCAdjustment="UTC-05:00" useDaylightTime="1" value="-5">(UTC-05:00) Eastern Time (US & Canada)</option>
+	<option timeZoneId="16" UTCAdjustment="UTC-05:00" useDaylightTime="1" value="-5">(UTC-05:00) Indiana (East)</option>
+	<option timeZoneId="17" UTCAdjustment="UTC-04:00" useDaylightTime="1" value="-4">(UTC-04:00) Atlantic Time (Canada)</option>
+	<option timeZoneId="18" UTCAdjustment="UTC-04:00" useDaylightTime="0" value="-4">(UTC-04:00) Caracas, La Paz</option>
+	<option timeZoneId="19" UTCAdjustment="UTC-04:00" useDaylightTime="0" value="-4">(UTC-04:00) Manaus</option>
+	<option timeZoneId="20" UTCAdjustment="UTC-04:00" useDaylightTime="1" value="-4">(UTC-04:00) Santiago</option>
+	<option timeZoneId="21" UTCAdjustment="UTC-03:30" useDaylightTime="1" value="-3.5">(UTC-03:30) Newfoundland</option>
+	<option timeZoneId="22" UTCAdjustment="UTC-03:00" useDaylightTime="1" value="-3">(UTC-03:00) Brasilia</option>
+	<option timeZoneId="23" UTCAdjustment="UTC-03:00" useDaylightTime="0" value="-3">(UTC-03:00) Buenos Aires, Georgetown</option>
+	<option timeZoneId="24" UTCAdjustment="UTC-03:00" useDaylightTime="1" value="-3">(UTC-03:00) Greenland</option>
+	<option timeZoneId="25" UTCAdjustment="UTC-03:00" useDaylightTime="1" value="-3">(UTC-03:00) Montevideo</option>
+	<option timeZoneId="26" UTCAdjustment="UTC-02:00" useDaylightTime="1" value="-2">(UTC-02:00) Mid-Atlantic</option>
+	<option timeZoneId="27" UTCAdjustment="UTC-01:00" useDaylightTime="0" value="-1">(UTC-01:00) Cape Verde Is.</option>
+	<option timeZoneId="28" UTCAdjustment="UTC-01:00" useDaylightTime="1" value="-1">(UTC-01:00) Azores</option>
+	<option timeZoneId="29" UTCAdjustment="UTC+00:00" useDaylightTime="0" value="0">(UTC+00:00) Casablanca, Monrovia, Reykjavik</option>
+	<option timeZoneId="30" UTCAdjustment="UTC+00:00" useDaylightTime="1" value="0">(UTC+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</option>
+	<option timeZoneId="31" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+	<option timeZoneId="32" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+	<option timeZoneId="33" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+	<option timeZoneId="34" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+	<option timeZoneId="35" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) West Central Africa</option>
+	<option timeZoneId="36" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Amman</option>
+	<option timeZoneId="37" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Athens, Bucharest, Istanbul</option>
+	<option timeZoneId="38" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Beirut</option>
+	<option timeZoneId="39" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Cairo</option>
+	<option timeZoneId="40" UTCAdjustment="UTC+02:00" useDaylightTime="0" value="2">(UTC+02:00) Harare, Pretoria</option>
+	<option timeZoneId="41" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+	<option timeZoneId="42" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Jerusalem</option>
+	<option timeZoneId="43" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Minsk</option>
+	<option timeZoneId="44" UTCAdjustment="UTC+02:00" useDaylightTime="1" value="2">(UTC+02:00) Windhoek</option>
+	<option timeZoneId="45" UTCAdjustment="UTC+03:00" useDaylightTime="0" value="3">(UTC+03:00) Kuwait, Riyadh, Baghdad</option>
+	<option timeZoneId="46" UTCAdjustment="UTC+03:00" useDaylightTime="1" value="3">(UTC+03:00) Moscow, St. Petersburg, Volgograd</option>
+	<option timeZoneId="47" UTCAdjustment="UTC+03:00" useDaylightTime="0" value="3">(UTC+03:00) Nairobi</option>
+	<option timeZoneId="48" UTCAdjustment="UTC+03:00" useDaylightTime="0" value="3">(UTC+03:00) Tbilisi</option>
+	<option timeZoneId="49" UTCAdjustment="UTC+03:30" useDaylightTime="1" value="3.5">(UTC+03:30) Tehran</option>
+	<option timeZoneId="50" UTCAdjustment="UTC+04:00" useDaylightTime="0" value="4">(UTC+04:00) Abu Dhabi, Muscat</option>
+	<option timeZoneId="51" UTCAdjustment="UTC+04:00" useDaylightTime="1" value="4">(UTC+04:00) Baku</option>
+	<option timeZoneId="52" UTCAdjustment="UTC+04:00" useDaylightTime="1" value="4">(UTC+04:00) Yerevan</option>
+	<option timeZoneId="53" UTCAdjustment="UTC+04:30" useDaylightTime="0" value="4.5">(UTC+04:30) Kabul</option>
+	<option timeZoneId="54" UTCAdjustment="UTC+05:00" useDaylightTime="1" value="5">(UTC+05:00) Yekaterinburg</option>
+	<option timeZoneId="55" UTCAdjustment="UTC+05:00" useDaylightTime="0" value="5">(UTC+05:00) Islamabad, Karachi, Tashkent</option>
+	<option timeZoneId="56" UTCAdjustment="UTC+05:30" useDaylightTime="0" value="5.5">(UTC+05:30) Sri Jayawardenapura</option>
+	<option timeZoneId="57" UTCAdjustment="UTC+05:30" useDaylightTime="0" value="5.5">(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+	<option timeZoneId="58" UTCAdjustment="UTC+05:45" useDaylightTime="0" value="5.75">(UTC+05:45) Kathmandu</option>
+	<option timeZoneId="59" UTCAdjustment="UTC+06:00" useDaylightTime="1" value="6">(UTC+06:00) Almaty, Novosibirsk</option>
+	<option timeZoneId="60" UTCAdjustment="UTC+06:00" useDaylightTime="0" value="6">(UTC+06:00) Astana, Dhaka</option>
+	<option timeZoneId="61" UTCAdjustment="UTC+06:30" useDaylightTime="0" value="6.5">(UTC+06:30) Yangon (Rangoon)</option>
+	<option timeZoneId="62" UTCAdjustment="UTC+07:00" useDaylightTime="0" value="7">(UTC+07:00) Bangkok, Hanoi, Jakarta</option>
+	<option timeZoneId="63" UTCAdjustment="UTC+07:00" useDaylightTime="1" value="7">(UTC+07:00) Krasnoyarsk</option>
+	<option timeZoneId="64" UTCAdjustment="UTC+08:00" useDaylightTime="0" value="8">(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+	<option timeZoneId="65" UTCAdjustment="UTC+08:00" useDaylightTime="0" value="8">(UTC+08:00) Kuala Lumpur, Singapore</option>
+	<option timeZoneId="66" UTCAdjustment="UTC+08:00" useDaylightTime="0" value="8">(UTC+08:00) Irkutsk, Ulaan Bataar</option>
+	<option timeZoneId="67" UTCAdjustment="UTC+08:00" useDaylightTime="0" value="8">(UTC+08:00) Perth</option>
+	<option timeZoneId="68" UTCAdjustment="UTC+08:00" useDaylightTime="0" value="8">(UTC+08:00) Taipei</option>
+	<option timeZoneId="69" UTCAdjustment="UTC+09:00" useDaylightTime="0" value="9">(UTC+09:00) Osaka, Sapporo, Tokyo</option>
+	<option timeZoneId="70" UTCAdjustment="UTC+09:00" useDaylightTime="0" value="9">(UTC+09:00) Seoul</option>
+	<option timeZoneId="71" UTCAdjustment="UTC+09:00" useDaylightTime="1" value="9">(UTC+09:00) Yakutsk</option>
+	<option timeZoneId="72" UTCAdjustment="UTC+09:30" useDaylightTime="0" value="9.5">(UTC+09:30) Adelaide</option>
+	<option timeZoneId="73" UTCAdjustment="UTC+09:30" useDaylightTime="0" value="9.5">(UTC+09:30) Darwin</option>
+	<option timeZoneId="74" UTCAdjustment="UTC+10:00" useDaylightTime="0" value="10">(UTC+10:00) Brisbane</option>
+	<option timeZoneId="75" UTCAdjustment="UTC+10:00" useDaylightTime="1" value="10">(UTC+10:00) Canberra, Melbourne, Sydney</option>
+	<option timeZoneId="76" UTCAdjustment="UTC+10:00" useDaylightTime="1" value="10">(UTC+10:00) Hobart</option>
+	<option timeZoneId="77" UTCAdjustment="UTC+10:00" useDaylightTime="0" value="10">(UTC+10:00) Guam, Port Moresby</option>
+	<option timeZoneId="78" UTCAdjustment="UTC+10:00" useDaylightTime="1" value="10">(UTC+10:00) Vladivostok</option>
+	<option timeZoneId="79" UTCAdjustment="UTC+11:00" useDaylightTime="1" value="11">(UTC+11:00) Magadan, Solomon Is., New Caledonia</option>
+	<option timeZoneId="80" UTCAdjustment="UTC+12:00" useDaylightTime="1" value="12">(UTC+12:00) Auckland, Wellington</option>
+	<option timeZoneId="81" UTCAdjustment="UTC+12:00" useDaylightTime="0" value="12">(UTC+12:00) Fiji, Kamchatka, Marshall Is.</option>
+	<option timeZoneId="82" UTCAdjustment="UTC+13:00" useDaylightTime="0" value="13">(UTC+13:00) Nuku'alofa</option>
+</select>	<br /><br />
+	<!-- Regional settings for device(date format): <input name="Regional settings for device(date format)" type="text" id="info.dephist.device.regset"/><br /><br />-->
+	Device start date and time (YYYY-MM-DD HH:MM:SS) (military or standard (if standard, include AM and PM) ): <input name="Device start date and time" type="text" id="info.dephist.device.datetime.start"/><br /><br />
+	UTC Date & Time of Deployment (YYYY-MM-DD HH:MM:SS) (military or standard (if standard, include AM and PM)): <input name="UTC Date & Time of Deployment" type="text" id="info.dephist.deploy.datetime.start"/><br /><br />
+	<h2> Locality Information</h2>
+	Locality of Deployment: <input name="Locality of Deployment" type="text" id="info.dephist.deploy.locality0"/><br /><br />
+	Body of Water of Deployment: <input name="Body of Water of Deployment:" type="text" id="info.dephist.deploy.locality1"/><br /><br />
+	State of Deployment: <input name="State of Deployment" type="text" id="info.dephist.deploy.locality2"/><br /><br />
+	Country of Deployment:<input name="Country of Deployment" type="text" id="info.dephist.deploy.locality3"/><br /><br />
+	Latitude of Deployment (decimal degrees):  <input name="Latitude of Deployment" type="text" id="info.dephist.deploy.location.lat"/><br /><br />
+	Longitude of Deployment (decimal degrees): <input name="Longitude of Deployment" type="text" id="info.dephist.deploy.location.lon"/><br /><br />
+	
+	
+	<h2> Project information </h2>
+	Project Name: <input name="Project Name" type="text" id="info.project.name"/><br /><br />
+	Start date for all project related deployments (YYYY-MM-DD): <input name="Start date for all project related deployments" type="text" id="info.project.datetime.start"/><br /><br />
+	End date for all project related deployments (YYYY-MM-DD): <input name="End date for all project related deployments" type="text" id="info.project.datetime.end"/><br /><br />
+	<h2> Provider information </h2>
+	Name of data provider / license holder: <input name="Name of data provider / license holder" type="text" id="info.provider.name"/><br /><br />
+	Affiliation of data provider: <input name="Affiliation etc of data provider" type="text" id= "info.provider.details"/><br /><br />
+	URL to organisation holding animal data <input name="URL to organisation holding animal data" type="text" id="info.animal.dbase.url"/><br /><br />
+	Email of data provider: <input name="Email of data provider" type="text" id="info.provider.email"/><br /><br />
+	Describe provider restrictions to data access and distribution: <input name="Describe provider restrictions to data access and distribution" type="text" id="info.provider.license"/><br /><br />
+	<h2>Citation information </h2>
+	Citation to be used in publications: <input name="Citation to be used in publications" type="text" id="info.provider.cite"/><br /><br />
+	DOI for data: <input name="DOI for data" type="text" id="info.provider.doi"/><br /><br />
+	Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="info.udm.export"/><br /><br /><br /><br />
+	Save as: (file name) <input name = "Name of file" type="text" id="name_of_file"/><br />
+  </p>
+  <p>
+    <input name="save" type="button" value="Save and Download"
+           onclick="saveValues()"/>
+	<input type="button" id="storload" value="Load from previously uploaded csv" onclick = "loadValue()" />
+  </p>
+  </form>
+  <input type="file" id="csvFileUpload" />
+  <script>
+
+  </script>
+<input type="button" id="upload" value="Upload from CSV" onclick = "UploadCSV()" />
+
+
+</body>
+</html>
