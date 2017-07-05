@@ -23,7 +23,7 @@ function [lunges, lunge_times] = detect_lunges(Aw, fs, fc, ref, depth, speed, pl
 % Outputs:
 %   lunges is a vector of cues to lunges from Aw.
 %   lunge_times is a vector of times in seconds since start of recording.
-
+%
 
 if nargin == 0
     help detect_lunges
@@ -62,40 +62,45 @@ if ref == 0 || isempty(ref)
 elseif ref == 1
     g = 1;
 end
-EXA = Aw(:,1) - g * sin(pitch);
+EXA = Aw(:,1) - g * sin(-pitch);
 
-%calculate njerk of EXA signal and Aw signal
+%calculate njerk of EXA and Aw signals
 j_EXA = njerk(EXA, fs);
-j_Aw = njerk(Aw, fs);
 
 %low-pass filter all signals to remove noise from signal
-Aw_filt = fir_nodelay(Aw, round(8 / fc), fc, 'low');
 EXA_filt = fir_nodelay(EXA, round(8 / fc), fc, 'low');
 j_EXA_filt = fir_nodelay(j_EXA, round(8 / fc), fc, 'low');
-j_Aw_filt = fir_nodelay(j_Aw, round(8 / fc), fc, 'low');
 speed_filt = fir_nodelay(speed, round(8 / fc), fc, 'low');
 
 %chunk signals into one second bins
-for a = 1:round(size(Aw_filt, 1) / fs)
-    A_bin = cell(round(size(Aw_filt, 1) / fs), 1);
-    bin = 1:fs:(size(Aw_filt, 1));
-    b = 1;
-    while b < length(bin)
-        %for b = 1:length(bin)
-        %while  length(bin)
-        %    break
-        %end
-        A_bin{a} = Aw_filt((bin(b):bin(b+1)),1);
-        b = b + 1;
+EXA_bin = buffer(EXA_filt(:, 1), fs, 0, 'nodelay');
+j_EXA_bin = buffer(j_EXA_filt(:, 1), fs, 0, 'nodelay');
+speed_bin = buffer(speed_filt(:, 1), fs, 0, 'nodelay');
+depth_bin = buffer(depth, fs, 0, 'nodelay');
+
+%first round of testing
+for a = 1:size(Aw_bin, 2)
+    if mean(depth_bin(a)) > 30 && max(EXA_bin(a)) > (0.25 * EXA_filt)
+        %THIS MOVES ON AS A LUNGE FOR MORE TESTING
+    elseif mean(depth_bin(a)) < 30 && max(EXA_bin(a)) > (0.2 * EXA_filt)
+        %THIS MOVES ON AS A LUNGE FOR MORE TESTING
     end
 end
 
-%chunk signals into 1 second bins
-%separate bins into shallow vs deep depths
+
+
 %find bins with peak values
 %compare different signals looking for matching parameters characteristic
 %   of a lunge
 %mark these lunge detected bins and then plot the signal with the bins
 %   marked
+
+ 
+if plot == true
+    %plot the Awx vector for the whale
+    p = plot(Aw(:, 1));
+    %put a point on the maximum peak of each lunge
+    
+end
 
 end
