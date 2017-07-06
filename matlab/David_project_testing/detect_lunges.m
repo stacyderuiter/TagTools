@@ -49,7 +49,7 @@ if nargin < 5
     error("input for speed is required")
 end
 
-if nargin < 6 || or isempty(plot)
+if nargin < 6 || isempty(plot)
     plot = 'true';
 end
 
@@ -80,22 +80,24 @@ depth_bin = buffer(depth, fs, 0, 'nodelay');
 
 %first round of testing
 for a = 1:size(Aw_bin, 2)
-    if mean(depth_bin(a)) > 30 && max(EXA_bin(a)) > (0.25 * EXA_filt)
+    if mean(depth_bin(a)) > 30 && max(EXA_bin(:, a)) > quantile(EXA_filt, 0.25)
         %THIS MOVES ON AS A LUNGE FOR MORE TESTING
-    elseif mean(depth_bin(a)) < 30 && max(EXA_bin(a)) > (0.2 * EXA_filt)
+    elseif mean(depth_bin(a)) < 30 && max(EXA_bin(:, a)) > quantile(EXA_filt, 0.2)
         %THIS MOVES ON AS A LUNGE FOR MORE TESTING
     end
 end
 
+%second round of testing
+for b = 1:size(detect_lunge1, 2)
+    detect_lunge2 = zeros(size(detect_lunge1, 2));
+    detect_lunge2(b) = mean(j_EXA_bin((b * fs):((b * fs) + (fs - 1))));
+    if detect_lunge2((b + 12):(b + 40)) < 0.2
+        %THIS MOVES ON AS A LUNGE FOR MORE TESTING
+    end
+end
+%NOTES FOR TESTING PARAMETERS:
+%
 
-
-%find bins with peak values
-%compare different signals looking for matching parameters characteristic
-%   of a lunge
-%mark these lunge detected bins and then plot the signal with the bins
-%   marked
-
- 
 if plot == true
     %plot the Awx vector for the whale
     p = plot(Aw(:, 1));
