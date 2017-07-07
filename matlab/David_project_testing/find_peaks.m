@@ -1,4 +1,4 @@
-function peaks = find_peak(A, fs, suborder, thresh, bktime, plot)
+function peaks = find_peaks(A, fs, suborder, thresh, bktime, plot)
 % This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, and time of the maximum jerk.
@@ -11,8 +11,8 @@ function peaks = find_peak(A, fs, suborder, thresh, bktime, plot)
 %       to calculate the bktime in the case that the input for bktime
 %       is missing.
 %   suborder = The taxonimical suborder of the whale from which the data
-%       was obtained. For myst whales, use the input 'myst' and for
-%       odoned whales, use the input 'odon'. This input is used to
+%       was obtained. For baleen whales, use the input 'myst' and for
+%       toothed whales, use the input 'odon'. This input is used to
 %       generate a more accurate default thresh and bktime level.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. If the input for thresh is missing/empty, the default 
