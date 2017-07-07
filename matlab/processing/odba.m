@@ -1,0 +1,67 @@
+function    e = odba(A,fs,fh,method)
+
+%      e = odba(A,fs,fh)
+%		 or
+%		 e = odba(A,n,method)
+%       Compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006.
+%       ODBA is the norm of the high-pass-filtered acceleration. Several methods
+%		  for computing ODBA are in use which differ by which norm and which filter
+%		  are used. In the Wilson paper, the 1-norm and a rectangular window (moving
+%		  average) filter are used. The moving average is subtracted from the input
+%		  accelerations to implement a high-pass filter. The 2-norm may be preferable 
+%		  if the tag orientation is unknown or may change and this is termed VeDBA. 
+%		  A tapered symmetric FIR  filter gives more efficient high-pass filtering 
+%		  compared to the rectangular window method and avoids lobes in the response.
+%
+%		  Inputs:
+%       A is a nx3 acceleration matrix with columns [ax ay az]. Acceleration can 
+%		   be in any consistent unit, e.g., g or m/s^2. A can be in any frame but the
+%		   result depends on the method used to compute ODBA. The default method and
+%			VeDBA method are rotation independent and so give the same result irrespective 
+%		   of the frame of A. The 1-norm method has a more complex dependency on frame.
+%       fs is the sampling rate in Hz of the acceleration signals.
+%       fh is the high-pass filter cut-off frequency in Hz. This should be chosen
+%		   to be about half of the stroking rate for the animal (e.g., using dsa.m).
+%			fs and fh are only needed if using the default (FIR filtering) method.
+%		  n is the rectangular window (moving average) length in samples. This is only
+%		   needed if using the classic ODBA and VeDBA forms.
+%		  method is a string containing either 'wilson' or 'vedba'. If the third argument
+%		   to odba.m is a string, either the classic 1-norm ODBA ('wilson') or the 2-norm 
+%		   VeDBA ('vedba') is computed, in either case with an n-length rectangular window.
+%
+%		  Result:
+%       e is a column vector of ODBA with the same number of rows as A. e has the same
+%		   units as A.
+%
+%		  Example:
+%		   odba([1,-0.5,0.1;0.8,-0.2,0.6;0.5,-0.9,-0.7],5,'vedba')
+%		   returns: [0.68475;0.93393;0.83600;0.65744]
+%
+%	     See Wilson et al. (2006) ?? [need full ref]
+%		  Delay-free filtering is used for all filter types.
+%
+%       Valid: Matlab, Octave
+%       markjohnson@st-andrews.ac.uk
+%       Last modified: 5 May 2017
+
+e = [] ;
+if nargin<3,
+	help odba
+	return
+end
+	
+if ischar(fh),				% 'wilson' or 'vedba' method is selected
+	n = 2*floor(fs/2)+1 ; 	% make sure n is odd
+	nz = floor(n/2) ;
+	Ah = filter(ones(n,1)/n,1,[A;zeros(nz,size(A,2))]) ;
+	Ah = Ah(nz+(1:size(A,1)),:) 
+	if strcmp(fh,'vedba'),
+		e = sqrt(sum(abs(Ah).^2,2)) ;		% use 2-norm
+	else
+		e = sum(abs(Ah),2) ;	% use 1-norm
+	end
+else
+	n = 5*round(fs/fh) ;
+   Ah = fir_nodelay(A,n,fh/(fs/2),'high') ;
+	e = sqrt(sum(abs(Ah).^2,2)) ;
+end

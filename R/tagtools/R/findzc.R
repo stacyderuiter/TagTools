@@ -71,7 +71,8 @@ findzc <- function(x, TH, Tmax = NULL) {
     K <- K[k,]
   }
   s <- K[, 3]
+  KK <- K[, 1:2]
   X <- matrix(c(x[K[, 1]], x[K[, 2]]), byrow = FALSE, ncol = 2) 
   K <- (X[, 2] * K[, 1] - X[, 1] * K[, 2]) / (X[, 2] - X[, 1])
-  return(list(K = K, s = s))
+  return(list(K = K, s = s, KK = KK))
 }

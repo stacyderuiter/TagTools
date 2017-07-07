@@ -1,8 +1,9 @@
 #' Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #'
-#' @param M The magnetometer signal matrix, M = [mx, my, mz] in any consistent unit (e.g., in uT or Gauss).
-#' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
-#' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with respect to 1=Nyquist frequency. Filtering adds no group delay. If fc is not specified, no filtering is performed.
+#' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss).
+#' @param A A matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.
+#' @param fs The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
+#' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @return h The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
 #' @return v The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
 #' @return incl The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
@@ -28,9 +29,11 @@ m2h <- function(M, A, fc = NULL) {
     stop("A and M must have the same number of rows/n")
   }
   if (!is.null(fc)) {
-    if (nrow(A) > (8/fc)) {
-      M <- fir_nodelay(M, round(8/fc), fc)
-      A <- fir_nodelay(A, round(8/fc), fc)
+    nf <- round(4 * fs / fc)
+    fc <- fc / (fs / 2)
+    if (nrow(M) > nf) {
+      M <- fir_nodelay(M, nf, fc)
+      A <- fir_nodelay(A, nf, fc)
     }
   }
   #get the pitch and roll from A
