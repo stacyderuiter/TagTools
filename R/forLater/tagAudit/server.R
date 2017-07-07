@@ -4,23 +4,26 @@ library(shiny)
 #check out: htmlwidgets -- access js graphs from within R
 # - for animations: rglwidget?
 # - for rbokeh and dygraphs?
-# - otherwise, with buttons: < and > have a 3rd object they feed into and increment the start time value.
 
-
-# "server logic" for tag audit
-shinyServer(function(input, output) {
-  output$dataPlot <- renderPlot({
-    # window duration based on input$dur from ui.R
-    st <- input$st
-    et <- input$st + input$dur #seconds
- 
-    #observe forward/back buttons
-    
-       
-    #make plot
-    panelPlot(data=dat, time=dat$time, variables=c('p', 'Ax'), 
-              panelSize=c(2,1), xlim=c(st,et), 
-              panelLabels=c('Depth (m)', 'Acceleration\n(x, m/sec/sec)'))
+shinyServer(function(input, output, session) {
+  # adjust start time of plot as needed depending on
+  # forward and back buttons
+  observeEvent(input$forward, {
+    new_start <- input$st + input$dur
+    updateSliderInput(session, "st",  val=new_start)
   })
   
+  observeEvent(input$back, {
+    new_start <- input$st - input$dur
+    updateSliderInput(session, "st",  val=new_start)
+  })
+  
+  # draw plot
+  output$data_plot <- renderPlot({
+    panel_plot(data=dat, time=dat$time, variables=c('p', 'Ax'), 
+               panel_size=c(2,1), 
+               xlim=c(input$st,input$st+input$dur),
+               panel_labels=c('Depth (m)', 
+                              'Acceleration\n(x, m/sec/sec)'))
+  })
 })
