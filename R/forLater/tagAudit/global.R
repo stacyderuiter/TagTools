@@ -20,7 +20,7 @@ audit <- readMat('data/bp13_258c_lunges.mat')
 ltimes <- sort(audit$time)
 options(digits.secs=5)
 source('../matlab2POS.R')
-source('../panelPlot.R')
+source('../panel_plot.R')
 
 ltimes <- matlab2POS(ltimes,timez='America/Los_Angeles')
 dat$time <- tagon + c(1:length(dat0$p))/rep(dat0$fs, length=length(dat0$p))

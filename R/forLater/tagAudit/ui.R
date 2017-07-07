@@ -15,9 +15,9 @@ shinyUI(fluidPage(
                    max = max(dat$time, na.rm=TRUE),
                    value = min(dat$time, na.rm=TRUE)),
        
-       actionButton("backButton", 
+       actionButton("back", 
                     icon('arrow-left', class = NULL, lib = "font-awesome")),
-       actionButton("forwardButton", 
+       actionButton("forward", 
                     icon('arrow-right', class = NULL, lib = "font-awesome")),
        
        sliderInput(inputId="dur",
@@ -31,7 +31,7 @@ shinyUI(fluidPage(
     
     # Show a plot of the tag data
     mainPanel(
-       plotOutput("dataPlot")
+       plotOutput("data_plot")
     )
     # to add: animation pane, button to play audio? 
     # Button to play acc as sound?

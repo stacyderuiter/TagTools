@@ -1,4 +1,9 @@
 ## NOT DONE - need to make generic!------------------------------------------------------------------------
+#should take a list of event times and a function to compute a test statistic.
+#also a simple alternative for event counts during a certain time? or just make that an example?
+#then it rotates the times (optionally respecting an "ID" variable?)
+#using rotate sub-function?
+
 rotate <- function(times, types, test.type){
   #times is a variable containing call start times
   #types is a variable with labels that divide the times into groups
