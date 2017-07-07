@@ -1,4 +1,4 @@
-function peaks = find_peak(A, fs, thresh, bktime, plot)
+function peaks = find_peak(A, fs, suborder, thresh, bktime, plot)
 % This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, and time of the maximum jerk.
@@ -10,14 +10,24 @@ function peaks = find_peak(A, fs, thresh, bktime, plot)
 %   fs = The sampling rate in Hz of the acceleration signals. This is used
 %       to calculate the bktime in the case that the input for bktime
 %       is missing.
+%   suborder = The taxonimical suborder of the whale from which the data
+%       was obtained. For myst whales, use the input 'myst' and for
+%       odoned whales, use the input 'odon'. This input is used to
+%       generate a more accurate default thresh and bktime level.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. If the input for thresh is missing/empty, the default 
-%       level is the 0.99 quantile.
+%       level is the 0.99 quantile when the input for suborder is
+%       'myst' and the 0.9985 quantile when the input for suborder is
+%       'odon'.
 %   bktime = The specified length of time between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
-%       missing/empty,the default level for bktime is 5 times the 
-%       sampling rate (fs). This is equivalent to 5 seconds of time.
+%       missing/empty and the input for suborder is 'myst', the 
+%       default level for bktime is 5 times the sampling rate (fs). This is
+%       equivalent to 5 seconds of time. However, if the input for bktime
+%       is missing/empty and the input for suborder is 'odon', the
+%       default level to bktime is 2 times the sampling rate (fs). This is
+%       equivalent to 2 seconds of time.
 %   plot = A conditional input. If the input is true or missing/empty, an 
 %       interactive plot is generated, allowing the user to manipulate the 
 %       thresh and bktime values and observe the changes in peak 
@@ -43,15 +53,23 @@ end
 %calculate jerk of A
 j = njerk(A, fs);
 
-if nargin < 3 || isempty(thresh)
-    thresh = quantile(j, .99);
+if nargin < 4 || isempty(thresh)
+    if suborder == 'myst'
+        thresh = quantile(j, 0.99);
+    elseif suborder == 'odon'
+        thresh = quantile(j, 0.9985);
+    end
 end
 
-if nargin < 4 || isempty(bktime)
-    bktime = 5 * fs;
+if nargin < 5 || isempty(bktime)
+    if suborder == 'myst'
+        bktime = 5 * fs;
+    elseif suborder == 'odon'
+        bktime = 2 * fs;
+    end
 end
 
-if nargin < 5 || isempty(plot)
+if nargin < 6 || isempty(plot)
     plot = true;
 end
 
@@ -92,11 +110,5 @@ field2 = 'end_time';  value2 = end_time;
 field3 = 'peak_time';  value3 = peak_time;
 field4 = 'peak_maxima';  value4 = peak_max;
 peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
-
-%plot jerk of A and display peak start/stop and maximums
-p = plot(j);
-hold on
-set(p, )
-hold off
 
 end
