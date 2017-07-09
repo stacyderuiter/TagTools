@@ -6,7 +6,7 @@
 #' @param ted defines the end time in seconds of the interval to be extracted from x.
 #' @return X is a matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
 #' @note Output sampling rate is the same as the input sampling rate.
-#' @note If either tstart or tend are beyond the length of x, non-existing samples will be replaced with NaN in X.
+#' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
 
 extract <- function(x, fs, tst, ted) {
   X <- vector(mode="numeric", length=0)
@@ -16,8 +16,8 @@ extract <- function(x, fs, tst, ted) {
   if (nrow(x) == 1) {
     x <- t(x)
   }
-  npre <- vector(mode="numeric", length=0)
-  npst <- vector(mode="numeric", length=0)
+  npre <- NULL
+  npst <- NULL
   kst <- round(fs * tst) + 1
   ked <- round(fs * ted)
   if (kst > nrow(x)) {
@@ -31,7 +31,14 @@ extract <- function(x, fs, tst, ted) {
       npst <- ked - nrow(x)
       ked <- nrow(x)
     }
-    X <- matrix(c(NaN * matrix(0, npre, ncol(X)), x[kst:ked, ], NaN * matrix(0, npre, ncol(X))))
+    if (!is.null(npre)) {
+      X1 <- matrix(NaN, npre, ncol(x))
+      X2 <- x[kst:ked, ]
+      X3 <- matrix(NaN, npre, ncol(x))
+      X <- rbind(X1, X2, X3)
+    } else {
+      X <- x[kst:ked, ]
+    }
     return(X)
   }
 }
