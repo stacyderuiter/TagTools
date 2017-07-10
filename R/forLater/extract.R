@@ -1,10 +1,10 @@
 #' Extract a sub-sample of data from a vector or matrix.
 #' 
-#' @param x is a vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
-#' @param fs is the sampling rate in Hz of the data in x.
-#' @param tst defines the start time in seconds of the interval to be extracted from x.
-#' @param ted defines the end time in seconds of the interval to be extracted from x.
-#' @return X is a matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
+#' @param x A vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
+#' @param fs the sampling rate in Hz of the data in x.
+#' @param tst Defines the start time in seconds of the interval to be extracted from x.
+#' @param ted Defines the end time in seconds of the interval to be extracted from x.
+#' @return X A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
 
