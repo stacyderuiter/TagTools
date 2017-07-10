@@ -17,7 +17,7 @@ function    a = mean_absorption(freq,r,depth,Ttab)
 %		a is the mean sound absorption over the path in dB.
 %
 %		Example:
-%		 meanabsorption([25e3 60e3],1000,[0 700])   % returns 0.04355 dB/m
+%		 mean_absorption([25e3 60e3],1000,[0 700])   % returns 7.7302 dB/m
 %
 %     After Kinsler and Frey pp. 159-160
 %     Valid: Matlab, Octave
@@ -41,7 +41,7 @@ if length(depth)>1,
    if nargin == 4 && length(Ttab)>1,
       tempr = interp1(Ttab(:,1),Ttab(:,2),depth) ;
    else
-		tempr = repmat(tempr,size(depth,1),size(depth,2)) ;
+      tempr = repmat(tempr,size(depth,1),size(depth,2)) ;
    end
 end
 
