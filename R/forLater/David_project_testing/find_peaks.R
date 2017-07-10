@@ -2,14 +2,13 @@
 #' 
 #' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit (e.g. g or m/s^2). This is used to calculate the jerk using njerk().
 #' @param fs The sampling rate in Hz of the acceleration signals. This is used to calculate the bktime in the case that the input for bktime is missing.
-#' @param suborder The taxonimical suborder of the whale from which the data was obtained. For baleen whales, use the input "myst" and for toothed whales, use the input "odon". This input is used to generate a more accurate default thresh and bktime level.
-#' @param thresh The threshold level above which peaks in the jerk signal are detected. If the input for thresh is missing/empty, the default level is the 0.99 quantile when the input for suborder is "myst" and the 0.9985 quantile when the input for suborder is "odon".
-#' @param bktime The specified length of time between jerk values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty and the input for suborder is 'myst', thedefault level for bktime is 5 times the sampling rate (fs). This is equivalent to 5 seconds of time. However, if the input for bktime is missing/empty and the input for suborder is 'odon', the default level to bktime is 2 times the sampling rate (fs). This is equivalent to 2 seconds of time.
+#' @param thresh The threshold level above which peaks in the jerk signal are detected. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
+#' @param bktime The specified length of time between jerk values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default level for bktime is 5 times the sampling rate (fs). This is equivalent to 5 seconds of time.
 #' @param plot A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated.
 #' @return peaks A list containing vectors for the start times, end times, peak times, and peak maxima. All times are presented as the sampling value. Peak maxima are presented in the same units as A. If A is in m/s^2, the peak maxima have units of m/s^3. If the units of A are in g, the peak maxima have unit g/s.
 #' @note As specified above under the description for the input of plot, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot is specified as true or if the input is left missing/empty.
 
-find_peaks <- function(A, fs, suborder, thresh = NULL, bktime = NULL, plot = NULL) {
+find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot = NULL) {
   if (missing(A) | missing(fs)) {
     stop("inputs for A and fs are both required")
   }
@@ -18,22 +17,10 @@ find_peaks <- function(A, fs, suborder, thresh = NULL, bktime = NULL, plot = NUL
   j <- njerk(A, fs)
   
   if (is.null(thresh) == TRUE) {
-    if (suborder == "myst") {
-      thresh <- stats::quantile(j, c(0.99))
-    } else {
-      if (suborder == "odon") {
-        thresh <- stats::quantile(j, c(0.9985))
-      }
-    }
+    thresh <- stats::quantile(j, c(0.99))
   }
   if (is.null(bktime) == TRUE) {
-    if (suborder == "myst") {
-      bktime <- 5 * fs
-    } else {
-      if (suborder == "odon") {
-        bktime <- 2 * fs
-      }
-    }
+    bktime <- 5 * fs
   }
   if (is.null(plot) == TRUE) {
     plot <- TRUE
