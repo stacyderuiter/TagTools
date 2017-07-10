@@ -12,8 +12,11 @@ extract <- function(x, fs, tst, ted) {
   if (missing(ted)) {
     stop("inputs for all arguments are required")
   }
-  if (nrow(x) == 1) {
+  if (is.matrix(x) && nrow(x) == 1 ){
     x <- t(x)
+  }
+  if(is.vector(x)) {
+    x <- as.matrix(x)
   }
   npre <- NULL
   npst <- NULL
@@ -30,11 +33,25 @@ extract <- function(x, fs, tst, ted) {
       npst <- ked - nrow(x)
       ked <- nrow(x)
     }
+    if(ncol(x)>1){
+      X2 <- x[kst:ked, ]
+    }
+    else{
+      X2 <- as.matrix(x[kst:ked])
+    }
     if (!is.null(npre)) {
       X1 <- matrix(NaN, npre, ncol(x))
-      X2 <- x[kst:ked, ]
-      X3 <- matrix(NaN, npre, ncol(x))
-      X <- rbind(X1, X2, X3)
+        X <- rbind(X1, X2)
+    }
+    if(!is.null(npst))
+    {
+      X3 <- matrix(NaN, npst, ncol(x))
+      if (!is.null(npre)) {
+        X <- rbind(X, X3)
+      }
+      else{
+        X <- rbind(X2, X3)
+      }
     } else {
       X <- x[kst:ked, ]
     }
