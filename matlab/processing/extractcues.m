@@ -55,4 +55,3 @@ else
       X(:,:,kk) = x(kcues(kk)+(1:klen),:) ;
    end
 end
-
