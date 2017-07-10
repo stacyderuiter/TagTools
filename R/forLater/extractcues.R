@@ -7,6 +7,7 @@
 #' @return X is a matrix containing sub-samples of x. If x is a vector, X has as many columns as there are cues, i.e., each cue generates a column of X. If x is a pxm matrix, X will be a qxmxn matrix where n is the size of cues and q is the length of the interval requested, i.e., round(fs*len) samples.
 #' @return cues is the list of cues actually used. cues that require data outside of x are rejected.
 #' @note Output sampling rate is the same as the input sampling rate.
+#' @export
 
 extractcues <- function(x, fs, cues, len) {
   if (missing(len)) {
