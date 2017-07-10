@@ -63,5 +63,13 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot = NULL) {
   #create a list of start times, end times, peak times, and peak maxima
   peaks <- list(start_time = start_time, end_time = end_time, peak_time = peak_time, peak_max = peak_max)
   
+  
+  if (plot == TRUE) {
+    #create a plot which allows for the thresh and bktime to be manipulated
+    manipulate::manipulate(plot(j),
+                           thresh = manipulate::slider(.99, 1, initial = .99, label = thresh, step = .0001, ticks = TRUE), 
+                           bktime = manipulate::slider((1 / fs * fs), (fs * fs), step = 1, label = bktime, ticks = TRUE))
+  }
+  
   return(peaks)
 }
