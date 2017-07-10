@@ -1,4 +1,4 @@
-function    s = mergefields(s1,s2) 
+function    s = merge_fields(s1,s2) 
 %
 %     s = mergefields(s1,s2)
 %     Merge the fields of two structures. If there are duplicate

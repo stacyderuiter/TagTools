@@ -1,4 +1,4 @@
-function    [V,q] = invaxis(A)
+function    [V,q] = inv_axis(A)
 
 %     [V,q] = invaxis(A)
 %		Identify the axis in triaxial movement measurements that varies

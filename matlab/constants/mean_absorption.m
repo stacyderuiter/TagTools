@@ -1,8 +1,8 @@
-function    a = meanabsorption(freq,r,depth,Ttab)
+function    a = mean_absorption(freq,r,depth,Ttab)
 
 %    a = meanabsorption(freq,r,depth,tempr)
 %     Calculate the mean absorption in salt water over a frequency range.
-%		freq specifies the frequency range, freq = [fmin,fmax] ins Hz.
+%		freq specifies the frequency range, freq = [fmin,fmax] in Hz.
 %       For a single frequency, use a scalar value for freq.
 %		r is the path (slant) length in metres
 %		depth is the depths covered by the path. This can be a single

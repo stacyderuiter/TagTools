@@ -5,7 +5,7 @@
 #' @return V is the rotated vector or matrix with the same size as the input V.
 #' @note Frame: This function makes no assumptions about frame.
 
-rotatevecs <- function(V, Q) {
+rotate_vecs <- function(V, Q) {
   if (missing(Q)) {
     stop("inputs for all arguments are required")
   }

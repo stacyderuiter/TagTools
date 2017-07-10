@@ -1,4 +1,4 @@
-matlab2POS = function(x, timez = "UTC") {
+matlab_to_POS = function(x, timez = "UTC") {
   days = x - 719529 	# 719529 = days from 1-1-0000 to 1-1-1970
   secs = days * 86400 # 86400 seconds in a day
   # This next string of functions is a complete disaster, but it works.

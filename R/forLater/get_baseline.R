@@ -1,4 +1,4 @@
-get.baseline <- function(dataframe){
+get_baseline <- function(dataframe){
   #get baseline values for model predictions from a data frame.
   # for factors, take the most common level
   # for continuous variables, take the median (could add other options like mean...)

@@ -1,8 +1,8 @@
-function    Q = euler2rotmat(p,r,h)
+function    Q = euler_to_rotmat(p,r,h)
 %
-%      Q = euler2rotmat(p,r,h)
+%      Q = euler_to_rotmat(p,r,h)
 %		 or
-%      Q = euler2rotmat(prh)
+%      Q = euler_to_rotmat(prh)
 %      Make a rotation (or direction cosine) matrix out of sets of Euler angles,
 %		 pitch, roll, and heading.
 %

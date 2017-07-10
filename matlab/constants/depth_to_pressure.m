@@ -1,4 +1,4 @@
-function    p = depth2pressure(d,latitude)
+function    p = depth_to_pressure(d,latitude)
 
 %    p = depth2pressure(d,latitude)
 %    Convert depth (in meters) to pressure in Pascals.

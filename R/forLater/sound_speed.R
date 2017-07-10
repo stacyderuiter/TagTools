@@ -9,7 +9,7 @@
 #' @example soundspeed(8, 1000, 34)
 #'          #Returns: 1497.7 m/s
 
-soundspeed <- function(T, D = NULL, S = NULL) {
+sound_speed <- function(T, D = NULL, S = NULL) {
   if (missing(T)) {
     stop("input for T required")
   }

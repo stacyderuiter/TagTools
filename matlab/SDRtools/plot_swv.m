@@ -1,4 +1,4 @@
-function plotswv(varargin)
+function plot_swv(varargin)
 %   plotswv(recdir,prefix)  OR plotswv(X)
 %simple script to import raw dtag3 movement sensor data and produce plots.
 %the purpose is simply to have a look at the (raw, uncalibrated) data to

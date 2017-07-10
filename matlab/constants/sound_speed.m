@@ -1,4 +1,4 @@
-function    v = soundspeed(T,D,S)
+function    v = sound_speed(T,D,S)
 
 %    v = soundspeed(T,D,[S])
 %    Sound speed estimate using Coppens equation

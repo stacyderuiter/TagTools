@@ -1,4 +1,4 @@
-function  [X,cues] = extractcues(x,fs,cues,len)
+function  [X,cues] = extract_cues(x,fs,cues,len)
 
 %     [X,cues] = extractcues(x,fs,cues,len)
 %     Extract multiple sub-samples of data from a vector or matrix. 

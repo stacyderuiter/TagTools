@@ -1,6 +1,6 @@
-function    imageirreg(x,y,R)
+function    image_irreg(x,y,R)
 
-%     imageirreg(x,y,R)
+%     image_irreg(x,y,R)
 %     Plot an image with an irregular grid. This is useful for plotting matrix
 %		data (i.e., sampled data that is a function of two parameters) in which
 %		one or both of the sampling schemes is not regularly spaced. imageirreg

@@ -1,4 +1,4 @@
-function    T = finddives(p,fs,th,surface,findall)
+function    T = find_dives(p,fs,th,surface,findall)
 
 %     T = finddives(p,fs,mindepth)
 %	   or

@@ -1,4 +1,4 @@
-function   [cl,clend, level,x,X] = getclickx_sd(x,xr,thresh,fs,opts)
+function   [cl,clend, level,x,X] = get_clickx_sd(x,xr,thresh,fs,opts)
 %
 %     [cl,level,env,X] = getclickx(x,thresh,fs,[opts])
 %     Returns the time cue to each click in x, in seconds. Click extraction

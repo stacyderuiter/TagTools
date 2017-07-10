@@ -1,4 +1,4 @@
-function    Xf = compfilt(X,fs,fc)
+function    Xf = comp_filt(X,fs,fc)
 
 %    Xf=compfilt(X,fs,fc)		% X is a vector or matrix
 %	  or

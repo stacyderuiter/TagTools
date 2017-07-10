@@ -1,4 +1,4 @@
-function      V = rotatevecs(V,Q)
+function      V = rotate_vecs(V,Q)
 %
 %     V = rotatevecs(V,Q)
 %	   Rotate triaxial vector measurements from one frame to another.

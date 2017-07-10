@@ -1,4 +1,4 @@
-function    W = bodyaxes(A,M,fc)
+function    W = body_axes(A,M,fc)
 
 %     W = bodyaxes(A,M,fc)
 %     Generate the cardinal axes of an animal (i.e., the longitudinal, transverse,

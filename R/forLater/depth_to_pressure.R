@@ -7,7 +7,7 @@
 #' @example depth2pressure(1000, 27)
 #'          Returns: 10.075 MPa
 
-depth2pressure <- function(d, latitude) {
+depth_to_pressure <- function(d, latitude) {
   if (missing(latitude)) {
     stop("inputs for all arguments are required")
   }

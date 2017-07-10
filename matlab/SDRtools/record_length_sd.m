@@ -1,4 +1,4 @@
-function    [ta,ts] = recordlength_sd(tag)
+function    [ta,ts] = record_length_sd(tag)
 
 %    [ta,ts] = recordlength_sd(tag)
 %     Returns the number of seconds in a tag audio recording in ta

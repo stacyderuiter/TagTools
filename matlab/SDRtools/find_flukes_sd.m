@@ -1,4 +1,4 @@
-function    [v,ph,mx,fr] = findflukes_sd(Aw,Mw,fs,FR,TH,T)
+function    [v,ph,mx,fr] = find_flukes_sd(Aw,Mw,fs,FR,TH,T)
 %
 %    [v,ph,mx,fr] = findflukes(Aw,Mw,fs,FR,TH,T)
 %    EXPERIMENTAL - SUBJECT TO CHANGE!!

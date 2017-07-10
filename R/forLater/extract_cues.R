@@ -9,7 +9,7 @@
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @export
 
-extractcues <- function(x, fs, cues, len) {
+extract_cues <- function(x, fs, cues, len) {
   if (missing(len)) {
     stop("inputs for all arguments are required")
   }

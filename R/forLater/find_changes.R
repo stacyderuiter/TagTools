@@ -1,7 +1,7 @@
 #make a new variable, GrpChange, that is logical: 1 
 # in time points where focal group size changes,
 # and also the timepoints before and after such a change.
-findchanges <- function(ids, dat){
+find_changes <- function(ids, dat){
   #mark times when dat changes with ONEs
   #unless it's a change from one ID to the next
   ch0 <- unlist(tapply(X=dat, INDEX=ids, 

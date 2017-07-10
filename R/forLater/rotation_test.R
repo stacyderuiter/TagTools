@@ -4,7 +4,7 @@
 #then it rotates the times (optionally respecting an "ID" variable?)
 #using rotate sub-function?
 
-rotate <- function(times, types, test.type){
+rotation_test <- function(times, types, test.type){
   #times is a variable containing call start times
   #types is a variable with labels that divide the times into groups
   #test.type is the value of "types" of interest (here , A2)

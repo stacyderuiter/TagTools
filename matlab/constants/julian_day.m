@@ -1,4 +1,4 @@
-function      n = julianday(y,m,d)
+function      n = julian_day(y,m,d)
 %
 %      n = julianday(y,m,d)
 %      Convert between dates and Julian day numbers.

@@ -1,4 +1,4 @@
-function     v = depthrate(p,fs,fc)
+function     v = depth_rate(p,fs,fc)
 
 %     v = depthrate(p)           % p is a sensor structure
 %	  or

@@ -1,4 +1,4 @@
-function    [K,s,KK] = findzc(x,TH,Tmax)
+function    [K,s,KK] = find_zc(x,TH,Tmax)
 %
 %    	 [K,s] = findzc(x,TH,Tmax)
 %      Find zero-crossings in a vector using a hysteretic detector. This is 
