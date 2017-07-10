@@ -9,7 +9,6 @@
 #' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
 
 extract <- function(x, fs, tst, ted) {
-  X <- vector(mode="numeric", length=0)
   if (missing(ted)) {
     stop("inputs for all arguments are required")
   }
