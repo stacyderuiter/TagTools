@@ -7,13 +7,14 @@
 #' @return n See the description section for details on the return.
 #' @export
 #' @example julian_day(y = 2016, d = 12, m =10) #Returns: 286
-#'          julian_day(y = 2016, d = 286) #Returns: "2016-10-12"
+#'          julian_day(y = 2016, 286) #Returns: "2016-10-12"
 
-julian_day <- function(y = NULL, d = NULL, m = NULL) {
+julian_day <- function(y = NULL, m = NULL, d = NULL) {
   if (nargs() == 0) {
     floor(as.numeric(julian(Sys.time())) - 17166)
   }
-  if (missing(m)) {
+  if (missing(d)) {
+    d <- m
     k <- max(c(length(y), length(m)))
     if (length(y) < k) {
       y[length(y) + 1:k] <- y[length(y)]
@@ -35,12 +36,8 @@ julian_day <- function(y = NULL, d = NULL, m = NULL) {
   if (length(d) < k) {
     d[length(d) + 1:k] <- d[length(d)]
   }
-  t <- as.POSIXlt(as.Date(ISOdate(y, m, d)))
+  dvec <- as.Date(ISOdate(y, m, d))
+  t <- as.POSIXlt(dvec)
   n <- t$yday + 1
-  for (j in 1:length(n)) {
-    if (n[j] > 365) {
-      n[j] <- n[j] - 366
-    }
-  }
   return(n)
 }
