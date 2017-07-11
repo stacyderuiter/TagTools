@@ -54,6 +54,6 @@ switch nargin,
 		t = datenum(horzcat(y(:),m(:),d(:))) ;
 		n = floor(t-datenum([y(:) repmat([1 1 0 0 0],length(y),1)]))+1 ;
 	otherwise
-		help julianday
+		help julian_day
 		return
 end

@@ -29,11 +29,11 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
   #force Nfft to the nearest power of 2
   Nfft <- 2^(round(log(Nfft)/log(2)))
   if (!fcnull) {
-    Af <- fir_nodelay(diff(A), 6 * fs / fc, fc / (fs / 2))$y
+    Af <- fir_no_delay(diff(A), 6 * fs / fc, fc / (fs / 2))$y
   } else {
     Af <- diff(A)
   }
-  templist <- speclev(Af, Nfft, fs, Nfft, Nfft / 2)
+  templist <- spec_lev(Af, Nfft, fs, Nfft, Nfft / 2)
   S <- templist$SL
   f <- templist$f
   #sum spectral power in the three axes

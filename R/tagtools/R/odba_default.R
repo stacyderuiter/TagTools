@@ -15,7 +15,7 @@ odba_default <- function(A, fs, fh) {
     stop("inputs for A, fs, and fh are all required")
   }
   n <- 5 * round(fs / fh)
-  Ah <- fir_nodelay(A, n, fh / (fs / 2), "high")
+  Ah <- fir_no_delay(A, n, fh / (fs / 2), "high")
   e <- sqrt(rowSums(abs(Ah)^2))
   return(e)
 }

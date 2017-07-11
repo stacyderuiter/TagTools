@@ -1,6 +1,6 @@
 function    s = merge_fields(s1,s2) 
 %
-%     s = mergefields(s1,s2)
+%     s = merge_fields(s1,s2)
 %     Merge the fields of two structures. If there are duplicate
 %     fields, the fields in s1 are taken.
 %
@@ -13,7 +13,7 @@ function    s = merge_fields(s1,s2)
 %		Examples:
 %		s1 = struct('a',1,'b',[2 3 4])
 %		s2 = struct('b',3,'c','cat')
-%		s = mergefields(s1,s2)
+%		s = merge_fields(s1,s2)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -21,12 +21,12 @@ function    s = merge_fields(s1,s2)
 
 s = [] ;
 if nargin<2,
-   help mergefields
+   help merge_fields
    return
 end
 
 if ~isstruct(s1) & ~isstruct(s2),
-	fprintf('Both inputs must be structures in mergefields\n') ;
+	fprintf('Both inputs must be structures in merge_fields\n') ;
 	return
 end
 	

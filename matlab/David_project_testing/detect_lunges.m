@@ -65,12 +65,12 @@ end
 EXA = Aw(:,1) - g * sin(-pitch);
 
 %calculate njerk of EXA and Aw signals
-j_EXA = njerk(EXA, fs);
+j_EXA = n_jerk(EXA, fs);
 
 %low-pass filter all signals to remove noise from signal
-EXA_filt = fir_nodelay(EXA, round(8 / fc), fc, 'low');
-j_EXA_filt = fir_nodelay(j_EXA, round(8 / fc), fc, 'low');
-speed_filt = fir_nodelay(speed, round(8 / fc), fc, 'low');
+EXA_filt = fir_no_delay(EXA, round(8 / fc), fc, 'low');
+j_EXA_filt = fir_no_delay(j_EXA, round(8 / fc), fc, 'low');
+speed_filt = fir_no_delay(speed, round(8 / fc), fc, 'low');
 
 %chunk signals into one second bins
 EXA_bin = buffer(EXA_filt(:, 1), fs, 0, 'nodelay');

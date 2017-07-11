@@ -65,12 +65,12 @@ end
 Nfft = 2^round(log(Nfft)/log(2)) ;
 
 if ~isempty(fc),
-   Af=fir_nodelay(diff(A),6*fs/fc,fc/(fs/2));
+   Af=fir_no_delay(diff(A),6*fs/fc,fc/(fs/2));
 else
    Af = diff(A) ;
 end
 
-[S,f]=speclev(Af,Nfft,fs,Nfft,Nfft/2);
+[S,f]=spec_lev(Af,Nfft,fs,Nfft,Nfft/2);
 v = sum(10.^(S/10),2) ;      % sum spectral power in the three axes
 [m,n]=max(v) ;
 p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;

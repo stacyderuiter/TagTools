@@ -1,6 +1,6 @@
 function  [X,cues] = extract_cues(x,fs,cues,len)
 
-%     [X,cues] = extractcues(x,fs,cues,len)
+%     [X,cues] = extract_cues(x,fs,cues,len)
 %     Extract multiple sub-samples of data from a vector or matrix. 
 %
 %		Inputs:
@@ -21,7 +21,7 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 %		Output sampling rate is the same as the input sampling rate.
 %
 %		Example:
-%		 X = extractcues()
+%		 X = extract_cues()
 % 	    returns: X=.
 %
 %     Valid: Matlab, Octave
@@ -30,7 +30,7 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 
 X = [] ;
 if nargin<4,
-   help extractcues
+   help extract_cues
    return
 end
 

@@ -1,6 +1,6 @@
 function    W = body_axes(A,M,fc)
 
-%     W = bodyaxes(A,M,fc)
+%     W = body_axes(A,M,fc)
 %     Generate the cardinal axes of an animal (i.e., the longitudinal, transverse,
 %		and ventro-dorsal) from accelerometer and magnetic field measurements. This
 %		functions generates an approximate orthonormal basis from each measurement of
@@ -37,7 +37,7 @@ function    W = body_axes(A,M,fc)
 %		by this function will be the cardinal axes of the tag, not the animal.
 %
 %		Example:
-%		 W = bodyaxes([-0.3 0.52 0.8],[22 -22 14])
+%		 W = body_axes([-0.3 0.52 0.8],[22 -22 14])
 % 	    returns: W=[0.59682  -0.55182   0.58249
 %				       0.74420   0.65208  -0.14477
 %					    -0.29994   0.51990   0.79984]
@@ -47,7 +47,7 @@ function    W = body_axes(A,M,fc)
 %     Last modified: 10 May 2017
 
 if nargin<2,
-   help bodyaxes
+   help body_axes
    return
 end
 
@@ -60,13 +60,13 @@ if size(A,1)*size(A,2)==3,
 end
 
 if size(A,1)~=size(M,1),
-   fprintf('bodyaxes: A and M must have same number of rows\n') ;
+   fprintf('body_axes: A and M must have same number of rows\n') ;
    return
 end
 
 if nargin==3 && size(A,1)>8/fc,
-	M = fir_nodelay(M,round(8/fc),fc) ;
-	A = fir_nodelay(A,round(8/fc),fc) ;
+	M = fir_no_delay(M,round(8/fc),fc) ;
+	A = fir_no_delay(A,round(8/fc),fc) ;
 end
 
 b = sqrt(sum(M.^2,2)) ;

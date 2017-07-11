@@ -4,14 +4,16 @@
 \alias{m2h}
 \title{Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.}
 \usage{
-m2h(M, A, fc = NULL)
+m2h(M, A, fs, fc = NULL)
 }
 \arguments{
-\item{M}{The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss).}
+\item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss).}
 
-\item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration canbe in any consistent unit, e.g., g or m/s^2.}
+\item{A}{A matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
-\item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with respect to 1=Nyquist frequency. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
+\item{fs}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.}
+
+\item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
 \value{
 h The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination.
@@ -24,7 +26,7 @@ incl The estimated field inclination angle (i.e., the angle with respect to the 
 Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 }
 \note{
-Output sampling rate is the same as the input sampling rate, i.e., h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors.
+Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).
 
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. North and east are magnetic, not true. In these frames a positive heading is a clockwise rotation around the z-axis.
 

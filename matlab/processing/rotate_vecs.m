@@ -1,6 +1,6 @@
 function      V = rotate_vecs(V,Q)
 %
-%     V = rotatevecs(V,Q)
+%     V = rotate_vecs(V,Q)
 %	   Rotate triaxial vector measurements from one frame to another.
 %     T is the time-varying direction cosine (3x3xn) relating the second 
 %     frame to the first. 
@@ -19,8 +19,8 @@ function      V = rotate_vecs(V,Q)
 %		Frame: This function makes no assumptions about frame.
 %
 %		Example:
-%		 Q = euler2rotmat(pi/180*[25 -60 33]);
-%		 V = rotatevecs([0.77 -0.6 -0.22],Q)
+%		 Q = euler2rot_mat(pi/180*[25 -60 33]);
+%		 V = rotate_vecs([0.77 -0.6 -0.22],Q)
 % 	    returns: V=[0.7072,-0.1256,0.6967].
 %
 %     Valid: Matlab, Octave
@@ -28,7 +28,7 @@ function      V = rotate_vecs(V,Q)
 %     Last modified: 10 May 2017
 
 if nargin<2,
-   help rotatevec ;
+   help rotate_vec ;
    return
 end
 

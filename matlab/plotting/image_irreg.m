@@ -17,14 +17,14 @@ function    image_irreg(x,y,R)
 %
 %		Example:
 %		 loadnc('testdata1');
-%		 plott(P,'r',A,M)				% plot depth, acceleration and magnetometer
+%		 plot_t(P,'r',A,M)				% plot depth, acceleration and magnetometer
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 8 June 2017
 
 if nargin<3,
-   help imageirreg
+   help image_irreg
    return
 end
 
