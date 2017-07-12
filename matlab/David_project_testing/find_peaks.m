@@ -1,4 +1,4 @@
-function peaks = find_peaks(A, fs, thresh, bktime, plot)
+function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
 % This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, and time of the maximum jerk.
@@ -18,10 +18,10 @@ function peaks = find_peaks(A, fs, thresh, bktime, plot)
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default level for bktime is 5 times the sampling
 %       rate (fs). This is equivalent to 5 seconds of time. 
-%   plot = A conditional input. If the input is true or missing/empty, an 
+%   plot_jerk = A conditional input. If the input is true or missing/empty, an 
 %       interactive plot is generated, allowing the user to manipulate the 
 %       thresh and bktime values and observe the changes in peak 
-%       detection. If the input is false, the interactive plot is not
+%       detection. If the input is false, a non-interactive plot is 
 %       generated.
 %
 % OUTPUTS:
@@ -41,18 +41,18 @@ if nargin < 2
 end
 
 %calculate jerk of A
-j = njerk(A, fs);
+j = n_jerk(A, fs);
 
-if nargin < 4 || isempty(thresh)
+if nargin < 3 || isempty(thresh)
     thresh = quantile(j, 0.99);
 end
 
-if nargin < 5 || isempty(bktime)
+if nargin < 4 || isempty(bktime)
     bktime = 5 * fs;
 end
 
-if nargin < 6 || isempty(plot)
-    plot = true;
+if nargin < 5 || isempty(plot_jerk)
+    plot_jerk = true;
 end
 
 %create matrix for jerk and corresponding sampling number
@@ -92,5 +92,21 @@ field2 = 'end_time';  value2 = end_time;
 field3 = 'peak_time';  value3 = peak_time;
 field4 = 'peak_maxima';  value4 = peak_max;
 peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
+
+%produce interactive plot, allowing you to alter thresh and bktime inputs
+if plot_jerk == true
+    plot(j);
+    hold on 
+    for i = 1:length(start_time)
+        plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
+    end
+    hold off
+    [x, y] = ginput(3);
+    thresh = y(1);
+    bktime = x(3) - x(2);
+    peaks = find_peaks(A, fs, thresh, bktime);
+elseif plot_jerk == false
+    plot(j)
+end
 
 end
