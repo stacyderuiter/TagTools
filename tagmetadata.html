@@ -5,7 +5,15 @@
 <script>
 
 
-var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0]
+var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
+
+var csv_fields = ["info.depid", "info.data.source", "info.data.datetime.made", "info.data.nfiles", "info.data.format", "info.device.serial",
+	"info.device.make", "info.device.type", "info.device.model", "info.device.url", "info.sensors.firm", "info.sensors.soft",
+	"info.sensors.list", "info.animal.id", "info.animal.species.common", "info.animal.species.science", "info.animal.dbase.url",
+	"info.dephist.device.tzone", "info.dephist.device.regset", "info.dephist.device.datetime.start","info.dephist.deploy.locality",
+	"info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", "info.dephist.deploy.datetime.start", "info.dephist.deploy.method",
+	"info.project.name", "info.project.datetime.start", "info.project.datetime.end", "info.provider.name","info.provider.details","info.provider.email",
+	"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
 function findIndexbyField(str, array){ 
 	var i;
 	arrlength = array.length;
@@ -21,28 +29,33 @@ function myTrim(x) {
     return x.replace(/^\s+|\s+$/gm,'');
 };
  function UploadCSV() {
-        var csvFileUpload = document.getElementById("csvFileUpload");
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-        if (regex.test(csvFileUpload.value.toLowerCase())) {
-            if (typeof (FileReader) != "undefined") {
-                var reader = new FileReader();
-                reader.onload = function (e) {
+	var csvFileUpload = document.getElementById("csvFileUpload");
+	var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+	if (regex.test(csvFileUpload.value.toLowerCase())) {
+		if (typeof (FileReader) != "undefined") {
+			var reader = new FileReader();
+			reader.onload = function (e) {
 				localStorage.setItem('storeData', e.target.result);
 				document.getElementById("tagdata_form").reset();
 				arr = parseCSV(e.target.result);
 				var i;
 				for(i = 0; i < arr.length; i++){
+					
 					if(arr[i][0] == "info.dephist.deploy.locality"){
 						var temp_entry = arr[i][2];
 						temp_entry = temp_entry.replace(/\'/g, "")
 						temp_entry= temp_entry.replace(/[{}]/g, "");
-						var entry21 = temp_entry.split(",");
-						var n;
-						for(n = 0; n < 4; n++){
-							document.getElementById(arr[i][0] + n).value = myTrim(entry21[n]);
-						}
+						var split_entry = temp_entry.split(",");
+						document.getElementById(arr[i][0] + 0).value = myTrim(split_entry[0]);
+						document.getElementById(arr[i][0] + 1).value = myTrim(split_entry[1]);
 					}
-					if(document.getElementById(arr[i][0]) != null && typeof(document.getElementById(arr[i][0])) != 'undefined'){
+					else if(arr[i][0] == "info.dephist.device.datetime.start" || arr[i][0] == "info.dephist.deploy.datetime.start"){
+						var temp_entry_time = arr[i][2];
+						var split_entry_time = temp_entry_time.split(" ");
+						document.getElementById(arr[i][0] + 0).value = split_entry_time[0];
+						document.getElementById(arr[i][0] + 1).value = split_entry_time[1];
+					}
+					else if(document.getElementById(arr[i][0]) != null && typeof(document.getElementById(arr[i][0])) != 'undefined'){
 						if(arr[i][0] == "info.udm.export"){
 							if(arr[i][2] == 1){
 								document.getElementById(arr[i][0]).checked = true;
@@ -51,6 +64,7 @@ function myTrim(x) {
 								document.getElementById(arr[i][0]).checked = false;
 							}
 						}
+
 						else if(arr[i][0] =="info.dephist.device.tzone"){
 							document.getElementById(arr[i][0]).value = arr[i][2];
 							
@@ -60,8 +74,8 @@ function myTrim(x) {
 						}
 					}
 				}
-					
-					
+				
+				
 			}
 			reader.readAsText(csvFileUpload.files[0]);
 		} 
@@ -104,15 +118,23 @@ function parseCSV(str) {
     }
     return arr;
 };
-
-
+function cbind(arr1,arr2){
+	var res_arr = [];
+	for(var row = 0; row < arr1.length; row ++){
+		res_arr.push([arr1[row], arr2[row]]);
+	}
+	return res_arr;
+};
+window.onbeforeunload = function() {
+    return "Did you save the csv?"
+}
 function validateForm() {
 	var userinput = ["info.device.serial","info.device.make","info.device.type",
 		"info.device.model","info.device.url","info.sensors.firm","info.sensors.soft","info.animal.id",
 		"info.animal.species.common","info.animal.species.science","info.animal.dbase.url", 
-		"info.dephist.device.tzone","info.dephist.device.datetime.start", "info.dephist.deploy.locality0",
-		"info.dephist.deploy.locality1", "info.dephist.deploy.locality2", "info.dephist.deploy.locality3","info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", 
-		"info.dephist.deploy.datetime.start", "info.dephist.deploy.method","info.project.name", 
+		"info.dephist.device.tzone","info.dephist.device.datetime.start0", "info.dephist.device.datetime.start1","info.dephist.deploy.locality0",
+		"info.dephist.deploy.locality1","info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", 
+		"info.dephist.deploy.datetime.start0", "info.dephist.deploy.datetime.start1","info.dephist.deploy.method","info.project.name", 
 		"info.project.datetime.start", "info.project.datetime.end", "info.provider.name", "info.provider.details", "info.provider.email", 
 		"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
 	var input_length = userinput.length;
@@ -122,13 +144,27 @@ function validateForm() {
 		var i;
 		var index;
 		for (i = 0; i < input_length; i++) {
+
 			if(userinput[i] == "info.dephist.deploy.locality0" 
-			|| userinput[i] =="info.dephist.deploy.locality1"
-			|| userinput[i] == "info.dephist.deploy.locality2"
-			|| userinput[i] =="info.dephist.deploy.locality3"){
+			|| userinput[i] =="info.dephist.deploy.locality1"){
+
 				if(document.getElementById(userinput[i]).value == ""){
 					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
-					return false;
+				}
+			}
+			else if(userinput[i] == "info.dephist.device.datetime.start0" || userinput[i] == "info.dephist.device.datetime.start1"
+			|| userinput[i] == "info.dephist.deploy.datetime.start0" || userinput[i] == "info.dephist.deploy.datetime.start1"){
+
+				if (document.getElementById(userinput[i]).value == "") {
+					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
+				}
+				if((userinput[i] == "info.dephist.device.datetime.start0" || userinput[i] == "info.dephist.deploy.datetime.start0") 
+					&&!isValidDate(document.getElementById(userinput[i]).value)){
+						window.alert(document.getElementById(userinput[i]).name +  " have to be in a valid YYYY-MM-DD form!");
+					}
+				if((userinput[i] == "info.dephist.device.datetime.start1" || userinput[i] == "info.dephist.deploy.datetime.start1")
+				&& !isValidTime(document.getElementById(userinput[i]).value)){
+					window.alert(document.getElementById(userinput[i]).name +  " have to be in a valid military time (HH:MM:SS) form!");
 				}
 			}
 			else{
@@ -136,41 +172,33 @@ function validateForm() {
 				if (document.getElementById(userinput[i]).type == "text" &&
 					document.getElementById(userinput[i]).value == ""&& a[index][1] == 1) {
 					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
-					return false;
 				}
 				else{
 					if(userinput[i] == "info.dephist.deploy.location.lat" || userinput[i] == "info.dephist.deploy.location.lon"){
 						if(parseFloat(document.getElementById(userinput[i]).value).toString().length != document.getElementById(userinput[i]).value.length 
 							|| isNaN(parseFloat(document.getElementById(userinput[i]).value))){
 							window.alert(document.getElementById(userinput[i]).name + " is not a number!");
-							return false;
 						}
 						else{
 							if(userinput[i] == "info.dephist.deploy.location.lat" && (parseFloat(document.getElementById(userinput[i]).value) > 90 
 							|| parseFloat(document.getElementById(userinput[i]).value) < -90)){
 								window.alert(document.getElementById(userinput[i]).name + " must be between -90 and 90!");
-								return false;
 							}
 							if(userinput[i] == "info.dephist.deploy.location.lon" && (parseFloat(document.getElementById(userinput[i]).value) > 180 
 							|| parseFloat(document.getElementById(userinput[i]).value) < -180)){
 								window.alert(document.getElementById(userinput[i]).name + " must be between -180 and 180!");
-								return false;
 								}
 						}
 					}
-					else if(userinput[i] == "info.dephist.device.datetime.start"
-					|| userinput[i] == "info.dephist.deploy.datetime.start"
-					|| userinput[i] == "info.project.datetime.start"
-					|| userinput[i] == "info.project.datetime.end"
-					){
+					
+					if(userinput[i] == "info.project.datetime.start"
+					|| userinput[i] == "info.project.datetime.end"){
 						if(!isValidDate(document.getElementById(userinput[i]).value)){
-									window.alert(document.getElementById(userinput[i]).name +  "have to be in a valid YYYY-MM-DD or YYYY-MM-DD HH-MM-SS (military or standard) form!");
-									return false;
+							window.alert(document.getElementById(userinput[i]).name +  "have to be in a valid YYYY-MM-DD form!");
 							}
 						else{
 							if(isNaN(Date.parse(document.getElementById(userinput[i]).value))){
 								window.alert(document.getElementById(userinput[i]).name +  "is not a date!");
-								return false;
 							}
 						}
 					}
@@ -180,7 +208,7 @@ function validateForm() {
 		return true;
 	}
 	catch(err){
-		window.alert("Error encountered!");
+		window.alert("Error is " + err);
 		return false;
 	}
 };
@@ -191,6 +219,7 @@ function loadValue(){
 	try{
 		var retrievedObject = localStorage.getItem('storeData');
 		var a = parseCSV(retrievedObject);
+		
 		document.getElementById("tagdata_form").reset();
 		var i;
 		for(i = 0; i < a.length; i++){
@@ -198,11 +227,17 @@ function loadValue(){
 				var temp_entry = a[i][2];
 				temp_entry = temp_entry.replace(/\'/g, "")
 				temp_entry= temp_entry.replace(/[{}]/g, "");
-				var entry21 = temp_entry.split(",");
+				var split_entry = temp_entry.split(",");
 				var n;
-				for(n = 0; n < 4; n++){
-					document.getElementById(a[i][0] + n).value = myTrim(entry21[n]);
+				for(n = 0; n < 2; n++){
+					document.getElementById(a[i][0] + n).value = myTrim(split_entry[n]);
 				}
+			}
+			else if(a[i][0] == "info.dephist.device.datetime.start" || a[i][0] == "info.dephist.deploy.datetime.start"){
+				var temp_entry = a[i][2];
+				var split_entry = temp_entry.split(" ");
+				document.getElementById(a[i][0] + 0).value = split_entry[0];
+				document.getElementById(a[i][0] + 1).value = split_entry[1];
 			}
 			if(document.getElementById(a[i][0]) != null && typeof(document.getElementById(a[i][0])) != 'undefined'){
 				if(a[i][0] == "info.udm.export"){
@@ -223,30 +258,33 @@ function loadValue(){
 		}
 	}
 	catch(err){
-		window.alert("Error in javascript!");
+		window.alert("Error is type: " + err);
 	}
 };
 
 function saveValues(){
 	if(validateForm()){
-		var a = parseCSV(localStorage.getItem('storeData'));
+		var a = [];
+		if(localStorage.getItem('storeData') != ""){
+			a = parseCSV(localStorage.getItem('storeData'));
+		}
+		else{
+			a = cbind(csv_fields, req_field);
+		}
 		var record = "";
 		var i;
 		for(i = 0; i < a.length; i++){
-			if([i][0] =="info.dephist.device.regset"){
+			if(a[i][0] =="info.dephist.device.regset"){
 				continue;
 			}
-			if(a[i][0] == "info.dephist.deploy.locality"){
+			else if(a[i][0] == "info.dephist.device.datetime.start" || a[i][0] == "info.dephist.deploy.datetime.start"){
+				record +='"' + a[i][0] + '"' + "," + a[i][1] + ",";
+				record += '"' + document.getElementById(a[i][0]+0).value + " " + document.getElementById(a[i][0]+1).value + '"'  + "\n" ;
+			}
+			else if(a[i][0] == "info.dephist.deploy.locality"){
 				record += '"' + a[i][0] + '"' + "," + a[i][1] + "," + '"' + "{" + "'";
-				var n;
-				for(n = 0; n < 4; n++){
-					if(n != 3){
-						record += document.getElementById(a[i][0]+n).value + ", ";
-					}
-					else{
-						record += document.getElementById(a[i][0]+n).value;
-					}					
-				}
+				record += document.getElementById(a[i][0]+0).value + ", ";
+				record += document.getElementById(a[i][0]+1).value;
 				record += "'" + "}" + '"' +  "\n" ;
 			}
 			else{
@@ -266,8 +304,10 @@ function saveValues(){
 					}
 					else if(a[i][0] =="info.dephist.device.tzone"){
 						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
-						record += calculateDST(parseInt(document.getElementById(a[i][0]).value)) + "\n";
+						record += parseInt(document.getElementById(a[i][0]).value) + "\n";
 					}
+
+					
 					else{
 						var check;
 						if(document.getElementById("info.udm.export").checked){
@@ -276,7 +316,7 @@ function saveValues(){
 						else{
 							check = 0;
 						}
-						record += "info.udm.export" + "," + 0 + "," + check;
+						record += '"' + "info.udm.export" + '"' + "," + 0 + "," + check;
 					}
 				}
 			}
@@ -322,16 +362,16 @@ function calculateDST(timezone){
 	else{
 		return timezone;
 	}
-}
+};
 
 function isValidDate(dateString) {
-
 	var rgx = /^\d{4}-\d{2}-\d{2}$/;
-	var rgx2 =  /^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01]) (1[0-2]|0?[1-9]):([0-5]\d):([0-5]\d) ([AaPp][Mm])$/;
-	var rgx3 =  /^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01]) ([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
-	return dateString.match(rgx) != null || (dateString.match(rgx2) != null || dateString.match(rgx3) != null) ;
+	return dateString.match(rgx) != null  ;
   };
-
+function isValidTime(timeString){
+ var rgx = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/
+	return timeString.match(rgx) != null;
+}
 Date.prototype.stdTimezoneOffset = function() {
     var jan = new Date(this.getFullYear(), 0, 1);
     var jul = new Date(this.getFullYear(), 6, 1);
@@ -341,28 +381,109 @@ Date.prototype.stdTimezoneOffset = function() {
 Date.prototype.dst = function() {
     return this.getTimezoneOffset() < this.stdTimezoneOffset();
 };
+function openTab(evt, tabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
 
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
+
 </head>
 <body>
+<style>
+/* Style the tab */
+div.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+</style>
 <h1>Tag Metadata Form</h1><br />
+<input type="button" id="storload" value="Open from previously uploaded csv" onclick = "loadValue()" /><br /><br />
+  <input type="file" id="csvFileUpload" />
+  <input type="button" id="upload" value="Open from CSV" onclick = "UploadCSV()" /><br /><br /><br />
+   <h3>All fields with a <span style="color: red">*</span> should be completed </h3> <br />
+<div class="tab">
+<button class="tablinks" onclick="openTab(event, 'DeviceInfo')">Device Information</button>
+	<button class="tablinks" onclick="openTab(event, 'TagAnimal')">Tag and Animal Information</button>
+	<button class="tablinks" onclick="openTab(event, 'TimeZoneTime')">Timezone and Time Information</button>
+	<button class="tablinks" onclick="openTab(event, 'Locality')">Locality Information</button>
+	<button class="tablinks" onclick="openTab(event, 'Project')">Project Information</button>
+	<button class="tablinks" onclick="openTab(event, 'Provider')">Provider Information</button>
+	<button class="tablinks" onclick="openTab(event, 'Citation')">Citation Information</button>
+
+</div>
+  
 <form name="tagdata_form" id = "tagdata_form" action="javascript:null">
+<div id="DeviceInfo" class="tabcontent">
+  <h3> Device information </h3>
   <p>
-  <h2> Device information </h2>
-    Device Serial Number: <input name="Device Serial Number" type="text" id = "info.device.serial"/><br /><br />
-    Device manufacturer: <input name="Device manufacturer:" type="text" id = "info.device.make"/><br /><br />
-	Type of device: <input name="Type of device" type="text" id="info.device.type"/><br /><br />
-    Model Name and Version: <input name="Model Name and Version" type="text" id="info.device.model"/><br /><br />
-	URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="info.device.url"/><br /><br />
-	Device firmware version: <input name="Device firmware version" type="text" id="info.sensors.firm"/><br /><br />
-	Software off loader version: <input name="Software off loader version" type="text" id="info.sensors.soft"/><br /><br />
-	<h2> Tag and animal information </h2>
-	Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="info.animal.id"/><br /><br />
-	Describe how the tag was attached (e.g. glued, implanted, suction cups): <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="info.dephist.deploy.method"/><br /><br />
-	Common name of species: <input name="Common name of species" type="text" id="info.animal.species.common"/><br /><br />
-	Scientific name: <input name="Scientific name" type="text" id="info.animal.species.science"/><br /><br />
-	<h2> Timezone and time information </h2>
-	Time zone of device (without daylight savings time) (+- HRS UTC): <select name="Timezone of device" id="info.dephist.device.tzone">
+    Device Serial Number: <span style="color: red">*</span> <input name="Device Serial Number" type="text" id="info.device.serial" value = ""/><br /><br />
+    Device manufacturer:  <span style="color: red">*</span> <input name="Device manufacturer:" type="text" id="info.device.make" value = ""/><br /><br />
+	Type of device: <span style="color: red">*</span>  <input name="Type of device" type="text" id="info.device.type" value = ""/><br /><br />
+    Model Name and Version: <span style="color: red">*</span> <input name="Model Name and Version" type="text" id="info.device.model" value = ""/><br /><br />
+	URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="info.device.url" value = ""/><br /><br />
+	Device firmware version: <span style="color: red">*</span> <input name="Device firmware version" type="text" id="info.sensors.firm" value = ""/><br /><br />
+	Software off loader version: <span style="color: red">*</span> <input name="Software off loader version" type="text" id="info.sensors.soft" value = ""/><br /><br />
+	</p>
+</div>
+<div id="TagAnimal" class="tabcontent">
+	<h3> Tag and animal information </h3>
+	<p>
+	Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="info.animal.id" value = ""/><br /><br />
+	Describe how the tag was attached (e.g. glued, implanted, suction cups): <span style="color: red">*</span> <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="info.dephist.deploy.method" value = ""/><br /><br />
+	Common name of species: <span style="color: red">*</span> <input name="Common name of species" type="text" id="info.animal.species.common" value = ""/><br /><br />
+	Scientific name: <span style="color: red">*</span> <input name="Scientific name" type="text" id="info.animal.species.science" value = "" /> <br /><br />
+	</p>
+</div>
+<div id = "TimeZoneTime" class = "tabcontent">
+	<h3> Timezone and time information </h3>
+	<p>
+	Time zone of device (+- HRS UTC): <span style="color: red">*</span> <select name="Timezone of device" id="info.dephist.device.tzone" >
 	<option timeZoneId="1" UTCAdjustment="UTC-12:00" useDaylightTime="0" value="-12">(UTC-12:00) International Date Line West</option>
 	<option timeZoneId="2" UTCAdjustment="UTC-11:00" useDaylightTime="0" value="-11">(UTC-11:00) Midway Island, Samoa</option>
 	<option timeZoneId="3" UTCAdjustment="UTC-10:00" useDaylightTime="0" value="-10">(UTC-10:00) Hawaii</option>
@@ -379,8 +500,8 @@ Date.prototype.dst = function() {
 	<option timeZoneId="14" UTCAdjustment="UTC-05:00" useDaylightTime="0" value="-5">(UTC-05:00) Bogota, Lima, Quito, Rio Branco</option>
 	<option timeZoneId="15" UTCAdjustment="UTC-05:00" useDaylightTime="1" value="-5">(UTC-05:00) Eastern Time (US & Canada)</option>
 	<option timeZoneId="16" UTCAdjustment="UTC-05:00" useDaylightTime="1" value="-5">(UTC-05:00) Indiana (East)</option>
-	<option timeZoneId="17" UTCAdjustment="UTC-04:00" useDaylightTime="1" value="-4">(UTC-04:00) Atlantic Time (Canada)</option>
-	<option timeZoneId="18" UTCAdjustment="UTC-04:00" useDaylightTime="0" value="-4">(UTC-04:00) Caracas, La Paz</option>
+	<option timeZoneId="17" UTCAdjustment="UTC-04:00" useDaylightTime="1" value="-4" >(UTC-04:00) Atlantic Time (Canada)</option>
+	<option timeZoneId="18" UTCAdjustment="UTC-04:00" useDaylightTime="0" value="-4" >(UTC-04:00) Caracas, La Paz</option>
 	<option timeZoneId="19" UTCAdjustment="UTC-04:00" useDaylightTime="0" value="-4">(UTC-04:00) Manaus</option>
 	<option timeZoneId="20" UTCAdjustment="UTC-04:00" useDaylightTime="1" value="-4">(UTC-04:00) Santiago</option>
 	<option timeZoneId="21" UTCAdjustment="UTC-03:30" useDaylightTime="1" value="-3.5">(UTC-03:30) Newfoundland</option>
@@ -447,45 +568,50 @@ Date.prototype.dst = function() {
 	<option timeZoneId="82" UTCAdjustment="UTC+13:00" useDaylightTime="0" value="13">(UTC+13:00) Nuku'alofa</option>
 </select>	<br /><br />
 	<!-- Regional settings for device(date format): <input name="Regional settings for device(date format)" type="text" id="info.dephist.device.regset"/><br /><br />-->
-	Device start date and time (YYYY-MM-DD HH:MM:SS) (military or standard (if standard, include AM and PM) ): <input name="Device start date and time" type="text" id="info.dephist.device.datetime.start"/><br /><br />
-	UTC Date & Time of Deployment (YYYY-MM-DD HH:MM:SS) (military or standard (if standard, include AM and PM)): <input name="UTC Date & Time of Deployment" type="text" id="info.dephist.deploy.datetime.start"/><br /><br />
-	<h2> Locality Information</h2>
-	Locality of Deployment: <input name="Locality of Deployment" type="text" id="info.dephist.deploy.locality0"/><br /><br />
-	Body of Water of Deployment: <input name="Body of Water of Deployment:" type="text" id="info.dephist.deploy.locality1"/><br /><br />
-	State of Deployment: <input name="State of Deployment" type="text" id="info.dephist.deploy.locality2"/><br /><br />
-	Country of Deployment:<input name="Country of Deployment" type="text" id="info.dephist.deploy.locality3"/><br /><br />
-	Latitude of Deployment (decimal degrees):  <input name="Latitude of Deployment" type="text" id="info.dephist.deploy.location.lat"/><br /><br />
-	Longitude of Deployment (decimal degrees): <input name="Longitude of Deployment" type="text" id="info.dephist.deploy.location.lon"/><br /><br />
-	
-	
-	<h2> Project information </h2>
-	Project Name: <input name="Project Name" type="text" id="info.project.name"/><br /><br />
-	Start date for all project related deployments (YYYY-MM-DD): <input name="Start date for all project related deployments" type="text" id="info.project.datetime.start"/><br /><br />
-	End date for all project related deployments (YYYY-MM-DD): <input name="End date for all project related deployments" type="text" id="info.project.datetime.end"/><br /><br />
-	<h2> Provider information </h2>
-	Name of data provider / license holder: <input name="Name of data provider / license holder" type="text" id="info.provider.name"/><br /><br />
-	Affiliation of data provider: <input name="Affiliation etc of data provider" type="text" id= "info.provider.details"/><br /><br />
-	URL to organisation holding animal data <input name="URL to organisation holding animal data" type="text" id="info.animal.dbase.url"/><br /><br />
-	Email of data provider: <input name="Email of data provider" type="text" id="info.provider.email"/><br /><br />
-	Describe provider restrictions to data access and distribution: <input name="Describe provider restrictions to data access and distribution" type="text" id="info.provider.license"/><br /><br />
-	<h2>Citation information </h2>
-	Citation to be used in publications: <input name="Citation to be used in publications" type="text" id="info.provider.cite"/><br /><br />
-	DOI for data: <input name="DOI for data" type="text" id="info.provider.doi"/><br /><br />
-	Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="info.udm.export"/><br /><br /><br /><br />
-	Save as: (file name) <input name = "Name of file" type="text" id="name_of_file"/><br />
+	UTC Device start date (YYYY-MM-DD)<span style="color: red">*</span> : <input name="UTC Device start date" type="text" id="info.dephist.device.datetime.start0" value = ""/><br /><br />
+	UTC Device start time (military) (HH:MM:SS) <span style="color: red">*</span> : <input name=" UTC Device start time" type="text" id="info.dephist.device.datetime.start1" value = ""/><br /><br />
+	UTC Date of Deployment (YYYY-MM-DD) <span style="color: red">*</span> : <input name="UTC Date of Deployment" type="text" id="info.dephist.deploy.datetime.start0" value = ""/><br /><br />
+	UTC Time of Deployment (military) (HH:MM:SS) <span style="color: red">*</span> : <input name="UTC Time of Deployment" type="text" id="info.dephist.deploy.datetime.start1" value = ""/><br />
+	</p>
+</div>
+<div id = "Locality" class = "tabcontent">
+	<h3> Locality Information</h3>
+	<p>
+	Locality of Deployment <span style="color: red">*</span> : <input name="Locality of Deployment" type="text" id="info.dephist.deploy.locality0" value = ""/><br /><br />
+	Country of Deployment <span style="color: red">*</span> :<input name="Country of Deployment" type="text" id="info.dephist.deploy.locality1" value = ""/><br /><br />
+	Latitude of Deployment (decimal degrees) <span style="color: red">*</span> :  <input name="Latitude of Deployment" type="text" id="info.dephist.deploy.location.lat" value = ""/><br /><br />
+	Longitude of Deployment (decimal degrees) <span style="color: red">*</span> : <input name="Longitude of Deployment" type="text" id="info.dephist.deploy.location.lon" value = ""/><br /><br />
+	</p>
+</div>
+<div id = "Project" class = "tabcontent">
+	<h3> Project information </h3>
+	<p>
+	Project Name <span style="color: red">*</span> : <input name="Project Name" type="text" id="info.project.name" value = ""/><br /><br />
+	Start date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="Start date for all project related deployments" type="text" id="info.project.datetime.start" value = ""/><br /><br />
+	End date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="End date for all project related deployments" type="text" id="info.project.datetime.end" value = ""/><br /><br />
+	</p>
+</div>
+<div id = "Provider" class = "tabcontent">
+	<h3> Provider information </h3>
+	<p>
+	Name of data provider / license holder <span style="color: red">*</span>: <input name="Name of data provider / license holder" type="text" id="info.provider.name" value = ""/><br /><br />
+	Affiliation of data provider <span style="color: red">*</span>: <input name="Affiliation etc of data provider" type="text" id="info.provider.details" value = ""/><br /><br />
+	URL to organisation holding animal data <span style="color: red">*</span>: <input name="URL to organisation holding animal data" type="text" id="info.animal.dbase.url" value = ""/><br /><br />
+	Email of data provider <span style="color: red">*</span>: <input name="Email of data provider" type="text" id="info.provider.email" value = ""/><br /><br />
+	Describe provider restrictions to data access and distribution <span style="color: red">*</span>: <input name="Describe provider restrictions to data access and distribution" type="text" id="info.provider.license" value = ""/><br /><br />
+	</p>
+</div>
+<div id = "Citation" class = "tabcontent">
+	<h3>Citation information </h3>
+	Citation to be used in publications <span style="color: red">*</span>: <input name="Citation to be used in publications" type="text" id="info.provider.cite" value = ""/><br /><br />
+	DOI for data <span style="color: red">*</span>: <input name="DOI for data" type="text" id="info.provider.doi" value = ""/><br /><br />
+	Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="info.udm.export" /><br /><br /><br /><br />
   </p>
+  </div>
   <p>
-    <input name="save" type="button" value="Save and Download"
-           onclick="saveValues()"/>
-	<input type="button" id="storload" value="Load from previously uploaded csv" onclick = "loadValue()" />
+  Save as: (file name) <input name = "Name of file" type="text" id="name_of_file"/><br />
   </p>
-  </form>
-  <input type="file" id="csvFileUpload" />
-  <script>
-
-  </script>
-<input type="button" id="upload" value="Upload from CSV" onclick = "UploadCSV()" />
-
-
+  	<input name="save" type="button" value="Save" onclick="saveValues()"/>
+	 </form>
 </body>
 </html>
