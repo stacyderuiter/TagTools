@@ -17,7 +17,7 @@ function    h = col_line(x,y,c)
 %     x, y and c must all be the same size. If x, y, and c are matrices, 
 %		one line is drawn for each column. The color axis will by default span the
 %		range of values in c, i.e., caxis will be [min(min(c)) max(max(c))]. This
-%		can be changed by calling caxis after colline.
+%		can be changed by calling caxis after col_line.
 %
 %		Example:
 %		 T = cumsum(randn(1000,2)) ;
