@@ -11,8 +11,20 @@ depth_rate <- function(p, fs, fc) {
   if (missing(fs)) {
     stop("inputs for p and fs are both required")
   }
-  if (missing(fc)) {
-    fc <- 0.2
+  if(is.list(p)){
+    if(!missing(fs)){
+      fc <- fs 
+    }
+    else{
+      fc <- c()
+    }
+    fs <- p$fs
+    p <- p$data
+  }
+  else{
+    if(missing(fc)){
+      fc <- 0.2
+    }
   }
   nf <- round(4 * fs / fc)
   #use central differences to avoid a half sample delay
