@@ -104,7 +104,7 @@ if plot_jerk == true
     [x, y] = ginput(3);
     thresh = y(1);
     bktime = x(3) - x(2);
-    peaks = find_peaks(A, fs, thresh, bktime);
+    peaks = find_peaks(A, fs, thresh, bktime, false);
 elseif plot_jerk == false
     plot(j)
 end
