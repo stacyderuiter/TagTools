@@ -14,6 +14,7 @@ var csv_fields = ["info.depid", "info.data.source", "info.data.datetime.made", "
 	"info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", "info.dephist.deploy.datetime.start", "info.dephist.deploy.method",
 	"info.project.name", "info.project.datetime.start", "info.project.datetime.end", "info.provider.name","info.provider.details","info.provider.email",
 	"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
+var other_field = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1];	
 function findIndexbyField(str, array){ 
 	var i;
 	arrlength = array.length;
@@ -208,7 +209,7 @@ function validateForm() {
 		return true;
 	}
 	catch(err){
-		window.alert("Error is " + err);
+		window.alert("Error from ValidateForm is " + err);
 		return false;
 	}
 };
@@ -258,7 +259,7 @@ function loadValue(){
 		}
 	}
 	catch(err){
-		window.alert("Error is type: " + err);
+		window.alert("Error from load is : " + err);
 	}
 };
 
@@ -269,7 +270,7 @@ function saveValues(){
 			a = parseCSV(localStorage.getItem('storeData'));
 		}
 		else{
-			a = cbind(csv_fields, req_field);
+			a = cbind(csv_fields, req_field, other_field);
 		}
 		var record = "";
 		var i;
