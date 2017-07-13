@@ -1,17 +1,14 @@
 #' Automated detection of prey catch attempts (PrCA) from triaxial acceleration data from seals.
 #' 
-#' @param A The acceleration matrix with columns [ax ay az]. Acceleration must be in m/s^2. 
+#' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit (e.g. g or m/s^2).
 #' @param fs The sampling rate in Hz of the acceleration signals.
-#' @param thresV (optional) A user selectable threshold in the same units as A which is used in the process of checking for prey catpure attempts from the equation varS >= varA + thresV at a given second in time. varS is the change in magA (magnitute in acceleration) over one second of time. varA is the per second running average of change in acceleration. Default level as specified by the source is 5 m/s^2.
+#' @param thresV (optional) A user selectable threshold in the same units as A which is used in the process of checking for prey catpure attempts from the equation varS >= varA + thresV at a given second in time. varS is the change in magA (magnitute in acceleration) over one second of time. varA is the per second running average of change in acceleration. The default value is half of the 0.99 quantile of varA.
 #' @return captures A list containing vectors for the capture times (seconds since start of data recording) and capture varS (change in magA over one second of time) values.
 #' @note Source: Cox, S. L., Orgeret, F., Gesta, M., Rodde, C., Heizer, I., Weimerskirch, H. and Guinet, C. (), Processing of acceleration and dive data on-board satellite relay tags to investigate diving and foraging behaviour in free-ranging marine predators. Methods Ecol Evol. Accepted Author Manuscript. doi:10.1111/2041-210X.12845 
 
 PrCA <- function(A, fs, thresV) {
   if (missing(fs)) {
     stop("Inputs for A and fs are both required")
-  }
-  if (missing(thresV)) {
-    thresV <- 5
   }
   
   #calculate magnitute in acceleration
@@ -48,6 +45,10 @@ PrCA <- function(A, fs, thresV) {
     return(ans)
   }
   varA <- ma(varS, 11)
+  
+  if (missing(thresV)) {
+    thresV <- stats::quantile(varA, c(.99)) / 2
+  }
   
   #find prey capture attempts
   cap <- which(varS >= (varA + thresV))

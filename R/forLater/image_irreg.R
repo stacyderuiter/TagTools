@@ -19,6 +19,6 @@ image_irreg <- function(x, y, R) {
   ydiff <- c(diff(y), y[length(y)] - y[length(y) - 1])
   for (k in 1:length(y)) {
     zk <- which(!is.na(R[, k]))
-    #make polygon matlab code: patch(X(:,zk),ydiff(k)*Y(:,zk)+y(k),R(zk,k)'); shading flat; axis tight; box on
+    plot3D::polygon2D(x = X[, zk], y = (ydiff[k] * Y[, zk] + y[k]), col = R[zk, k])
   }
 }

@@ -1,7 +1,27 @@
 readHTML <- function(masterHTML, csvfilename){
  
-  csvFile <- parseCSV(csvfileinput)
+  csvFile <- parseCSV(csvfilename)
   htmlFile <- scan(file = masterHTML, what = character(0), sep = "\n", quote = "")
+  newHTML <- htmlFile
+ csvFile2 <- readr::read_csv(csvfilename)
+  field2 <- csvFile2$params
+  arr_str <- ""
+  for(p in 1:length(field2)){
+    if(p == 1){
+      arr_str = paste(arr_str, "[", '"', field2[p], '"', sep = '')
+    }
+    else{
+      if(p != length(field2)){
+        arr_str = paste(arr_str, " ", ",", '"', field2[p], '"', sep = '')
+      }
+      else{
+        arr_str = paste(arr_str,",", " ",'"', field2[p], '"', "]", sep = '')
+      }
+    }
+  }
+  arr_index <- grep( "other_field = ", htmlFile)
+  arr_line = unlist(strsplit(htmlFile[arr_index], '='))
+  newHTML[arr_index] = paste(arr_line[1], " = ", arr_str, sep = "")
   id <- csvFile$id
   field <- csvFile$field
   html_indices <- list()
@@ -14,7 +34,7 @@ readHTML <- function(masterHTML, csvfilename){
       indices <- c(indices, i)
     }
   }
-  newHTML <- htmlFile
+
   for (n in 1:length(indices)){
     if (identical(id[indices[n]], "info.dephist.device.regset")){
       next
@@ -30,7 +50,7 @@ readHTML <- function(masterHTML, csvfilename){
         old_html[2] <- "\" />"
       }
       old_html[3] <- old_html_end
-      newHTML[html_indices[[indices[n]]]] <- paste(old_html[1],old_html[2],old_html[3])
+      newHTML[html_indices[[indices[n]]]] <- paste(old_html[1],old_html[2],old_html[3], sep = '')
     }
     
     if (!identical(id[indices[n]], "info.dephist.device.tzone")){
@@ -92,7 +112,7 @@ parseCSV<-function(csvfilename){
   device_date_index <- grep("info.dephist.device.datetime.start", a1$field)
   device_date_id0 <- paste(a1[device_date_index, 1],'0', sep = '')
   device_date_id1 <- paste(a1[device_date_index, 1],'1', sep = '')
-  device_date_vector <- unlist(strsplit(as.character(a2[device_date_index, 3]), " "))
+  device_date_vector <- unlist(strsplit(as.character(a1[device_date_index, 3]), " "))
   device_date_field0 <- device_date_vector[1]
   device_date_field1 <- device_date_vector[2]
   device_date_row0 <- c(device_date_id0, '1', device_date_field0)

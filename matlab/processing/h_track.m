@@ -1,4 +1,4 @@
-function    [T,pe] = h_track(A,M,s,fs,fc)
+function    T = h_track(A,M,s,fs,fc)
 
 %    T=h_track(A,M,s,fs)			% A and M are matrices
 %	  or
@@ -61,7 +61,7 @@ function    [T,pe] = h_track(A,M,s,fs,fc)
 %    markjohnson@st-andrews.ac.uk
 %    Last modified: 10 May 2017
 
-T = [] ; pe = [] ;
+T = [] ;
 if nargin<3,
    help h_track
    return

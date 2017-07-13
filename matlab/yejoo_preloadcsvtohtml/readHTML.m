@@ -1,11 +1,31 @@
 function readHTML(masterHTML, csvfilename)
 
-    [id,fields] = parseCSV(csvfilename);
+
+    [id2, fields2] = parseCSV2(csvfilename);
     htmlID = fopen(masterHTML);
     s = textscan(htmlID,'%s','Delimiter','\n');
     s = s{1};
     newS = s;
     fclose(htmlID);
+    for p = 1:length(s)
+        findstring = strcat("other_field = ");
+        array_index = find(contains(s, findstring));
+    end
+    [field_split, unused] = strsplit(s{array_index}, "[");
+    array_string = "";
+    for u = 1:length(fields2)
+        if u == 1,
+            array_string = strcat("[", fields2{u});
+        else
+            if u ~= length(fields2),
+                array_string = strcat(array_string, " ", ",",  fields2{u} );
+            else
+                 array_string = strcat(array_string, " ", ",", fields2{u}, "]");
+            end
+        end
+    end
+    [id,fields] = parseCSV(csvfilename);
+    newS{array_index} = strcat(field_split{1}, " ", array_string);
     c = containers.Map;
     indices = [];
     for i = 1:length(id)
@@ -72,7 +92,7 @@ function [id, ret_field] = parseCSV(csvfilename)
     fid = fopen(csvfilename, 'r');
     tline = fgetl(fid);
     while ischar(tline),
-    [token,remain1] = strtok(tline, ',');
+        [token,remain1] = strtok(tline, ',');
          if strcmp(token,'"info.dephist.device.datetime.start"') || strcmp(token,'"info.dephist.deploy.datetime.start"') || strcmp(token,'"info.dephist.deploy.locality"')
             change_token = token(1:end-1);
             token0 = strcat(change_token, '0"');
@@ -105,6 +125,22 @@ function [id, ret_field] = parseCSV(csvfilename)
     ret_field = ret_field(2:end);
     fclose(fid);
 end
-
+function [id2, ret_field2] = parseCSV2(csvfilename)
+    ret_field2 = {};
+    id2 = {};
+    fid = fopen(csvfilename, 'r');
+    tline = fgetl(fid);
+    while ischar(tline)
+        [token,remain1] = strtok(tline, ',');
+        id2{end+1} = token;
+        [remain_token, field2] = strtok(remain1, ',');
+         field2 = field2(2:end);
+        ret_field2{end+1} = field2;
+         tline = fgetl(fid);
+    end
+    id2 = id2(2:end);
+    ret_field2 = ret_field2(2:end);
+    fclose(fid);
+end
     
   
