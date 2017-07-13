@@ -66,18 +66,21 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
   
   if (plot_jerk == TRUE) {
     #create a plot which allows for the thresh and bktime to be manipulated
-    plot(j, type = "l", col = "blue")
-    #points(peaks$peak_time, pch = 9, type = "l", col = "orange", cex = 20)
+    plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
+    x <- peaks$peak_time
+    y <- peaks$peak_max
+    par(new = TRUE)
+    plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, nrow(A)), ylim = c(0, max(j)), cex = .75)
     pts <- graphics::locator(n = 3)
     thresh <- pts$y[1]
     bktime <- pts$x[3] - pts$x[2]
     peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
-    #manipulate::manipulate(plot(j),
-    #                       thresh = manipulate::slider(.99, 1, initial = .99, label = thresh, step = .0001, ticks = TRUE), 
-    #                       bktime = manipulate::slider((1 / fs * fs), (fs * fs), step = 1, label = bktime, ticks = TRUE))
   } else {
-    plot(j, type = "l", col = "blue")
-    #points(peaks$peak_time, pch = 9, type = "l", col = "orange", cex = 2)
+    plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
+    x <- peaks$peak_time
+    y <- peaks$peak_max
+    par(new = TRUE)
+    plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, nrow(A)), ylim = c(0, max(j)), cex = .75)
   }
   
   return(peaks)
