@@ -1,4 +1,4 @@
-function    [T,pe] = h_track(A,M,s,fs,fc)
+function    T = h_track(A,M,s,fs,fc)
 
 %    T=h_track(A,M,s,fs)			% A and M are matrices
 %	  or
