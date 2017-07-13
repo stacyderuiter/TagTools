@@ -1,10 +1,10 @@
 function    T = find_dives(p,fs,th,surface,findall)
 
-%     T = finddives(p,fs,mindepth)
+%     T = find_dives(p,fs,mindepth)
 %	   or
-%     T = finddives(p,fs,mindepth,surface)
+%     T = find_dives(p,fs,mindepth,surface)
 %	   or
-%     T = finddives(p,fs,mindepth,surface,findall)
+%     T = find_dives(p,fs,mindepth,surface,findall)
 %     Find time cues for the start and end of either dives in a depth record
 %		or flights in an altitude record.
 %
@@ -32,7 +32,7 @@ function    T = find_dives(p,fs,th,surface,findall)
 %		use T.start(k). 
 %
 %		Example:
-%		 T = finddives()
+%		 T = find_dives()
 % 	    returns: T=[].
 %
 %     Valid: Matlab, Octave
@@ -41,7 +41,7 @@ function    T = find_dives(p,fs,th,surface,findall)
 
 T = [] ;
 if nargin<3,
-   help('finddives') ;
+   help('find_dives') ;
    return
 end
 
@@ -91,7 +91,7 @@ toff = toff(1:k) ;
 
 % filter vertical velocity to find actual surfacing moments
 n = round(4*fs/dp_lp) ;
-dp = fir_nodelay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
+dp = fir_no_delay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
 
 % for each ton, look back to find last time whale was at the surface
 % for each toff, look forward to find next time whale is at the surface

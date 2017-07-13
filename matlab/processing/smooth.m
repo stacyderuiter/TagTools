@@ -37,4 +37,4 @@ end
 
 nf = 6*n ;
 fp = 1/n ;
-y = fir_nodelay(x,nf,fp);
+y = fir_no_delay(x,nf,fp);

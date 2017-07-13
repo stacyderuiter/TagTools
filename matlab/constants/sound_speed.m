@@ -1,6 +1,6 @@
 function    v = sound_speed(T,D,S)
 
-%    v = soundspeed(T,D,[S])
+%    v = sound_speed(T,D,[S])
 %    Sound speed estimate using Coppens equation
 %    Range of validity: temperature 0 to 35 °C, salinity 0 to 45 parts per
 %    thousand, depth 0 to 4000 m
@@ -13,7 +13,7 @@ function    v = sound_speed(T,D,S)
 %    http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO
 %    
 %	  Example:
-%		soundspeed(8,1000,34)   % returns 1497.7 m/s
+%		sound_speed(8,1000,34)   % returns 1497.7 m/s
 
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
@@ -21,7 +21,7 @@ function    v = sound_speed(T,D,S)
 
 v = [] ;
 if nargin<1,
-   help soundspeed
+   help sound_speed
    return
 end
 

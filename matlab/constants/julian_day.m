@@ -1,24 +1,24 @@
 function      n = julian_day(y,m,d)
 %
-%      n = julianday(y,m,d)
+%      n = julian_day(y,m,d)
 %      Convert between dates and Julian day numbers.
-%		 n = julianday
+%		 n = julian_day
 %		   Returns the Julian day number for today.
-%		 n = julianday(y,d)
+%		 n = julian_day(y,d)
 %			where y is a single year or a vector of years
 %			and d is a single day number or a vector of day
 %			numbers.
 %		   Returns the date vector [year,month,day] for each
 %			year,day pair.
-%		 n = julianday(y,m,d)
+%		 n = julian_day(y,m,d)
 %			where y is a single year or a vector of years,
 %			m is a single month or vector of months, and d is
 %			a single month day or a vector of month days.
 %		 	Returns the Julian day number for each year, month, day.
 %
 %		 Example:
-%			julianday(2016,10,12)	% returns 286
-%			julianday(2016,286)		% returns [2016,10,12]
+%			julian_day(2016,10,12)	    % returns 286
+%			julian_day(2016,286)		% returns [2016,10,12]
 %
 %      Valid: Matlab, Octave
 %      markjohnson@st-andrews.ac.uk
@@ -54,6 +54,6 @@ switch nargin,
 		t = datenum(horzcat(y(:),m(:),d(:))) ;
 		n = floor(t-datenum([y(:) repmat([1 1 0 0 0],length(y),1)]))+1 ;
 	otherwise
-		help julianday
+		help julian_day
 		return
 end

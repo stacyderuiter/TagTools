@@ -1,12 +1,12 @@
 function     v = depth_rate(p,fs,fc)
 
-%     v = depthrate(p)           % p is a sensor structure
+%     v = depth_rate(p)           % p is a sensor structure
 %	  or
-%     v = depthrate(p,fc)        % p is a sensor structure
+%     v = depth_rate(p,fc)        % p is a sensor structure
 %	  or
-%     v = depthrate(p,fs)        % p is a vector
+%     v = depth_rate(p,fs)        % p is a vector
 %	  or
-%     v = depthrate(p,fs,fc)     % p is a vector
+%     v = depth_rate(p,fs,fc)     % p is a vector
 %     Estimate the vertical velocity by differentiating a depth or 
 %	  altitude time series. A low-pass filter reduces the sensor
 %	  noise that is amplified by the differentiation.
@@ -29,7 +29,7 @@ function     v = depth_rate(p,fs,fc)
 %
 %		Example:
 %		loadnc('testdata1')
-%		v = depthrate(P)
+%		v = depth_rate(P)
 % 	    returns: .
 %
 %     Valid: Matlab, Octave
@@ -38,7 +38,7 @@ function     v = depth_rate(p,fs,fc)
 
 v = [] ;
 if nargin<1,
-   help depthrate
+   help depth_rate
    return
 end
 
@@ -60,4 +60,4 @@ nf = round(4*fs/fc) ;
 % use central differences to avoid a half sample delay
 diffp = [p(2)-p(1);(p(3:end)-p(1:end-2))/2;p(end)-p(end-1)]*fs ;
 % low pass filter to reduce sensor noise
-v = fir_nodelay(diffp,nf,fc/(fs/2)) ;
+v = fir_no_delay(diffp,nf,fc/(fs/2)) ;

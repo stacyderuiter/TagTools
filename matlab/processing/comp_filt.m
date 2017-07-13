@@ -1,8 +1,8 @@
 function    Xf = comp_filt(X,fs,fc)
 
-%    Xf=compfilt(X,fs,fc)		% X is a vector or matrix
+%    Xf=comp_filt(X,fs,fc)		% X is a vector or matrix
 %	  or
-%    Xf=compfilt(X,fc)			% X is a signal structure
+%    Xf=comp_filt(X,fc)			% X is a signal structure
 %    Complimentary filtering of a signal. This breaks signal X into two or more
 %	  frequency bands such that the sum of the signals in the separate bands is equal
 %	  to the original signal.
@@ -24,7 +24,7 @@ function    Xf = comp_filt(X,fs,fc)
 %		vector or matrix of the same size as X, and at the same sampling rate as X.
 %
 %	  Example:
-%		Xf = compfilt(X,fs,fc)
+%		Xf = comp_filt(X,fs,fc)
 % 	   returns: .
 %
 %    Valid: Matlab, Octave
@@ -33,7 +33,7 @@ function    Xf = comp_filt(X,fs,fc)
 
 Xf = [] ;
 if nargin<2,
-   help compfilt
+   help comp_filt
    return
 end
 
@@ -43,7 +43,7 @@ if isstruct(X),
 	X = X.data ;
 else
 	if nargin<3,
-		help compfilt
+		help comp_filt
 		return
 	end
 end
@@ -51,7 +51,7 @@ end
 nf = 4*fs./fc ;
 Xf = cell(1,length(fc)+1) ;
 for k=1:length(fc),
-	Xf{k} = fir_nodelay(X,nf(k),fc(k)/(fs/2)) ;
+	Xf{k} = fir_no_delay(X,nf(k),fc(k)/(fs/2)) ;
 	X = X-Xf{k} ;
 end
 Xf{k+1} = X ;

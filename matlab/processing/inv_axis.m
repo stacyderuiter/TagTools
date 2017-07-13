@@ -1,6 +1,6 @@
 function    [V,q] = inv_axis(A)
 
-%     [V,q] = invaxis(A)
+%     [V,q] = inv_axis(A)
 %		Identify the axis in triaxial movement measurements that varies
 %		the least, i.e., the invariant axis. Rotational and linear movement in
 %		some types of propulsion largely occur in 2 dimensions e.g., body rotation
@@ -26,7 +26,7 @@ function    [V,q] = inv_axis(A)
 %		it is important to choose a relevant sub-sample of movement data, A, to analyse.
 %
 %		Example:
-%		 [V,q] = invaxis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
+%		 [V,q] = inv_axis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
 % 	    returns: V=[-0.2140 ;0.2305;0.9493], q is very small.
 %
 %     Valid: Matlab, Octave

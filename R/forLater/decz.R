@@ -48,11 +48,11 @@ decz <- function(x,Z){
   #		Y = [] ;
   #	   x = load_next_block ;
   #		while ~isempty(x),
-  # 		  [y,z]=decdc(x,z);
+  # 		  [y,z]=dec_dc(x,z);
   #		  Y(end+(1:size(y,1)),1:size(y,2)) = y ;
   #		  x = load_next_block ;
   #		end
-  # 		y=decdc([],z);
+  # 		y=dec_dc([],z);
   #		Y(end+(1:size(y,1)),1:size(y,2)) = y ;
   #
   #     Valid: Matlab, Octave

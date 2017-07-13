@@ -9,7 +9,7 @@ msa(A, ref)
 \arguments{
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A can be in any frame as the MSA is rotation independent.}
 
-\item{ref}{The gravitational field strength in the same units as A. The default value is 9.81 which assumes that A is in m/s^2. Use ref=1 if the unit of A is g.}
+\item{ref}{The gravitational field strength in the same units as A. This is not needed if A is a sensor structure. If A is a matrix, the default value is 9.81 which assumes that A is in m/s^2. Use ref=1 if the unit of A is g.}
 }
 \value{
 m A column vector of MSA with the same number of rows as A. m has the same units as A.

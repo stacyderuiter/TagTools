@@ -9,9 +9,9 @@
 #' @export
 #' @example samplematrix1 <- matrix(c(7,2,3,6,4,9), byrow = TRUE, ncol = 3)
 #'          samplematrix2 <- matrix(c(6,5,3,4,8,9), byrow = TRUE, ncol = 3)
-#'          W <- bodyaxes(A = samplematrix1, M = samplematrix2, fc = NULL)
+#'          W <- body_axes(A = samplematrix1, M = samplematrix2, fc = NULL)
 
-bodyaxes <- function(A, M, fc = NULL) {
+body_axes <- function(A, M, fc = NULL) {
     # input checks-----------------------------------------------------------
     if (missing(M) | (missing(A))) {
         stop("A and M are required inputs")
@@ -23,12 +23,12 @@ bodyaxes <- function(A, M, fc = NULL) {
         A <- t(A)
     }
     if (nrow(A) != nrow(M)) {
-        print(sprintf("bodyaxes: A and M must have same number of rows  n"))
+        print(sprintf("body_axes: A and M must have same number of rows  n"))
     }
     if (!is.null(fc)) {
         if (nrow(A) > (8/fc)) {
-            M <- fir_nodelay(M, round(8/fc), fc)
-            A <- fir_nodelay(A, round(8/fc), fc)
+            M <- fir_no_delay(M, round(8/fc), fc)
+            A <- fir_no_delay(A, round(8/fc), fc)
         }
     }
     b <- sqrt(rowSums(M^2))

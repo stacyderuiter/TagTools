@@ -15,7 +15,7 @@
 #'                                                 A = matrix(c(-0.3, 0.52, 0.8), nrow = 1), fc = NULL)
 #' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.
 
-m2h <- function(M, A, fc = NULL) {
+m2h <- function(M, A, fs, fc = NULL) {
   if (nargs() < 2) {
     stop("inputs for both M and A are required")
   }
@@ -32,8 +32,8 @@ m2h <- function(M, A, fc = NULL) {
     nf <- round(4 * fs / fc)
     fc <- fc / (fs / 2)
     if (nrow(M) > nf) {
-      M <- fir_nodelay(M, nf, fc)
-      A <- fir_nodelay(A, nf, fc)
+      M <- fir_no_delay(M, nf, fc)
+      A <- fir_no_delay(A, nf, fc)
     }
   }
   #get the pitch and roll from A
