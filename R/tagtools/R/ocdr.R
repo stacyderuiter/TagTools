@@ -8,6 +8,7 @@
 #' @return s The forward speed estimate in m/s
 #' @note Output sampling rate is the same as the input sampling rate so s has the same size as p.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A descending animal will have a negative pitch angle.
+#' @export
 
 ocdr <- function(p, A, fs, fc, plim) {
   if (missing(fs)) {
@@ -31,5 +32,5 @@ ocdr <- function(p, A, fs, fc, plim) {
   pitch <- a2pr(A, fs) 
   pitch[which(abs(pitch$p) < plim)] <- NA 
   s <- v / sin(pitch) 
-  
+  return(s)
 }
