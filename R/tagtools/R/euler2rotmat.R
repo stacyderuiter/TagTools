@@ -14,7 +14,7 @@
 #'                                   0.4520470,  0.7015905, -0.550839682,
 #'                                   0.8414710, -0.5402970,  0.002391215) 
 
-euler_to_rotmat <- function(p, r, h) {
+euler2rotmat <- function(p, r, h) {
   # input checks-----------------------------------------------------------
   if (nargs() == 1 | nargs() == 2) {
     stop("Your input must be three distinct column vectors (p, r, h).")
