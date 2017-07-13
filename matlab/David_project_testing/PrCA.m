@@ -3,15 +3,16 @@ function captures = PrCA(A, fs, thresV)
 %   acceleration data from seals.
 %
 % INPUTS:
-%   A = The acceleration matrix with columns [ax ay az]. Acceleration must
-%       be in m/s^2.
+%   A = The acceleration matrix with columns [ax ay az]. Acceleration can
+%       be in any consistent unit (e.g. g or m/s^2).
 %   fs = The sampling rate in Hz of the acceleration signals.
 %   thresV = A user selectable threshold in the same units as A which is
 %       used in the process of checking for prey catpure attempts from the
 %       equation varS >= varA + thresV at a given second in time. varS is
 %       the change in magA (magnitute in acceleration) over one second of
 %       time. varA is the per second running average of change in
-%       acceleration. Default level as specified by the source is 5 m/s^2.
+%       acceleration. The default value is half of the 0.99 quantile of
+%       varA.
 %
 % OUTPUTS:
 %   captures =  A structure containing vectors for the capture times 
@@ -29,10 +30,6 @@ if nargin < 2
     help PrCA
 end
 
-if nargin < 3 || isempty(thresV)
-    thresV = 5;
-end
-
 %calculate magnitute in acceleration
 magA = zeros(size(A, 1), 1);
 for i = 1:size(A, 1)
@@ -48,6 +45,10 @@ end
 
 %calculate per second running average of change in acceleration
 varA = movmean(varS, 11);
+
+if nargin < 3 || isempty(thresV)
+    thresV = quantile(varA, .99) / 2;
+end
 
 %find prey capture attempts
 cap = varS >= (varA + thresV);
