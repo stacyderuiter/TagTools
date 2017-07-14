@@ -10,8 +10,8 @@ buffer_opt <- function(x, n, p, opt){
   vecindex <- 1
   for(i in 1:m){
     if(i == 1){
-      tmat[i,1:length(opt)] <- opt
-      for(f in (length(opt)+1):n){
+      tmat[i,1:p] <- opt
+      for(f in (p+1):n){
         tmat[i,f] = x[vecindex]
         vecindex <- vecindex + 1
       }
@@ -24,7 +24,11 @@ buffer_opt <- function(x, n, p, opt){
       }
     }
   }
-  z <- tmat[m, (-(n-length(opt)):0)]
+  z = c()
+  if(vecindex < length(x)+1){
+    z = x[vecindex: length(x)]
+  }
+  opt <- tmat[m, (-(n-p):0)]
   X <- t(tmat)
-  return(list(X = X, z = z))
+  return(list(X = X, z = z, opt = opt))
 }

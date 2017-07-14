@@ -1,8 +1,8 @@
 #' Merge the fields of two structures. If there are duplicate fields, the fields in s1 are taken.
 #'
-#' @param s1 Arbitrary structurese.g., containing metadata or settings.
-#' @param s2 Arbitrary structurese.g., containing metadata or settings.
-#' @return s A structure containing all of the fields in s1 and s2
+#' @param s1 Arbitrary list e.g., containing metadata or settings.
+#' @param s2 Arbitrary list e.g., containing metadata or settings.
+#' @return s A list containing all of the fields in s1 and s2
 #' @export
 #' @example s1 <- list( a = 1, b = c(2,3,4))
 #'          s2 <- list( b = 3, c = 'cat')
