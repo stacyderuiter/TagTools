@@ -22,6 +22,6 @@ image_irreg <- function(x, y, R) {
     x <- X[, zk]
     y <- (ydiff[k] * Y[, zk] + y[k])
     col <- R[zk, k]
-    plot3D::polygon2D(x = X[, zk], y = (ydiff[k] * Y[, zk] + y[k]), plot = TRUE, fill = TRUE, col = R[zk, k])
+    plot3D::polygon2D(x = x, y = y, col = col)
   }
 }
