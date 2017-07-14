@@ -4,7 +4,7 @@
 \alias{a2pr}
 \title{Pitch and roll estimation from triaxial accelerometer data.}
 \usage{
-a2pr(A, fs, fc = NULL)
+a2pr(A, fs, fc)
 }
 \arguments{
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
