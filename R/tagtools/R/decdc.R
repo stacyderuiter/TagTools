@@ -7,10 +7,10 @@
 #' @export
 #' @examples 
 #' s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1) 
-#' ds <- dec_dc(x = s, df = 4)   
+#' ds <- decdc(x = s, df = 4)   
 #' #Returns: 0.0023
 
-dec_dc <- function(x,df) {
+decdc <- function(x,df) {
   if (missing(df)) {
     stop("df is a required input")
   }

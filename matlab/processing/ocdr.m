@@ -98,8 +98,8 @@ end
 nf = round(4*fs/fc) ;
 % use central differences to avoid a half sample delay
 diffp = [p(2)-p(1);(p(3:end)-p(1:end-2))/2;p(end)-p(end-1)]*fs ;
-v = fir_no_delay(diffp,nf,fc/(fs/2)) ;
-A = fir_no_delay(A,nf,fc/(fs/2)) ;
+v = fir_nodelay(diffp,nf,fc/(fs/2)) ;
+A = fir_nodelay(A,nf,fc/(fs/2)) ;
 pitch = a2pr(A) ;
 pitch(abs(pitch)<plim) = NaN ;
 s = v./sin(pitch) ;

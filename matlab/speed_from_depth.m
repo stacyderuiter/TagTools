@@ -70,10 +70,10 @@ end
 end
 
 nf = round(4*fs/fc) ;
-v = fir_no_delay([p(2)-p(1);diff(p)]*fs,nf,fc/(fs/2)) ;
+v = fir_nodelay([p(2)-p(1);diff(p)]*fs,nf,fc/(fs/2)) ;
 
 if ~isempty(A),
-	A = fir_no_delay(A,nf,fc/(fs/2)) ;
+	A = fir_nodelay(A,nf,fc/(fs/2)) ;
 	pitch = a2pr(A) ;
 	pitch(abs(pitch)<plim) = NaN ;
 	s = v./sin(pitch) ;

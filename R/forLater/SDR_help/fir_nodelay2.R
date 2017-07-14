@@ -1,4 +1,4 @@
-fir_no_delay <- function(x,n,fp,qual) {
+fir_nodelay <- function(x,n,fp,qual) {
   n = floor(n/2)*2
   if (nargs() == 4) {
     h = signal::fir1(n,fp,qual)

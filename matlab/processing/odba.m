@@ -62,6 +62,6 @@ if ischar(fh),				% 'wilson' or 'vedba' method is selected
 	end
 else
 	n = 5*round(fs/fh) ;
-   Ah = fir_no_delay(A,n,fh/(fs/2),'high') ;
+   Ah = fir_nodelay(A,n,fh/(fs/2),'high') ;
 	e = sqrt(sum(abs(Ah).^2,2)) ;
 end

@@ -6,10 +6,10 @@
 #' @export
 #' @examples 
 #' sampleMatrix = matrix(c(1, 2, 3, 2, 2, 4, 1, -2, 4, 4, 4, 4), byrow = TRUE, nrow = 4, ncol = 3)
-#' n_jerk(A=sampleMatrix, fs=5)  
+#' njerk(A=sampleMatrix, fs=5)  
 #' #Results: c(7.0711, 20.6155, 33.541, 0)
 
-n_jerk <- function(A, fs) {
+njerk <- function(A, fs) {
     j <- c(fs * sqrt(rowSums(diff(A)^2)), 0)
     return(j)
 }

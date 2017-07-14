@@ -1,4 +1,4 @@
-function      [y,xx,v,h] = dec_dc(x,df)
+function      [y,xx,v,h] = decdc(x,df)
 
 %     y = dec_dc(x,df)
 %     Reduce the sampling rate of a time series by an integer factor.
@@ -26,7 +26,7 @@ function      [y,xx,v,h] = dec_dc(x,df)
 %		Example:
 % 		s=sin(2*pi/100*(0:1000-1)');		% sine wave at full sampling rate
 % 		s4=sin(2*pi*4/100*(0:250-1)');	% same sine wave at 1/4 of the sampling rate
-% 		ds=dec_dc(s,4);							% decimate the full rate sine wave
+% 		ds=decdc(s,4);							% decimate the full rate sine wave
 %		plot([s4 ds])
 %		max(abs(s4-ds))
 %		Returns: 0.0023

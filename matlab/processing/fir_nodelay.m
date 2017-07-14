@@ -1,12 +1,12 @@
-function    [y,h] = fir_no_delay(x,n,fc,qual)
+function    [y,h] = fir_nodelay(x,n,fc,qual)
 
-%     [y,h] =fir_no_delay(x,n,fc,qual)
+%     [y,h] =fir_nodelay(x,n,fc,qual)
 %     Delay-free filtering using a linear-phase (symmetric) FIR filter
 %     followed by group delay correction. Delay-free filtering is needed
 %		when the relative timing between signals is important e.g., when 
 %		integrating signals that have been sampled at different rates.
 %
-%		fir_no_delay is similar to the function filtfilt.m in Matlab and Octave 
+%		fir_nodelay is similar to the function filtfilt.m in Matlab and Octave 
 %		but with better control over the filter steepness. However a drawback of 
 %		using FIR filters is that they usually need a lot of support, i.e., each
 %		output sample is computed from a large number of input samples. This sets
@@ -49,7 +49,7 @@ function    [y,h] = fir_no_delay(x,n,fc,qual)
 %		Example:
 %		 % make a waveform with two harmonics - one at 1/20 and another at 1/4 of the sampling rate.
 %		 x = sin(2*pi*0.05*(1:100)')+cos(2*pi*0.25*(1:100)');
-%		 y = fir_no_delay(x,30,0.2)
+%		 y = fir_nodelay(x,30,0.2)
 %		 plot([x,y])
 % 	    returns: The input signal has the first and fifth harmonic. Applying the low-pass filter
 %		 removes most of the fifth harmonic so the output appears as a sinewave except for the first

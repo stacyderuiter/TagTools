@@ -9,7 +9,7 @@ rot_3d_model<- function(F,prh,speed){
     t = 1/speed 
   }
   for (k in 1:nrow(prh)){
-    Q = t(euler2rot_mat(prh[k,]))
+    Q = t(euler2rotmat(prh[k,]))
     tpts = F$P*Q ;
     set(F$p,'Vertices',cbind(tpts[,1], -tpts[,2], tpts[,3]) );
     lx = F$LX*Q ;

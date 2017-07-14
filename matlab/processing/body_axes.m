@@ -65,8 +65,8 @@ if size(A,1)~=size(M,1),
 end
 
 if nargin==3 && size(A,1)>8/fc,
-	M = fir_no_delay(M,round(8/fc),fc) ;
-	A = fir_no_delay(A,round(8/fc),fc) ;
+	M = fir_nodelay(M,round(8/fc),fc) ;
+	A = fir_nodelay(A,round(8/fc),fc) ;
 end
 
 b = sqrt(sum(M.^2,2)) ;

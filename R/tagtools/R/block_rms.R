@@ -9,11 +9,11 @@
 #' @export
 #' @example 
 #' X <- matrix(c(1:20), byrow = TRUE, nrow = 4)
-#' rms_in_blocks(X, n = 2, nov = NULL)
+#' block_rms(X, n = 2, nov = NULL)
 #'  #Results: y <- matrix(c(4.30, 5.14, 6.04, 6.96, 7.90, 13.72, 14.71, 15.70, 16.68, 17.67), byrow = TRUE, nrow = 2)
 #'            t <- c(1, 3)
 
-rms_in_blocks <- function(X, n, nov = NULL) {
+block_rms <- function(X, n, nov = NULL) {
   # input checks-----------------------------------------------------------
   if (is.null(nov) == TRUE) {
     nov <- 0
@@ -28,7 +28,7 @@ rms_in_blocks <- function(X, n, nov = NULL) {
   Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
   Y[, 1] <- colSums(ss)
   for (k in 2:ncol(X)) {
-    ss <- buffer_no_delay(S[,k], n, nov)
+    ss <- buffer_nodelay(S[,k], n, nov)
     Y[, k] <- colSums(ss)
   }
   Y = sqrt(Y / n)

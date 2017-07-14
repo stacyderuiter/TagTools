@@ -91,7 +91,7 @@ toff = toff(1:k) ;
 
 % filter vertical velocity to find actual surfacing moments
 n = round(4*fs/dp_lp) ;
-dp = fir_no_delay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
+dp = fir_nodelay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
 
 % for each ton, look back to find last time whale was at the surface
 % for each toff, look forward to find next time whale is at the surface

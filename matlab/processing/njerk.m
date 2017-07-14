@@ -1,6 +1,6 @@
-function    j = n_jerk(A,fs)
+function    j = njerk(A,fs)
 
-%    j = n_jerk(A,fs)
+%    j = njerk(A,fs)
 %     Compute the norm-jerk from triaxial acceleration data. The norm-jerk
 %		is ||dA/dt||, where ||x|| is the 2-norm of x, i.e., the square-root of the 
 %		sum of the squares of each axis.
@@ -19,7 +19,7 @@ function    j = n_jerk(A,fs)
 %		finite difference cannot be calculated.
 %
 %		Example:
-%		n_jerk([1,2,3;2,2,4;1,-2,4;4,4,4],5)
+%		njerk([1,2,3;2,2,4;1,-2,4;4,4,4],5)
 %		result is: [7.0711;20.6155;33.541;0]
 %
 %    Valid: Matlab, Octave

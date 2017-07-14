@@ -51,8 +51,8 @@ m2h <- function(M, A, fs, fc = NULL) {
     nf <- round(4 * fs / fc)
     fc <- fc / (fs / 2)
     if (nrow(M) > nf) {
-      M <- fir_no_delay(M, nf, fc)
-      A <- fir_no_delay(A, nf, fc)
+      M <- fir_nodelay(M, nf, fc)
+      A <- fir_nodelay(A, nf, fc)
     }
   }
   #get the pitch and roll from A

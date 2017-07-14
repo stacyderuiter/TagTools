@@ -1,6 +1,6 @@
-function    [Y,t] = rms_in_blocks(X,n,nov)
+function    [Y,t] = block_rms(X,n,nov)
 
-%     [Y,t] = rms_in_blocks(X,n,nov)
+%     [Y,t] = block_rms(X,n,nov)
 %	   Compute the RMS (root-mean-square) of successive blocks of samples.
 %		
 %		Inputs: 
@@ -13,7 +13,7 @@ function    [Y,t] = rms_in_blocks(X,n,nov)
 %		mxn matrix, Y is pxn where p is the number of complete n-length blocks with 
 %		nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 %		Example:
-%		 [Y,t] = rms_in_blocks()
+%		 [Y,t] = block_rms()
 % 	    returns: 
 %
 %     Valid: Matlab, Octave

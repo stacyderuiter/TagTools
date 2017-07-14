@@ -40,10 +40,10 @@ spec_lev <- function(x, nfft, fs, w, nov) {
   P = matrix(0,nrow = nfft / 2, ncol = xdim)
   for (k in 1:xdim) {
     if(!is.matrix(x)){
-      X <-  buffer_no_delay(x[],length(w),nov)
+      X <-  buffer_nodelay(x[],length(w),nov)
     } 
     else{
-      X <- buffer_no_delay(x[,k],length(w),nov)
+      X <- buffer_nodelay(x[,k],length(w),nov)
     }
     X <- pracma::detrend(X) * matlab::repmat(w, 1, ncol(X))
     #This is a simple function that copies fft in matlab, and 

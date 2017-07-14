@@ -13,9 +13,9 @@
 #' @export
 #' @example A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7), byrow = TRUE, nrow = 3)
 #'          M <- matrix(c(1.1, -0.3, 0.5, 0.2, -0.7, 0.5, -0.4, -0.1, 0.2), byrow = TRUE, nrow = 3)
-#'          p_track(A, M, s = 2, fs = 5, fc = NULL, p = NULL, LPF = NULL, include_S = NULL, include_pe = NULL)
+#'          ptrack(A, M, s = 2, fs = 5, fc = NULL, p = NULL, LPF = NULL, include_S = NULL, include_pe = NULL)
 
-p_track <- function(A, M, s, fs, fc, include_pe = NULL) {
+ptrack <- function(A, M, s, fs, fc, include_pe = NULL) {
   #input checks----------------------------------------------------------
   if (nargs() < 3) {
     stop("Inputs for A, M, and s are all required.")
@@ -45,8 +45,8 @@ p_track <- function(A, M, s, fs, fc, include_pe = NULL) {
     include_pe <- FALSE
   }
   nf <- 4 * fs / fc
-  A <- fir_no_delay(A, nf, fc / (fs / 2))
-  M <- fir_no_delay(A, nf, fc / (fs / 2))
+  A <- fir_nodelay(A, nf, fc / (fs / 2))
+  M <- fir_nodelay(A, nf, fc / (fs / 2))
   W <- body_axes(A, M)
   X <- t(drop(W[, 1, ]))
   T <- cumsum((s / fs) * X)

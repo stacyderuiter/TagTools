@@ -4,7 +4,7 @@
 #' @return prh is a 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
 #' @export
 
-rot_mat2euler <- function(Q) {
+rotmat2euler <- function(Q) {
   prh = c(asin(Q[3, 1]), atan2(Q[3, 2], Q[3, 3]), atan2(Q[2, 1], Q[1, 1]))
   return(prh)
 }

@@ -65,7 +65,7 @@ end
 Nfft = 2^round(log(Nfft)/log(2)) ;
 
 if ~isempty(fc),
-   Af=fir_no_delay(diff(A),6*fs/fc,fc/(fs/2));
+   Af=fir_nodelay(diff(A),6*fs/fc,fc/(fs/2));
 else
    Af = diff(A) ;
 end

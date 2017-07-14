@@ -32,6 +32,6 @@ depth_rate <- function(p, fs, fc) {
   X <- rbind(x1, x2, x3)
   diffp <- X * fs
   #low pass filter to reduce sensor noise
-  v <- fir_no_delay(diffp, nf, fc / (fs / 2))
+  v <- fir_nodelay(diffp, nf, fc / (fs / 2))
   return(v)
 }
