@@ -8,20 +8,18 @@
 #' @export
 
 depth_rate <- function(p, fs, fc) {
-  if (missing(fs)) {
-    stop("inputs for p and fs are both required")
+  if (missing(p)) {
+    stop("input for p is required")
   }
-  if(is.list(p)){
-    if(!missing(fs)){
+  if (is.list(p)) {
+    if (nargs() > 1) {
       fc <- fs 
-    }
-    else{
+    } else {
       fc <- c()
     }
     fs <- p$fs
     p <- p$data
-  }
-  else{
+  } else {
     if(missing(fc)){
       fc <- 0.2
     }

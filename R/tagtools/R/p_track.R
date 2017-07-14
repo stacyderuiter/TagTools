@@ -15,10 +15,29 @@
 #'          M <- matrix(c(1.1, -0.3, 0.5, 0.2, -0.7, 0.5, -0.4, -0.1, 0.2), byrow = TRUE, nrow = 3)
 #'          p_track(A, M, s = 2, fs = 5, fc = NULL, p = NULL, LPF = NULL, include_S = NULL, include_pe = NULL)
 
-p_track <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
+p_track <- function(A, M, s, fs, fc, include_pe = NULL) {
   #input checks----------------------------------------------------------
-  if (nargs() < 4) {
-    stop("Inputs for A, M, s, and fs are all required.")
+  if (nargs() < 3) {
+    stop("Inputs for A, M, and s are all required.")
+  }
+  if (is.list(M) & is.list(A)) {
+    if (nargs() > 3) {
+      fc <- fs
+    }
+    fs <- M$fs
+    M <- M$data
+    A <- A$data
+  } else {
+    if (A$fs != M$fs) {
+      stop("A and M must be at the same sampling rate")
+    }
+  } else {
+    if (missing(fs)) {
+      stop("Inputs for A, M, s, and fs are all required if A and M are matrices")
+    }
+    if (missing(fc)) {
+      fc <- c()
+    }
   }
   if (is.null(fc) == TRUE) {
     fc <- 0.2

@@ -17,10 +17,27 @@
 #'#         r = c(-1.9222411, -0.3126323, -0.8419416) 
 #'#         v = c(1.000650, 1.133578, 0.776917)
 
-a2pr <- function(A, fs, fc = NULL) {
+a2pr <- function(A, fs, fc) {
   # input checks-----------------------------------------------------------
   if (missing(A)) {
-    stop("Acceleration matrix A is a required input")
+    stop("Input for A is required")
+  }
+  if (is.list(A)) {
+    if (nargs() > 1) {
+      fc <- fs
+    } else {
+      fc <- c()
+    }
+    fs <- A$fs
+    A <- A$data
+  } else {
+    if (nargs() == 1) {
+      fc <- c()
+    } else {
+      if (nargs() == 2) {
+        stop("Need to specify fs and fc if calling a2pr with a matrix")
+      }
+    }
   }
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {

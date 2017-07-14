@@ -11,10 +11,31 @@
 #' @export
 
 h_track <- function(A, M, s, fs, fc) {
-  if (missing(fs)) {
-    stop("inputs for A, M, s, and fs are all required")
+  if (missing(s)) {
+    stop("inputs for A, M, and s are all required")
   }
-  if (missing(fc)){
+  if (is.list(A) & is.list(M)) {
+    if (nargs() > 3) {
+      fc <- fs
+    } else {
+      fc <- c()
+    }
+    fs <- M$fs 
+    M <- M$data 
+    A <- A$data
+    if (A$fs != M$fs) {
+      stop("A and M must be at the same sampling rate")
+    }
+    
+  } else {
+    if (missing(fs)) {
+      stop("inputs for A, M, s, and fs are all required")
+    }
+    if (missing(fc)) {
+      fc <- c()
+    }
+  }
+  if (is.null(fc)){
     fc <- 0.2 
   }
   nf <- 4 * fs / fc 

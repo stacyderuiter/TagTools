@@ -11,13 +11,36 @@
 #' @export
 
 ocdr <- function(p, A, fs, fc, plim) {
-  if (missing(fs)) {
+  if (missing(A)) {
     stop("inputs for p and A are both required")
   }
-  if (missing(fc)) {
+  if (is.list(p) & is.list(A)) {
+    if (nargs() < 3) {
+      fs <- c()
+    }
+    if (nargs() < 4) {
+      fc <- c()
+    }
+    plim <- fc 
+    fc <- fs 
+    fs <- p$fs 
+    p <- p$data
+    A <- A$data
+  } else {
+    if (missing(fs)) {
+      stop("fs required for vector/matrix sensor data")
+    }
+    if (missing(fc)) {
+      fc <- c()
+    }
+    if (missing(plim)) {
+      plim <- c()
+    }
+  }
+  if (is.null(fc)) {
     fc <- 0.2 #default filter cut-off of 0.2 Hz
   }
-  if (missing(plim)) {
+  if (is.null(plim)) {
     plim <- 20 / 180 * pi #default 20 degree pitch angle cut-off
   }
   nf <- round(4 * fs / fc) 

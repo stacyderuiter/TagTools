@@ -8,15 +8,14 @@
 
 comp_filt <- function(X, fs, fc) {
   if (missing(fs)) {
-    stop("inputs X, and fs are all required")
+    stop("At least two inputs are required")
   }
-  if(is.list(X)){
+  if (is.list(X)) {
     fc <- fs ;
     fs <- X$fs ;
     X <- X$data ;
-  }
-  else{
-    if(missing(fc)){
+  } else {
+    if (missing(fc)) {
       stop("inputs X, fs, and fc are all required if X is not a list")
     }
   }

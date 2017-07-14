@@ -19,6 +19,25 @@ m2h <- function(M, A, fs, fc = NULL) {
   if (nargs() < 2) {
     stop("inputs for both M and A are required")
   }
+  if (is.list(M) & is.list(A)) {
+    if (nargs() > 2) {
+      fc <- fs
+    }
+    fs <- M$fs
+    M <- M$data
+    A <- A$data
+    if (A$fs != M$fs) {
+      stop("A and M must be at the same sampling rate")
+    }
+  } else {
+    if (nargs() == 2) {
+      fc <- c()
+    } else {
+      if (nargs() == 3) {
+        stop("Need to specify fs and fc if calling m2h with matrix inputs")
+      }
+    }
+  }
   if (nrow(M) * ncol(M) == 3) {
     M <- t(M)
   }
