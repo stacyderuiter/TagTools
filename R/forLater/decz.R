@@ -47,19 +47,18 @@ decz <- function(x, Z) {
     }
   }
   Z$ov <- c()
-  for (k in 1:ncol(x)) {
-    listXz <- buffer_opt(x[, k], nh, nh - df, Z$z[, k]) 
-    X <- listXz$X
-    z <- listXz$z
-  }
   y <- matrix(0, ncol(X), ncol(x))
   for (k in 1:ncol(x)) {
-    y[, k] <- t((Z$h * X)) 
+    buffer_list <- buffer_opt(x[, k], nh, nh - df, Z$z[, k]) 
+    X <- buffer_list$X
+    zz <- buffer_list$z
+    z <- buffer_list$opt
+    y[, k] <- t((Z$h %*% X)) 
     Z$z[, k] <- z 
     if (is.null(Z$ov)) {
       Z$ov <- matrix(0, length(zz), ncol(x))
     }
     Z$ov[, k] <- zz
   }
-  return(list(y = y, Z = Z))
+  return(list(y = y, Z = Z, X = X))
 }
