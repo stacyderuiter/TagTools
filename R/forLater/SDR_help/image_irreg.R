@@ -19,9 +19,9 @@ image_irreg <- function(x, y, R) {
   ydiff <- c(diff(y), y[length(y)] - y[length(y) - 1])
   for (k in 1:length(y)) {
     zk <- which(!is.na(R[, k]))
-    x <- X[, zk]
-    y <- (ydiff[k] * Y[, zk] + y[k])
-    col <- R[zk, k]
-    plot3D::polygon2D(x = x, y = y, col = col)
+    xx <- X[, zk]
+    yy <- (ydiff[k] * Y[, zk] + y[k])
+    cols <- R[zk, k]
+    plot3D::polygon2D(x = xx, y = yy, col = cols)
   }
 }
