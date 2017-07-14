@@ -20,8 +20,6 @@ image_irreg <- function(x, y, R) {
   graphics::plot(NA,xlim = c(min(X[,]), max(X[,])), ylim = c(min(ydiff[1] * Y[,  which(!is.na(R[, 1]))] + y[1]), max(ydiff[length(y)] * Y[, which(!is.na(R[, length(y)]))] + y[length(y)])))
   for (k in 1:length(y)) {
     zk <- which(!is.na(R[, k]))
-    polygon(x =X[, zk], y = (ydiff[k] * Y[, zk] + y[k]), col = R[zk,k], lty = 0)
-    #plot3D::polygon2D(x = X[, zk], y = (ydiff[k] * Y[, zk] + y[k]), col = R[zk, k])
-    
+    graphics::polygon(x =X[, zk], y = (ydiff[k] * Y[, zk] + y[k]), col = R[zk,k], lty = 0)
   }
 }

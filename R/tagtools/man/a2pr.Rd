@@ -7,7 +7,7 @@
 a2pr(A, fs, fc)
 }
 \arguments{
-\item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
+\item{A}{An nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
 \item{fs}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.}
 
