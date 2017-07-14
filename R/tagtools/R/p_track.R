@@ -27,7 +27,6 @@ p_track <- function(A, M, s, fs, fc, include_pe = NULL) {
     fs <- M$fs
     M <- M$data
     A <- A$data
-  } else {
     if (A$fs != M$fs) {
       stop("A and M must be at the same sampling rate")
     }

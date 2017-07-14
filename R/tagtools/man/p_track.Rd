@@ -4,7 +4,7 @@
 \alias{p_track}
 \title{Simple dead-reckoned track (pseudo-track) estimation based on speed and bodypointing angle.}
 \usage{
-p_track(A, M, s, fs, fc = NULL, include_pe = NULL)
+p_track(A, M, s, fs, fc, include_pe = NULL)
 }
 \arguments{
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
