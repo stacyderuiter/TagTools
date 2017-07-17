@@ -20,6 +20,7 @@ plott <- function(...) {
   args_container <- as.list(match.call())
   fsrt <- matrix(0, length(args_container), 4) 
   X <- list()
+<<<<<<< HEAD
   for (k in 1:length(args_container)) {
     x <- args_container[[k]] 
     if (is.list(x)) {
@@ -28,6 +29,17 @@ plott <- function(...) {
         X[[length(x) + 1]] <- x$data
         fs[length(X), 1] <- x$fs
       } else {
+=======
+  for (k in 2:length(args_container)){
+    x <- args_container[[k]] 
+    if (is.list(x)){
+      # this input is a sensor structure
+      if(!is.null(x[['fs']]) && !is.null(x[['data']])){
+        X[[length(x)+1]] <- x$data
+        fs[length(X),1] <- x$fs
+      }
+      else{
+>>>>>>> 5b51228cd39992c6fa5f756beda95ca05c763985
         stop("sensor structure must have data and fs fields!")
       }
     } else {
