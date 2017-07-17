@@ -115,7 +115,7 @@ plott <- function(...){
   for(k in 1:length(X))		# now we are ready to plot
   {
     axis(ax[k]) 
-    h[[k]]=plot(((1:size(X{k},1))/fsrt(k,1)+fsrt(k,3))*(1/ddiv),X{k})
+    h[[k]]=plot(((1:size(X[[k]],1))/fsrt(k,1)+fsrt(k,3))*(1/ddiv),X[[k]])
     set(ax(k),'XLim',xlims)
     if(fsrt[k,2]==1){
       set(ax(k),'YDir','reverse')
