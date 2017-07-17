@@ -2,7 +2,7 @@ function feeding_events = predict_feeding(s, fs)
 % Automated detection of feeding events based from velocity data
 %
 % INPUTS:
-%   s = The velocity vector in m/s.
+%   s = The speed vector in m/s.
 %   fs = The sampling rate in Hz of the acceleration signals.
 % 
 % OUTPUTS:
@@ -58,3 +58,5 @@ feeding_speeds = ssec(feeding_times);
 field1 = 'feeding_times';  value1 = feeding_times;
 field2 = 'feeding_speeds';  value2 = feeding_speeds;
 feeding_events = struct(field1,value1,field2,value2);
+
+end

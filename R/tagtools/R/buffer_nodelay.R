@@ -8,14 +8,14 @@
 #' @example vec <- c(1:20)
 #'          n <- 5
 #'          p <- 2
-#'          buffer_no_delay(vec, v, p)
+#'          buffer_nodelay(vec, v, p)
 #' #Results: c(1, 4, 7, 10, 13, 16,
 #'             2, 5, 8, 11, 14, 17,
 #'             3, 6, 9, 12, 15, 18,
 #'             4, 7, 10, 13, 16, 19,
 #'             5, 8, 11, 14, 17, 20,)
 
-buffer_no_delay <- function(vec, n, p){
+buffer_nodelay <- function(vec, n, p){
   if(!(p < n)){
     stop("p must be less than n")
   }
