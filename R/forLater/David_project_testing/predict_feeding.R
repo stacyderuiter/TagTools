@@ -30,21 +30,23 @@ predict_feeding <- function(s, fs) {
   st <- sp[dsp]
   md <- matrix(0, length(st), 1)
   for (i in 1:length(st)) {
-    md[i] <- mean(ssec((st[i] + 1):(st[i] + 10)))
+    md[i] <- mean(ssec[(st[i] + 1):(st[i] + 10)])
   }
   ma <- matrix(0, length(dsp), 1)
   for (j in 1:length(dsp)) {
     if (dsp[j] == dsp[1]) {
       ma[j] <- mean(ssec[sp[1]:sp[dsp[j]]])
     } else {
-      ma(j) <- mean(ssec[sp[dsp[j - 1] +1]:sp[dsp[j]]])
+      ma[j] <- mean(ssec[sp[dsp[j - 1] +1]:sp[dsp[j]]])
     }
   }
   
   #find feeding events
   feeding_times <- which((ma / md) <= 0.5)
-  feeding_speeds <- ssec(feeding_times)
+  feeding_speeds <- ssec[feeding_times]
   
   #create list containing feeding times and their respective speeds
   feeding_events <- list(feeding_times = feeding_times, feeding_speeds = feeding_speeds)
+  
+  return(feeding_events)
 }
