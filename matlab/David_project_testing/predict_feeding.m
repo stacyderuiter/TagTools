@@ -58,3 +58,5 @@ feeding_speeds = ssec(feeding_times);
 field1 = 'feeding_times';  value1 = feeding_times;
 field2 = 'feeding_speeds';  value2 = feeding_speeds;
 feeding_events = struct(field1,value1,field2,value2);
+
+end
