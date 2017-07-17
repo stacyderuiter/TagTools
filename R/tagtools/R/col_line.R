@@ -3,10 +3,11 @@
 #' @param x A vector or matrix of points on the horizontal axis.
 #' @param y A vector or matrix of points on the vertical axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
+#' @param ... Additional inputs for plot()
 #' @note x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 #' @export
 
-col_line <- function(x, y, c) {
+col_line <- function(x, y, c, ...) {
   if (length(x) == length(y) & length(x) == length(c)) {
      x <- matrix(x, nrow = 1)
      y <- matrix(y, nrow = 1)
@@ -28,7 +29,7 @@ col_line <- function(x, y, c) {
      graphics::plot(NA, xlim = c(0, max(x)), ylim = c(0, max(y)))
      for (i in 1:(length(X)-1)) {
        d <- data[[i]]
-       graphics::lines(x = d[, 1], y = d[, 2], col = C[i], lwd = 3, xlab = NULL, ylab = NULL)
+       graphics::lines(x = d[, 1], y = d[, 2], col = C[i], lwd = 3, xlab = NULL, ylab = NULL, ...)
      }
   } else {
     if (nrow(x) == nrow(y) & nrow(x) == nrow(c) & ncol(x) == ncol(y) & ncol(x) == ncol(c)) {
@@ -53,7 +54,7 @@ col_line <- function(x, y, c) {
       for (i in 1:(nrow(x)-1)) {
         dx <- datax[[i]]
         dy <- datay[[i]]
-        graphics::matlines(x = dx, y = dy, col = c[i], lwd = 3, lty = 1, xlab = NULL, ylab = NULL)
+        graphics::matlines(x = dx, y = dy, col = c[i], lwd = 3, lty = 1, xlab = NULL, ylab = NULL, ...)
       }
     }
   }
