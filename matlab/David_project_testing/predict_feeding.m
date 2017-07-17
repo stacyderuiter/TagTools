@@ -2,7 +2,7 @@ function feeding_events = predict_feeding(s, fs)
 % Automated detection of feeding events based from velocity data
 %
 % INPUTS:
-%   s = The velocity vector in m/s.
+%   s = The speed vector in m/s.
 %   fs = The sampling rate in Hz of the acceleration signals.
 % 
 % OUTPUTS:

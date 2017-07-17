@@ -1,6 +1,6 @@
 #' Automated detection of feeding events based from velocity data.
 #' 
-#' @param s The velocity vector in m/s.
+#' @param s The speed vector in m/s.
 #' @param fs The sampling rate in Hz of the acceleration signals.
 #' @return feeding_events A list of feeding event times (sec) and their respective maximum speed estimates (m/s).
 #' @note Thomas Doniol-Valcroze, Véronique Lesage, Janie Giard, Robert Michaud; Optimal foraging theory predicts diving and feeding strategies of the largest marine predator. Behav Ecol 2011; 22 (4): 880-888. doi: 10.1093/beheco/arr038
