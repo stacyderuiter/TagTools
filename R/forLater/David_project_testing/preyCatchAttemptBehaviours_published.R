@@ -51,8 +51,8 @@ preyCatchAttemptBehaviours <- function (x, x2, fs = 16, fc = 2.64, timeDays = 0)
   }
   gc()
   
-  .f <- function(x) c(rep(0, 12), roll_sd(x, 2*12+1), rep(0, 12))
-  x <- x[, `:=`(2:4, lapply(.SD, .f)), by = x2, .SDcols = 2:4]
+  .f <- function(x, fs) c(rep(0, floor((floor(1.5*fs)/2))), roll_sd(x, ceiling(1.5 * fs)), rep(0, floor((ceiling(1.5*fs)/2))))
+  x <- x[, `:=`(2:4, lapply(.SD, .f, fs = fs)), .SDcols = 2:4]
   rm(.f)
   gc()
   
