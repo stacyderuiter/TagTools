@@ -59,7 +59,7 @@ plott <- function(...){
   args_container <- as.list(match.call())
   fsrt <- matrix(0,length(args_container),4) 
   X <- list()
-  for (k in 1:length(args_container)){
+  for (k in 2:length(args_container)){
     x <- args_container[[k]] 
     if (is.list(x)){
       # this input is a sensor structure
