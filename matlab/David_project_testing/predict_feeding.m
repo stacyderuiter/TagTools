@@ -39,7 +39,7 @@ dsp = find(diff(sp) >= 4);
 st = sp(dsp);
 md = zeros(length(st), 1);
 for i = 1:length(st)
-    md(i) = mean(ssec((st(i)+1):(st(i)+10)));
+    md(i) = mean(ssec((st(i)+1):(st(i)+11)));
 end
 ma = zeros(length(dsp), 1);
 for j = 1:length(dsp)
