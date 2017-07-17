@@ -1,6 +1,6 @@
 #' This function detects peaks in jerk data that exceed a specfied threshold and returns each peak's start time, end time, maximum jerk value, and time of the maximum jerk.
 #' 
-#' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit (e.g. g or m/s^2). This is used to calculate the jerk using n_jerk().
+#' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit (e.g. g or m/s^2). This is used to calculate the jerk using njerk().
 #' @param fs The sampling rate in Hz of the acceleration signals. This is used to calculate the bktime in the case that the input for bktime is missing.
 #' @param thresh The threshold level above which peaks in the jerk signal are detected. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
 #' @param bktime The specified length of time between jerk values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default level for bktime is 5 times the sampling rate (fs). This is equivalent to 5 seconds of time.
@@ -14,7 +14,7 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
   }
   
   #calculate jerk of A
-  j <- n_jerk(A, fs)
+  j <- njerk(A, fs)
   
   if (is.null(thresh) == TRUE) {
     thresh <- stats::quantile(j, c(0.99))

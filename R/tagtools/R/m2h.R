@@ -1,6 +1,6 @@
 #' Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #'
-#' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer signal list (e.g., from readtag.R).
+#' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
 #' @param A A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param fs The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
@@ -51,8 +51,8 @@ m2h <- function(M, A, fs, fc = NULL) {
     nf <- round(4 * fs / fc)
     fc <- fc / (fs / 2)
     if (nrow(M) > nf) {
-      M <- fir_no_delay(M, nf, fc)
-      A <- fir_no_delay(A, nf, fc)
+      M <- fir_nodelay(M, nf, fc)
+      A <- fir_nodelay(A, nf, fc)
     }
   }
   #get the pitch and roll from A

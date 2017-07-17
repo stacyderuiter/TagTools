@@ -44,7 +44,7 @@ a2pr <- function(A, fs, fc) {
     A <- t(A)
   }
   if (!is.null(fc)) {
-    A = fir_no_delay(A, round(4 / fc), fc / (fs / 2))
+    A = fir_nodelay(A, round(4 / fc), fc / (fs / 2))
   }
   v = sqrt(rowSums(A^2))
   # compute pitch and roll

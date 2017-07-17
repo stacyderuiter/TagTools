@@ -60,4 +60,4 @@ nf = round(4*fs/fc) ;
 % use central differences to avoid a half sample delay
 diffp = [p(2)-p(1);(p(3:end)-p(1:end-2))/2;p(end)-p(end-1)]*fs ;
 % low pass filter to reduce sensor noise
-v = fir_no_delay(diffp,nf,fc/(fs/2)) ;
+v = fir_nodelay(diffp,nf,fc/(fs/2)) ;

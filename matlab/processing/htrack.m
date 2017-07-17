@@ -1,12 +1,12 @@
-function    T = h_track(A,M,s,fs,fc)
+function    T = htrack(A,M,s,fs,fc)
 
-%    T=h_track(A,M,s,fs)			% A and M are matrices
+%    T=htrack(A,M,s,fs)			% A and M are matrices
 %	  or
-%    T=h_track(A,M,s,fs,fc)		% A and M are matrices
+%    T=htrack(A,M,s,fs,fc)		% A and M are matrices
 %	  or
-%    T=h_track(A,M,s)				% A and M are sensor structures
+%    T=htrack(A,M,s)				% A and M are sensor structures
 %	  or
-%    T=h_track(A,M,s,fc)			% A and M are sensor structures
+%    T=htrack(A,M,s,fc)			% A and M are sensor structures
 %    Simple horizontal dead-reckoned track (pseudo-track) estimation based on speed
 %	  and heading. This differs from ptrack in that the animal's body angle is not
 %	  considered. This makes it appropriate for animals that do not always move in the
@@ -54,7 +54,7 @@ function    T = h_track(A,M,s,fs,fc)
 %	  Example:
 %		v = ocdr(p,fs);
 %		s = sqrt(max(1-v.^2,0));
-%		T = h_track(A,M,s,fs)
+%		T = htrack(A,M,s,fs)
 % 	   returns: .
 %
 %    Valid: Matlab, Octave

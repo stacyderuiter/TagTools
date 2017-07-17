@@ -31,7 +31,7 @@ else
 end
 	
 for k=1:size(prh,1),
-    Q = euler2rot_mat(prh(k,:))' ;
+    Q = euler2rotmat(prh(k,:))' ;
     tpts = F.P*Q ;
     set(F.p,'Vertices',[tpts(:,1) -tpts(:,2) tpts(:,3)]) ;
 	 lx = F.LX*Q ;

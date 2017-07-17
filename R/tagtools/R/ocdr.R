@@ -50,8 +50,8 @@ ocdr <- function(p, A, fs, fc, plim) {
   x3 <- p[length(p)] - p[length(p) - 1]
   X <- rbind(x1, x2, x3)
   diffp <- X * fs 
-  v <- fir_no_delay(diffp, nf, fc / (fs / 2)) 
-  A <- fir_no_delay(A, nf, fc / (fs / 2)) 
+  v <- fir_nodelay(diffp, nf, fc / (fs / 2)) 
+  A <- fir_nodelay(A, nf, fc / (fs / 2)) 
   pitch <- a2pr(A, fs) 
   pitch[which(abs(pitch$p) < plim)] <- NA 
   s <- v / sin(pitch) 

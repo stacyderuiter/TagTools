@@ -33,8 +33,8 @@ inclination <- function(A, M, fc = NULL) {
     incl <- vector(mode = "numeric", length = 0)
   }
   if (is.null(fc) == FALSE) {
-    A <- fir_no_delay(A, round(8 / fc), fc)
-    M <- fir_no_delay(M, round(8 /fc), fc)
+    A <- fir_nodelay(A, round(8 / fc), fc)
+    M <- fir_nodelay(M, round(8 /fc), fc)
   }
   #compute magnetic field intensity
   v <- sqrt(rowSums(M^2))

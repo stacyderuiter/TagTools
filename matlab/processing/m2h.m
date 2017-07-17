@@ -91,8 +91,8 @@ if ~isempty(fc),
 	nf = round(4*fs/fc) ;
    fc = fc/(fs/2) ;
 	if size(M,1)>nf,
-		M = fir_no_delay(M,nf,fc) ;
-		A = fir_no_delay(A,nf,fc) ;
+		M = fir_nodelay(M,nf,fc) ;
+		A = fir_nodelay(A,nf,fc) ;
 	end
 end
 

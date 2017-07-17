@@ -7,9 +7,9 @@
 ocdr(p, A, fs, fc, plim)
 }
 \arguments{
-\item{p}{The depth or altitude vector (a regularly sampled time series) in meters, sampled at fs Hz.}
+\item{p}{The depth or altitude vector (a regularly sampled time series) or depth or altitude sensors list in meters, sampled at fs Hz.}
 
-\item{A}{The nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.}
+\item{A}{The nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.}
 
 \item{fs}{The sampling rate of p and A in Hz (samples per second).}
 

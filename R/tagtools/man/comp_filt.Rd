@@ -7,7 +7,7 @@
 comp_filt(X, fs, fc)
 }
 \arguments{
-\item{X}{A sensor vector or matrix (i.e., with a signal in each column).}
+\item{X}{A sensor vector or matrix (i.e., with a signal in each column) or sensor list (e.g., from readtag.R).}
 
 \item{fs}{The sampling rate of the sensor data in Hz (samples per second).}
 

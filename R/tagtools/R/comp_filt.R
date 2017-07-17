@@ -22,7 +22,7 @@ comp_filt <- function(X, fs, fc) {
   nf <-  4 * fs / fc 
   Xf <- vector('list', length(fc) + 1) 
   for (k in 1:length(fc)) {
-    Xf[[k]] <- fir_no_delay(X, nf[k], fc[k] / (fs / 2))$y 
+    Xf[[k]] <- fir_nodelay(X, nf[k], fc[k] / (fs / 2))$y 
     X <- X - Xf[[k]]
   }
   Xf[[k + 1]] <- X 

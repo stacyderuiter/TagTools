@@ -1,12 +1,12 @@
-function    [T,pe] = p_track(A,M,s,fs,fc)
+function    [T,pe] = ptrack(A,M,s,fs,fc)
 
-%    [T,pe]=p_track(A,M,s,fs)			% A and M are matrices
+%    [T,pe]=ptrack(A,M,s,fs)			% A and M are matrices
 %	  or
-%    [T,pe]=p_track(A,M,s,fs,fc)		% A and M are matrices
+%    [T,pe]=ptrack(A,M,s,fs,fc)		% A and M are matrices
 %	  or
-%    [T,pe]=p_track(A,M,s)				% A and M are sensor structures
+%    [T,pe]=ptrack(A,M,s)				% A and M are sensor structures
 %	  or
-%    [T,pe]=p_track(A,M,s,fc)			% A and M are sensor structures
+%    [T,pe]=ptrack(A,M,s,fc)			% A and M are sensor structures
 %    Simple dead-reckoned track (pseudo-track) estimation based on speed and body 
 %	  pointing angle.
 %
@@ -53,7 +53,7 @@ function    [T,pe] = p_track(A,M,s,fs,fc)
 %	  medium. There are numerous other sources of error so use at your own risk!
 %
 %	  Example:
-%		T = p_track()
+%		T = ptrack()
 % 	   returns: .
 %
 %    Valid: Matlab, Octave
@@ -94,8 +94,8 @@ if isempty(fc),
 end
 
 nf = 4*fs/fc 
-A = fir_no_delay(A,nf,fc/(fs/2)) ;
-M = fir_no_delay(M,nf,fc/(fs/2)) ;
+A = fir_nodelay(A,nf,fc/(fs/2)) ;
+M = fir_nodelay(M,nf,fc/(fs/2)) ;
 W = body_axes(A,M) ;
 X = squeeze(W(:,1,:))' ;
 T = cumsum((s/fs).*X) ;

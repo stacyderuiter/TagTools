@@ -51,7 +51,7 @@ end
 nf = 4*fs./fc ;
 Xf = cell(1,length(fc)+1) ;
 for k=1:length(fc),
-	Xf{k} = fir_no_delay(X,nf(k),fc(k)/(fs/2)) ;
+	Xf{k} = fir_nodelay(X,nf(k),fc(k)/(fs/2)) ;
 	X = X-Xf{k} ;
 end
 Xf{k+1} = X ;

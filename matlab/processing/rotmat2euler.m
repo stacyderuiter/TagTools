@@ -1,6 +1,6 @@
-function    prh = rot_mat2euler(Q)
+function    prh = rotmat2euler(Q)
 %
-%      Q = rot_mat2euler(prh)
+%      Q = rotmat2euler(prh)
 %      Decompose a rotation (or direction cosine) matrix into Euler angles,
 %		 pitch, roll, and heading.
 %
@@ -13,7 +13,7 @@ function    prh = rot_mat2euler(Q)
 %          heading or yaw angle in radians.
 %
 %		 Example:
-%		  prh = rot_mat2euler()
+%		  prh = rotmat2euler()
 % 	     returns: prh = ?
 %
 %      Valid: Matlab, Octave

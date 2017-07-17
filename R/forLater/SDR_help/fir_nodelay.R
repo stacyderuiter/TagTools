@@ -18,7 +18,7 @@
 #' Returns: The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient.
 #'          
 
-fir_no_delay <- function(x, n, fp, qual){
+fir_nodelay <- function(x, n, fp, qual){
   require(signal) #for filter design, filtering
   #input checking
   if (missing(qual)) qual <- NA

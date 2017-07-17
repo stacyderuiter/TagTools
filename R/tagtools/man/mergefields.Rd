@@ -7,12 +7,12 @@
 mergefields(s1, s2)
 }
 \arguments{
-\item{s1}{Arbitrary structurese.g., containing metadata or settings.}
+\item{s1}{Arbitrary list e.g., containing metadata or settings.}
 
-\item{s2}{Arbitrary structurese.g., containing metadata or settings.}
+\item{s2}{Arbitrary list e.g., containing metadata or settings.}
 }
 \value{
-s A structure containing all of the fields in s1 and s2
+s A list containing all of the fields in s1 and s2
 }
 \description{
 Merge the fields of two structures. If there are duplicate fields, the fields in s1 are taken.
