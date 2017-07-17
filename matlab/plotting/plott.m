@@ -1,16 +1,16 @@
-function    [ax,h]=plot_t(varargin)
+function    [ax,h]=plott(varargin)
 
-%     [ax,h]=plot_t(X)			% X is a sensor structure
+%     [ax,h]=plott(X)			% X is a sensor structure
 %	   or
-%     [ax,h]=plot_t(X,r)			% X is a sensor structure
+%     [ax,h]=plott(X,r)			% X is a sensor structure
 %	   or
-%     [ax,h]=plot_t(X,fsx)		% X is a vector or matrix of sensor data
+%     [ax,h]=plott(X,fsx)		% X is a vector or matrix of sensor data
 %	   or
-%     [ax,h]=plot_t(X,fsx,r)	% X is a vector or matrix of sensor data
+%     [ax,h]=plott(X,fsx,r)	% X is a vector or matrix of sensor data
 %	   or
-%     [ax,h]=plot_t(X,Y,...)	% X, Y etc are sensor structures
+%     [ax,h]=plott(X,Y,...)	% X, Y etc are sensor structures
 %	   or
-%     [ax,h]=plot_t(X,fsx,Y,fsy,...)	% X, Y etc are vectors or matrices of sensor data
+%     [ax,h]=plott(X,fsx,Y,fsy,...)	% X, Y etc are vectors or matrices of sensor data
 %     Plot sensor time series against time in a single or multi-paneled figure with linked
 %	   x-axes. This is useful for comparing measurements across different sensors. The
 %		time axis is automatically displayed in seconds, minutes, hours, or days according
@@ -38,7 +38,7 @@ function    [ax,h]=plot_t(varargin)
 %
 %		Example:
 %		 loadncdf('testdata1');
-%		 plot_t(P,'r',A,M)				% plot depth, acceleration and magnetometer
+%		 plott(P,'r',A,M)				% plot depth, acceleration and magnetometer
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -46,7 +46,7 @@ function    [ax,h]=plot_t(varargin)
 
 ax=[]; h=[];
 if nargin<1,		% must have at least one input argument
-   help plot_t
+   help plott
    return
 end
 
