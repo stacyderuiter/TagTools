@@ -41,7 +41,7 @@ if nargin < 2
 end
 
 %calculate jerk of A
-j = n_jerk(A, fs);
+j = njerk(A, fs);
 
 if nargin < 3 || isempty(thresh)
     thresh = quantile(j, 0.99);
@@ -100,13 +100,26 @@ if plot_jerk == true
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
+    rl = refline(0, thresh);
+    set(rl, 'LineStyle', '- -', 'Color', 'red')
     hold off
     [x, y] = ginput(3);
-    thresh = y(1);
-    bktime = x(3) - x(2);
+    if length(x) == 3
+        thresh = y(1);
+        bktime = x(3) - x(2);
+    else
+        peaks = find_peaks(A, fs, thresh, bktime, false);
+    end
     peaks = find_peaks(A, fs, thresh, bktime, false);
 elseif plot_jerk == false
     plot(j)
+    hold on 
+    for i = 1:length(start_time)
+        plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
+    end
+    rl = refline(0, thresh);
+    set(rl, 'LineStyle', '- -', 'Color', 'red')
+    hold off
 end
 
 end
