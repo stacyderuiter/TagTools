@@ -71,9 +71,14 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
     y <- peaks$peak_max
     par(new = TRUE)
     plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, nrow(A)), ylim = c(0, max(j)), cex = .75)
+    abline(a = thresh, b = 0, col = "red", lty=2)
     pts <- graphics::locator(n = 3)
-    thresh <- pts$y[1]
-    bktime <- pts$x[3] - pts$x[2]
+    if (length(pts$x) == 3) {
+      thresh <- pts$y[1]
+      bktime <- pts$x[3] - pts$x[2]
+    } else {
+      peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
+    }
     peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
   } else {
     plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
