@@ -33,7 +33,7 @@ if (length(fname)<3 | !all(fname[length(fname)+(-2:0)]=='.nc')){
   fname[length(fname)+(1:3)]='.nc';
 }
 
-if file.exists(fname){
+if(file.exists(fname)){
   file.remove(fname)
 }
 varagin <- as.list(match.call())

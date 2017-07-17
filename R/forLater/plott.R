@@ -63,7 +63,7 @@ plott <- function(...){
     x <- args_container[[k]] 
     if (is.list(x)){
       # this input is a sensor structure
-      if(is.null(x[['fs']]) && is.null(x[['data']])){
+      if(!is.null(x[['fs']]) && !is.null(x[['data']])){
         X[[length(x)+1]] <- x$data
         fs[length(X),1] <- x$fs
       }
