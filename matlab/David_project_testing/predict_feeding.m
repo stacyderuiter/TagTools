@@ -3,7 +3,7 @@ function feeding_events = predict_feeding(s, fs)
 %
 % INPUTS:
 %   s = The speed vector in m/s.
-%   fs = The sampling rate in Hz of the acceleration signals.
+%   fs = The sampling rate in Hz of the speed signal vector.
 % 
 % OUTPUTS:
 %   feeding_events = Structure of feeding event times (sec) and their 
