@@ -6,7 +6,7 @@
 #' @return captures A list containing vectors for the capture times (seconds since start of data recording) and capture varS (change in magA over one second of time) values.
 #' @note Source: Cox, S. L., Orgeret, F., Gesta, M., Rodde, C., Heizer, I., Weimerskirch, H. and Guinet, C. (), Processing of acceleration and dive data on-board satellite relay tags to investigate diving and foraging behaviour in free-ranging marine predators. Methods Ecol Evol. Accepted Author Manuscript. doi:10.1111/2041-210X.12845 
 
-PrCA <- function(A, fs, thresV) {
+prca <- function(A, fs, thresV) {
   if (missing(fs)) {
     stop("Inputs for A and fs are both required")
   }
