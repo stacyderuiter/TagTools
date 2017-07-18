@@ -1,4 +1,4 @@
-preyCatchAttemptBehaviours <- function (x, x2, fs = 16, fc = 2.64, timeDays = 0) 
+preyCatchAttemptBehaviours <- function (x, x2, fs, fc, timeDays = 0) 
   
   #########################################################
 ## Method to identify prey catch attempt behaviours at 1 second intervals.
