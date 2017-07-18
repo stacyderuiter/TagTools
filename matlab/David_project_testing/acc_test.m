@@ -34,6 +34,10 @@ if iscell(events)
     events = table2array(ke);
 end
 
+if size(events, 1) < size(events, 2)
+    events = events';
+end
+
 if size(events, 2) > 1
     count_hits = 0;
     count_false_alarms = 0;
