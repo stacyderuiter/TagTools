@@ -12,8 +12,8 @@ plott <- function(...) {
   if (nargs() < 1) {
     stop("Need one input to continue")
   }
-  brk <- c(0, 2e3, 2e4, 5e5) 	  	  #break points for plots in seconds, mins, hours, days
-  div <- c(1, 60, 3600, 24 * 3600) 	#corresponding time multipliers
+  brk <- c(0, 2e3, 2e4, 5e5) 	  	      #break points for plots in seconds, mins, hours, days
+  div <- c(1, 60, 3600, 24 * 3600) 	    #corresponding time multipliers
   L <- c('s', 'min', 'hr', 'day') 	    #and xlabels
   #each data object can have one or two qualifying arguments. Scan through varargin to find the objects and their qualifiers.
   #args_container <- as.list(match.call())
@@ -49,20 +49,20 @@ plott <- function(...) {
   fsrt <- fsrt[1:length(X), ]
   if(is.vector(fsrt)){
     if (length(which(fsrt[1] != 0)) == 0) {
-      stop('Error: sampling rate undefined for data object %d\n')
+      stop("Error: sampling rate undefined for data object")
     }
   }
   else{
     if (length(which(fsrt[, 1] != 0)) == 0) {
-      stop('Error: sampling rate undefined for data object %d\n')
+      stop("Error: sampling rate undefined for data object")
     }
   }
   ax <- rep(0, length(X)) 
   ns <- 0 
   for (k in 1:length(X)) {
-    ax[k] <- graphics::split.screen(c(length(X), 1), k) 
     ns <- max(ns, nrow(X[[k]]) / fsrt[k, 1] + fsrt[3])
   }
+  graphics::split.screen(c(length(X), 1)) 
   for (divk in seq(from = length(brk), by = -1, to = 1)) {
     if (ns >= brk[divk]) {
       break
@@ -72,15 +72,11 @@ plott <- function(...) {
   xlims <- c((min(fsrt[, 3]) / ddiv), ns / ddiv)
   h <- list()
   for (k in 1:length(X)) { #now we are ready to plot
-    axis(ax[k]) 
-    plot(((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv), X[[k]])
-    set(ax[k], 'XLim', xlims)
     if (fsrt[k, 2] == 1) {
-      set(ax[k], 'YDir', 'reverse')
+      plot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, ylim = rev(NULL))
+    } else {
+      plot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, xlab = "Time (%s)")
     }
-  }	
-  xlab <- sprintf('Time (%s)', L[[divk]])
-  xlabel(ax[length(ax)], xlab) 
-  linkaxes(ax, 'x')
+  }
   return(ax)
 }
