@@ -107,13 +107,13 @@ if plot_jerk == true
     [x, y] = ginput(3);
     if length(x) == 3
         thresh = y(1);
-        bktime = max(x(3), x(2)) - min(x(3), x(2));
+        bktime = max(x(2:3)) - min(x(2:3));
         peaks = find_peaks(A, fs, thresh, bktime, false);
     elseif length(x) == 1
         thresh = y(1);
         peaks = find_peaks(A, fs, thresh, [], false);
     elseif length(x) == 2
-        bktime = max(x(3), x(2)) - min(x(3), x(2));
+        bktime = max(x) - min(x);
         peaks = find_peaks(A, fs, [], bktime, false);
     else
         peaks = find_peaks(A, fs, [], [], false);
