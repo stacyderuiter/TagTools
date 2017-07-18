@@ -11,8 +11,9 @@ function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
 %       to calculate the bktime in the case that the input for bktime
 %       is missing.
 %   thresh = The threshold level above which peaks in the jerk signal are
-%       detected. If the input for thresh is missing/empty, the default 
-%       level is the 0.99 quantile.
+%       detected. Inputs must be in the same units as the units of jerk 
+%       (see output peaks). If the input for thresh is missing/empty, the 
+%       default level is the 0.99 quantile.
 %   bktime = The specified length of time between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
@@ -22,7 +23,8 @@ function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
 %       interactive plot is generated, allowing the user to manipulate the 
 %       thresh and bktime values and observe the changes in peak 
 %       detection. If the input is false, a non-interactive plot is 
-%       generated.
+%       generated. Look to the command window for help on how to use the
+%       plot upon running of this function.
 %
 % OUTPUTS:
 %   peaks = A structure containing vectors for the start times, end times,

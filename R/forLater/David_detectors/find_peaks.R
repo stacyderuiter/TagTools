@@ -2,9 +2,9 @@
 #' 
 #' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit (e.g. g or m/s^2). This is used to calculate the jerk using njerk().
 #' @param fs The sampling rate in Hz of the acceleration signals. This is used to calculate the bktime in the case that the input for bktime is missing.
-#' @param thresh The threshold level above which peaks in the jerk signal are detected. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
+#' @param thresh The threshold level above which peaks in the jerk signal are detected. Inputs must be in the same units as the units of jerk (see return peaks). If the input for thresh is missing/empty, the default level is the 0.99 quantile 
 #' @param bktime The specified length of time between jerk values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default level for bktime is 5 times the sampling rate (fs). This is equivalent to 5 seconds of time.
-#' @param plot_jerk A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated.
+#' @param plot_jerk A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated. Look to the console for help on how to use the plot upon running of this function.
 #' @return peaks A list containing vectors for the start times, end times, peak times, and peak maxima. All times are presented as the sampling value. Peak maxima are presented in the same units as A. If A is in m/s^2, the peak maxima have units of m/s^3. If the units of A are in g, the peak maxima have unit g/s.
 #' @note As specified above under the description for the input of plot, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot is specified as true or if the input is left missing/empty.
 
@@ -82,14 +82,14 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
       if (length(pts$x) == 1) {
         thresh <- pts$y[1]
         peaks <- find_peaks(A, fs, thresh = thresh, plot_jerk = FALSE)
+      } else {
+        if (length(pts$x) == 2) {
+          bktime <- max(pts$x) - min(pts$x)
+          peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
+        } else {
+          peaks <- find_peaks(A, fs, plot_jerk = FALSE)
+        }
       }
-    } else {
-      if (length(pts$x) == 2) {
-        bktime <- max(pts$x) - min(pts$x)
-        peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
-      }
-    } else {
-      peaks <- find_peaks(A, fs, plot_jerk = FALSE)
     }
   } else {
     plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
@@ -97,6 +97,7 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
     y <- peaks$peak_max
     par(new = TRUE)
     plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, nrow(A)), ylim = c(0, max(j)), cex = .75)
+    abline(a = thresh, b = 0, col = "red", lty=2)
   }
   
   return(peaks)
