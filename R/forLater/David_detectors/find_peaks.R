@@ -76,18 +76,18 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
     pts <- graphics::locator(n = 3)
     if (length(pts$x) == 3) {
       thresh <- pts$y[1]
-      bktime <- pts$x[3] - pts$x[2]
+      bktime <- max(pts$x[2:3]) - min(pts$x[2:3])
       peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
     } else {
       if (length(pts$x) == 1) {
         thresh <- pts$y[1]
+        peaks <- find_peaks(A, fs, thresh = thresh, plot_jerk = FALSE)
       }
-      peaks <- find_peaks(A, fs, thresh = thresh, plot_jerk = FALSE)
     } else {
       if (length(pts$x) == 2) {
-        bktime <- max(pts$x[3], pts$x[2]) - min(pts$x[3], pts$x[2])
+        bktime <- max(pts$x) - min(pts$x)
+        peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
       }
-      peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
     } else {
       peaks <- find_peaks(A, fs, plot_jerk = FALSE)
     }
