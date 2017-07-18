@@ -73,9 +73,9 @@ plott <- function(...) {
   h <- list()
   for (k in 1:length(X)) { #now we are ready to plot
     if (fsrt[k, 2] == 1) {
-      dev.off(matplot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, ylim = rev(NULL)))
+      matplot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, ylim = rev(NULL))
     } else {
-      dev.off(matplot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, xlab = "Time (%s)", type = "l"))
+      matplot((((1:nrow(X[[k]])) / fsrt[k, 1] + fsrt[k, 3]) * (1 / ddiv)), X[[k]], xlim = xlims, xlab = "Time (%s)", type = "l")
     }
   }
   return(ax)
