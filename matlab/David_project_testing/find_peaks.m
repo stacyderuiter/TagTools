@@ -118,7 +118,7 @@ if plot_jerk == true
         bktime = max(x) - min(x);
         peaks = find_peaks(A, fs, [], bktime, false);
     else
-        peaks = find_peaks(A, fs, [], [], false);
+        peaks = find_peaks(A, fs, thresh, bktime, false);
     end
 elseif plot_jerk == false
     plot(j)

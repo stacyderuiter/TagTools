@@ -87,7 +87,7 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
           bktime <- max(pts$x) - min(pts$x)
           peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
         } else {
-          peaks <- find_peaks(A, fs, plot_jerk = FALSE)
+          peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
         }
       }
     }
