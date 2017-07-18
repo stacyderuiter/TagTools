@@ -16,22 +16,23 @@ plott <- function(...) {
   div <- c(1, 60, 3600, 24 * 3600) 	#corresponding time multipliers
   L <- c('s', 'min', 'hr', 'day') 	    #and xlabels
   #each data object can have one or two qualifying arguments. Scan through varargin to find the objects and their qualifiers.
-  args_container <- as.list(match.call())
+  #args_container <- as.list(match.call())
+  args_container <- list(...)
   fsrt <- matrix(0, length(args_container), 4) 
   X <- list()
-  for (k in 2:length(args_container)) {
+  for (k in 1:length(args_container)) {
     x <- args_container[[k]] 
     if (is.list(x)) {
       # this input is a sensor structure
       if(!is.null(x[['fs']]) && !is.null(x[['data']])) {
-        X[[length(x)+1]] <- x$data
+        X[[length(X)+1]] <- x$data
         fs[length(X),1] <- x$fs
       } else {
         stop("sensor structure must have data and fs fields!")
       }
     } else {
-      if (is.matrix(x) | is.vector(x)) {
-        X[[length(x) + 1]] <-  x
+      if (is.matrix(x) | is.vector(x) && (length(x) >1) ) {
+        X[[length(X) + 1]] <-  x
       } else {
         if (typeof(x) == "character") {
           fsrt[length(X), 2] = (x[1] == 'r')
@@ -46,10 +47,17 @@ plott <- function(...) {
     }
   }
   fsrt <- fsrt[1:length(X), ]
-  if (which(fsrt[, 1] != 0) == 0) {
-    stop('Error: sampling rate undefined for data object %d\n')
+  if(is.vector(fsrt)){
+    if (length(which(fsrt[1] != 0)) == 0) {
+      stop('Error: sampling rate undefined for data object %d\n')
+    }
   }
-  ax <- reps(0, length(X)) 
+  else{
+    if (length(which(fsrt[, 1] != 0)) == 0) {
+      stop('Error: sampling rate undefined for data object %d\n')
+    }
+  }
+  ax <- rep(0, length(X)) 
   ns <- 0 
   for (k in 1:length(X)) {
     ax[k] <- graphics::split.screen(c(length(X), 1), k) 
