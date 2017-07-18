@@ -97,6 +97,7 @@ peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
 if plot_jerk == true
     plot(j);
     hold on 
+    disp('GRAPH HELP: For changing only the thresh level, click once within the plot and then push enter to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then push enter to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply push enter.')
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
@@ -106,11 +107,17 @@ if plot_jerk == true
     [x, y] = ginput(3);
     if length(x) == 3
         thresh = y(1);
-        bktime = x(3) - x(2);
-    else
+        bktime = max(x(3), x(2)) - min(x(3), x(2));
         peaks = find_peaks(A, fs, thresh, bktime, false);
+    elseif length(x) == 1
+        thresh = y(1);
+        peaks = find_peaks(A, fs, thresh, [], false);
+    elseif length(x) == 2
+        bktime = max(x(3), x(2)) - min(x(3), x(2));
+        peaks = find_peaks(A, fs, [], bktime, false);
+    else
+        peaks = find_peaks(A, fs, [], [], false);
     end
-    peaks = find_peaks(A, fs, thresh, bktime, false);
 elseif plot_jerk == false
     plot(j)
     hold on 

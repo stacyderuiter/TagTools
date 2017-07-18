@@ -67,6 +67,7 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
   if (plot_jerk == TRUE) {
     #create a plot which allows for the thresh and bktime to be manipulated
     plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
+    print("GRAPH HELP: For changing only the thresh level, click once within the plot and then click finish to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then click finish to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply click finish.")
     x <- peaks$peak_time
     y <- peaks$peak_max
     par(new = TRUE)
@@ -76,10 +77,20 @@ find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
     if (length(pts$x) == 3) {
       thresh <- pts$y[1]
       bktime <- pts$x[3] - pts$x[2]
-    } else {
       peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
+    } else {
+      if (length(pts$x) == 1) {
+        thresh <- pts$y[1]
+      }
+      peaks <- find_peaks(A, fs, thresh = thresh, plot_jerk = FALSE)
+    } else {
+      if (length(pts$x) == 2) {
+        bktime <- max(pts$x[3], pts$x[2]) - min(pts$x[3], pts$x[2])
+      }
+      peaks <- find_peaks(A, fs, bktime = bktime, plot_jerk = FALSE)
+    } else {
+      peaks <- find_peaks(A, fs, plot_jerk = FALSE)
     }
-    peaks <- find_peaks(A, fs, thresh, bktime, plot_jerk = FALSE)
   } else {
     plot(j, type = "l", col = "blue", xlim = c(0, nrow(A)), ylim = c(0, max(j)))
     x <- peaks$peak_time
