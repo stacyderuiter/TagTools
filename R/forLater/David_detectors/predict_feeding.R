@@ -30,7 +30,7 @@ predict_feeding <- function(s, fs) {
   st <- sp[dsp]
   md <- matrix(0, length(st), 1)
   for (i in 1:length(st)) {
-    md[i] <- mean(ssec[(st[i] + 1):(st[i] + 10)])
+    md[i] <- mean(ssec[(st[i] + 1):(st[i] + 11)])
   }
   ma <- matrix(0, length(dsp), 1)
   for (j in 1:length(dsp)) {
