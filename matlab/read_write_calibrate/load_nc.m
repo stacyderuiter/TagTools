@@ -63,7 +63,7 @@ for k=1:length(F),
 	fn = F{k} ;
  	if fn(1)=='_', continue, end		% skip place-holder variable
 	X.(fn).data = ncread(fname,fn);
-	if (T.Variables(k).Size==1) & (X.(fn).data(1) == T.Variables(k).FillValue),
+	if T.Variables(k).Size==1 && X.(fn).data(1) == T.Variables(k).FillValue,
 		X.(fn).data = [] ;
 	end
 	
