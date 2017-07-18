@@ -1,8 +1,9 @@
 function detections_acc = acc_test(detections, events, fs)
-% Determines the number of hits, misses, and false alarms between
-%   automatically detected events from tagtools (i.e. find_peak.m) and
-%   known event occurences from manual determination methods. This is
-%   useful for plotting ROC curves.
+% Determines the number of true positives, false negatives, and false 
+%   positives automatically detected events from tagtools (i.e. 
+%   find_peak.m) and known event occurences from manual determination 
+%   methods. It also calculates the hits and false_alarms rates.
+%   This is useful for plotting ROC curves.
 %
 % INPUTS:
 %   detections = A vector containing the times (indices from start of tag
@@ -16,9 +17,9 @@ function detections_acc = acc_test(detections, events, fs)
 %
 % OUTPUTS:
 %   detection_acc = A structure containing the number of hits, misses, and
-%       false alarms found between the detection and events inputs. A hit
+%       false alarmss found between the detection and events inputs. A hit
 %       constitutes a correct detection of an event. A miss constitutes an
-%       event that was not detected. A false alarm constitues an incorrect
+%       event that was not detected. A false alarms constitues an incorrect
 %       detection of a nonexistant event.
 
 if nargin < 2
@@ -47,6 +48,8 @@ if size(events, 2) > 1
         end
     end
     count_misses = size(events, 1) - count_hits;
+    hits_rate = count_hits / (count_hits + count_false_alarms);
+    false_alarms_rate = count_false_alarms / (count_hits + count_false_alarms);
 end
 
 if size(events, 2) == 1
@@ -63,12 +66,17 @@ if size(events, 2) == 1
         end
     end
     count_misses = size(events, 1) - count_hits;
+    hits_rate = count_hits / size(events, 1);
+    false_alarms_rate = count_false_alarms / (count_hits + count_flase_alarms);
 end
 
-%create structure of count_hits, count_false_alarms, and count_misses
+
+%create structure of count_hits, count_false_alarmss, and count_misses
 field1 = 'count_hits';  value1 = count_hits;
 field2 = 'count_false_alarms';  value2 = count_false_alarms;
 field3 = 'count_misses';  value3 = count_misses;
-detections_acc = struct(field1,value1,field2,value2,field3,value3);
+field4 = 'hits_rate'; value4 = hits_rate;
+field5 = 'false_alarms_rate'; value5 = false_alarms_rate;
+detections_acc = struct(field1,value1,field2,value2,field3,value3,field4,value4,field5,value5);
 
 end
