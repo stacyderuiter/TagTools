@@ -57,7 +57,8 @@ the rotation test samples many contiguous blocks from the original data, each th
 computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
 }
 \examples{
-r <- rotation_test(event_times = 2000*runif(500), exp_period = c(100,200), return_rot_stats=TRUE, ts_fun=mean)
+r <- rotation_test(event_times = 2000*runif(500), exp_period = c(100,200), 
+return_rot_stats=TRUE, ts_fun=mean)
 }
 \references{
 @bibliography TagTools.bib
