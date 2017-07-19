@@ -10,16 +10,16 @@
 #' @return peaks A list containing vectors for the start times, end times, peak times, and peak maxima. All times are presented as the sampling value. 
 #' @note As specified above under the description for the input of plot, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot is specified as true or if the input is left missing/empty.
 
-detect_peaks <- function(data, fs, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
-  if (missing(data) | missing(fs)) {
+detect_peaks <- function(data, samples, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
+  if (missing(data) | missing(samples)) {
     stop("inputs for data and fs are both required")
   }
   
   #apply function specified in the inputs to data
   if (!is.null(FUN)) {
-    FUN <- FUN
-    dots <- as.list(substitute(list(...)))
-    dnew <- FUN(data, dots)
+ #   FUN <- FUN
+#    dots <- as.list(substitute(list(...)))
+    dnew <- get(FUN)(data,  ...)
   } else {
     dnew <- data
   }
