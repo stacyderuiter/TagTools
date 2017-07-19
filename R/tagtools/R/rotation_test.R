@@ -5,9 +5,8 @@
 #' the rotation test samples many contiguous blocks from the original data, each the same duration as the experimental period. The summary statistic,
 #' computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
 #' 
-#' @param event_times A vector of the times of events. Times can be given in any format. If \code{event_times} should not be sorted prior to analysis (for example, if times are given in hours of the day and the times in the dataset span several days), be sure to specify \code{skip_sort=TRUE}.
+#' @inheritParams rotate
 #' @param exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end time(s). Note that all data that falls into any experimental period will be concatenated and passed to \code{ts_fun}. If finer control is desired, consider writing your own test using the underlying function \code{rotate}.
-#' @param full_period A length two vector giving the start and end times of the full period during which events in event_times might have occurred. If missing, default is range(\code{event_times}).
 #' @param n_rot Number of rotations (randomizations) to carry out. Default is \code{n_rot=10000}.
 #' @param ts_fun A function to compute the test statistic. Input provided to this function will be the times of events that occur during the "experimental" period.  The default function is \code{length} - in other words, the default test statistis is the number of events that happen during the experimental period.
 #' @param skip_sort Logical. Should times be sorted in ascending order? Default is \code{skip_sort=FALSE}.
@@ -15,15 +14,20 @@
 #' @param return_rot_stats Logical. Should output include the test statistics computed for each rotation of the data? Default is \code{return_rot_stats=FALSE}.
 #' @param ... Additional inputs to be passed to \code{ts_fun}
 #' @return A list containing the following components:
+#' \itemize{
 #'   \item{result}{A one-row data frame with rows:
+#'   \itemize{
 #'      \item{statistic}{Test statistic (from original data)}
-#'      \item{p_value}{P-value of the test}
+#'      \item{p_value}{P-value of the test (2-sided)}
 #'      \item{n_rot}{Number of rotations}
 #'      \item{CI_low}{Lower bound on rotation-resampling percentile-based confidence interval}
 #'      \item{CI_up}{Upper bound on rotation-resampling percentile-based confidence interval}
 #'      \item{conf_level}{Confidence level, as a proportion}
-#'      }
+#'      
+#'      }}
 #'   \item{rot_stats}{(If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
+#'   }
+#'  
 #' @export
 #' @references
 #'    @bibliography TagTools.bib
@@ -31,6 +35,8 @@
 #'    @cite Deruiter2008
 #' @seealso Advanced users seeking more flexibility may want to use the underlying function \code{\link{rotate}} to carry out customized rotation resampling. \code{\link{rotate}} generates one rotated dataset from \code{event_times} and \code{exp_period}.
 #' @examples 
+#' r <- rotation_test(event_times = 2000*runif(500), exp_period = c(100,200), 
+#' return_rot_stats=TRUE, ts_fun=mean)
 
 rotation_test <- function(event_times, exp_period, full_period = range(event_times, na.rm=TRUE),
                           n_rot=10000, ts_fun=length, skip_sort=FALSE, 
@@ -87,22 +93,21 @@ rotation_test <- function(event_times, exp_period, full_period = range(event_tim
   rot_stats <- numeric(length=n_rot)
   for (b in 1:n_rot){
     rot_events <- rotate(event_times, full_period)
-    rot_stats[b] <- rot_events %>% 
-      get_e_data(exp_period=exp_period) %>% 
-      ts_fun(...)
+    rot_e_dat <- get_e_data(rot_events,exp_period=exp_period) 
+    rot_stats[b] <- ts_fun(rot_e_dat, ...)
   }
-  #find p-value
-  
-  
-  
+
   #fill results data.frame
   result <- data.frame(statistic = data_ts)
   result$CI_low <- stats::quantile(rot_stats, (1-conf_level)/2)
   result$CI_up <- stats::quantile(rot_stats, 1 -(1-conf_level)/2 )
   result$n_rot <- n_rot
   result$conf_level <- conf_level
-  result$p_value <- (sum(rot_stats >= data_ts)+1)/
+  result$p_value <- 2*(sum(rot_stats >= data_ts)+1)/
                          (n_rot+1)
+  result$p_value <- ifelse(result$p_value>1,
+                           2*(sum(rot_stats <= data_ts)+1)/(n_rot+1),
+                           result$p_value)
   
   if (!return_rot_stats){
     return(list(result=result))
