@@ -1,6 +1,6 @@
 #' This function detects peaks in data that exceed a specfied threshold and returns each peak's start time, end time, maximum peak value, and time of the maximum peak.
 #' 
-#' @param data A vector (of all positive values) or matrix of data to be used in peak detection.
+#' @param data A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.
 #' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. "njerk"). If left blank, the data input will be immediatly passed through the peak detector. The function name must be within quotation marks.
 #' @param sr The sampling rate in Hz of the date. This is the same as fs in other tagtools functions. This is used to calculate the bktime in the case that the input for bktime is missing.
 #' @param thresh The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
@@ -12,7 +12,7 @@
 
 detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
   if (missing(data) | missing(sr)) {
-    stop("inputs for data and fs are both required")
+    stop("inputs for data and sr are both required")
   }
   
   #apply function specified in the inputs to data
