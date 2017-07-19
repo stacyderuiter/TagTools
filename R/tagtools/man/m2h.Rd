@@ -7,7 +7,7 @@
 m2h(M, A, fs, fc = NULL)
 }
 \arguments{
-\item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer signal list (e.g., from readtag.R).}
+\item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
 
 \item{A}{A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 

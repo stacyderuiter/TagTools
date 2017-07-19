@@ -7,7 +7,7 @@
 depth_rate(p, fs, fc)
 }
 \arguments{
-\item{p}{A depth or altitude time series or list of depth or altitude series (e.g., from readtag.R). p can have any units and is in the form of a vector}
+\item{p}{A depth or altitude time series or a list of depth or altitude (e.g., from readtag.R). p can have any units and is in the form of a vector}
 
 \item{fs}{is the sampling rate of p in Hz.}
 

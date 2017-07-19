@@ -7,6 +7,7 @@
 #' 
 #' @param event_times A vector of the times of events. Times can be given in any format. If \code{event_times} should not be sorted prior to analysis (for example, if times are given in hours of the day and the times in the dataset span several days), be sure to specify \code{skip_sort=TRUE}.
 #' @param exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end time(s). Note that all data that falls into any experimental period will be concatenated and passed to \code{ts_fun}. If finer control is desired, consider writing your own test using the underlying function \code{rotate}.
+#' @param full_period A length two vector giving the start and end times of the full period during which events in event_times might have occurred. If missing, default is range(\code{event_times}).
 #' @param n_rot Number of rotations (randomizations) to carry out. Default is \code{n_rot=10000}.
 #' @param ts_fun A function to compute the test statistic. Input provided to this function will be the times of events that occur during the "experimental" period.  The default function is \code{length} - in other words, the default test statistis is the number of events that happen during the experimental period.
 #' @param skip_sort Logical. Should times be sorted in ascending order? Default is \code{skip_sort=FALSE}.
@@ -32,8 +33,7 @@
 #' @examples 
 
 rotation_test <- function(event_times, exp_period, full_period = range(event_times, na.rm=TRUE),
-                          n_rot=10000, test_ID=NULL, 
-                          ts_fun=length, skip_sort=FALSE, return_CI=TRUE, 
+                          n_rot=10000, ts_fun=length, skip_sort=FALSE, 
                           conf_level=0.95, return_rot_stats=FALSE, ...)  {
   # Input checking
   #============================================================================
@@ -47,7 +47,7 @@ rotation_test <- function(event_times, exp_period, full_period = range(event_tim
   
   if (sum(is.na(event_times)) > 0){
     message('Warning (rotation_test): missing values in event_times will be ignored.')
-    event_times <- na.omit(event_times)
+    event_times <- stats::na.omit(event_times)
   }
   
   # arrange exp_period as a data frame with columns st and et (start and end time(s))
@@ -97,8 +97,8 @@ rotation_test <- function(event_times, exp_period, full_period = range(event_tim
   
   #fill results data.frame
   result <- data.frame(statistic = data_ts)
-  result$CI_low <- quantile(rot_stats, (1-conf_level)/2)
-  result$CI_up <- quantile(rot_stats, 1 -(1-conf_level)/2 )
+  result$CI_low <- stats::quantile(rot_stats, (1-conf_level)/2)
+  result$CI_up <- stats::quantile(rot_stats, 1 -(1-conf_level)/2 )
   result$n_rot <- n_rot
   result$conf_level <- conf_level
   result$p_value <- (sum(rot_stats >= data_ts)+1)/

@@ -4,7 +4,7 @@
 \alias{col_line}
 \title{Plot coloured line(s) in 2 dimensions in the current figure.}
 \usage{
-col_line(x, y, c)
+col_line(x, y, c, ...)
 }
 \arguments{
 \item{x}{A vector or matrix of points on the horizontal axis.}
@@ -12,6 +12,8 @@ col_line(x, y, c)
 \item{y}{A vector or matrix of points on the vertical axis.}
 
 \item{c}{A vector or matrix of values representing the colour to draw at each point.}
+
+\item{...}{Additional inputs for plot()}
 }
 \description{
 Plot coloured line(s) in 2 dimensions in the current figure.

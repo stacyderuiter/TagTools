@@ -4,7 +4,7 @@
 \alias{col_line3}
 \title{Plot coloured line(s) in 3 dimensions in the current figure.}
 \usage{
-col_line3(x, y, z, c)
+col_line3(x, y, z, c, ...)
 }
 \arguments{
 \item{x}{A vector or matrix of points on the horizontal axis.}
@@ -14,6 +14,8 @@ col_line3(x, y, z, c)
 \item{z}{A vector or matrix of points on the third axis.}
 
 \item{c}{A vector or matrix of values representing the colour to draw at each point.}
+
+\item{...}{Additional inputs for rgl::plot3d()}
 }
 \description{
 Plot coloured line(s) in 3 dimensions in the current figure.
