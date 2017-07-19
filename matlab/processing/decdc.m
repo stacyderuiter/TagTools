@@ -1,6 +1,6 @@
 function      [y,xx,v,h] = decdc(x,df)
 
-%     y = dec_dc(x,df)
+%     y = decdc(x,df)
 %     Reduce the sampling rate of a time series by an integer factor.
 %	   This is similar to decimate() and resample() but is delay free 
 %	   and DC accurate which are important for sensor data. 
