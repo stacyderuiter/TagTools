@@ -22,12 +22,12 @@
 rotate <- function(event_times, full_period){
   # Input checking
   #============================================================================
-  if (missing(event_times) | missing(exp_period)){
-    stop('event_times and exp_period are required inputs.')
+  if (missing(event_times) | missing(full_period)){
+    stop('event_times and full_period are required inputs.')
   }
   
-  if (sum(is.na(exp_period)) > 0){
-    stop('start/end times in can not contain any missing (NA) values.')
+  if (sum(is.na(full_period)) > 0){
+    stop('start/end times can not contain any missing (NA) values.')
   }
   
   if (sum(is.na(event_times)) > 0){
