@@ -1,5 +1,6 @@
 #' Estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.
 #' 
+#' @description Possible input combinations: ocdr(p,A) if p and A are lists, ocdr(p,A,fc = fc) if p and A are lists, ocdr(p,A,fc = fc,plim = plim) if p and A are lists, ocdr(p,A,fs) if p and A are vectors/matrices, ocdr(p,A,fs,fc) if p and A are vectors/matrices, ocdr(p,A,fs,fc,plim) if p and A are vectors/matrices.
 #' @param p The depth or altitude vector (a regularly sampled time series) or depth or altitude sensors list in meters, sampled at fs Hz.
 #' @param A The nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.
 #' @param fs The sampling rate of p and A in Hz (samples per second).
