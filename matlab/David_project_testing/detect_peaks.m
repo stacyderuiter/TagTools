@@ -1,4 +1,4 @@
-function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
+function peaks = detect_peaks(A, fs, thresh, bktime, plot_jerk)
 % This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, and time of the maximum jerk.

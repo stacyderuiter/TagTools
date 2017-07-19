@@ -8,7 +8,7 @@
 #' @return peaks A list containing vectors for the start times, end times, peak times, and peak maxima. All times are presented as the sampling value. Peak maxima are presented in the same units as A. If A is in m/s^2, the peak maxima have units of m/s^3. If the units of A are in g, the peak maxima have unit g/s.
 #' @note As specified above under the description for the input of plot, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot is specified as true or if the input is left missing/empty.
 
-find_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
+detect_peaks <- function(A, fs, thresh = NULL, bktime = NULL, plot_jerk = NULL) {
   if (missing(A) | missing(fs)) {
     stop("inputs for A and fs are both required")
   }

@@ -1,7 +1,7 @@
 function detections_acc = acc_test(detections, events, fs, tpevents)
 % Determines the number of true positives, false negatives, and false 
 %   positives automatically detected events from tagtools (i.e. 
-%   find_peak.m) and known event occurences from manual determination 
+%   detect_peak.m) and known event occurences from manual determination 
 %   methods. It also calculates the hits and false_alarms rates.
 %   This is useful for plotting ROC curves.
 %
