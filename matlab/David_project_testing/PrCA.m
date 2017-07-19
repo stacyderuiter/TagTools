@@ -1,4 +1,4 @@
-function captures = PrCA(A, fs, thresV)
+function captures = prca(A, fs, thresV)
 % Automated detection of prey catch attempts (PrCA) from triaxial
 %   acceleration data from seals.
 %

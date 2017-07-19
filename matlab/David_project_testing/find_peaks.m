@@ -11,8 +11,9 @@ function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
 %       to calculate the bktime in the case that the input for bktime
 %       is missing.
 %   thresh = The threshold level above which peaks in the jerk signal are
-%       detected. If the input for thresh is missing/empty, the default 
-%       level is the 0.99 quantile.
+%       detected. Inputs must be in the same units as the units of jerk 
+%       (see output peaks). If the input for thresh is missing/empty, the 
+%       default level is the 0.99 quantile.
 %   bktime = The specified length of time between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
@@ -22,7 +23,8 @@ function peaks = find_peaks(A, fs, thresh, bktime, plot_jerk)
 %       interactive plot is generated, allowing the user to manipulate the 
 %       thresh and bktime values and observe the changes in peak 
 %       detection. If the input is false, a non-interactive plot is 
-%       generated.
+%       generated. Look to the command window for help on how to use the
+%       plot upon running of this function.
 %
 % OUTPUTS:
 %   peaks = A structure containing vectors for the start times, end times,
@@ -97,6 +99,7 @@ peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
 if plot_jerk == true
     plot(j);
     hold on 
+    disp('GRAPH HELP: For changing only the thresh level, click once within the plot and then push enter to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then push enter to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply push enter.')
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
@@ -106,11 +109,17 @@ if plot_jerk == true
     [x, y] = ginput(3);
     if length(x) == 3
         thresh = y(1);
-        bktime = x(3) - x(2);
+        bktime = max(x(2:3)) - min(x(2:3));
+        peaks = find_peaks(A, fs, thresh, bktime, false);
+    elseif length(x) == 1
+        thresh = y(1);
+        peaks = find_peaks(A, fs, thresh, [], false);
+    elseif length(x) == 2
+        bktime = max(x) - min(x);
+        peaks = find_peaks(A, fs, [], bktime, false);
     else
         peaks = find_peaks(A, fs, thresh, bktime, false);
     end
-    peaks = find_peaks(A, fs, thresh, bktime, false);
 elseif plot_jerk == false
     plot(j)
     hold on 

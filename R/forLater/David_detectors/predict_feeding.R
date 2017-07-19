@@ -3,7 +3,7 @@
 #' @param s The speed vector in m/s.
 #' @param fs The sampling rate in Hz of the speed signal vector.
 #' @return feeding_events A list of feeding event times (sec) and their respective maximum speed estimates (m/s).
-#' @note Thomas Doniol-Valcroze, Véronique Lesage, Janie Giard, Robert Michaud; Optimal foraging theory predicts diving and feeding strategies of the largest marine predator. Behav Ecol 2011; 22 (4): 880-888. doi: 10.1093/beheco/arr038
+#' @note Source: Thomas Doniol-Valcroze, Véronique Lesage, Janie Giard, Robert Michaud; Optimal foraging theory predicts diving and feeding strategies of the largest marine predator. Behav Ecol 2011; 22 (4): 880-888. doi: 10.1093/beheco/arr038
 
 predict_feeding <- function(s, fs) {
   if (missing(fs)) {
@@ -30,7 +30,7 @@ predict_feeding <- function(s, fs) {
   st <- sp[dsp]
   md <- matrix(0, length(st), 1)
   for (i in 1:length(st)) {
-    md[i] <- mean(ssec[(st[i] + 1):(st[i] + 10)])
+    md[i] <- mean(ssec[(st[i] + 1):(st[i] + 11)])
   }
   ma <- matrix(0, length(dsp), 1)
   for (j in 1:length(dsp)) {
