@@ -2,7 +2,7 @@
 #' 
 #' @param x A vector of data. This can be from any sensor and with any sampling rate.
 #' @param TH The magnitude threshold for detecting a zero-crossing. A zero-crossing is only detected when values in x pass from -TH to +TH or vice versa.
-#' @param Tmax is the (optional) maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.
+#' @param Tmax (optional) The maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.
 #' @return K A vector of cues (in samples) to zero-crossings in x.
 #' @return s A vector containing the sign of each zero-crossing (1 = positive-going, -1 = negative-going). s is the same size as K. If no zero-crossings are found, K and s will be empty
 #' @note  Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.
