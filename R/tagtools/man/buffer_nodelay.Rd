@@ -14,7 +14,7 @@ buffer_nodelay(vec, n, p)
 \item{p}{The desired amount of overlap between consecutive frames (columns) in the output matrix}
 }
 \value{
-A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p".
+realretmat A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p".
 }
 \description{
 Buffers a signal vector into matrix of data frames with no delay.

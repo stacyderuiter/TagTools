@@ -24,7 +24,7 @@ block_rms <- function(X, n, nov = NULL) {
   }
   nov <- pmin(n, nov)
   S <- abs(X^2)
-  ss <- buffer_no_delay(S[,1], n, nov)
+  ss <- buffer_nodelay(S[,1], n, nov)
   Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
   Y[, 1] <- colSums(ss)
   for (k in 2:ncol(X)) {

@@ -1,5 +1,6 @@
 #' Estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth). 
 #' 
+#' @description Possible input combinations: speed_from_depth(p,A) if p and A are lists, speed_from_depth(p,A,fc = fc) if p and A are lists, speed_from_depth(p,A,fc = fc,plim = plim) if p and A are lists, speed_from_depth(p,A,fs) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc,plim) if p and A are vectors/matrices.
 #' @param p The depth vector (a regularly sampled time series) in meters. sampled at fs Hz.
 #' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.
 #' @param fs The sampling rate of p and A in Hz (samples per second).
@@ -15,6 +16,29 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
   # input checks-----------------------------------------------------------
   if (nargs() < 3) {
     stop("inputs p, A, and fs must all be specified")
+  }
+  if (is.list(p) & is.list(A)) {
+    if (nargs() < 3) {
+      fs <- c()
+    }
+    if (nargs() < 4) {
+      fc <- c()
+    }
+    plim <- fc 
+    fc <- fs 
+    fs <- p$fs 
+    p <- p$data
+    A <- A$data
+  } else {
+    if (missing(fs)) {
+      stop("fs required for vector/matrix sensor data")
+    }
+    if (missing(fc)) {
+      fc <- c()
+    }
+    if (missing(plim)) {
+      plim <- c()
+    }
   }
   sizearray <- dim(A)
   # second call type - no A

@@ -27,8 +27,8 @@ body_axes <- function(A, M, fc = NULL) {
     }
     if (!is.null(fc)) {
         if (nrow(A) > (8/fc)) {
-            M <- fir_no_delay(M, round(8/fc), fc)
-            A <- fir_no_delay(A, round(8/fc), fc)
+            M <- fir_nodelay(M, round(8/fc), fc)
+            A <- fir_nodelay(A, round(8/fc), fc)
         }
     }
     b <- sqrt(rowSums(M^2))

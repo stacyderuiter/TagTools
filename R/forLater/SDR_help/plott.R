@@ -1,5 +1,6 @@
 #' Plot sensor time series against time in a single or multi-paneled figure with linked x-axes. This is useful for comparing measurements across different sensors. The time axis is automatically displayed in seconds, minutes, hours, or days according to the span of the data.
 #' 
+#' @description Possible input combinations: plott(X) if X is a list, plott(X,r) if X is a list, plott(X,fsx) if X is a vector or matrix, plott(X,fsx,r) if X is a vector or matrix, plott(X,Y,.....) if X and Y and etc. are lists, plott(X,fsx,Y,fsy,.....) if X and Y and etc. are vectors or matrices.
 #' @param X X, Y, etc, Lists or vectors/matrices of time series data.
 #' @param fsx fsx, fsy, etc, The sampling rates in Hz for each data object. Sampling rates are not needed when the data object is a list.
 #' @param r (optional) Can be used reverse the direction of the y-axis for the data object that it follows if r='r'. This is useful for plotting dive profiles which match the physical situation i.e., with greater depths lower in the display. If r is a number, it specifies the number of seconds time offset for the preceding data object. A positive value means that these data were collected later than the other objects and so should be plotted more to the right-hand side.
