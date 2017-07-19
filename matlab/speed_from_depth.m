@@ -1,5 +1,17 @@
 function     [s,v]=speed_from_depth(p,A,fs,fc,plim)
 
+%     [s,v]=speed_from_depth(p,A)               % p and A are sensor structures
+%     or
+%     [s,v]=speed_from_depth(p,A,fc)            % p and A are sensor structures
+%     or
+%     [s,v]=speed_from_depth(p,A,fc,plim)       % p and A are sensor structures
+%     or
+%     [s,v]=speed_from_depth(p,A,fs)            % p and A are vectors/matrices
+%     or
+%     [s,v]=speed_from_depth(p,A,fs,fc)         % p and A are vectors/matrices
+%     or
+%     [s,v]=speed_from_depth(p,A,fs,fc,plim)    % p and A are vectors/matrices
+%
 %     [s,v]=speed_from_depth(p,A,fs,fc,plim)
 %     Estimate the forward speed of a diving animal by first computing
 %		the depth-rate (i.e., the first differential of the depth) and then
@@ -45,14 +57,39 @@ function     [s,v]=speed_from_depth(p,A,fs,fc,plim)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 15 May 2017
 
-if nargin<2,
+if nargin<2
    help('speed_from_depth') ;
    return
 end
 
+if isstruct(p) && isstruct(A)
+	if nargin<3
+        fs = [];
+    end
+	if nargin<4
+		fc = [] ;
+    end
+    plim = fc ;
+	fc = fs ;
+	fs = p.fs ;
+	p = p.data ;
+    A = A.data ;
+else
+   if nargin<3
+      fprintf('speed_from_depth: fs required for vector/matrix sensor data\n');
+      return
+   end
+   if nargin<4
+	   fc = [] ;
+   end
+   if nargin<5
+	   plim = [] ;
+   end
+end
+
 [m,n] = size(A);
-if m==1 & n==1,					% second call type - no A
-	if nargin<3 | isempty(fs),
+if m==1 && n==1					% second call type - no A
+	if nargin<3 || isempty(fs)
 		fc = 0.2 ;						% default filter cut-off of 0.2 Hz
 	else
 		fc = fs ;
@@ -60,11 +97,11 @@ if m==1 & n==1,					% second call type - no A
 	fs = A ;
 	A = [] ;
 else
-	if nargin<4 | isempty(fc),
+	if nargin<4 || isempty(fc)
 		fc = 0.2 ;						% default filter cut-off of 0.2 Hz
 	end
 
-if nargin<5 | isempty(plim),
+if nargin<5 || isempty(plim)
 	plim = 20/180*pi ;			   % default 20 degree pitch angle cut-off
 end
 end
@@ -72,12 +109,12 @@ end
 nf = round(4*fs/fc) ;
 v = fir_nodelay([p(2)-p(1);diff(p)]*fs,nf,fc/(fs/2)) ;
 
-if ~isempty(A),
+if ~isempty(A)
 	A = fir_nodelay(A,nf,fc/(fs/2)) ;
 	pitch = a2pr(A) ;
 	pitch(abs(pitch)<plim) = NaN ;
 	s = v./sin(pitch) ;
 else
-	s = v
+	s = v;
 end
 
