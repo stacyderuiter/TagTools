@@ -14,11 +14,11 @@
    X <- list()
    for (v in 1:length(vars)){
      #get metadata for variable v
-     X[[v]] <- ncatt_get(file_conn, vars[v])
+     X[[v]] <- ncdf4::ncatt_get(file_conn, vars[v])
      # remove redundant name label
      X[[v]]$name <- NULL
      #add the actual data matrix or vector
-     X[[v]]$data <- ncvar_get(file_conn, vars[v])
+     X[[v]]$data <- ncdf4::ncvar_get(file_conn, vars[v])
    }
    # entries of X should match variable names from netCDF file
    names(X) <- vars

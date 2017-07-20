@@ -25,10 +25,10 @@ T The estimated track in a local level frame. The track is defined as meters of 
 pe The estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
 }
 \description{
-Simple dead-reckoned track (pseudo-track) estimation based on speed and bodypointing angle.
+Possible input combinations: ptrack(A,M,s,fs) if A and M are matrices, ptrack(A,M,s,fs,fc) if A and M are matrices, ptrack(A,M,s) if A and M are lists, ptrack(A,M,s,fc = fc) if A and M are lists.
 }
 \note{
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.
 
-CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring theprecise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be advected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
+CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be affected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
 }

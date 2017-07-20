@@ -17,7 +17,7 @@ depth_rate(p, fs, fc)
 v The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
 }
 \description{
-Estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
+Possible input combinations: depth_rate(p) if p is a list, depth_rate(p,fc = fc) if p is a list, depth_rate(p,fs) if p is a vector, depth_rate(p,fs,fc) if p is a vector.
 }
 \note{
 The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.

@@ -21,7 +21,7 @@ ocdr(p, A, fs, fc, plim)
 s The forward speed estimate in m/s
 }
 \description{
-Estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.
+Possible input combinations: ocdr(p,A) if p and A are lists, ocdr(p,A,fc = fc) if p and A are lists, ocdr(p,A,fc = fc,plim = plim) if p and A are lists, ocdr(p,A,fs) if p and A are vectors/matrices, ocdr(p,A,fs,fc) if p and A are vectors/matrices, ocdr(p,A,fs,fc,plim) if p and A are vectors/matrices.
 }
 \note{
 Output sampling rate is the same as the input sampling rate so s has the same size as p.

@@ -11,7 +11,7 @@ zero_crossings(x, TH, Tmax = NULL)
 
 \item{TH}{The magnitude threshold for detecting a zero-crossing. A zero-crossing is only detected when values in x pass from -TH to +TH or vice versa.}
 
-\item{Tmax}{is the (optional) maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.}
+\item{Tmax}{(optional) The maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.}
 }
 \value{
 K A vector of cues (in samples) to zero-crossings in x.
