@@ -6,20 +6,18 @@
 #' @return q The fraction of movement in the invariant axis. A small number (e.g., <0.05) implies that very little movement occurs in this axis and so the movement is largely planar (i.e., two-dimensional). If the fraction is >> 0.05, the motion in A is better described as three-dimensional. q is a fraction and so does not have a unit.
 #' @note This function returns one invariant axis that applies to the entire input signal so it is important to choose a relevant sub-sample of movement data, A, to analyse.
 #' @export
-#' @example inv_axis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
-#' #Returns: V=[-0.2140
-#'               0.2305
-#'               0.9493], 
-#'      #answer for q is very small
+#' @example inv_axis(t(sin(2*pi*0.1*t((1:100))))%*%matrix(c(0.9, -0.4, 0.3), ncol = 3))
+#' #Returns: V = c(-0.1144137, 0.4183555, 0.9010484)
+#'           q = 2.573073e-09
 
 inv_axis <- function(A) {
   #energy ratio between plane-of-motion and axis of rotation
   k <- matrix(which(stats::complete.cases(A)), byrow = FALSE, ncol = 1)
   QQ <- t(A[k, ]) %*% A[k, ]
   list <- svd(QQ)
-  V <- list$v
-  D <-list$d
+  V <- list$u
+  D <- diag(list$d)
   V <- V[, 3]
-  q <- D[3] / sqrt(D[1] * D[2])
+  q <- D[3, 3] / sqrt(D[1, 1] * D[2, 2])
   return(list(V = V, q = q))
 }
