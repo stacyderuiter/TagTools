@@ -1,70 +1,76 @@
-plot_3d_model <- function(fname = NULL){
+#' Plot a 3d model in a gimbal frame for visualizing animal orientation.
+#' 
+#' @param fname The optional name of a pair of files containing the points and connections of a wire frame. These files should have suffix .pts and .knx, respectively. If fname is not given, files for a 3d plot of a dolphin will be loaded.
+#' @return F A structure containing handles to the components of the display which can then be manipulated using rot_3d_model.
+#' @note The 3d model is plotted in the current figure. This function clears any plot already in the figure to ensure that the plot will appear.
+#' @example F <- plot_3d_model()
+#'          rot_3d_model(F,t(seq(0,(2*pi), len = 100))*c(0, 1, 0))
+#'          #Plots a dolphin in a gimbal and animates it through a corkscrew roll.
 
-  
-  
+plot_3d_model <- function(fname = NULL){
   if (is.null(fname)){
-    fname <- 'dolphin' 
+    fname <- "dolphin" 
   }
   
-  SZ <- 5 			# size of the gimbal
-  CSZ <- 1.07 	# multiplier for size of the compass wheel
+  SZ <- 5 			  #size of the gimbal
+  CSZ <- 1.07 	  #multiplier for size of the compass wheel
   PLOT_RINGS <- 0 
   
-  # load wire frame
-  #warning off
+  #read in file data
+  P <- read.table(paste(fname,".pts", sep = ""), header = FALSE, sep = " ")
+  K <- read.table(paste(fname,".knx", sep = ""), header = FALSE, sep = " ") 
+  while(TRUE) {
+    if (!all(is.na(P[,1]))) {
+      break
+    }
+    if (all(is.na(P[,1]))) {
+      P <- P[,-1]
+    }
+  }
+  while(TRUE) {
+    if (!all(is.na(K[,1]))) {
+      break
+    }
+    if (all(is.na(K[,1]))) {
+      K <- K[,-1]
+    }
+  }
+  if(!is.null(dev.list())) {
+    dev.off()
+  }  
   
-  #I do not know what file format is wanted for here. I went ahead, and used .csv
-  P <- read.csv(paste(fname, 'pts.csv', sep = '')) #go to dolphin.pts and convert it to dolphinpts.csv
-  K <- read.csv(paste(fname, 'knx.csv', sep = ''))#same here. 
-  #warning on
-  #clf <- this should be a plot function.
+  P <- cbind(-P[, 1], P[, 2:3])
+  for (i in 1:nrow(P)) {
+    rgl::polygon3d(x = P[i, 1], y = -P[i, 2], z = P[i, 3], coords = (K[,1:3]+1), alpha = 1.0, col = P[, 3])
+    colormap:colormap(colormap = colormaps$bone, reverse = TRUE)
+  }
   
-  # convert from
-  P <- cbind(-P[,1],P[,2:3])
-  #Do not know how to make patch in R. Couldn't translate patch.#polygon seems to work a little bit.
-  p = patch('faces',K[,1:3]+1, 'vertices',cbind(P[,1], -P[,2], P[,3]))
+  c <- exp(j * 2 * pi * t((0:(500 - 1))) / 500)
+  CX <- SZ * cbind(real(c), Im(c), matrix(0, 500, 1))
   
-  set(p, 'facealpha',1)
-  colormap(flipud(bone))
-  brighten(-0.3)
-  set(p, 'FaceVertexCData',P[,3])
-  set(p, 'FaceColor', 'flat')
-  #shading flat
-  #axis square
-  #hold on
-  
-  c <- exp(j*2*pi*t((0:500-1))/500)
-  CX <- SZ*cbind(real(c), imag(c), matrix(0,nrow = 500,ncol = 1))
-  
-  if(PLOT_RINGS){
-    C(1) <- cloud(CX[,3]~CX[,1]*-CX[,2],'k');
-    C(2) <- cloud(CX[,2]~CX[,3]*-CX[,1],'k');
-    C(3) <- cloud(CX[,1]~CX[,2]*-CX[,3],'k');
+  if (PLOT_RINGS) {
+    rgl::lines3d(CX[, 3] ~ CX[, 1] * -CX[, 2], col = "gray60")
+    rgl::lines3d(CX[, 2] ~ CX[, 3] * -CX[, 1], col = "gray60")
+    rgl::lines3d(CX[, 1] ~ CX[, 2] * -CX[, 3], col = "gray60")
     set(C,'color',0.6*c(1, 1, 1))
-  }
-  else{
-    C <-  numeric()
+  } else {
+    C <-  c()
   }
   
-  COMP <- cloud (CX[,3]~(CSZ*CX[,1])*(CSZ*CX[,2]),'k')
-  CTICK <- cloud(matrix(0,nrow = 2,ncol = 4)~(CSZ*SZ*matrix(c(1,0, -1, 0,CSZ, 0, -CSZ, 0), nrow = 2, ncol = 4))*(CSZ*SZ*matrix(c(0, 1, 0, -1,0, CSZ, 0, -CSZ), nrow = 2, ncol = 4)),'k') ;
-  set(COMP,'LineWidth',1)
-  set(CTICK,'LineWidth',1)
-  text(CSZ^3*SZ,0,0,'N','Color','k')
-  LX = SZ*matrix(c(-1, 0, 0,1, 0, 0), nrow = 2, ncol = 3) 
-  L[1]=cloud(LX[,3]~LX[,1]*-LX[,2],'b')
-  L[2]=cloud(LX[,2]~LX[,3]*-LX[,1],'g');
-  L[3]=cloud(LX[,1]~LX[,2]*-LX[,3],'r');
-  set(L,'LineWidth',1.5)
-  AX = SZ*c(1,0,0) ;
-  A[1]=cloud(LX[2,3]~LX[2,1]*-LX[2,2],'b.')
-  A[2]=cloud(LX[2,2]~LX[2,3]*-LX[2,1],'g.')
-  A[3]=cloud(LX[2,1]~LX[2,2]*-L[2,3],'r.')
-  set(A,'MarkerSize',14);
-  axis(c(-1, 1, -1, 1, -1, 1)*SZ*sqrt(2))
-  #view(c(30,20)
-  #axis off
-  F <- data.frame(p = p, P = P, LX = LX, L = L, CX = CX, C = C, A = A)
+  rgl::lines3d(CX[, 3] ~ (CSZ * CX[, 1]) * (CSZ * CX[, 2]), "black", lwd = 1)
+  a1 <- matrix(c(CSZ * SZ * matrix(c(1, 0, -1, 0, CSZ, 0, -CSZ, 0), byrow = TRUE, nrow = 2)))
+  a2 <- matrix(c(CSZ * SZ * matrix(c(0, 1, 0, -1, 0, CSZ, 0, -CSZ), byrow = TRUE, nrow = 2)))
+  a3 <- matrix(0, 2, 4)
+  rgl::lines3d(x = a1, y = a2, z = a3, col = "black", lwd = 1)
+  rgl::text3d(CSZ^3 * SZ, 0, 0, "N", col = "black")
+  LX <- SZ * matrix(c(-1, 0, 0, 1, 0, 0), byrow = TRUE, nrow = 2) 
+  rgl::lines3d(LX[, 3] ~ LX[, 1] * -LX[, 2], col = "blue", lwd = 1.5)
+  rgl::lines3d(LX[, 2] ~ LX[, 3] * -LX[, 1], col = "green", lwd = 1.5)
+  rgl::lines3d(LX[, 1] ~ LX[, 2] * -LX[, 3], col = "red", lwd = 1.5)
+  AX <- SZ * c(1, 0, 0)
+  rgl::lines3d(LX[2, 3] ~ LX[2, 1] * -LX[2, 2], col = "blue", cex = 14)
+  rgl::lines3d(LX[2, 2] ~ LX[2, 3] * -LX[2, 1], col = "green", cex = 14)
+  rgl::lines3d(LX[2, 1] ~ LX[2, 2] * -L[2, 3], col = "red", cex = 14)
   return(F)
 }
         
