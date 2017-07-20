@@ -18,20 +18,32 @@ block_rms <- function(X, n, nov = NULL) {
   if (is.null(nov) == TRUE) {
     nov <- 0
   }
-  #catch the case of a row vector input
-  if (nrow(X) == 1) {
-    X <- t(X)
-  }
   nov <- pmin(n, nov)
-  S <- abs(X^2)
-  ss <- buffer_nodelay(S[,1], n, nov)
-  Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
-  Y[, 1] <- colSums(ss)
-  for (k in 2:ncol(X)) {
-    ss <- buffer_nodelay(S[,k], n, nov)
-    Y[, k] <- colSums(ss)
+
+  if(is.vector(X) & !is.list(X)){
+    S <- abs(X^2)
+    ss <- buffer_nodelay(S[], n, nov)
+    Y <- rep(0, ncol(ss))
+    Y[] <- colSums(ss)
+    Y <- sqrt(Y / n)
+    t <- round(n / 2 + (0:(length(Y)-1)) * (n - nov))
   }
-  Y = sqrt(Y / n)
-  t = round(n / 2 + (0:(nrow(Y)-1)) * (n - nov))
-  return(Y)
+  else{
+    #catch the case of a row vector input
+    if (nrow(X) == 1) {
+      X <- t(X)
+    }
+    S <- abs(X^2)
+    ss <- buffer_nodelay(S[,1], n, nov)
+    Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
+    Y[, 1] <- colSums(ss)
+    for (k in 2:ncol(X)) {
+      ss <- buffer_nodelay(S[,k], n, nov)
+      Y[, k] <- colSums(ss)
+    }
+    Y <- sqrt(Y / n)
+    t <- round(n / 2 + (0:(nrow(Y)-1)) * (n - nov))
+  }
+ 
+  return(list(Y = Y, t = t))
 }
