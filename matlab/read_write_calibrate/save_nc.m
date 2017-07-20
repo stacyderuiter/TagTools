@@ -12,7 +12,7 @@ function    savenc(fname,varargin)
 %		X is a sensor or metadata structure. Only these kind of variables can be saved
 %		 in a NetCDF file because the supporting information in these structures is
 %		 needed to describe the contents of the file. For non-archive and non-portable
-%		 storage of variables, consider using the usual 'save' function in Matlab and Octabe.
+%		 storage of variables, consider using the usual 'save' function in Matlab and Octave.
 %
 %		Example:
 %		 savenc('dog17_124a',A,M,P,info)
