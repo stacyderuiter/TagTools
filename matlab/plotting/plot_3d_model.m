@@ -11,7 +11,7 @@ function		F = plot_3d_model(fname)
 %
 %		Returns:
 %		F is a structure containing handles to the components of the display which
-%		 can then be manipulated using rot_3dmodel.
+%		 can then be manipulated using rot_3d_model.
 %
 %		The 3d model is plotted in the current figure. This function clears any plot
 %		already in the figure to ensure that the plot will appear.

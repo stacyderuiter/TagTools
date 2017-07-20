@@ -1,4 +1,4 @@
-function peaks = detect_peaks(data, sr, thresh, bktime, plot_peaks)
+function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
 % This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, and time of the maximum jerk.
@@ -9,6 +9,10 @@ function peaks = detect_peaks(data, sr, thresh, bktime, plot_peaks)
 %   sr = The sampling rate in Hz of the acceleration signals. This is the 
 %       same as fs in other tagtools functions. This is used to calculate 
 %       the bktime in the case that the input for bktime is missing.
+%   FUN = A function to be applied to data before the data is run through 
+%       the peak detector. Only specify the function name (i.e. 'njerk'). 
+%       If left blank, the data input will be immediatly passed through the
+%       peak detector. The function name must be within quotation marks.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
@@ -24,11 +28,12 @@ function peaks = detect_peaks(data, sr, thresh, bktime, plot_peaks)
 %       in peak detection. If the input is false, a non-interactive plot is 
 %       generated. Look to the command window for help on how to use the
 %       plot upon running of this function.
+%   varargin = Additional inputs to be passed to FUN
 %
 % OUTPUTS:
 %   peaks = A structure containing vectors for the start times, end times,
-%       peak times, and peak maxima. All times are presented as the
-%       sampling value.
+%       peak times, peak maxima, thresh, and bktime. All times are 
+%       presented as the sampling value.
 %   As specified above under the description for the input of plot_peaks, 
 %       an interactive plot can be generated, allowing the user to 
 %       manipulate the thresh and bktime values and observe the changes in 
@@ -41,22 +46,31 @@ if nargin < 2
 end
 
 %apply function specified in the inputs to data
-
-
-if nargin < 3 || isempty(thresh)
-    thresh = quantile(dnes, 0.99);
+if nargin > 2 && ~isempty(FUN)
+    func = str2func(char(FUN));
+    dnew = func(data, varargin{1:end});
+else
+    dnew = data;
 end
 
-if nargin < 4 || isempty(bktime)
+if nargin < 4 || isempty(thresh)
+    thresh = quantile(dnew, 0.99);
+end
+
+if nargin < 5 || isempty(bktime)
     bktime = 5 * sr;
 end
 
-if nargin < 5 || isempty(plot_peaks)
+if nargin < 6 || isempty(plot_peaks)
     plot_peaks = true;
 end
 
 %create matrix for jerk and corresponding sampling number
-jerk = [(1:size(dnew, 1)); dnew']';
+if size(dnew, 1) == 1
+    d = [(1:length(dnew)); dnew]';
+else
+    d = [(1:length(dnew)); dnew']';
+end
 
 %determine peaks that are above the threshold
 pt = d(:,2) >= thresh;
@@ -86,12 +100,17 @@ for a = 1:size(start_time, 1)
     peak_max(a) = m;
 end
       
-%create structure of start times, end times, peak times, and peak maxima
+%create structure of start times, end times, peak times, peak maxima, 
+%   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
 field2 = 'end_time';  value2 = end_time;
 field3 = 'peak_time';  value3 = peak_time;
 field4 = 'peak_maxima';  value4 = peak_max;
-peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
+field5 = 'thresh';  value5 = thresh;
+field6 = 'bktime';  value6 = bktime;
+
+peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
+    field5,value5,field6,value6);
 
 %produce interactive plot, allowing you to alter thresh and bktime inputs
 if plot_peaks == true
@@ -108,15 +127,15 @@ if plot_peaks == true
     if length(x) == 3
         thresh = y(1);
         bktime = max(x(2:3)) - min(x(2:3));
-        peaks = find_peaks(dnew, sr, thresh, bktime, false);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     elseif length(x) == 1
         thresh = y(1);
-        peaks = find_peaks(dnew, sr, thresh, [], false);
+        peaks = detect_peaks(dnew, sr, [], thresh, [], false);
     elseif length(x) == 2
         bktime = max(x) - min(x);
-        peaks = find_peaks(dnew, sr, [], bktime, false);
+        peaks = detect_peaks(dnew, sr, [], [], bktime, false);
     else
-        peaks = find_peaks(dnew, sr, thresh, bktime, false);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     end
 elseif plot_peaks == false
     plot(dnew)
