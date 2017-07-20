@@ -25,5 +25,6 @@
    # get metadata and add it to X as "info"
    X$info <- ncdf4::ncatt_get( file_conn , 0 )
    ncdf4::nc_close(file_conn)
+   class(X) <- c('tagtools', 'list')
    return(X)
  }
