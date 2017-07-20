@@ -32,8 +32,8 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %
 % OUTPUTS:
 %   peaks = A structure containing vectors for the start times, end times,
-%       peak times, and peak maxima. All times are presented as the
-%       sampling value.
+%       peak times, peak maxima, thresh, and bktime. All times are 
+%       presented as the sampling value.
 %   As specified above under the description for the input of plot_peaks, 
 %       an interactive plot can be generated, allowing the user to 
 %       manipulate the thresh and bktime values and observe the changes in 
@@ -100,12 +100,17 @@ for a = 1:size(start_time, 1)
     peak_max(a) = m;
 end
       
-%create structure of start times, end times, peak times, and peak maxima
+%create structure of start times, end times, peak times, peak maxima, 
+%   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
 field2 = 'end_time';  value2 = end_time;
 field3 = 'peak_time';  value3 = peak_time;
 field4 = 'peak_maxima';  value4 = peak_max;
-peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4);
+field5 = 'thresh';  value5 = thresh;
+field6 = 'bktime';  value6 = bktime;
+
+peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
+    field5,value5,field6,value6);
 
 %produce interactive plot, allowing you to alter thresh and bktime inputs
 if plot_peaks == true
