@@ -15,7 +15,7 @@ msa(A, ref)
 m A column vector of MSA with the same number of rows as A. m has the same units as A.
 }
 \description{
-Compute the Minimum Specific Acceleration (MSA). This is the absolute value of the norm of the acceleration minus 1 g, i.e., the amount that the acceleration differs from the gravity value. This is always equal to or less than the actual specific acceleration if A is correctly calibrated.
+Possible input combinations: msa(A) if A is a list, msa(A,ref) if A is a matrix.
 }
 \note{
 See Simon et al. (2012) Journal of Experimental Biology, 215:3786-3798.
