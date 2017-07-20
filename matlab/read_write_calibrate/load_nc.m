@@ -1,4 +1,4 @@
-function    X = loadnc(fname)
+function    X = load_nc(fname)
 
 %     loadnc(fname)
 %		or
