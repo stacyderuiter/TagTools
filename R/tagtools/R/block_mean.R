@@ -10,21 +10,33 @@ block_mean <- function(X,n,nov) {
   if (missing(nov)) {
     nov <- 0
   }
-  if (nrow(X) == 1) {
-    X <- t(X)
-  }
   nov <- min(n, nov) 
-  ss <- buffer_nodelay(X[, 1], n, nov)
-  Y <- matrix(0, ncol(ss), ncol(X))
-  for (i in 1:ncol(ss)) {
-    Y[i, 1] <- t(mean(ss[, i]))
-  }
-  for (k in 2:ncol(X)) {
-    ss <- buffer_nodelay(X[, k], n, nov)
-    for (j in 1:ncol(ss)) {
-      Y[j, k] <- t(mean(ss[, j]))
+  if(is.vector(X) & !is.list(X)){
+    ss <- buffer_nodelay(X[], n, nov)
+    Y <- rep(0, ncol(ss))
+    for (i in 1:ncol(ss)) {
+      Y[i] <- t(mean(ss[, i]))
     }
+    t <- as.matrix(round(n / 2 + (0:(length(Y) - 1)) * (n - nov)))
   }
-  t <- t(round(n / 2 + (0:nrow(Y) - 1) * (n - nov)))
-  return(Y)
+  else{
+    if (nrow(X) == 1) {
+      X <- t(X)
+    }
+
+    ss <- buffer_nodelay(X[, 1], n, nov)
+    Y <- matrix(0, ncol(ss), ncol(X))
+    for (i in 1:ncol(ss)) {
+      Y[i, 1] <- t(mean(ss[, i]))
+    }
+    for (k in 2:ncol(X)) {
+      ss <- buffer_nodelay(X[, k], n, nov)
+      for (j in 1:ncol(ss)) {
+        Y[j, k] <- t(mean(ss[, j]))
+      }
+    }
+    t <- as.matrix(round(n / 2 + (0:(nrow(Y) - 1)) * (n - nov)))
+  }
+
+  return(list(Y= Y, t = t))
 }
