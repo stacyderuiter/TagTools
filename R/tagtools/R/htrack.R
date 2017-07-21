@@ -11,7 +11,7 @@
 #' @note CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be advected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
 #' @export
 
-htrack <- function(A, M, s, fs, fc) {
+htrack <- function(A, M, s, fs, fc = NULL) {
   if (missing(s)) {
     stop("inputs for A, M, and s are all required")
   }
@@ -40,12 +40,13 @@ htrack <- function(A, M, s, fs, fc) {
     fc <- 0.2 
   }
   nf <- 4 * fs / fc 
-  hd <- m2h(M, A, fs, fc);
+  hd <- m2h(M, A, fs, fc)$h
   if (length(s) == 1){
-    s <- pracma::repmat(s / fs, nrow(hd), 2)
+    s <- pracma::repmat((s / fs), length(hd), 2)
   } else {
-  s <-pracma::repmat(s / fs, 1, 2)
+  s <- pracma::repmat((s / fs), 1, 2)
   }
-  T <- cumsum(s * c(cos(hd), sin(hd))) 
+  Tvec <- cumsum(s * cbind(cos(hd), sin(hd)))
+  T <- matrix(T, byrow = FALSE, ncol = 2)
   return(T)
 }
