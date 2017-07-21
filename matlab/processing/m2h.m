@@ -57,14 +57,16 @@ end
 if isstruct(M) && isstruct(A),
 	if nargin>2,
 		fc = fs ;
+    else
+        fc = [];
+    end
+    if A.fs ~= M.fs,
+		fprintf('m2h: A and M must be at the same sampling rate\n') ;
+		return
 	end
 	fs = M.fs ;
 	M = M.data ;
 	A = A.data ;
-	if A.fs ~= M.fs,
-		fprintf('m2h: A and M must be at the same sampling rate\n') ;
-		return
-	end
 else
 	if nargin==2,
 		fc = [] ;

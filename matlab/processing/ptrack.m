@@ -71,14 +71,15 @@ if isstruct(M) && isstruct(A),
 		fc = fs ;
 	else
 		fc = [] ;
+    end
+    if A.fs ~= M.fs,
+		fprintf('p_track: A and M must be at the same sampling rate\n') ;
+		return
 	end
 	fs = M.fs ;
 	M = M.data ;
 	A = A.data ;
-	if A.fs ~= M.fs,
-		fprintf('p_track: A and M must be at the same sampling rate\n') ;
-		return
-	end
+
 else
 	if nargin<4,
 		help p_track
