@@ -25,12 +25,13 @@ ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
     if (nargs() > 3) {
       fc <- fs
     }
-    fs <- M$fs
-    M <- M$data
-    A <- A$data
     if (A$fs != M$fs) {
       stop("A and M must be at the same sampling rate")
     }
+    fs <- M$fs
+    M <- M$data
+    A <- A$data
+
   } else {
     if (missing(fs)) {
       stop("Inputs for A, M, s, and fs are all required if A and M are matrices")

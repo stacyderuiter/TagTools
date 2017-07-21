@@ -49,7 +49,7 @@ ocdr <- function(p, A, fs, fc, plim) {
   x1 <- p[2] - p[1]
   x2 <- (p[3:length(p)] - p[1:(length(p) - 2)]) / 2
   x3 <- p[length(p)] - p[length(p) - 1]
-  X <- rbind(x1, x2, x3)
+  X <- c(x1, x2, x3)
   diffp <- X * fs 
   v <- fir_nodelay(diffp, nf, fc / (fs / 2))$y 
   A <- fir_nodelay(A, nf, fc / (fs / 2))$y 
