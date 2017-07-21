@@ -17,6 +17,11 @@ msa <- function(A, ref) {
   if (missing(ref)) {
     ref <- 9.81
   }
+  if (is.list(A)) {
+    if (length(A$meta_conv) > 0) {
+      ref <- ref*A$meta_conv
+    }
+  }
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
     stop("A must be an acceleration matrix")
