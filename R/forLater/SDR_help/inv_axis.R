@@ -14,7 +14,7 @@ inv_axis <- function(A) {
   #energy ratio between plane-of-motion and axis of rotation
   k <- matrix(which(stats::complete.cases(A)), byrow = FALSE, ncol = 1)
   QQ <- t(A[k, ]) %*% A[k, ]
-  list <- svd(QQ)
+  list <- svd(QQ) ######################svd gives different answers for the example function but the same for input of accel. matrix
   V <- list$u
   D <- diag(list$d)
   V <- V[, 3]
