@@ -45,11 +45,11 @@ a2pr <- function(A, fs, fc) {
     A <- t(A)
   }
   if (!is.null(fc)) {
-    A = fir_nodelay(A, round(4 / fc), fc / (fs / 2))
+    A <- fir_nodelay(A, round(4 / fc), fc / (fs / 2))$y
   }
-  v = sqrt(rowSums(A^2))
+  v <- sqrt(rowSums(A^2))
   # compute pitch and roll
-  p = asin(A[, 1] / v)
-  r = Re(atan2(A[, 2], A[, 3]))
+  p <- asin(A[, 1] / v)
+  r <- Re(atan2(A[, 2], A[, 3]))
   return(list(p = p, r = r))
 }
