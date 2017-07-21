@@ -12,14 +12,14 @@
 #' @export
 
 ocdr <- function(p, A, fs, fc, plim) {
-  if (missing(A)) {
+  if (missing(A) | missing(p)) {
     stop("inputs for p and A are both required")
   }
   if (is.list(p) & is.list(A)) {
-    if (nargs() < 3) {
+    if (nargs() < 3 ) {
       fs <- c()
     }
-    if (nargs() < 4) {
+    if (nargs() < 4 ) {
       fc <- c()
     }
     plim <- fc 
@@ -51,10 +51,10 @@ ocdr <- function(p, A, fs, fc, plim) {
   x3 <- p[length(p)] - p[length(p) - 1]
   X <- rbind(x1, x2, x3)
   diffp <- X * fs 
-  v <- fir_nodelay(diffp, nf, fc / (fs / 2)) 
-  A <- fir_nodelay(A, nf, fc / (fs / 2)) 
-  pitch <- a2pr(A, fs) 
-  pitch[which(abs(pitch$p) < plim)] <- NA 
+  v <- fir_nodelay(diffp, nf, fc / (fs / 2))$y 
+  A <- fir_nodelay(A, nf, fc / (fs / 2))$y 
+  pitch <- a2pr(A)$p
+  pitch[which(abs(pitch) < plim)] <- NA 
   s <- v / sin(pitch) 
   return(s)
 }

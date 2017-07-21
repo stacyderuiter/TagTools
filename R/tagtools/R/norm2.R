@@ -9,13 +9,19 @@
 #' #Result: c(0.83066, 1.14455)
 
 norm2 <- function(X) {
+  if (is.matrix(X)) {
     sizearray <- dim(X)
     # If X is a vector (row or column), v is the vector norm.
     if (sizearray[1] == 1 | sizearray[2] == 1) {
-        v <- sqrt(sum(X^2))
+      v <- sqrt(sum(X^2))
     } else {
-        # If X is a matrix, v is the matrix norm.
-        v <- sqrt(rowSums(abs(X)^2))
+      # If X is a matrix, v is the matrix norm.
+      v <- sqrt(rowSums(abs(X)^2))
     }
-    return(v)
+  } else {
+    if (is.vector(X) & !is.list(X)) {
+      v <- sqrt(sum(X^2))
+    }
+  }
+  return(v)
 }
