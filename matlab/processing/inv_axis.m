@@ -27,7 +27,7 @@ function    [V,q] = inv_axis(A)
 %
 %		Example:
 %		 [V,q] = inv_axis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
-% 	    returns: V=[-0.2140 ;0.2305;0.9493], q is very small.
+% 	    returns: V=[-0.0796;0.4773;0.8752], q=1.6241e-09.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

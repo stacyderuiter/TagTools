@@ -1,0 +1,13 @@
+---
+title: "Peak Detection"
+author: "David Sweeney"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Peak Detection}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+#Introduction
+    

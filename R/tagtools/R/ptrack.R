@@ -16,7 +16,7 @@
 #'          M <- matrix(c(1.1, -0.3, 0.5, 0.2, -0.7, 0.5, -0.4, -0.1, 0.2), byrow = TRUE, nrow = 3)
 #'          ptrack(A, M, s = 2, fs = 5, fc = NULL, p = NULL, LPF = NULL, include_S = NULL, include_pe = NULL)
 
-ptrack <- function(A, M, s, fs, fc, include_pe = NULL) {
+ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
   #input checks----------------------------------------------------------
   if (nargs() < 3) {
     stop("Inputs for A, M, and s are all required.")
@@ -35,7 +35,7 @@ ptrack <- function(A, M, s, fs, fc, include_pe = NULL) {
     if (missing(fs)) {
       stop("Inputs for A, M, s, and fs are all required if A and M are matrices")
     }
-    if (missing(fc)) {
+    if (is.null(fc)) {
       fc <- c()
     }
   }
@@ -46,14 +46,13 @@ ptrack <- function(A, M, s, fs, fc, include_pe = NULL) {
     include_pe <- FALSE
   }
   nf <- 4 * fs / fc
-  A <- fir_nodelay(A, nf, fc / (fs / 2))
-  M <- fir_nodelay(A, nf, fc / (fs / 2))
+  A <- fir_nodelay(A, nf, fc / (fs / 2))$y
+  M <- fir_nodelay(A, nf, fc / (fs / 2))$y
   W <- body_axes(A, M)
   X <- t(drop(W[, 1, ]))
   T <- cumsum((s / fs) * X)
   if (include_pe == TRUE) {
-    listpr <- a2pr(A,fs,fc)
-    pitch <- listpr$p
+    pitch <- a2pr(A,fs,fc)$p
     pe <- -cumsum((s / fs) * sin(pitch))
     return(list(T = T, pe = pe))
   } 

@@ -8,7 +8,7 @@
 #'          s2 <- list( b = 3, c = 'cat')
 #'		      s <- merge_fields(s1,s2)
 
-mergefields <- function(s1,s2) {
+merge_fields <- function(s1,s2) {
   if(missing(s1) | missing(s2)){
     stop("inputs for both s1 and s2 are required")
   }
