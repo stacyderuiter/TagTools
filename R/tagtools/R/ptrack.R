@@ -51,11 +51,28 @@ ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
   M <- fir_nodelay(A, nf, fc / (fs / 2))$y
   W <- body_axes(A, M)
   X <- t(drop(W[, 1, ]))
-  T <- cumsum((s / fs) * X)
+  if(is.matrix(X)){
+    T <- cumsum_mat((s / fs) * X)
+  }
+  else{
+    T <- cumsum((s / fs) * X)
+  }
   if (include_pe == TRUE) {
     pitch <- a2pr(A,fs,fc)$p
-    pe <- -cumsum((s / fs) * sin(pitch))
+    if(is.matrix(pitch)){
+      pe <- -cumsum_mat((s / fs) * sin(pitch))
+    }
+    else{
+      pe <- -cumsum((s / fs) * sin(pitch))
+    }
     return(list(T = T, pe = pe))
   } 
   return(T)
+}
+cumsum_mat <- function(mat){
+  a <- matrix(0, ncol = ncol(mat), nrow = nrow(mat))
+  for(i in 1:ncol(mat)){
+    a[,i] <- cumsum(mat[,i])
+  }
+  return(a)
 }
