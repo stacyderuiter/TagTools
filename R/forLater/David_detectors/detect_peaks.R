@@ -26,7 +26,7 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     thresh <- stats::quantile(dnew, c(0.99))
   }
   if (is.null(bktime) == TRUE) {
-    bktime <- 5 * fs
+    bktime <- 5 * sr
   }
   if (is.null(plot_peaks) == TRUE) {
     plot_peaks <- TRUE
