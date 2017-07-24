@@ -43,7 +43,7 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
   sizearray <- dim(A)
   # second call type - no A
   if (sizearray[1] == 1 & sizearray[2] == 1) {
-    if (nargs() < 3 | is.null(fs) == TRUE) {
+    if (nargs() < 3 | is.null(fs)) {
       fc <- 0.2 #default filter cut-off of 0.2 Hz
     } else {
       fc <- fs
@@ -51,11 +51,11 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
     fs <- A
     A <- c()
   } else {
-    if (is.null(fc) == TRUE) {
+    if (is.null(fc)) {
       fc <- 0.2  #default filter cut-off of 0.2 Hz
     }
   }
-  if (is.null(plim) == TRUE) {
+  if (is.null(plim)) {
     plim <- 20 / 180 * pi  #default 20 degree pitch angle cut-off
   }
   nf <- round(4 * fs / fc)
@@ -66,10 +66,10 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
   if (!is.null(A)) {
     A <- fir_nodelay(A, nf, fc / (fs / 2))$y
     pitch <- a2pr(A)$p
-    pitch[abs(pitch) < plim] = NaN
+    pitch[abs(pitch) < plim] = NA
     s <- v / sin(pitch)
   } else {
     s <- v
   }
-  return(s)
+  return(list(s = s, v = v))
 }
