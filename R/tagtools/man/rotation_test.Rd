@@ -2,12 +2,7 @@
 % Please edit documentation in R/rotation_test.R
 \name{rotation_test}
 \alias{rotation_test}
-\title{Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
-variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
-(for example, time series of behavioral events that tend to occur in clusters). This implementation of the rotation test compares a test statistic (some summary of
-an "experimental" time-period) to its expected value during non-experimental periods. Instead of resampling random subsets of observations from the original dataset,
-the rotation test samples many contiguous blocks from the original data, each the same duration as the experimental period. The summary statistic,
-computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.}
+\title{Carry out a rotation randomization test.}
 \usage{
 rotation_test(event_times, exp_period, full_period = range(event_times, na.rm
   = TRUE), n_rot = 10000, ts_fun = length, skip_sort = FALSE,
@@ -51,7 +46,10 @@ A list containing the following components:
 \description{
 Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
 variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
-(for example, time series of behavioral events that tend to occur in clusters). This implementation of the rotation test compares a test statistic (some summary of
+(for example, time series of behavioral events that tend to occur in clusters).
+}
+\details{
+This implementation of the rotation test compares a test statistic (some summary of
 an "experimental" time-period) to its expected value during non-experimental periods. Instead of resampling random subsets of observations from the original dataset,
 the rotation test samples many contiguous blocks from the original data, each the same duration as the experimental period. The summary statistic,
 computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
