@@ -16,10 +16,10 @@ ocdr <- function(p, A, fs, fc, plim) {
     stop("inputs for p and A are both required")
   }
   if (is.list(p) & is.list(A)) {
-    if (nargs() < 3 ) {
+    if (nargs() < 3) {
       fs <- c()
     }
-    if (nargs() < 4 ) {
+    if (nargs() < 4) {
       fc <- c()
     }
     plim <- fc 

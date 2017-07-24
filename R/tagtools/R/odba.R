@@ -25,12 +25,10 @@ odba <- function(A, fs, fh = NULL, method = "fir", n = NULL) {
     e <- sqrt(rowSums(abs(Ah)^2))
   } else {
     if ((method == "vedba") | (method == "wilson")) {
-      if (missing(n)) {
+      if (is.null(n)) {
         stop("n is a required input to compute odba by the vedba or wilson methods")
       }
-      if (missing(n)) {
-        n <- 2 * floor(fs / 2) + 1 #make sure n is odd
-      }
+      n <- 2 * floor(n / 2) + 1 #make sure n is odd
       nz <- floor(n / 2)
       Ah <- signal::filter(rep(1,n) / n, 1, x = rbind(A, matrix(0, nrow = nz, ncol = ncol(A))))
       Ah <- matrix(Ah, byrow = FALSE, ncol = 3)
