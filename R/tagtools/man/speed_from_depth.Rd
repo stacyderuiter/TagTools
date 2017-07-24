@@ -7,7 +7,7 @@
 speed_from_depth(p, A, fs, fc = NULL, plim = NULL)
 }
 \arguments{
-\item{p}{The depth vector (a regularly sampled time series) in meters. sampled at fs Hz.}
+\item{p}{The depth vector (a regularly sampled time series) in meters. sampled at fs Hz. This can either be a sensor list, or a vector.}
 
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.}
 
