@@ -2,7 +2,7 @@
 % Please edit documentation in R/decdc.R
 \name{decdc}
 \alias{decdc}
-\title{Reduce the sampling rate of a time series by an integer factor.}
+\title{Reduce the sampling rate}
 \usage{
 decdc(x, df)
 }
@@ -15,7 +15,7 @@ decdc(x, df)
 y The decimated signal vector or matrix. It has the same number of columns as x but has 1/df of the rows.
 }
 \description{
-Reduce the sampling rate of a time series by an integer factor.
+This function is used to reduce the sampling rate of a time series by an integer factor.
 }
 \note{
 Decimation is performed by first low-pass filtering x and then keeping 1 sample out of every df. A symmetric FIR filter with length 12*df and cutoff frequency 0.4*fs/df is used. The group delay of the filter is removed. For large decimation factors (e.g., df>>50), it is better to perform several decimations with lower factors. For example to decimate by 120, use: decdc(decdc(x,10),12).

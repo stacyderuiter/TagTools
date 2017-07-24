@@ -2,7 +2,7 @@
 % Please edit documentation in R/inclination.R
 \name{inclination}
 \alias{inclination}
-\title{Estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.}
+\title{Estimate the inclination angle}
 \usage{
 inclination(A, M, fc = NULL)
 }
@@ -17,7 +17,7 @@ inclination(A, M, fc = NULL)
 incl  The magnetic field inclination angle in radians.
 }
 \description{
-Estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
+This function is used to estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
 }
 \note{
 Output sampling rate is the same as the input sampling rate.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ptrack.R
 \name{ptrack}
 \alias{ptrack}
-\title{Simple dead-reckoned track (pseudo-track) estimation based on speed and bodypointing angle.}
+\title{Estimate simple dead-reckoned track}
 \usage{
 ptrack(A, M, s, fs, fc = NULL, include_pe = NULL)
 }
@@ -26,6 +26,9 @@ pe The estimated depth or altitude predicted from the speed and pitch angle. Thi
 }
 \description{
 Possible input combinations: ptrack(A,M,s,fs) if A and M are matrices, ptrack(A,M,s,fs,fc) if A and M are matrices, ptrack(A,M,s) if A and M are lists, ptrack(A,M,s,fc = fc) if A and M are lists.
+}
+\details{
+This function is used to estimate the simple dead-reckoned track (pseudo-track) based on speed and bodypointing angle.
 }
 \note{
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.

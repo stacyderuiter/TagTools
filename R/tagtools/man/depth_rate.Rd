@@ -2,7 +2,7 @@
 % Please edit documentation in R/depth_rate.R
 \name{depth_rate}
 \alias{depth_rate}
-\title{Estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.}
+\title{Estimate the vertical velocity}
 \usage{
 depth_rate(p, fs, fc)
 }
@@ -18,6 +18,9 @@ v The vertical velocity with the same sampling rate as p. v has the same dimensi
 }
 \description{
 Possible input combinations: depth_rate(p) if p is a list, depth_rate(p,fc = fc) if p is a list, depth_rate(p,fs) if p is a vector, depth_rate(p,fs,fc) if p is a vector.
+}
+\details{
+This function is used to estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
 }
 \note{
 The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.

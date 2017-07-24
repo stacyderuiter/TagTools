@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_mean.R
 \name{block_mean}
 \alias{block_mean}
-\title{Compute the mean of successive blocks of samples.}
+\title{Compute mean of sample blocks}
 \usage{
 block_mean(X, n, nov)
 }
@@ -17,5 +17,5 @@ block_mean(X, n, nov)
 Y is a vector or matrix containing the mean value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 }
 \description{
-Compute the mean of successive blocks of samples.
+This function is used to compute the means of successive blocks of samples.
 }

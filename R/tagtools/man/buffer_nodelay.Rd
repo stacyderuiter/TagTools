@@ -2,7 +2,7 @@
 % Please edit documentation in R/buffer_nodelay.R
 \name{buffer_nodelay}
 \alias{buffer_nodelay}
-\title{Buffers a signal vector into matrix of data frames with no delay.}
+\title{Buffers a signal with no delay}
 \usage{
 buffer_nodelay(vec, n, p)
 }
@@ -17,5 +17,5 @@ buffer_nodelay(vec, n, p)
 realretmat A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p".
 }
 \description{
-Buffers a signal vector into matrix of data frames with no delay.
+This function is used to buffer a signal vector into matrix of data frames with no delay.
 }

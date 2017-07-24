@@ -2,7 +2,7 @@
 % Please edit documentation in R/cst2hms.R
 \name{cst2hms}
 \alias{cst2hms}
-\title{Convert a time in CST (sec since start of recording) to year, month, day, hours, minutes, seconds local time.}
+\title{Convert a time to year, month, day, hours, minutes, seconds local time.}
 \usage{
 cst2hms(tag, cst, d3, TAGON, GMT2LOC)
 }
@@ -21,5 +21,5 @@ cst2hms(tag, cst, d3, TAGON, GMT2LOC)
 hms The output for a date/time string which is a matrix of strings where row n is a string indicating the local date and time for entry n of csts.
 }
 \description{
-Convert a time in CST (sec since start of recording) to year, month, day, hours, minutes, seconds local time.
+This function is used to convert a time in CST (seconds since start of recording) to year, month, day, hours, minutes, seconds local time.
 }

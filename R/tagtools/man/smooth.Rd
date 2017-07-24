@@ -2,7 +2,7 @@
 % Please edit documentation in R/smooth.R
 \name{smooth}
 \alias{smooth}
-\title{Low pass filter (smooth) a regularly-sampled time series.}
+\title{Low pass filter a time series}
 \usage{
 smooth(x, n)
 }
@@ -15,5 +15,5 @@ smooth(x, n)
 y The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient. Smooth uses fir_nodelay to perform the filtering and so introduces no delay.
 }
 \description{
-Low pass filter (smooth) a regularly-sampled time series.
+This funciton is used to low pass filter (smooth) a regularly-sampled time series.
 }

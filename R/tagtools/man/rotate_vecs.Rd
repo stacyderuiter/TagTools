@@ -2,7 +2,7 @@
 % Please edit documentation in R/rotate_vecs.R
 \name{rotate_vecs}
 \alias{rotate_vecs}
-\title{Rotate triaxial vector measurements from one frame to another.}
+\title{Rotate triaxial vector measurements}
 \usage{
 rotate_vecs(V, Q)
 }
@@ -15,7 +15,7 @@ rotate_vecs(V, Q)
 V is the rotated vector or matrix with the same size as the input V.
 }
 \description{
-Rotate triaxial vector measurements from one frame to another.
+This function is used to rotate triaxial vector measurements from one frame to another.
 }
 \note{
 Frame: This function makes no assumptions about frame.

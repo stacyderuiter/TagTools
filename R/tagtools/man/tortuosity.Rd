@@ -2,7 +2,7 @@
 % Please edit documentation in R/tortuosity.R
 \name{tortuosity}
 \alias{tortuosity}
-\title{Measure tortuousity index of a regularly sampled horizontal track.}
+\title{Measure tortuosity index}
 \usage{
 tortuosity(T, fs, intvl)
 }
@@ -18,6 +18,9 @@ t The tortuosity index which is between 0 and 1 as described above. t contains a
 }
 \description{
 Tortuosity can be measured in a number of ways. This function compares the stretched-out track length (STL) over an interval of time with the distance made good (DMG, i.e., the distance actually covered in the interval). The index returned is (STL-DMG)/STL which is 0 for straightline movement and 1 for extreme circular movement.
+}
+\details{
+This function is used to measure the toruosity of a regularly sampled horizontal track.
 }
 \note{
 This tortuosity index is fairly insensitive to speed so if T is produced by dead-reckoning (e.g., using ptrack or htrack), the speed estimate is not important. Also the frame of T is not important as long as the two axes (nominally called northing and easting) used to describe the positions are perpendicular.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/euler2rotmat.R
 \name{euler2rotmat}
 \alias{euler2rotmat}
-\title{Make a rotation (or direction cosine) matrix out of sets of Euler angles, pitch, roll, and heading.}
+\title{Make a rotation (or direction cosine) matrix}
 \usage{
 euler2rotmat(p, r, h)
 }
@@ -17,5 +17,8 @@ euler2rotmat(p, r, h)
 Q One or more 3x3 rotation matrices. If p, r, and h are all scalars, Q is a 3x3 matrix, Q = H %*% P %*% R where H, P and R are the cannonical rotation matrices corresponding to the yaw, pitch and roll rotations, respectively. To rotate a vector or matrix of triaxial measurements, pre-multiply by Q. If p, r or h contain multiple values, Q is a 3-dimensional matrix with size 3x3xn where n is the number of Euler angle triples that are input. To access the k'th rotation matrix in Q use drop(Q[,,k]).
 }
 \description{
-#Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
+This function is used to make a rotation (or direction cosine matrix out of sets of Euler angles, pitch, roll, and heading.
+}
+\details{
+Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/m2h.R
 \name{m2h}
 \alias{m2h}
-\title{Compute heading, field intensity and inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.}
+\title{Compute heading, field intensity, and inclination angle}
 \usage{
 m2h(M, A, fs, fc = NULL)
 }
@@ -24,6 +24,9 @@ incl The estimated field inclination angle (i.e., the angle with respect to the 
 }
 \description{
 Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,fs,fc) if A and M are matrices.
+}
+\details{
+This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 }
 \note{
 Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).

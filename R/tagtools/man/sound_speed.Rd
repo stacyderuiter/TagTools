@@ -2,7 +2,7 @@
 % Please edit documentation in R/sound_speed.R
 \name{sound_speed}
 \alias{sound_speed}
-\title{Sound speed estimate using Coppens equation}
+\title{Sound speed estimation}
 \usage{
 sound_speed(T, D = NULL, S = NULL)
 }
@@ -17,7 +17,7 @@ sound_speed(T, D = NULL, S = NULL)
 v The sound speed in m/s
 }
 \description{
-Sound speed estimate using Coppens equation
+This function is used to estimate the sound speed using Coppens equation
 }
 \note{
 Range of validity: temperature 0 to 35 °C, salinity 0 to 45 parts per thousand, depth 0 to 4000 m
