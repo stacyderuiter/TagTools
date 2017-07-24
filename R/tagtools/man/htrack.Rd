@@ -4,7 +4,7 @@
 \alias{htrack}
 \title{Simple horizontal dead-reckoned track (pseudo-track) estimation based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.}
 \usage{
-htrack(A, M, s, fs, fc)
+htrack(A, M, s, fs, fc = NULL)
 }
 \arguments{
 \item{A}{The nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}

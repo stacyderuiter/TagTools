@@ -1,4 +1,3 @@
-#' NOTE STILL NEEDS TESTING - SDR is working on it
 #' Plot sensor time series against time in a single or multi-paneled figure with linked x-axes. This is useful for comparing measurements across different sensors. The time axis is automatically displayed in seconds, minutes, hours, or days according to the span of the data.
 #' 
 #' @description Possible input combinations: plott(X) if X is a list, plott(X,r) if X is a list, plott(X,fsx) if X is a vector or matrix, plott(X,fsx,r) if X is a vector or matrix, plott(X,Y,.....) if X and Y and etc. are lists, plott(X,fsx,Y,fsy,.....) if X and Y and etc. are vectors or matrices.
