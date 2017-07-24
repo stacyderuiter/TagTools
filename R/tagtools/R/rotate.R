@@ -1,8 +1,9 @@
-#' Rotate data
+#' Rotate data.
 #' 
 #' Rotate a numeric vector (for rotation_test, this will be a set of event times).  "Rotating" the vector entails advancing all values by a random increment, then subtracting
 #' the maximum expected value from all rotated entries that exceed that maximum.
 #' This is a utility function used by \code{\link{rotation_test}}, but advanced users may wish to use it directly to carry out non-standard rotation tests.
+#' 
 #' The rotation test was applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008. This test is a
 #' variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
 #' (for example, time series of behavioral events that tend to occur in clusters). This implementation of the rotation test compares a test statistic (some summary of
