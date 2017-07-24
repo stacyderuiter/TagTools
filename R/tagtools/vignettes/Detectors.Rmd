@@ -1,10 +1,10 @@
 ---
-title: "Peak Detection"
+title: "Detectors"
 author: "David Sweeney"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Peak Detection}
+  %\VignetteIndexEntry{Detectors}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
