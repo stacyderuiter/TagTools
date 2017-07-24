@@ -148,7 +148,7 @@ end
 %functions return squared Mahalanobis dist so take sqrt
 dist = sqrt(d2);
 
-dist(t > (size(data, 1)/fs - smoothDur.*60)) = missing;
+dist(t > (size(data, 1)/fs - smoothDur.*60)) = NaN;
 
 %Calculate cumsum of distances if requested
 if cumSum == true
