@@ -31,7 +31,6 @@ ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
     fs <- M$fs
     M <- M$data
     A <- A$data
-
   } else {
     if (missing(fs)) {
       stop("Inputs for A, M, s, and fs are all required if A and M are matrices")
@@ -48,9 +47,18 @@ ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
   }
   nf <- 4 * fs / fc
   A <- fir_nodelay(A, nf, fc / (fs / 2))$y
-  M <- fir_nodelay(A, nf, fc / (fs / 2))$y
+  M <- fir_nodelay(M, nf, fc / (fs / 2))$y
   W <- body_axes(A, M)
   X <- t(drop(W[, 1, ]))
+#additional function --------------------------------------
+  cumsum_mat <- function(mat){
+    a <- matrix(0, ncol = ncol(mat), nrow = nrow(mat))
+    for(i in 1:ncol(mat)){
+      a[,i] <- cumsum(mat[,i])
+    }
+    return(a)
+  }
+#----------------------------------------------------------  
   if(is.matrix(X)){
     T <- cumsum_mat((s / fs) * X)
   }
@@ -68,11 +76,4 @@ ptrack <- function(A, M, s, fs, fc = NULL, include_pe = NULL) {
     return(list(T = T, pe = pe))
   } 
   return(T)
-}
-cumsum_mat <- function(mat){
-  a <- matrix(0, ncol = ncol(mat), nrow = nrow(mat))
-  for(i in 1:ncol(mat)){
-    a[,i] <- cumsum(mat[,i])
-  }
-  return(a)
 }
