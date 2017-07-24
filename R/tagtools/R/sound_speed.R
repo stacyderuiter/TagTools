@@ -1,5 +1,6 @@
-#' Sound speed estimate using Coppens equation
+#' Sound speed estimation
 #' 
+#'  This function is used to estimate the sound speed using Coppens equation
 #' @note Range of validity: temperature 0 to 35 °C, salinity 0 to 45 parts per thousand, depth 0 to 4000 m
 #' @param T The temperature in degrees C
 #' @param D (optional) The depth in meters (defaults to 1 m)

@@ -1,5 +1,6 @@
-#' Estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
+#' Estimate the vertical velocity 
 #' 
+#' This function is used to estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
 #' @description Possible input combinations: depth_rate(p) if p is a list, depth_rate(p,fc = fc) if p is a list, depth_rate(p,fs) if p is a vector, depth_rate(p,fs,fc) if p is a vector.
 #' @param p A depth or altitude time series or a list of depth or altitude (e.g., from readtag.R). p can have any units and is in the form of a vector
 #' @param fs is the sampling rate of p in Hz.

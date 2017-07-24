@@ -1,5 +1,6 @@
-#' Simple horizontal dead-reckoned track (pseudo-track) estimation based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.
-#'
+#' Simple horizontal dead-reckoned track 
+#' 
+#' This function is used to estimate the simple horizontal dead-reckoned track (pseudo-track) based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.
 #' @description Possible input combinations: htrack(A,M,s,fs) if A and M are matrices, htrack(A,M,s,fs,fc) if A and M are matrices, htrack(A,M,s) if A and M are lists, htrack(A,M,s,fc = fc) if A and M are lists.
 #' @param A The nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2. 
 #' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer signal list (e.g., from readtag.R). A and M must have the same size (and so are both measured at the same sampling rate).

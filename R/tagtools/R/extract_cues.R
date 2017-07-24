@@ -1,5 +1,6 @@
-#' Extract multiple sub-samples of data from a vector or matrix.
+#' Extract multiple sub-samples of data 
 #' 
+#' This function is used to extract multiple sub-samples of data from a vector or matrix.
 #' @param x is a vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
 #' @param fs is the sampling rate in Hz of the data in x.
 #' @param cues defines the start time in seconds of the intervals to be extracted from x.

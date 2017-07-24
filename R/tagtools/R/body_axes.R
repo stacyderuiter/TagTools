@@ -1,5 +1,6 @@
-#' Generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.
+#' Generate the cardinal axes of an animal 
 #' 
+#' This function is used to generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.
 #' @param A The acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss).
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing the axes. The filter cut-off frequency is with respect to 1=Nyquist frequency. The filter length is 8/fc. Filtering adds no group delay. If fc is not specified, no filtering  is performed.

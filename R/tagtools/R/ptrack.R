@@ -1,5 +1,6 @@
-#' Simple dead-reckoned track (pseudo-track) estimation based on speed and bodypointing angle. 
-#'
+#' Estimate simple dead-reckoned track 
+#' 
+#' This function is used to estimate the simple dead-reckoned track (pseudo-track) based on speed and bodypointing angle. 
 #' @description Possible input combinations: ptrack(A,M,s,fs) if A and M are matrices, ptrack(A,M,s,fs,fc) if A and M are matrices, ptrack(A,M,s) if A and M are lists, ptrack(A,M,s,fc = fc) if A and M are lists.
 #' @param A An nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2. 
 #' @param M The magnetometer signal matrix, M = [mx,my,mz] in any consistent unit (e.g., in uT or Gauss)  or magnetometer sensor list (e.g., from readtag.R). A and M must have the same size (and so are both measured at the same sampling rate).

@@ -1,5 +1,6 @@
-#' Complimentary filtering of a signal. This breaks signal X into two or more frequency bands such that the sum of the signals in the separate bands is equal to the original signal.
+#' Complimentary filtering of a signal. 
 #' 
+#' This function breaks signal X into two or more frequency bands such that the sum of the signals in the separate bands is equal to the original signal.
 #' @description Possible input combinations: comp_filt(X,fs,fc) if X is a vector or matrix, comp_filt(X,fc = fc) if X is a list
 #' @param  X A sensor vector or matrix (i.e., with a signal in each column) or sensor list (e.g., from readtag.R).
 #' @param fs The sampling rate of the sensor data in Hz (samples per second).

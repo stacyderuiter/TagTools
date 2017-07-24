@@ -1,10 +1,13 @@
+#' Carry out a rotation randomization test.
+#' 
 #' Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
 #' variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
-#' (for example, time series of behavioral events that tend to occur in clusters). This implementation of the rotation test compares a test statistic (some summary of
+#' (for example, time series of behavioral events that tend to occur in clusters). 
+#' 
+#' This implementation of the rotation test compares a test statistic (some summary of
 #' an "experimental" time-period) to its expected value during non-experimental periods. Instead of resampling random subsets of observations from the original dataset,
 #' the rotation test samples many contiguous blocks from the original data, each the same duration as the experimental period. The summary statistic,
 #' computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
-#' 
 #' @inheritParams rotate
 #' @param exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end time(s). Note that all data that falls into any experimental period will be concatenated and passed to \code{ts_fun}. If finer control is desired, consider writing your own test using the underlying function \code{rotate}.
 #' @param n_rot Number of rotations (randomizations) to carry out. Default is \code{n_rot=10000}.

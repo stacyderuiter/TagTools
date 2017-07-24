@@ -1,5 +1,6 @@
-#' Compute the RMS (root-mean-square) of successive blocks of samples.
+#' Compute RMS of sample blocks
 #' 
+#' This function is used to compute the RMS (root-mean-square) of successive blocks of samples.
 #' @param X A vector or a matrix containing samples of a signal in each column.
 #' @param n The number of samples from X to use in each analysis block.
 #' @param nov The number of samples that the next block overlaps the previous block.

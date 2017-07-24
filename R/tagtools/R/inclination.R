@@ -1,4 +1,6 @@
-#' Estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
+#' Estimate the inclination angle
+#' 
+#' This function is used to estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
 #' 
 #' @param A The accelerometer signal matrix, A=[ax,ay,az] in any consistent unit (e.g., in g or m/s2). A can be in any frame.
 #' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss). M must be in the same frame as A.

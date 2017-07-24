@@ -1,5 +1,6 @@
-#' Convert a time in CST (sec since start of recording) to year, month, day, hours, minutes, seconds local time.
-#'
+#' Convert a time to year, month, day, hours, minutes, seconds local time.
+#' 
+#' This function is used to convert a time in CST (seconds since start of recording) to year, month, day, hours, minutes, seconds local time.
 #' @param tag The tag id string (eg "zc11_267a")
 #' @param cst A scalar or a vector of times to convert (in seconds since start of recording)
 #' @param d3 Give the value 0 if the tag was a dtag2, or 1 if a d3 (if 1, then it will be assumed that the TAGON in the cal file is in UTC and GMT2LOC will be used to covert to local).

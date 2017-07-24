@@ -1,5 +1,6 @@
 #' Load a tag dataset from a netCDF file.
 #' 
+#' This function is used to load a tag dataset from a netCDF file.
 #' @description This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
 #' @param file File name (and path, if necessary) of netCDF file to be read, as a quoted character string.
 #' @param which_vars (Optional) A list of quoted character strings giving the exact names of variables to be read in. Default is to read all variables present in the file. parameters should be read in.
