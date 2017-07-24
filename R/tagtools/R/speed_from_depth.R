@@ -1,7 +1,7 @@
 #' Estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth). 
 #' 
 #' @description Possible input combinations: speed_from_depth(p,A) if p and A are lists, speed_from_depth(p,A,fc = fc) if p and A are lists, speed_from_depth(p,A,fc = fc,plim = plim) if p and A are lists, speed_from_depth(p,A,fs) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc,plim) if p and A are vectors/matrices.
-#' @param p The depth vector (a regularly sampled time series) in meters. sampled at fs Hz.
+#' @param p The depth vector (a regularly sampled time series) in meters. sampled at fs Hz. This can either be a sensor list, or a vector.
 #' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.
 #' @param fs The sampling rate of p and A in Hz (samples per second).
 #' @param fc (optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.
@@ -14,8 +14,8 @@
 
 speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
   # input checks-----------------------------------------------------------
-  if (nargs() < 3) {
-    stop("inputs p, A, and fs must all be specified")
+  if (nargs() < 2) {
+    stop("inputs p and A must be specified")
   }
   if (is.list(p) & is.list(A)) {
     if (nargs() < 3) {
@@ -49,7 +49,7 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
       fc <- fs
     }
     fs <- A
-    A <- vector(mode = "numeric", length = 0)
+    A <- c()
   } else {
     if (is.null(fc) == TRUE) {
       fc <- 0.2  #default filter cut-off of 0.2 Hz
@@ -62,11 +62,11 @@ speed_from_depth <- function(p, A, fs, fc = NULL, plim = NULL) {
   abc <- p[2] - p[1]
   bcd <- diff(p)
   vec <- c(abc,bcd) * fs
-  v <- fir_nodelay(vec, nf, fc / (fs / 2))
-  if (length(A) == 0 & is.vector(A)) {
-    A <- fir_nodelay(A, nf, fc / (fs / 2))
-    pitch <- a2pr(A) ;
-    pitch[abs(pitch) < plim] = NaN ;
+  v <- fir_nodelay(vec, nf, fc / (fs / 2))$y
+  if (!is.null(A)) {
+    A <- fir_nodelay(A, nf, fc / (fs / 2))$y
+    pitch <- a2pr(A)$p
+    pitch[abs(pitch) < plim] = NaN
     s <- v / sin(pitch)
   } else {
     s <- v

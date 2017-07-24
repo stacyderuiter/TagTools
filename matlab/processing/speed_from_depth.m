@@ -99,11 +99,11 @@ if m==1 && n==1					% second call type - no A
 else
 	if nargin<4 || isempty(fc)
 		fc = 0.2 ;						% default filter cut-off of 0.2 Hz
-	end
+    end
+end
 
 if nargin<5 || isempty(plim)
 	plim = 20/180*pi ;			   % default 20 degree pitch angle cut-off
-end
 end
 
 nf = round(4*fs/fc) ;
@@ -117,4 +117,3 @@ if ~isempty(A)
 else
 	s = v;
 end
-
