@@ -18,27 +18,29 @@
 #' @param ... Additional inputs to be passed to \code{ts_fun}
 #' @return A list containing the following components:
 #' \itemize{
-#'   \item{result}{A one-row data frame with rows:
+#'   \item{\strong{result}}{, A one-row data frame with rows:
 #'   \itemize{
-#'      \item{statistic}{Test statistic (from original data)}
-#'      \item{p_value}{P-value of the test (2-sided)}
-#'      \item{n_rot}{Number of rotations}
-#'      \item{CI_low}{Lower bound on rotation-resampling percentile-based confidence interval}
-#'      \item{CI_up}{Upper bound on rotation-resampling percentile-based confidence interval}
-#'      \item{conf_level}{Confidence level, as a proportion}
+#'      \item{\strong{statistic: }}{Test statistic (from original data)}
+#'      \item{\strong{p_value: }}{P-value of the test (2-sided)}
+#'      \item{\strong{n_rot: }}{Number of rotations}
+#'      \item{\strong{CI_low: }}{Lower bound on rotation-resampling percentile-based confidence interval}
+#'      \item{\strong{CI_up: }}{Upper bound on rotation-resampling percentile-based confidence interval}
+#'      \item{\strong{conf_level: }}{Confidence level, as a proportion}
 #'      
 #'      }}
-#'   \item{rot_stats}{(If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
+#'   \item{\strong{rot_stats}}{ (If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
 #'   }
 #'  
 #' @export
 #' @references
-#'    @bibliography TagTools.bib
-#'    @cite Miller2004
-#'    @cite Deruiter2008
+#'    Miller, P. J. O., Shapiro, A. D., Tyack, P. L. and Solow, A. R. (2004). Call-type matching in vocal exchanges of free-ranging resident killer whales, Orcinus orca. Anim. Behav. 67, 1099–1107.
+#'    
+#'    DeRuiter, S. L. and Solow, A. R. (2008). A rotation test for behavioural point-process data. Anim. Behav. 76, 1103–1452.
 #' @seealso Advanced users seeking more flexibility may want to use the underlying function \code{\link{rotate}} to carry out customized rotation resampling. \code{\link{rotate}} generates one rotated dataset from \code{event_times} and \code{exp_period}.
 #' @examples 
-#' r <- rotation_test(event_times = 2000*runif(500), exp_period = c(100,200), 
+#' r <- rotation_test(event_times = 
+#' 2000*runif(500), 
+#' exp_period = c(100,200), 
 #' return_rot_stats=TRUE, ts_fun=mean)
 
 rotation_test <- function(event_times, exp_period, full_period = range(event_times, na.rm=TRUE),
