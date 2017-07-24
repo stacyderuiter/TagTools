@@ -19,10 +19,10 @@ p The pitch estimate in radians
 r The roll estimate in radians
 }
 \description{
-Possible input combinations: a2pr(A) if A is a list or matrix, a2pr(A,fc = fc) if A is a list, a2pr(A,fs,fc) if A is a matrix
+This is a non-iterative estimator with |pitch| constrained to <= 90 degrees. The pitch and roll estimates give the least-square-norm error between A and the A-vector that would be measured at the estimated pitch and roll. If A is in the animal frame, the resulting pitch and roll define the orientation of the animal with respect to its navigation frame. If A is in the tag frame, the pitch and roll will define the tag orientation with respect to its navigation frame.
 }
 \details{
-This is a non-iterative estimator with |pitch| constrained to <= 90 degrees. The pitch and roll estimates give the least-square-norm error between A and the A-vector that would be measured at the estimated pitch and roll. If A is in the animal frame, the resulting pitch and roll define the orientation of the animal with respect to its navigation frame. If A is in the tag frame, the pitch and roll will define the tag orientation with respect to its navigation frame.
+Possible input combinations: a2pr(A) if A is a list or matrix, a2pr(A,fc = fc) if A is a list, a2pr(A,fs,fc) if A is a matrix
 }
 \note{
 Output sampling rate is the same as the input sampling rate.

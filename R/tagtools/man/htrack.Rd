@@ -21,10 +21,10 @@ htrack(A, M, s, fs, fc = NULL)
 T The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal's position at the start of the measurements (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
 }
 \description{
-Possible input combinations: htrack(A,M,s,fs) if A and M are matrices, htrack(A,M,s,fs,fc) if A and M are matrices, htrack(A,M,s) if A and M are lists, htrack(A,M,s,fc = fc) if A and M are lists.
+This function is used to estimate the simple horizontal dead-reckoned track (pseudo-track) based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.
 }
 \details{
-This function is used to estimate the simple horizontal dead-reckoned track (pseudo-track) based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.
+Possible input combinations: htrack(A,M,s,fs) if A and M are matrices, htrack(A,M,s,fs,fc) if A and M are matrices, htrack(A,M,s) if A and M are lists, htrack(A,M,s,fc = fc) if A and M are lists.
 }
 \note{
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful. Unless the local declination angle is also corrected with rotframe, the dead-reckoned track will use magnetic north rather than true north.

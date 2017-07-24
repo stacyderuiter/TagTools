@@ -19,6 +19,3 @@ Q One or more 3x3 rotation matrices. If p, r, and h are all scalars, Q is a 3x3 
 \description{
 This function is used to make a rotation (or direction cosine matrix out of sets of Euler angles, pitch, roll, and heading.
 }
-\details{
-Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
-}
