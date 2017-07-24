@@ -13,9 +13,10 @@ tortuosity <- function(T, fs, intvl) {
   k <- round(fs * intvl) 
   N <- buffer_nodelay(T[, 1], k, 0)
   E <- buffer_nodelay(T[, 2], k, 0)
-  lmg <- t(sqrt((E[length(E), ] - E[1, ])^2 + (N[length(N), ] - N[1, ])^2))
-  stl <- t(sum(sqrt(diff(E)^2 + diff(N)^2)))
-  t <- (stl - lmg) / stl 
-  t[, 2] <- t(sqrt(mean((N - repmat(mean(N), nrow(N),1))^2 + (E - pracma::repmat(mean(E), nrow(E), 1))^2)))
+  lmg <- t(sqrt((E[nrow(E), ] - E[1, ])^2 + (N[nrow(N), ] - N[1, ])^2))
+  stl <- t(colSums(sqrt(diff(E)^2 + diff(N)^2)))
+  t <- t((stl - lmg) / stl) 
+  t <- cbind(t, matrix(0, nrow(t), 1))
+  t[, 2] <- t(sqrt(colMeans((N - pracma::repmat(colMeans(N), nrow(N),1))^2 + (E - pracma::repmat(colMeans(E), nrow(E), 1))^2)))
   return(t)
 }
