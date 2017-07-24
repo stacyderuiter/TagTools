@@ -10,6 +10,9 @@ rotate_vecs <- function(V, Q) {
   if (missing(Q)) {
     stop("inputs for all arguments are required")
   }
+  if (is.vector(V)) {
+    V <- matrix(V, nrow = 1)
+  }
   if (ncol(V) == 1) {
     V <- t(V)
   }
