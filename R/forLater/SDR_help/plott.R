@@ -17,6 +17,7 @@
 #' @param line_colors (Optional) A list of colors for lines for multivariate data streams (for example, if a panel plots tri-axial acceleration, it will have three lines -- their line colors will be the first three in this list). May be specified in any specification R understands for colors. Defaults to c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
 #' @param ... Additional arguments to be passed to \code{\link{plot}}.
 #' @return F (only if interactive is true) A plotly object corresponding to the figure produced 
+#' @export
 #' @note This is a flexible plotting tool which can be used to display and explore sensor data with different sampling rates on a uniform time grid. 
 
 plott <- function(X, fsx=NULL, r=FALSE, offset=0, 

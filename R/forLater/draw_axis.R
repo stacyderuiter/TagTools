@@ -4,7 +4,7 @@
 #' @inheritParams graphics::axis.POSIXct
 #' @param data_time Logical. Is the data being plotted date-time (POSIX) or time in seconds?
 #' @param last_panel Logical. Is this the last panel (in other words, should x axis tick labels be drawn)?
-#' 
+
 
 draw_axis <- function(side=1, x=NULL, date_time, last_panel){
   if (date_time){
