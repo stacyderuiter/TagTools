@@ -1,5 +1,6 @@
-#' Find time cues for the start and end of either dives in a depth record or flights in an altitude record.
+#' Find time cues for dives
 #' 
+#' This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.
 #' @param p A depth or altitude time series (vector) in meters.
 #' @param fs The sampling rate of the sensor data in Hz (samples per second).
 #' @param mindepth The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.

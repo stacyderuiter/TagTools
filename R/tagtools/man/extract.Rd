@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract.R
 \name{extract}
 \alias{extract}
-\title{Extract a sub-sample of data from a vector or matrix.}
+\title{Extract a sub-sample of data}
 \usage{
 extract(x, fs, tst, ted)
 }
@@ -19,7 +19,7 @@ extract(x, fs, tst, ted)
 X A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
 }
 \description{
-Extract a sub-sample of data from a vector or matrix.
+This function is used to extract a sub-sample of data from a vector or matrix.
 }
 \note{
 Output sampling rate is the same as the input sampling rate.

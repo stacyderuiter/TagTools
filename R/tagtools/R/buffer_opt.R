@@ -1,5 +1,6 @@
-#' Buffers a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.
+#' Buffers a signal 
 #' 
+#' This function is used to buffer a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.
 #' @param x The signal vector to be buffered
 #' @param n The desired length of data segments (rows).
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix

@@ -1,4 +1,4 @@
-#' Add a line to an existing plot. Line segments are colored according to a factor input.
+#' Add colored line segments to a plot
 #'
 #' This function adds colored line segments to an existing plot.  The line is plotted at points specified by inputs x and y, and colored according to factor input z (with one color for each level of z).
 #' @param x x positions of points to be plotted

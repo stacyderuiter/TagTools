@@ -2,7 +2,7 @@
 % Please edit documentation in R/acc_wgs84.R
 \name{acc_wgs84}
 \alias{acc_wgs84}
-\title{Returns the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 internationalgravity formula.}
+\title{Calculate total acceleration}
 \usage{
 acc_wgs84(latitude)
 }
@@ -13,7 +13,7 @@ acc_wgs84(latitude)
 g Given in units of m/s^2
 }
 \description{
-Returns the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 internationalgravity formula.
+This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 internationalgravity formula.
 }
 \note{
 Source: http://solid_earth.ou.edu/notes/potential/igf.htm

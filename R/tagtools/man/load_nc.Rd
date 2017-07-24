@@ -14,3 +14,6 @@ load_nc(file, which_vars = NULL)
 \description{
 This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
 }
+\details{
+This function is used to load a tag dataset from a netCDF file.
+}

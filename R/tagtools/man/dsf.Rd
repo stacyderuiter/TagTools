@@ -2,7 +2,7 @@
 % Please edit documentation in R/dsf.R
 \name{dsf}
 \alias{dsf}
-\title{Estimate the dominant stroke frequency from accelerometer data.}
+\title{Estimate the dominant stroke frequency}
 \usage{
 dsf(A, fs, fc = NULL, Nfft)
 }
@@ -21,6 +21,9 @@ fpk The dominant stroke frequency (i.e., the peak frequency in the sum of the ac
 q The quality of the peak measured by the peak power divided by the mean power of the spectra. This is a dimensionless number which is large if there is a clear spectral peak.
 }
 \description{
+This function can be used to estimate the dominant stroke frequency from triaxial accelerometer data [ax,ay,az].
+}
+\details{
 Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
 }
 \note{

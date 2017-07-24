@@ -1,5 +1,6 @@
-#' Extract a sub-sample of data from a vector or matrix.
+#' Extract a sub-sample of data 
 #' 
+#' This function is used to extract a sub-sample of data from a vector or matrix.
 #' @param x A vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
 #' @param fs the sampling rate in Hz of the data in x.
 #' @param tst Defines the start time in seconds of the interval to be extracted from x.

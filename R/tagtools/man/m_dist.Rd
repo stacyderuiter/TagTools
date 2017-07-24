@@ -2,7 +2,7 @@
 % Please edit documentation in R/m_dist.R
 \name{m_dist}
 \alias{m_dist}
-\title{Calculate Mahalanobis distance for a multivariate time series.}
+\title{Calculate Mahalanobis distance}
 \usage{
 m_dist(data, fs, smoothDur, overlap, consec, cumSum, expStart, expEnd,
   baselineStart, baselineEnd, BL_COV)
@@ -34,5 +34,5 @@ m_dist(data, fs, smoothDur, overlap, consec, cumSum, expStart, expEnd,
 D Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
 }
 \description{
-Calculate Mahalanobis distance for a multivariate time series.
+This function is used to calculate the Mahalanobis distance for a multivariate time series.
 }

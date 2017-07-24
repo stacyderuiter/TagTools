@@ -1,5 +1,6 @@
-#' Find zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.
+#' Find zero-crossings in a vector 
 #' 
+#' This function is used to find the zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.
 #' @param x A vector of data. This can be from any sensor and with any sampling rate.
 #' @param TH The magnitude threshold for detecting a zero-crossing. A zero-crossing is only detected when values in x pass from -TH to +TH or vice versa.
 #' @param Tmax (optional) The maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.

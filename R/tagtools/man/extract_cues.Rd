@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_cues.R
 \name{extract_cues}
 \alias{extract_cues}
-\title{Extract multiple sub-samples of data from a vector or matrix.}
+\title{Extract multiple sub-samples of data}
 \usage{
 extract_cues(x, fs, cues, len)
 }
@@ -21,7 +21,7 @@ X is a matrix containing sub-samples of x. If x is a vector, X has as many colum
 cues is the list of cues actually used. cues that require data outside of x are rejected.
 }
 \description{
-Extract multiple sub-samples of data from a vector or matrix.
+This function is used to extract multiple sub-samples of data from a vector or matrix.
 }
 \note{
 Output sampling rate is the same as the input sampling rate.

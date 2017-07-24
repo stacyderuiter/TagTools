@@ -1,5 +1,6 @@
-#' Buffers a signal vector into matrix of data frames with no delay.
+#' Buffers a signal with no delay
 #' 
+#' This function is used to buffer a signal vector into matrix of data frames with no delay.
 #' @param vec The signal vector to be buffered
 #' @param n The desired length of data segments (rows).
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix

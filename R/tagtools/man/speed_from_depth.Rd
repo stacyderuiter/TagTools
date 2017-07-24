@@ -2,7 +2,7 @@
 % Please edit documentation in R/speed_from_depth.R
 \name{speed_from_depth}
 \alias{speed_from_depth}
-\title{Estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth).}
+\title{Estimate the forward speed of a diving animal}
 \usage{
 speed_from_depth(p, A, fs, fc = NULL, plim = NULL)
 }
@@ -23,6 +23,9 @@ s The forward speed estimate in m/s
 v The depth-rate (or vertical velocity) in m/s
 }
 \description{
+This function is used to estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth).
+}
+\details{
 Possible input combinations: speed_from_depth(p,A) if p and A are lists, speed_from_depth(p,A,fc = fc) if p and A are lists, speed_from_depth(p,A,fc = fc,plim = plim) if p and A are lists, speed_from_depth(p,A,fs) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc,plim) if p and A are vectors/matrices.
 }
 \note{

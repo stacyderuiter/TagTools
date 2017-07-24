@@ -2,7 +2,7 @@
 % Please edit documentation in R/col_line.R
 \name{col_line}
 \alias{col_line}
-\title{Plot coloured line(s) in 2 dimensions in the current figure.}
+\title{Plot coloured line(s) in 2 dimensions}
 \usage{
 col_line(x, y, c, ...)
 }
@@ -16,7 +16,7 @@ col_line(x, y, c, ...)
 \item{...}{Additional inputs for plot()}
 }
 \description{
-Plot coloured line(s) in 2 dimensions in the current figure.
+This function is used to plot two dimensional lines with each individual line possessing a different color.
 }
 \note{
 x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.

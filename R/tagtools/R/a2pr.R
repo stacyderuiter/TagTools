@@ -1,7 +1,8 @@
 #' Pitch and roll estimation from triaxial accelerometer data.
 #' 
-#' @description Possible input combinations: a2pr(A) if A is a list or matrix, a2pr(A,fc = fc) if A is a list, a2pr(A,fs,fc) if A is a matrix
-#' @description This is a non-iterative estimator with |pitch| constrained to <= 90 degrees. The pitch and roll estimates give the least-square-norm error between A and the A-vector that would be measured at the estimated pitch and roll. If A is in the animal frame, the resulting pitch and roll define the orientation of the animal with respect to its navigation frame. If A is in the tag frame, the pitch and roll will define the tag orientation with respect to its navigation frame.
+#' This is a non-iterative estimator with |pitch| constrained to <= 90 degrees. The pitch and roll estimates give the least-square-norm error between A and the A-vector that would be measured at the estimated pitch and roll. If A is in the animal frame, the resulting pitch and roll define the orientation of the animal with respect to its navigation frame. If A is in the tag frame, the pitch and roll will define the tag orientation with respect to its navigation frame.
+#' 
+#' Possible input combinations: a2pr(A) if A is a list or matrix, a2pr(A,fc = fc) if A is a list, a2pr(A,fs,fc) if A is a matrix
 #' @param A An nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param fs The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A before computing pitch and roll. The filter cut-off frequency is in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.

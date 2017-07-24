@@ -2,7 +2,7 @@
 % Please edit documentation in R/msa.R
 \name{msa}
 \alias{msa}
-\title{Compute the Minimum Specific Acceleration (MSA). This is the absolute value of the norm of the acceleration minus 1 g, i.e., the amount that the acceleration differs from the gravity value. This is always equal to or less than the actual specific acceleration if A is correctly calibrated.}
+\title{Compute MSA}
 \usage{
 msa(A, ref)
 }
@@ -15,6 +15,9 @@ msa(A, ref)
 m A column vector of MSA with the same number of rows as A. m has the same units as A.
 }
 \description{
+This function is used to compute the Minium Specific Acceleration (MSA). This is the absolute value of the norm of the acceleration minus 1 g, i.e., the amount that the acceleration differs from the gravity value. This is always equal to or less than the actual specific acceleration if A is correctly calibrated.
+}
+\details{
 Possible input combinations: msa(A) if A is a list, msa(A,ref) if A is a matrix.
 }
 \note{
