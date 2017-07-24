@@ -12,11 +12,11 @@
 #' @param recording_start (Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording. If a character string is provided it will be coerced to POSIXct with \code{\link{as.POSIXct}}.
 #' @param panel_heights (Optional) A vector of relative or absolute heights for the different panels (one entry for each sensor data stream in \code{X}). Default is equal-height panels. If \code{panel_heights} is a numeric vector, it is interpreted as relative panel heights. To specify absolute panel heights in centimeters using the \code{\link{graphics::lcm}} function, see the help for \code{\link{graphics::layout}}.  
 #' @param panel_labels (Optional) A list of y-axis labels for the panels. Defaults to names(X).
-#' @param interactive (Optional) UNDER DEVELOPMENT Should an interactive plotly figure (allowing zoom/pan/etc.) be produced? Default is FALSE.
+#' @param interactive (Optional) Should an interactive figure (allowing zoom/pan/etc.) be produced? Default is FALSE. Interactive plotting requires the zoom package for its \code{\link[zoom]{zm}} function.
 #' @param par_opts (Optional) A list of options to be passed to \code{\link{graphics::par}} before plotting. Default is mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=0.8.
 #' @param line_colors (Optional) A list of colors for lines for multivariate data streams (for example, if a panel plots tri-axial acceleration, it will have three lines -- their line colors will be the first three in this list). May be specified in any specification R understands for colors. Defaults to c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
 #' @param ... Additional arguments to be passed to \code{\link{plot}}.
-#' @return F (only if interactive is true) A plotly object corresponding to the figure produced 
+#' @return A plot of time-series data 
 #' @export
 #' @note This is a flexible plotting tool which can be used to display and explore sensor data with different sampling rates on a uniform time grid. 
 
@@ -44,10 +44,6 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   }
   
   
-  if (interactive){
-    stop('Interactive plots are still under development. Please set interactive=FALSE.')
-  }
-
   times <- list()
   fs <- numeric(length=length(X))
   for (s in 1:length(X)){
@@ -144,6 +140,8 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   }
   graphics::mtext(x_lab, side=1, line=2)
   
-#return(F)
+if (interactive){
+  zm()
+}
 }
 
