@@ -17,7 +17,7 @@ rotate_vecs <- function(V, Q) {
     V <- V %*% t(Q)
   } else {
     for(k in 1:nrow(V)) {
-      V[k, ] <- V[k, ] * t(Q[,, k])
+      V[k, ] <- V[k, ] %*% t(Q[,, k])
     }
   }
   return(V)

@@ -39,10 +39,10 @@ function readHTML(masterHTML, csvfilename)
 
 
     for n = 1:length(indices)
-        if strcmp(id(indices(n)), '"info.dephist.device.regset"')
+        if strcmp(id(indices(n)), "dephist.device.regset")
             continue;
         end
-        if strcmp(id(indices(n)), '"info.udm.export"')
+        if strcmp(id(indices(n)), "udm.export")
             [C,matches] = strsplit(s{c(char(id(indices(n))))}, '" />');
             tempcell = C{2};
             if fields{indices(n)} == '1'
@@ -53,7 +53,7 @@ function readHTML(masterHTML, csvfilename)
             C{3} = tempcell;
             newS{c(char(id(indices(n))))} = [C{1} C{2} C{3}];
         end
-        if ~strcmp(id(indices(n)), '"info.dephist.device.tzone"') 
+        if ~strcmp(id(indices(n)), "dephist.device.tzone") 
             [C,matches] = strsplit( s{c(char(id(indices(n))))},'value = ""');
             if ~isempty(matches)
                 tempcell = C{2};
@@ -62,7 +62,7 @@ function readHTML(masterHTML, csvfilename)
                 newS{c(char(id(indices(n))))} = [C{1} C{2} C{3}];
             end
         end
-        if strcmp(id(indices(n)), '"info.dephist.device.tzone"')
+        if strcmp(id(indices(n)), "dephist.device.tzone")
             f_str = strcat("value=",'"',fields{indices(n)},'"');
             for m = (c(char(id(indices(n))))+ 1): (c(char(id(indices(n))))+82)
                 if ~isempty(strfind(s{m}, f_str))
@@ -93,7 +93,7 @@ function [id, ret_field] = parseCSV(csvfilename)
     tline = fgetl(fid);
     while ischar(tline),
         [token,remain1] = strtok(tline, ',');
-         if strcmp(token,'"info.dephist.device.datetime.start"') || strcmp(token,'"info.dephist.deploy.datetime.start"') || strcmp(token,'"info.dephist.deploy.locality"')
+         if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start") || strcmp(token,"dephist.deploy.locality")
             change_token = token(1:end-1);
             token0 = strcat(change_token, '0"');
             id{end+1} = token0;
@@ -104,14 +104,14 @@ function [id, ret_field] = parseCSV(csvfilename)
          end  
          [remain_token, field] = strtok(remain1, ',');
          field = field(2:end);
-        if strcmp(token,'"info.dephist.device.datetime.start"') || strcmp(token,'"info.dephist.deploy.datetime.start"') || strcmp(token,'"info.dephist.deploy.locality"')
-            if strcmp(token, '"info.dephist.device.datetime.start"') || strcmp(token, '"info.dephist.deploy.datetime.start"')
+        if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start") || strcmp(token,"dephist.deploy.locality")
+            if strcmp(token, "dephist.device.datetime.start") || strcmp(token, "dephist.deploy.datetime.start")
                 date_time = strsplit(field);
                 ret_field{end+1} = strcat(date_time{1}, '"');
                 ret_field{end+1} =  strcat('"',date_time{2});
             end
-            if strcmp(token,'"info.dephist.deploy.locality"'),
-                field = field(4:end-3);
+            if strcmp(token,"dephist.deploy.locality"),
+                field = field(2:end-1);
                 locality = strsplit(field, ', ');
                 ret_field{end+1} = strcat('"',locality{1}, '"');
                 ret_field{end+1} = strcat('"',locality{2}, '"');

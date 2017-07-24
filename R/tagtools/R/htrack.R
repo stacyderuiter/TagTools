@@ -16,6 +16,9 @@ htrack <- function(A, M, s, fs, fc = NULL) {
     stop("inputs for A, M, and s are all required")
   }
   if (is.list(A) & is.list(M)) {
+    if (A$fs != M$fs) {
+      stop("A and M must be at the same sampling rate")
+    }
     if (nargs() > 3) {
       fc <- fs
     } else {
@@ -24,9 +27,7 @@ htrack <- function(A, M, s, fs, fc = NULL) {
     fs <- M$fs 
     M <- M$data 
     A <- A$data
-    if (A$fs != M$fs) {
-      stop("A and M must be at the same sampling rate")
-    }
+   
     
   } else {
     if (missing(fs)) {
@@ -46,7 +47,10 @@ htrack <- function(A, M, s, fs, fc = NULL) {
   } else {
   s <- pracma::repmat((s / fs), 1, 2)
   }
-  Tvec <- cumsum(s * cbind(cos(hd), sin(hd)))
-  T <- matrix(T, byrow = FALSE, ncol = 2)
+  temp_mat <- s * cbind(cos(hd), sin(hd))
+  T <- matrix(0, nrow = nrow(s), ncol = 2)
+  for(i in 1:ncol(temp_mat)){
+    T[,i] <- cumsum(temp_mat[,i])
+  }
   return(T)
 }
