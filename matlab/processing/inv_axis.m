@@ -37,6 +37,6 @@ function    [V,q] = inv_axis(A)
 % energy ratio between plane-of-motion and axis of rotation
 k = find(~any(isnan(A),2)) ;
 QQ = A(k,:)'*A(k,:) ;      % form outer product of movement matrix
-[V,D] = svd(QQ) ;         	% do singular value decomposition 
+[V,D,~] = svd(QQ) ;         	% do singular value decomposition 
 V = V(:,3) ;				   % this is the least varying axis (i.e., the one with the smallest SV)
 q = D(3,3)/sqrt(D(1,1)*D(2,2)) ;  % what fraction of movement is in the 'invariant' axis
