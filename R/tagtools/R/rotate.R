@@ -1,3 +1,5 @@
+#' Rotate data
+#' 
 #' Rotate a numeric vector (for rotation_test, this will be a set of event times).  "Rotating" the vector entails advancing all values by a random increment, then subtracting
 #' the maximum expected value from all rotated entries that exceed that maximum.
 #' This is a utility function used by \code{\link{rotation_test}}, but advanced users may wish to use it directly to carry out non-standard rotation tests.
