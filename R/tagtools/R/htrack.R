@@ -46,7 +46,10 @@ htrack <- function(A, M, s, fs, fc = NULL) {
   } else {
   s <- pracma::repmat((s / fs), 1, 2)
   }
-  Tvec <- cumsum(s * cbind(cos(hd), sin(hd)))
-  T <- matrix(T, byrow = FALSE, ncol = 2)
+  temp_mat <- s * cbind(cos(hd), sin(hd))
+  T <- matrix(0, nrow = nrow(s), ncol = 2)
+  for(i in 1:ncol(temp_mat)){
+    T[,i] <- cumsum(temp_mat[,i])
+  }
   return(T)
 }
