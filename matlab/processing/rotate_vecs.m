@@ -20,7 +20,7 @@ function      V = rotate_vecs(V,Q)
 %
 %		Example:
 %		 Q = euler2rotmat(pi/180*[25 -60 33]);
-%		 V = rotatevecs([0.77 -0.6 -0.22],Q)
+%		 V = rotate_vecs([0.77 -0.6 -0.22],Q)
 % 	    returns: V=[0.7072,-0.1256,0.6967].
 %
 %     Valid: Matlab, Octave
