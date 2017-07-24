@@ -1,13 +1,15 @@
 #' Plot tag data time series
 #' 
-#' Plot sensor time series against time in a single or multi-paneled figure with linked x-axes. This is useful for comparing measurements across different sensors. The time axis is automatically displayed in seconds, minutes, hours, or days according to the span of the data.
+#' Plot time series in a single or multi-paneled figure. This is useful, for example, for comparing measurements across different sensors in an animaltag data object. The time axis is automatically displayed in seconds, minutes, hours, or days according to the span of the data.
 #' 
-#' @description Possible input combinations: plott(X) if X is a list, plott(X,r) if X is a list, plott(X,fsx) if X is a vector or matrix, plott(X,fsx,r) if X is a vector or matrix, plott(X,Y,.....) if X and Y and etc. are lists, plott(X,fsx,Y,fsy,.....) if X and Y and etc. are vectors or matrices.
-#' @param X List whose elements are either lists (containing data and metadata) or vectors/matrices of time series data.
-#' @param fsx (Optional) A numeric vector whose length matches the number of sensor data streams (list elements) in X. (If shorter, \code{fsx} will be recycled to the appropriate length). \code{fsx} gives the sampling rate in Hz for each data object. Sampling rates are not needed when the data object(s) \code{X} are list(s) that contain sampling rate information.
+#' If the input data X is an \code{animaltag} object, then all sensor variables in the object will be plotted. To plot only selected sensors from the \code{animaltag} object \code{my_tag}, for example, the input X=list(my_tag$A, my_tag$M) would plot just the accelerometer and magnetometer data. If possible, the plot will have 
+#' 
+#' @param X List whose elements are either lists (containing data and metadata) or vectors/matrices of time series data. See details.
+#' @param fsx (Optional) A numeric vector whose length matches the number of sensor data streams (list elements) in X. (If shorter, \code{fsx} will be recycled to the appropriate length). \code{fsx} gives the sampling rate in Hz for each data object. Sampling rates are not needed when the data object(s) \code{X} are list(s) that contain sampling rate information -- and beware, because \code{fsx} (if given) will override sensor metadata.
 #' @param r (Optional) Logical. Should the direction of the y-axis be flipped? Default is FALSE. If \code{r} is of length one (or shorter than the number of sensor data streams in X) it will be recycled to match the number of sensor data streams.data object that it follows if r='r'. Reversed y-axes are useful, for example, for plotting dive profiles which match the physical situation (with greater depths lower in the display). If r is a number, it specifies the number of seconds time offset for the preceding data object.
 #' @param offset (Optional) A vector of offsets, in seconds, between the start of each sensor data stream and the start of the first one. For example, if acceleration data collection started and then depth data collection commenced 436 seconds later, then the \code{offset} for the depth data would be 436.
-#' @param recording_start (Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording.
+#' @param date_time_axis (Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Defaults is TRUE. 
+#' @param recording_start (Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording. If a character string is provided it will be coerced to POSIXct with \code{\link{as.POSIXct}}.
 #' @param panel_heights (Optional) A vector of relative or absolute heights for the different panels (one entry for each sensor data stream in \code{X}). Default is equal-height panels. If \code{panel_heights} is a numeric vector, it is interpreted as relative panel heights. To specify absolute panel heights in centimeters using the \code{\link{graphics::lcm}} function, see the help for \code{\link{graphics::layout}}.  
 #' @param panel_labels (Optional) A list of y-axis labels for the panels. Defaults to names(X).
 #' @param interactive (Optional) UNDER DEVELOPMENT Should an interactive plotly figure (allowing zoom/pan/etc.) be produced? Default is FALSE.
@@ -17,12 +19,12 @@
 #' @return F (only if interactive is true) A plotly object corresponding to the figure produced 
 #' @note This is a flexible plotting tool which can be used to display and explore sensor data with different sampling rates on a uniform time grid. 
 
-plott <- function(X, fsx=NULL, r=FALSE, offset=0, recording_start=NULL,
+plott <- function(X, fsx=NULL, r=FALSE, offset=0, 
+                  date_time_axis=TRUE,
+                  recording_start=NULL,
                   panel_heights=rep.int(1, length(X)),
                   panel_labels=names(X), line_colors,
                   interactive=FALSE, par_opts, ...) {
-  # time is time since recording start....
-  # ===================================================
   if (length(r) < length(X)){
     r <- rep.int(r, length(X))
     }
@@ -32,32 +34,58 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0, recording_start=NULL,
   if (missing(line_colors)){
     lcols <- c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
   }
+  if (length(offset) < length(X)){
+    offset <- rep(offset, length.out=length(X))
+  }
+  if (sum(grepl('animaltag', class(X)))){
+    info <- X$info
+    X <- X[names(X) != 'info']
+  }
+  
   
   if (interactive){
     stop('Interactive plots are still under development. Please set interactive=FALSE.')
   }
 
   times <- list()
-  fs <- list()
+  fs <- numeric(length=length(X))
   for (s in 1:length(X)){
-    if (!missing(fsx) & !sum(is.null(fsx)) & !sum(is.na(fsx))){
+    if (suppressWarnings(!missing(fsx) & 
+                         !sum(is.null(fsx)) & 
+                         !sum(is.na(fsx)))){
       if (length(fsx) < length(X)){
         fsx <- rep(fsx, length.out=length(X))
       }# end of recycling fsx to length(X)
       fs[s] <- fsx[s] 
+      n_obs <- min(nrow(X[[s]]), length(X[[s]]))
     }else{# end of "if fsx is given"
-      fs[s] <- X[[s]]$fs
+      if (length(X[[s]]$sampling_rate)<1){
+        stop('If X does not contain sensor data lists (with sampling_rate entry), then fsx must be provided.')
+      }else{
+        fs[s] <- X[[s]]$sampling_rate
+      }
+      n_obs <- min(nrow(X[[s]]$data), length(X[[s]]$data))
     }
-    times[[s]] <- c(1:length(X[[s]]$data))/X[[s]]$fs
+      times[[s]] <- c(-1+(1:n_obs))/fs[s] + offset[s]
   }# end loop over sensor streams to get times vectors
   x_lim <- range(sapply(times, range, na.rm=TRUE), na.rm=TRUE)
   
-  # if recording_start is given, then use date/time objects
+  # if recording_start is given or available, 
+  # then use date/time objects
   # ==============================================================
-  if (!sum(grepl('POSIX', class(recording_start)))){
-    times <- lapply(times, function(x, rs) lubridate::seconds(x) +
+  if (date_time_axis){
+    if (!is.null(info)){
+      recording_start <- info$dephist_device_datetime_start
+    }
+    if (class(recording_start)=='character'){
+      # try to coerce recording start time to POSIX if needed
+      recording_start <- as.POSIXct(recording_start, tz='GMT')
+    }
+    if (sum(grepl('POSIX', class(recording_start)))){
+      times <- lapply(times, function(x, rs) lubridate::seconds(x) +
                       rs, rs=recording_start)
-    x_lim <- recording_start + lubridate::seconds(x_lim)
+      x_lim <- recording_start + lubridate::seconds(x_lim)
+    }
   }
   
   # adjust time axis units and get x axis label
@@ -71,9 +99,10 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0, recording_start=NULL,
   }else{
     t_ix <- match(1, max(x_lim) < brk$secs)
     for (i in 1:length(X)){
-      times[[i]] <- times[[i]]/brk[t_ix, 'div']
+      times[[i]] <- times[[i]]/as.numeric(brk[t_ix, 'div'])
     }
-    x_lab <- brk[t_ix,'units']
+    x_lim=x_lim/as.numeric(brk[t_ix, 'div'])
+    x_lab <- as.character(brk[t_ix,'units'])
   }
 
   # set up plot layout
@@ -91,7 +120,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0, recording_start=NULL,
     data_i <- X[[i]]
     if (is.list(data_i)) {data_i <- data_i$data} 
     #if data is univariate
-    ylim <- 1.1*range(data_i, na.rm=TRUE)
+    y_lim <- 1.1*range(data_i, na.rm=TRUE)
     if (r[i]){
       y_lim <- c(y_lim[2], y_lim[1])
     }
@@ -112,7 +141,8 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0, recording_start=NULL,
       }
     }
   }
-  graphics::mtext(x_lab, side=1, line=1)
+  graphics::mtext(x_lab, side=1, line=2)
   
-return(F)
+#return(F)
 }
+

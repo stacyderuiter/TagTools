@@ -1,4 +1,4 @@
-#' Draw time axis on plott plot
+#' Draw time axis on plott plot.
 #' 
 #' @description This function is called by \code{\link{plott}} to add a time axis to a plot created by \code{\link{plott}}. Users are unlikely to need to call the function directly.
 #' @inheritParams graphics::axis.POSIXct
