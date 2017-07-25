@@ -10,10 +10,10 @@
 #' @param offset (Optional) A vector of offsets, in seconds, between the start of each sensor data stream and the start of the first one. For example, if acceleration data collection started and then depth data collection commenced 436 seconds later, then the \code{offset} for the depth data would be 436.
 #' @param date_time_axis (Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Defaults is TRUE. 
 #' @param recording_start (Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording. If a character string is provided it will be coerced to POSIXct with \code{\link{as.POSIXct}}.
-#' @param panel_heights (Optional) A vector of relative or absolute heights for the different panels (one entry for each sensor data stream in \code{X}). Default is equal-height panels. If \code{panel_heights} is a numeric vector, it is interpreted as relative panel heights. To specify absolute panel heights in centimeters using the \code{\link{graphics::lcm}} function, see the help for \code{\link{graphics::layout}}.  
+#' @param panel_heights (Optional) A vector of relative or absolute heights for the different panels (one entry for each sensor data stream in \code{X}). Default is equal-height panels. If \code{panel_heights} is a numeric vector, it is interpreted as relative panel heights. To specify absolute panel heights in centimeters using \code{lcm} (see help for \code{\link[graphics]{layout}}).  
 #' @param panel_labels (Optional) A list of y-axis labels for the panels. Defaults to names(X).
 #' @param interactive (Optional) Should an interactive figure (allowing zoom/pan/etc.) be produced? Default is FALSE. Interactive plotting requires the zoom package for its \code{\link[zoom]{zm}} function.
-#' @param par_opts (Optional) A list of options to be passed to \code{\link{graphics::par}} before plotting. Default is mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=0.8.
+#' @param par_opts (Optional) A list of options to be passed to \code{\link[graphics]{par}} before plotting. Default is mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=0.8.
 #' @param line_colors (Optional) A list of colors for lines for multivariate data streams (for example, if a panel plots tri-axial acceleration, it will have three lines -- their line colors will be the first three in this list). May be specified in any specification R understands for colors. Defaults to c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
 #' @param ... Additional arguments to be passed to \code{\link{plot}}.
 #' @return A plot of time-series data 
@@ -87,7 +87,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   
   # adjust time axis units and get x axis label
   # ======================================================
-  brk <- data_frame(secs=c(0,2e3,2e4,5e5)) # break points for plots in seconds, mins, hours, days
+  brk <- data.frame(secs=c(0,2e3,2e4,5e5)) # break points for plots in seconds, mins, hours, days
   brk$units <- c('Time (sec.)', 'Time (min.)', 'Time (hours)', 'Time (days)')
   brk$div <- c(1, 60, 3600, 24*3600) #divide time in sec by div to get new units
   
@@ -104,10 +104,10 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
 
   # set up plot layout
   # ===============================================================
-  layout(matrix(c(1:length(X)), ncol=1),
+  graphics::layout(matrix(c(1:length(X)), ncol=1),
          widths=rep.int(1, length(X)), 
          heights=panel_heights)
-  par(par_opts)
+  graphics::par(par_opts)
   
   # draw plot
   # ===============================================================
@@ -126,7 +126,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       }else{
         y_data <- data_i[,1]
       }
-    plot(x=times[[i]], y=y_data, ylab=panel_labels[i],
+    graphics::plot(x=times[[i]], y=y_data, ylab=panel_labels[i],
            xaxt="n", xlim=x_lim, type='l', ylim=y_lim,
            col=lcols[1])
       draw_axis(side=1, x=times[[i]], 
@@ -134,7 +134,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
                 last_panel=(i == length(X)))
     if (is.matrix(data_i)){
       for (c in 2:ncol(data_i)){
-        lines(x=times[[i]], y=data_i[,c], col=lcols[c])
+        graphics::lines(x=times[[i]], y=data_i[,c], col=lcols[c])
       }
     }
   }
