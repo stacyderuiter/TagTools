@@ -14,6 +14,8 @@ buffer(x, n, p, opt, nodelay = FALSE)
 \item{p}{The desired amount of overlap between consecutive frames (columns) in the output matrix}
 
 \item{opt}{The vector of samples specified to precede x[1] in an overlapping buffer}
+
+\item{nodelay}{A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)}
 }
 \value{
 X A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
