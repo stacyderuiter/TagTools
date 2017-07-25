@@ -22,7 +22,7 @@ block_rms <- function(X, n, nov = NULL) {
 
   if(is.vector(X) & !is.list(X)){
     S <- abs(X^2)
-    ss <- buffer_nodelay(S[], n, nov)
+    ss <- buffer(S[], n, nov, nodelay = TRUE)
     Y <- rep(0, ncol(ss))
     Y[] <- colSums(ss)
     Y <- sqrt(Y / n)
@@ -34,11 +34,11 @@ block_rms <- function(X, n, nov = NULL) {
       X <- t(X)
     }
     S <- abs(X^2)
-    ss <- buffer_nodelay(S[,1], n, nov)
+    ss <- buffer(S[,1], n, nov, nodelay = TRUE)
     Y <- matrix(0, nrow = ncol(ss), ncol = ncol(X))
     Y[, 1] <- colSums(ss)
     for (k in 2:ncol(X)) {
-      ss <- buffer_nodelay(S[,k], n, nov)
+      ss <- buffer(S[,k], n, nov, nodelay = TRUE)
       Y[, k] <- colSums(ss)
     }
     Y <- sqrt(Y / n)

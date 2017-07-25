@@ -1,35 +1,78 @@
 function readHTML(masterHTML, csvfilename)
 
-
-    [id2, fields2] = parseCSV2(csvfilename);
+    [id2, req_fields2, fields2] = parseCSV2(csvfilename);
     htmlID = fopen(masterHTML);
     s = textscan(htmlID,'%s','Delimiter','\n');
     s = s{1};
     newS = s;
     fclose(htmlID);
+    fields_findstring = "other_field = ";
     for p = 1:length(s)
-        findstring = strcat("other_field = ");
-        array_index = find(contains(s, findstring));
+        fields_array_index = find(contains(s, fields_findstring));
     end
-    [field_split, unused] = strsplit(s{array_index}, "[");
-    array_string = "";
+    [fields_field_split, unused] = strsplit(s{fields_array_index}, "[");
+    fields_array_string = "";
     for u = 1:length(fields2)
         if u == 1,
-            array_string = strcat("[", fields2{u});
+            fields_array_string = strcat("[", '"', fields2{u}, '"');
         else
             if u ~= length(fields2),
-                array_string = strcat(array_string, " ", ",",  fields2{u} );
+                if fields2{u}(1) == '"' && fields2{u}(length(fields2{u})) == '"'
+                     fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'");
+                else
+                    fields_array_string = strcat(fields_array_string, " ", ",",  '"', fields2{u}, '"' );
+                end
             else
-                 array_string = strcat(array_string, " ", ",", fields2{u}, "]");
+                if fields2{u}(1) == '"' && fields2{u}(length(fields2{u})) == '"'
+                     fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'", "]");
+                else
+                    fields_array_string = strcat(fields_array_string, " ", ",", '"', fields2{u},'"', "]");
+                end
             end
         end
     end
+   newS{fields_array_index} = strcat(fields_field_split{1}, " ", fields_array_string);
+   csv_findstring = "csv_fields = ";
+    for p = 1:length(s)
+        csv_array_index = find(contains(s, csv_findstring));
+    end
+   [csv_field_split, unused] = strsplit(s{csv_array_index}, "[");
+    csv_array_string = "";
+    for u = 1:length(id2)
+        if u == 1,
+            csv_array_string = strcat("[", '"', id2{u}, '"');
+        else
+            if u ~= length(id2),
+                csv_array_string = strcat(csv_array_string, " ", ",",  '"', id2{u}, '"' );
+            else
+               csv_array_string = strcat(csv_array_string, " ", ",", '"', id2{u},'"', "]");
+            end
+        end
+    end
+     newS{csv_array_index} = strcat(csv_field_split{1}, " ", csv_array_string);
+    req_findstring = "req_field = ";
+    for p = 1:length(s)
+        req_array_index = find(contains(s, req_findstring));
+    end
+   [req_field_split, unused] = strsplit(s{req_array_index}, "[");
+    req_array_string = "";
+    for u = 1:length(req_fields2)
+        if u == 1,
+            req_array_string = strcat("[", req_fields2{u});
+        else
+            if u ~= length(req_fields2),
+                req_array_string = strcat(req_array_string, " ", ",",  req_fields2{u} );
+            else
+               req_array_string = strcat(req_array_string, " ", ",", req_fields2{u},"]");
+            end
+        end
+    end
+     newS{req_array_index} = strcat(req_field_split{1}, " ", req_array_string);
     [id,fields] = parseCSV(csvfilename);
-    newS{array_index} = strcat(field_split{1}, " ", array_string);
     c = containers.Map;
     indices = [];
     for i = 1:length(id)
-        findstring = strcat('id=',id(i));
+        findstring = strcat('id=','"',id(i),'"');
         index = find(contains(s, findstring));
         if ~isempty(index)
             c(char(id(i))) = index;
@@ -57,7 +100,11 @@ function readHTML(masterHTML, csvfilename)
             [C,matches] = strsplit( s{c(char(id(indices(n))))},'value = ""');
             if ~isempty(matches)
                 tempcell = C{2};
-                C{2} = [' value=' fields{indices(n)} ' '];
+                if fields{indices(n)}(1) ~= '"' && fields{indices(n)}(length(fields{indices(n)})) ~= '"'
+                    C{2} = strcat(' value=','"',fields{indices(n)},'"',' ');
+                else
+                     C{2} = strcat(' value=',fields{indices(n)},' ');
+                end
                 C{3} = tempcell;
                 newS{c(char(id(indices(n))))} = [C{1} C{2} C{3}];
             end
@@ -93,29 +140,21 @@ function [id, ret_field] = parseCSV(csvfilename)
     tline = fgetl(fid);
     while ischar(tline),
         [token,remain1] = strtok(tline, ',');
-         if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start") || strcmp(token,"dephist.deploy.locality")
+         if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start")
             change_token = token(1:end-1);
-            token0 = strcat(change_token, '0"');
+            token0 = strcat(change_token, '0');
             id{end+1} = token0;
-            token1 = strcat(change_token, '1"');
+            token1 = strcat(change_token, '1');
             id{end+1} = token1;
          else
              id{end+1} = token;
          end  
          [remain_token, field] = strtok(remain1, ',');
          field = field(2:end);
-        if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start") || strcmp(token,"dephist.deploy.locality")
-            if strcmp(token, "dephist.device.datetime.start") || strcmp(token, "dephist.deploy.datetime.start")
-                date_time = strsplit(field);
-                ret_field{end+1} = strcat(date_time{1}, '"');
-                ret_field{end+1} =  strcat('"',date_time{2});
-            end
-            if strcmp(token,"dephist.deploy.locality"),
-                field = field(2:end-1);
-                locality = strsplit(field, ', ');
-                ret_field{end+1} = strcat('"',locality{1}, '"');
-                ret_field{end+1} = strcat('"',locality{2}, '"');
-            end
+        if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start") 
+            date_time = strsplit(field);
+            ret_field{end+1} = strcat(date_time{1});
+            ret_field{end+1} =  strcat(date_time{2});
          else
              ret_field{end+1} = field;
          end   
@@ -125,20 +164,23 @@ function [id, ret_field] = parseCSV(csvfilename)
     ret_field = ret_field(2:end);
     fclose(fid);
 end
-function [id2, ret_field2] = parseCSV2(csvfilename)
+function [id2, req_field2, ret_field2] = parseCSV2(csvfilename)
     ret_field2 = {};
     id2 = {};
+    req_field2 = {};
     fid = fopen(csvfilename, 'r');
     tline = fgetl(fid);
     while ischar(tline)
         [token,remain1] = strtok(tline, ',');
         id2{end+1} = token;
         [remain_token, field2] = strtok(remain1, ',');
+        req_field2{end + 1} = remain_token;
          field2 = field2(2:end);
         ret_field2{end+1} = field2;
          tline = fgetl(fid);
     end
     id2 = id2(2:end);
+    req_field2 = req_field2(2:end);
     ret_field2 = ret_field2(2:end);
     fclose(fid);
 end
