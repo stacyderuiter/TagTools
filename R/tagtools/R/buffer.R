@@ -1,12 +1,13 @@
-#' Buffers a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.
+#' Buffers a signal vector into matrix 
 #' 
+#' This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
 #' @param x The signal vector to be buffered
 #' @param n The desired length of data segments (rows).
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix
 #' @param opt The vector of samples specified to precede x[1] in an overlapping buffer
-#' @return X A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values.
-#' @return z The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
-#' @return opt The last values, length of "p", of the matrix "X".
+#' @return X A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
+#' @return z (nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+#' @return opt (nodelay = FALSE) The last values, length of "p", of the matrix "X".
 #' @export
 
 buffer <- function(x, n, p, opt, nodelay = FALSE) {
