@@ -9,10 +9,10 @@ function     [p,r] = a2pr(A,fs,fc)
 %		a non-iterative estimator with |pitch| constrained to <= 90 degrees.
 %     The pitch and roll estimates give the least-square-norm error between 
 %		A and the A-vector that would be measured at the estimated pitch and roll.
-%	    If A is in the animal frame, the resulting pitch and roll define
-%	    the orientation of the animal with respect to its navigation frame.
-%	    If A is in the tag frame, the pitch and roll will define the tag
-%	    orientation with respect to its navigation frame.
+%	   If A is in the animal frame, the resulting pitch and roll define
+%	   the orientation of the animal with respect to its navigation frame.
+%	   If A is in the tag frame, the pitch and roll will define the tag
+%	   orientation with respect to its navigation frame.
 %
 %     Inputs:
 %     A is an acceleration sensor structure (e.g., from readtag.m) or an nx3 
@@ -20,7 +20,7 @@ function     [p,r] = a2pr(A,fs,fc)
 %		 be in any consistent unit, e.g., g or m/s^2. 
 %     fs is the sampling rate of the sensor data in Hz (samples per second).
 %		 This is only needed if A is not a sensor structure and filtering is required.
-%	  fc (optional) specifies the cut-off frequency of a low-pass filter to
+%	   fc (optional) specifies the cut-off frequency of a low-pass filter to
 %		 apply to A before computing pitch and roll. The filter cut-off
 %		 frequency is in Hertz. The filter length is 4*fs/fc. Filtering adds 
 %		 no group delay. If fc is not specified, no filtering is performed.
@@ -57,7 +57,7 @@ if isstruct(A),
 	else
 		fc = [] ;
 	end
-	fs = A.fs ;
+	fs = A.sampling_rate ;
 	A = A.data ;
 else
 	if nargin==1,
@@ -68,13 +68,16 @@ else
 	end
 end	
 	
-% catch the case of a single acceleration vector
+% catch the case of a single acceleration sample
 if min([size(A,1) size(A,2)])==1,
    A = A(:)' ;
 end
 
 if ~isempty(fc),
-	A = fir_nodelay(A,round(4/fc),fc/(fs/2)) ;
+	nf = round(4/fc) ;
+	if size(A,1)>nf,
+		A = fir_nodelay(A,nf,fc/(fs/2)) ;
+	end
 end
 	
 v = sqrt(sum(A.^2,2)) ;

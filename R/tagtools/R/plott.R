@@ -141,7 +141,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   graphics::mtext(x_lab, side=1, line=2)
   
 if (interactive){
-  zm()
+  zoom::zm()
 }
 }
 

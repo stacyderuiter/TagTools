@@ -57,17 +57,36 @@ end
 if isstruct(M) && isstruct(A),
 	if nargin>2,
 		fc = fs ;
-    else
-        fc = [];
-    end
-    if A.fs ~= M.fs,
+	else
+		fc = [] ;
+	end
+	
+	% check that A and M are compatible - they need the same sampling rate and time offset
+	if A.sampling_rate ~= M.sampling_rate,
 		fprintf('m2h: A and M must be at the same sampling rate\n') ;
 		return
 	end
-	fs = M.fs ;
+	
+	toffs = [0,0] ;
+	if isfield(A,'start_offset'),
+		toffs(1) = A.start_offset ;
+	end
+	if isfield(M,'start_offset')
+		toffs(2) = M.start_offset ;
+	end
+	if toffs(1)~=toffs(2),
+		fprintf('m2h: A and M must have the same start offset time\n') ;
+		return
+	end
+	
+	fs = M.sampling_rate ;
 	M = M.data ;
 	A = A.data ;
 else
+	if isstruct(M) || isstruct(A),
+		fprintf('m2h: A and M must both be structures or matrices, not one of each\n') ;
+		return
+	end
 	if nargin==2,
 		fc = [] ;
 	elseif nargin==3,
@@ -85,8 +104,9 @@ if size(A,1)*size(A,2)==3,
 end
 
 if size(A,1)~=size(M,1),
-   fprintf('m2h: A and M must have same number of rows\n') ;
-   return
+	n = min([size(A,1),size(M,1)]) ;
+	A = A(1:n,:) ;
+	M = M(1:n,:) ;
 end
 
 if ~isempty(fc),
@@ -120,8 +140,10 @@ Mh = [sum(M.*Tx,2) sum(M.*Ty,2) sum(M.*Tz,2)] ;
 h = atan2(-Mh(:,2),Mh(:,1)) ;
 
 % compute mag field intensity and inclination
-v = sqrt(sum(Mh.^2,2)) ;         % compute magnetic field intensity
-incl = -real(asin(Mh(:,3)./v)) ;  % compute inclination
+if nargout>1,
+	v = sqrt(sum(Mh.^2,2)) ;         % compute magnetic field intensity
+	incl = -real(asin(Mh(:,3)./v)) ;  % compute inclination
+end
 
 % Mh(:,3) is sp*Mx+srcp*My+crcp*Mz which is A.M if there is no
 % specific acceleration. So the inclination angle computed here is the 
