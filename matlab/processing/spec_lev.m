@@ -29,15 +29,15 @@ function    [SL,f]=spec_lev(x,nfft,fs,w,nov)
 %
 %     markjohnson@st-andrews.ac.uk, 2013
 
-if nargin<2 | isempty(nfft),
+if nargin<2 || isempty(nfft),
    nfft = 512 ;
 end
 
-if nargin<3 | isempty(fs),
+if nargin<3 || isempty(fs),
    fs = 1 ;
 end
 
-if nargin<4 | isempty(w),
+if nargin<4 || isempty(w),
    w = nfft ;
 end
 

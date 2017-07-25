@@ -29,8 +29,6 @@ htrack <- function(A, M, s, fs, fc = NULL) {
     fs <- M$fs 
     M <- M$data 
     A <- A$data
-   
-    
   } else {
     if (missing(fs)) {
       stop("inputs for A, M, s, and fs are all required")
@@ -47,7 +45,8 @@ htrack <- function(A, M, s, fs, fc = NULL) {
   if (length(s) == 1){
     s <- pracma::repmat((s / fs), length(hd), 2)
   } else {
-  s <- pracma::repmat((s / fs), 1, 2)
+    s <- matrix(s, ncol = 1)
+    s <- pracma::repmat((s / fs), 1, 2)
   }
   temp_mat <- s * cbind(cos(hd), sin(hd))
   T <- matrix(0, nrow = nrow(s), ncol = 2)

@@ -13,7 +13,7 @@ block_mean <- function(X,n,nov) {
   }
   nov <- min(n, nov) 
   if(is.vector(X) & !is.list(X)){
-    ss <- buffer_nodelay(X[], n, nov)
+    ss <- buffer(X[], n, nov, nodelay = TRUE)
     Y <- rep(0, ncol(ss))
     for (i in 1:ncol(ss)) {
       Y[i] <- t(mean(ss[, i]))
@@ -25,13 +25,13 @@ block_mean <- function(X,n,nov) {
       X <- t(X)
     }
 
-    ss <- buffer_nodelay(X[, 1], n, nov)
+    ss <- buffer(X[, 1], n, nov, nodelay = TRUE)
     Y <- matrix(0, ncol(ss), ncol(X))
     for (i in 1:ncol(ss)) {
       Y[i, 1] <- t(mean(ss[, i]))
     }
     for (k in 2:ncol(X)) {
-      ss <- buffer_nodelay(X[, k], n, nov)
+      ss <- buffer(X[, k], n, nov, nodelay = TRUE)
       for (j in 1:ncol(ss)) {
         Y[j, k] <- t(mean(ss[, j]))
       }
