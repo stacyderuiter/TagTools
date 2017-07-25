@@ -2,7 +2,7 @@
 % Please edit documentation in R/cline.R
 \name{cline}
 \alias{cline}
-\title{Add a line to an existing plot. Line segments are colored according to a factor input.}
+\title{Add colored line segments to a plot}
 \usage{
 cline(x, y, z, color_vector)
 }

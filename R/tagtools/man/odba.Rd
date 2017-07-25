@@ -2,7 +2,7 @@
 % Please edit documentation in R/odba.R
 \name{odba}
 \alias{odba}
-\title{Compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006.}
+\title{Compute ODBA}
 \usage{
 odba(A, fs, fh = NULL, method = "fir", n = NULL)
 }
@@ -21,7 +21,7 @@ odba(A, fs, fh = NULL, method = "fir", n = NULL)
 e A column vector of ODBA with the same number of rows as A. e has the same units as A.
 }
 \description{
-ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the inputaccelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.
+This funciton is used to compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006. ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the inputaccelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.
 }
 \note{
 When hoping to use the default (FIR filtering) method to calculate odba, use the inputs A, fs, and fh. When hoping to use the "vedba" or "wilson" method, use the inputs A, n, and method.

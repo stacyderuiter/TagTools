@@ -1,5 +1,6 @@
-#' Plot coloured line(s) in 3 dimensions in the current figure.
+#' Plot coloured line(s) in 3 dimensions
 #' 
+#' This function is used to plot three dimensional lines with each individual line possessing a different color.
 #' @param x A vector or matrix of points on the horizontal axis.
 #' @param y A vector or matrix of points on the vertical axis.
 #' @param z A vector or matrix of points on the third axis.

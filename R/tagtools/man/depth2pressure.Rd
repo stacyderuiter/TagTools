@@ -2,7 +2,7 @@
 % Please edit documentation in R/depth2pressure.R
 \name{depth2pressure}
 \alias{depth2pressure}
-\title{Convert depth (in meters) to pressure in Pascals.}
+\title{Convert depth to pressure}
 \usage{
 depth2pressure(d, latitude)
 }
@@ -15,7 +15,7 @@ depth2pressure(d, latitude)
 p The pressure in Pa
 }
 \description{
-Convert depth (in meters) to pressure in Pascals.
+This function is used to convert the depth (in meters) to the pressure in Pascals.
 }
 \note{
 Based on the Leroy and Parthiot (1998) formula. See: http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO

@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_acf.R
 \name{block_acf}
 \alias{block_acf}
-\title{Compute autocorrelation function, respecting grouping by a categorical variable}
+\title{Compute autocorrelation function}
 \usage{
 block_acf(resids, blocks, max_lag, make_plot = TRUE, ...)
 }

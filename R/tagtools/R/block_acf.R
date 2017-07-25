@@ -1,4 +1,4 @@
-#' Compute autocorrelation function, respecting grouping by a categorical variable
+#' Compute autocorrelation function
 #'
 #' This function allows calculation of an ACF for a dataset with multiple independent units (for example, data from several individuals, data from multiple dives by an individual animal, etc.). The groups (individual, dive, etc.) should be coded in a categorical variable. The function calculates correlation coefficients over all levels of the categorical variable, but respecting divisions between levels (for example, individual animals are kept separate).
 #' @param resids The variable for which the ACF is to be computed (often a vector of residuals from a fitted model)

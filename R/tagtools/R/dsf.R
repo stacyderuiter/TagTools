@@ -1,6 +1,8 @@
-#' Estimate the dominant stroke frequency from accelerometer data.
+#' Estimate the dominant stroke frequency
 #' 
-#' @description Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
+#' This function can be used to estimate the dominant stroke frequency from triaxial accelerometer data [ax,ay,az].
+#' 
+#' Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
 #' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
 #' @param fs The sampling rate of the sensor data in Hz (samples per second).
 #' @param fc (optional) The cut-off frequency in Hz of a low-pass filter to apply to A before computing the spectra. This prevents high frequency transients e.g., in foraging, from dominating the spectra. The filter  length is 6*fs/fc. If fc is not specified, it defaults to 2.5 Hz. If fc>fs/2, the filtering operation is skipped.

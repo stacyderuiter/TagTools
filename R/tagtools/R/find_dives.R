@@ -1,5 +1,6 @@
-#' Find time cues for the start and end of either dives in a depth record or flights in an altitude record.
+#' Find time cues for dives
 #' 
+#' This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.
 #' @param p A depth or altitude time series (vector) in meters.
 #' @param fs The sampling rate of the sensor data in Hz (samples per second).
 #' @param mindepth The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.
@@ -53,7 +54,7 @@ find_dives <- function(p, fs, mindepth, surface = NULL, findall = NULL) {
   toff >- toff[1:k]
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * fs / dp_lp)
-  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * fs, n, dp_lp / (fs / 2))
+  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * fs, n, dp_lp / (fs / 2))$y
   #for each ton, look back to find last time whale was at the surface
   #for each toff, look forward to find next time whale is at the surface
   dmax <- matrix(0, length(ton), 2)

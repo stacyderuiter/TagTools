@@ -1,5 +1,6 @@
-#' Calculate the mean absorption in salt water over a frequency range. 
+#' Calculate the mean absorption in salt water
 #' 
+#' This function is used to calculate the mean absorption in salt water over a frequency range. 
 #' @param freq Specifies the frequency range, freq = c(fmin, fmax) in Hz. For a single frequency, use a scalar value for freq.
 #' @param r The path (slant) length in metres.
 #' @param depth The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth=c(dmax,dmin) for a path that extends between two depths.

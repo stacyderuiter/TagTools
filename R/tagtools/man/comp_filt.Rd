@@ -2,7 +2,7 @@
 % Please edit documentation in R/comp_filt.R
 \name{comp_filt}
 \alias{comp_filt}
-\title{Complimentary filtering of a signal. This breaks signal X into two or more frequency bands such that the sum of the signals in the separate bands is equal to the original signal.}
+\title{Complimentary filtering of a signal.}
 \usage{
 comp_filt(X, fs, fc)
 }
@@ -17,5 +17,8 @@ comp_filt(X, fs, fc)
 Xf A list of filtered signals. There are n+1 sections of the list where n is the length of fc. List sections are ordered in Xf from lowest to highest frequency. Each list section contains a vector or matrix of the same size as X, and at the same sampling rate as X.
 }
 \description{
+This function breaks signal X into two or more frequency bands such that the sum of the signals in the separate bands is equal to the original signal.
+}
+\details{
 Possible input combinations: comp_filt(X,fs,fc) if X is a vector or matrix, comp_filt(X,fc = fc) if X is a list
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocdr.R
 \name{ocdr}
 \alias{ocdr}
-\title{Estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.}
+\title{Estimate the forward speed}
 \usage{
 ocdr(p, A, fs, fc, plim)
 }
@@ -21,6 +21,9 @@ ocdr(p, A, fs, fc, plim)
 s The forward speed estimate in m/s
 }
 \description{
+This function is used to estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.
+}
+\details{
 Possible input combinations: ocdr(p,A) if p and A are lists, ocdr(p,A,fc = fc) if p and A are lists, ocdr(p,A,fc = fc,plim = plim) if p and A are lists, ocdr(p,A,fs) if p and A are vectors/matrices, ocdr(p,A,fs,fc) if p and A are vectors/matrices, ocdr(p,A,fs,fc,plim) if p and A are vectors/matrices.
 }
 \note{

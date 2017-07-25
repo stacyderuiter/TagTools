@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_dives.R
 \name{find_dives}
 \alias{find_dives}
-\title{Find time cues for the start and end of either dives in a depth record or flights in an altitude record.}
+\title{Find time cues for dives}
 \usage{
 find_dives(p, fs, mindepth, surface = NULL, findall = NULL)
 }
@@ -21,5 +21,5 @@ find_dives(p, fs, mindepth, surface = NULL, findall = NULL)
 T is a structure array with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
 }
 \description{
-Find time cues for the start and end of either dives in a depth record or flights in an altitude record.
+This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.
 }

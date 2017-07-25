@@ -2,7 +2,7 @@
 % Please edit documentation in R/mean_absorption.R
 \name{mean_absorption}
 \alias{mean_absorption}
-\title{Calculate the mean absorption in salt water over a frequency range.}
+\title{Calculate the mean absorption in salt water}
 \usage{
 mean_absorption(freq, r, depth, Ttab = NULL)
 }
@@ -19,7 +19,7 @@ mean_absorption(freq, r, depth, Ttab = NULL)
 a The mean sound absorption over the path in dB.
 }
 \description{
-Calculate the mean absorption in salt water over a frequency range.
+This function is used to calculate the mean absorption in salt water over a frequency range.
 }
 \note{
 After Kinsler and Frey pp. 159-160.

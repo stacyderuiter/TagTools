@@ -1,5 +1,6 @@
-#' Compute the mean of successive blocks of samples.
+#' Compute mean of sample blocks
 #' 
+#' This function is used to compute the means of successive blocks of samples.
 #' @param X A vector or a matrix containing samples of a signal in each column.
 #' @param n The number of samples from X to use in each analysis block.
 #' @param nov (optional) The number of samples that the next block overlaps the previous block. The default value is 0.

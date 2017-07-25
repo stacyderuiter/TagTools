@@ -1,4 +1,6 @@
-#' Estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
+#' Estimate the inclination angle
+#' 
+#' This function is used to estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.
 #' 
 #' @param A The accelerometer signal matrix, A=[ax,ay,az] in any consistent unit (e.g., in g or m/s2). A can be in any frame.
 #' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss). M must be in the same frame as A.
@@ -32,9 +34,9 @@ inclination <- function(A, M, fc = NULL) {
     stop("A and M must have the same number of rows\n")
     incl <- vector(mode = "numeric", length = 0)
   }
-  if (is.null(fc) == FALSE) {
-    A <- fir_nodelay(A, round(8 / fc), fc)
-    M <- fir_nodelay(M, round(8 /fc), fc)
+  if (!is.null(fc)) {
+    A <- fir_nodelay(A, round(8 / fc), fc)$y
+    M <- fir_nodelay(M, round(8 /fc), fc)$y
   }
   #compute magnetic field intensity
   v <- sqrt(rowSums(M^2))

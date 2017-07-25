@@ -2,7 +2,7 @@
 % Please edit documentation in R/col_line3.R
 \name{col_line3}
 \alias{col_line3}
-\title{Plot coloured line(s) in 3 dimensions in the current figure.}
+\title{Plot coloured line(s) in 3 dimensions}
 \usage{
 col_line3(x, y, z, c, ...)
 }
@@ -18,7 +18,7 @@ col_line3(x, y, z, c, ...)
 \item{...}{Additional inputs for rgl::plot3d()}
 }
 \description{
-Plot coloured line(s) in 3 dimensions in the current figure.
+This function is used to plot three dimensional lines with each individual line possessing a different color.
 }
 \note{
 x, y, z and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.

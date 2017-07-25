@@ -21,7 +21,7 @@ spec_lev(x, nfft, fs, w, nov)
 SL The spectrum level at each frequency in dB RMS re root-Hz.
 }
 \description{
-Compute the spectrum level of a signal x.
+This function is used to compute the spectrum level of a signal x.
 }
 \note{
 The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rotmat2euler.R
 \name{rotmat2euler}
 \alias{rotmat2euler}
-\title{Decompose a rotation (or direction cosine) matrix into Euler angles, pitch, roll, and heading.}
+\title{Decompose a rotation (or direction cosine) matrix}
 \usage{
 rotmat2euler(Q)
 }
@@ -13,5 +13,5 @@ rotmat2euler(Q)
 prh is a 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
 }
 \description{
-Decompose a rotation (or direction cosine) matrix into Euler angles, pitch, roll, and heading.
+This function is used to decompose a rotation (or direction cosine) matrix into Euler angles, pitch, roll, and heading.
 }

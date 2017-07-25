@@ -1,5 +1,6 @@
-#' Delay-free filtering using a linear-phase (symmetric) FIR filter followed by group delay correction. Delay-free filtering is needed when the relative timing between signals is important e.g., when integrating signals that have been sampled at different rates.
+#' Delay-free filtering 
 #' 
+#' This function is used to gather a delay-free filtering using a linear-phase (symmetric) FIR filter followed by group delay correction. Delay-free filtering is needed when the relative timing between signals is important e.g., when integrating signals that have been sampled at different rates.
 #' @param x The signal to be filtered. It can be multi-channel with a signal in each column, e.g., an acceleration matrix. The number of samples (i.e., the number of rows in x) must be larger than the filter length, n.
 #' @param n The length of symmetric FIR filter to use in units of input samples (i.e., samples of x). The length should be at least 4/fc. A longer filter gives a steeper cut-off.
 #' @param fp The filter cut-off frequency relative to fs/2=1. If a single number is given, the filter is a low-pass or high-pass. If fp is a vector with two numbers, the filter is a bandpass filter with lower and upper cut-off frequencies given by fp(1) and fp(2). For a bandpass filter, n should be at least 4/fp(1) or 4/diff(fp) whichever is larger.

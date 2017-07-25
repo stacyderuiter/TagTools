@@ -2,7 +2,7 @@
 % Please edit documentation in R/buffer_opt.R
 \name{buffer_opt}
 \alias{buffer_opt}
-\title{Buffers a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.}
+\title{Buffers a signal}
 \usage{
 buffer_opt(x, n, p, opt)
 }
@@ -23,5 +23,5 @@ z The remainder of the vector which was not included in the matrix if the last c
 opt The last values, length of "p", of the matrix "X".
 }
 \description{
-Buffers a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.
+This function is used to buffer a signal vector into matrix of data frames and specifies a vector of samples to precede x[1] in an overlapping buffer.
 }

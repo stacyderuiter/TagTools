@@ -1,5 +1,6 @@
-#' Calculate Mahalanobis distance for a multivariate time series.
+#' Calculate Mahalanobis distance 
 #' 
+#' This function is used to calculate the Mahalanobis distance for a multivariate time series.
 #' @param data A data frame or matrix with one row for each time point. Note that the Mahalanobis distance calculation should be carried out on continuous data only, so if your data contain logical, factor or character data, proceed at your own risk...errors (or at least meaningless results) will probably ensue.
 #' @param fs The sampling rate in Hz (data should be regularly sampled). If not specified it will be assumed to be 1 Hz.
 #' @param smoothDur The length, in minutes, of the window to use for calculation of "comparison" values. If not specified or zero, there will be no smoothing (a distance will be calculated for each data observation).

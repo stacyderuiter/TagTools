@@ -21,13 +21,14 @@ Depends: R (>= 3.3.2)
 Imports:
     graphics,
     matlab,
+    ncdf4,
     pracma,
     rgl,
     signal,
     stats,
     utils,
     zoo,
-    ncdf4
+    zoom
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true

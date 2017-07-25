@@ -1,10 +1,13 @@
+#' Carry out a rotation randomization test.
+#' 
 #' Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
 #' variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
-#' (for example, time series of behavioral events that tend to occur in clusters). This implementation of the rotation test compares a test statistic (some summary of
+#' (for example, time series of behavioral events that tend to occur in clusters). 
+#' 
+#' This implementation of the rotation test compares a test statistic (some summary of
 #' an "experimental" time-period) to its expected value during non-experimental periods. Instead of resampling random subsets of observations from the original dataset,
 #' the rotation test samples many contiguous blocks from the original data, each the same duration as the experimental period. The summary statistic,
 #' computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
-#' 
 #' @inheritParams rotate
 #' @param exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end time(s). Note that all data that falls into any experimental period will be concatenated and passed to \code{ts_fun}. If finer control is desired, consider writing your own test using the underlying function \code{rotate}.
 #' @param n_rot Number of rotations (randomizations) to carry out. Default is \code{n_rot=10000}.
@@ -15,27 +18,29 @@
 #' @param ... Additional inputs to be passed to \code{ts_fun}
 #' @return A list containing the following components:
 #' \itemize{
-#'   \item{result}{A one-row data frame with rows:
+#'   \item{\strong{result}}{, A one-row data frame with rows:
 #'   \itemize{
-#'      \item{statistic}{Test statistic (from original data)}
-#'      \item{p_value}{P-value of the test (2-sided)}
-#'      \item{n_rot}{Number of rotations}
-#'      \item{CI_low}{Lower bound on rotation-resampling percentile-based confidence interval}
-#'      \item{CI_up}{Upper bound on rotation-resampling percentile-based confidence interval}
-#'      \item{conf_level}{Confidence level, as a proportion}
+#'      \item{\strong{statistic: }}{Test statistic (from original data)}
+#'      \item{\strong{p_value: }}{P-value of the test (2-sided)}
+#'      \item{\strong{n_rot: }}{Number of rotations}
+#'      \item{\strong{CI_low: }}{Lower bound on rotation-resampling percentile-based confidence interval}
+#'      \item{\strong{CI_up: }}{Upper bound on rotation-resampling percentile-based confidence interval}
+#'      \item{\strong{conf_level: }}{Confidence level, as a proportion}
 #'      
 #'      }}
-#'   \item{rot_stats}{(If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
+#'   \item{\strong{rot_stats}}{ (If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
 #'   }
 #'  
 #' @export
 #' @references
-#'    @bibliography TagTools.bib
-#'    @cite Miller2004
-#'    @cite Deruiter2008
+#'    Miller, P. J. O., Shapiro, A. D., Tyack, P. L. and Solow, A. R. (2004). Call-type matching in vocal exchanges of free-ranging resident killer whales, Orcinus orca. Anim. Behav. 67, 1099–1107.
+#'    
+#'    DeRuiter, S. L. and Solow, A. R. (2008). A rotation test for behavioural point-process data. Anim. Behav. 76, 1103–1452.
 #' @seealso Advanced users seeking more flexibility may want to use the underlying function \code{\link{rotate}} to carry out customized rotation resampling. \code{\link{rotate}} generates one rotated dataset from \code{event_times} and \code{exp_period}.
 #' @examples 
-#' r <- rotation_test(event_times = 2000*runif(500), exp_period = c(100,200), 
+#' r <- rotation_test(event_times = 
+#' 2000*runif(500), 
+#' exp_period = c(100,200), 
 #' return_rot_stats=TRUE, ts_fun=mean)
 
 rotation_test <- function(event_times, exp_period, full_period = range(event_times, na.rm=TRUE),

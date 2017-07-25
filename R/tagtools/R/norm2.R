@@ -1,5 +1,6 @@
-#' Compute the row-wise vector norm of X if X is a matrix. If X is a vector (row or column), v is the vector norm.
+#' Compute the row-wise vector norm 
 #' 
+#' This function is used to compute the row-wise vector norm of X if X is a matrix. If X is a vector (row or column), v is the vector norm.
 #' @param X A vector or matrix.
 #' @return v The row-wise vector-norm of matrix X, i.e., the square-root of the sum of the squares for each row. If X is a vector (row or column), v is the vector norm and norm2() is equivalent to the built-in function norm(). But if X is a matrix e.g., a triaxial accelerometer or magnetometer matrix, norm() gives the overall norm of the matrix whereas norm2() gives the vector norm of each row (i.e., the field strength in the case of a magnetometer matrix).
 #' @export

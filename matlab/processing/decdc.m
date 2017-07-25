@@ -6,14 +6,17 @@ function      [y,xx,v,h] = decdc(x,df)
 %	   and DC accurate which are important for sensor data. 
 %
 %		Inputs:
-%		x is a vector or matrix containing the signal(s) to be decimated.
-%		 If x is a matrix, each column is decimated separately.
+%		x is a sensor structure or a vector or matrix containing the signal(s) 
+%		 to be decimated. If x is a matrix (or the data in the sensor structure
+%		 is a matrix), each column is decimated separately.
 %		df is the decimation factor. The output sampling rate is the input
 %		 sampling rate divided by df. df must be an integer greater than 1.
 %
 %		Returns:
 %		y is the decimated signal vector or matrix. It has the same number
-%		 of columns as x but has 1/df of the rows.
+%		 of columns as x but has 1/df of the rows. If x is a sensor structure,
+%		 y is also, in which case the metadata is copied except for the sampling
+%		 rate which is adjusted to the new value.
 %
 %     Decimation is performed by first low-pass filtering x and then
 %		keeping 1 sample out of every df. A symmetric FIR filter with length
@@ -37,13 +40,26 @@ function      [y,xx,v,h] = decdc(x,df)
 %     last modified: May 2017
 
 if nargin<2,
-   help dec_dc ;
+   help decdc ;
    return
 end
 
 if round(df)~=df,
    df = round(df) ;
-   fprintf('Warning: dec_dc needs integer decimation factor. Using %d\n',df) ;
+   fprintf('Warning: decdc needs integer decimation factor. Using %d\n',df) ;
+end
+
+if isstruct(x),
+	X = x ;
+	if ~isfield(x,'data'),
+		fprintf('decdc: input must be a proper sensor structure\n') ;
+		return
+	end
+	if ~strcmp(x.sampling,'regular')
+		fprintf('decdc: input must be a regularly sampled sensor structure\n') ;
+		return
+	end
+	x = x.data ;
 end
 
 flen = 12*df ;
@@ -59,3 +75,16 @@ for k=1:size(x,2),
     v = conv(h,xx) ;
     y(:,k) = v(dc) ;
 end
+
+if isstruct(X),
+	X.data = y ;
+	X.sampling_rate = X.sampling_rate/df ;
+	h = sprintf('decdc(%d)',df) ;
+	if ~isfield(X,'history') || isempty(X.history),
+		X.history = h ;
+	else
+		X.history = [X.history ',' h] ;
+	end
+	y = X ;
+end
+	

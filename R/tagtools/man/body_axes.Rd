@@ -2,7 +2,7 @@
 % Please edit documentation in R/body_axes.R
 \name{body_axes}
 \alias{body_axes}
-\title{Generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.}
+\title{Generate the cardinal axes of an animal}
 \usage{
 body_axes(A, M, fc = NULL)
 }
@@ -17,7 +17,7 @@ body_axes(A, M, fc = NULL)
 W The 3x3xn matrix of body axes where n is the number of rows in M and A. W[,1,] are the X or longitudinal (caudo-rostral) axes. W[,2,] are the Y or transverse (left-right) axes. W[,3,] are the Z or ventro-dorsal axes.
 }
 \description{
-Generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.
+This function is used to generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.
 }
 \note{
 Output sampling rate is the same as the input sampling rate.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/zero_crossings.R
 \name{zero_crossings}
 \alias{zero_crossings}
-\title{Find zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.}
+\title{Find zero-crossings in a vector}
 \usage{
 zero_crossings(x, TH, Tmax = NULL)
 }
@@ -19,7 +19,7 @@ K A vector of cues (in samples) to zero-crossings in x.
 s A vector containing the sign of each zero-crossing (1 = positive-going, -1 = negative-going). s is the same size as K. If no zero-crossings are found, K and s will be empty
 }
 \description{
-Find zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.
+This function is used to find the zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.
 }
 \note{
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.

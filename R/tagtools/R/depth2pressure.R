@@ -1,5 +1,6 @@
-#' Convert depth (in meters) to pressure in Pascals.
+#' Convert depth to pressure
 #' 
+#' This function is used to convert the depth (in meters) to the pressure in Pascals.
 #' @param d The depth in meters
 #' @param latitude The latitude in degrees
 #' @return p The pressure in Pa

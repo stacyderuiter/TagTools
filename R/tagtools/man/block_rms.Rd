@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_rms.R
 \name{block_rms}
 \alias{block_rms}
-\title{Compute the RMS (root-mean-square) of successive blocks of samples.}
+\title{Compute RMS of sample blocks}
 \usage{
 block_rms(X, n, nov = NULL)
 }
@@ -17,7 +17,7 @@ block_rms(X, n, nov = NULL)
 Y A vector or matrix containing the RMS value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 }
 \description{
-Compute the RMS (root-mean-square) of successive blocks of samples.
+This function is used to compute the RMS (root-mean-square) of successive blocks of samples.
 }
 \note{
 Output sampling rate is the same as the input sampling rate so s and v have the same size as p.
