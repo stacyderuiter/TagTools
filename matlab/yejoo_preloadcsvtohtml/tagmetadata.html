@@ -7,13 +7,7 @@
 
 var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
 
-var csv_fields = ["info.depid", "info.data.source", "info.data.datetime.made", "info.data.nfiles", "info.data.format", "info.device.serial",
-	"info.device.make", "info.device.type", "info.device.model", "info.device.url", "info.sensors.firm", "info.sensors.soft",
-	"info.sensors.list", "info.animal.id", "info.animal.species.common", "info.animal.species.science", "info.animal.dbase.url",
-	"info.dephist.device.tzone", "info.dephist.device.regset", "info.dephist.device.datetime.start","info.dephist.deploy.locality",
-	"info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", "info.dephist.deploy.datetime.start", "info.dephist.deploy.method",
-	"info.project.name", "info.project.datetime.start", "info.project.datetime.end", "info.provider.name","info.provider.details","info.provider.email",
-	"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
+var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial","device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft","sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url","dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method","project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email","provider.license", "provider.cite", "provider.doi", "udm.export"];
 var other_field = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1];	
 function findIndexbyField(str, array){ 
 	var i;
@@ -41,34 +35,25 @@ function myTrim(x) {
 				arr = parseCSV(e.target.result);
 				var i;
 				for(i = 0; i < arr.length; i++){
-					
-					if(arr[i][0] == "info.dephist.deploy.locality"){
-						var temp_entry = arr[i][2];
-						temp_entry = temp_entry.replace(/\'/g, "")
-						temp_entry= temp_entry.replace(/[{}]/g, "");
-						var split_entry = temp_entry.split(",");
-						document.getElementById(arr[i][0] + 0).value = myTrim(split_entry[0]);
-						document.getElementById(arr[i][0] + 1).value = myTrim(split_entry[1]);
-					}
-					else if(arr[i][0] == "info.dephist.device.datetime.start" || arr[i][0] == "info.dephist.deploy.datetime.start"){
+					csv_fields[i] = arr[i][0];
+					req_field[i] = arr[i][1];
+					other_field[i] = arr[i][2];
+					if(arr[i][0] == "dephist.device.datetime.start" || arr[i][0] == "dephist.deploy.datetime.start"){
+
 						var temp_entry_time = arr[i][2];
 						var split_entry_time = temp_entry_time.split(" ");
 						document.getElementById(arr[i][0] + 0).value = split_entry_time[0];
 						document.getElementById(arr[i][0] + 1).value = split_entry_time[1];
 					}
 					else if(document.getElementById(arr[i][0]) != null && typeof(document.getElementById(arr[i][0])) != 'undefined'){
-						if(arr[i][0] == "info.udm.export"){
+						if(arr[i][0] == "udm.export"){
 							if(arr[i][2] == 1){
 								document.getElementById(arr[i][0]).checked = true;
 							}
 							else{
 								document.getElementById(arr[i][0]).checked = false;
 							}
-						}
 
-						else if(arr[i][0] =="info.dephist.device.tzone"){
-							document.getElementById(arr[i][0]).value = arr[i][2];
-							
 						}
 						else{
 							document.getElementById(arr[i][0]).value = arr[i][2];
@@ -130,14 +115,14 @@ window.onbeforeunload = function() {
     return "Did you save the csv?"
 }
 function validateForm() {
-	var userinput = ["info.device.serial","info.device.make","info.device.type",
-		"info.device.model","info.device.url","info.sensors.firm","info.sensors.soft","info.animal.id",
-		"info.animal.species.common","info.animal.species.science","info.animal.dbase.url", 
-		"info.dephist.device.tzone","info.dephist.device.datetime.start0", "info.dephist.device.datetime.start1","info.dephist.deploy.locality0",
-		"info.dephist.deploy.locality1","info.dephist.deploy.location.lat", "info.dephist.deploy.location.lon", 
-		"info.dephist.deploy.datetime.start0", "info.dephist.deploy.datetime.start1","info.dephist.deploy.method","info.project.name", 
-		"info.project.datetime.start", "info.project.datetime.end", "info.provider.name", "info.provider.details", "info.provider.email", 
-		"info.provider.license", "info.provider.cite", "info.provider.doi", "info.udm.export"];
+	var userinput = ["device.serial","device.make","device.type",
+		"device.model","device.url","sensors.firm","sensors.soft","animal.id",
+		"animal.species.common","animal.species.science","animal.dbase.url", 
+		"dephist.device.tzone","dephist.device.datetime.start0", "dephist.device.datetime.start1",
+		 "dephist.deploy.locality","dephist.deploy.location.lat", "dephist.deploy.location.lon", 
+		"dephist.deploy.datetime.start0", "dephist.deploy.datetime.start1","dephist.deploy.method","project.name", 
+		"project.datetime.start", "project.datetime.end", "provider.name", "provider.details", "provider.email", 
+		"provider.license", "provider.cite", "provider.doi", "udm.export"];
 	var input_length = userinput.length;
 	try{
 		var a = req_field;
@@ -146,24 +131,17 @@ function validateForm() {
 		var index;
 		for (i = 0; i < input_length; i++) {
 
-			if(userinput[i] == "info.dephist.deploy.locality0" 
-			|| userinput[i] =="info.dephist.deploy.locality1"){
-
-				if(document.getElementById(userinput[i]).value == ""){
-					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
-				}
-			}
-			else if(userinput[i] == "info.dephist.device.datetime.start0" || userinput[i] == "info.dephist.device.datetime.start1"
-			|| userinput[i] == "info.dephist.deploy.datetime.start0" || userinput[i] == "info.dephist.deploy.datetime.start1"){
+			if(userinput[i] == "dephist.device.datetime.start0" || userinput[i] == "dephist.device.datetime.start1"
+			|| userinput[i] == "dephist.deploy.datetime.start0" || userinput[i] == "dephist.deploy.datetime.start1"){
 
 				if (document.getElementById(userinput[i]).value == "") {
 					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
 				}
-				if((userinput[i] == "info.dephist.device.datetime.start0" || userinput[i] == "info.dephist.deploy.datetime.start0") 
+				if((userinput[i] == "dephist.device.datetime.start0" || userinput[i] == "dephist.deploy.datetime.start0") 
 					&&!isValidDate(document.getElementById(userinput[i]).value)){
 						window.alert(document.getElementById(userinput[i]).name +  " have to be in a valid YYYY-MM-DD form!");
 					}
-				if((userinput[i] == "info.dephist.device.datetime.start1" || userinput[i] == "info.dephist.deploy.datetime.start1")
+				if((userinput[i] == "dephist.device.datetime.start1" || userinput[i] == "dephist.deploy.datetime.start1")
 				&& !isValidTime(document.getElementById(userinput[i]).value)){
 					window.alert(document.getElementById(userinput[i]).name +  " have to be in a valid military time (HH:MM:SS) form!");
 				}
@@ -175,25 +153,25 @@ function validateForm() {
 					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
 				}
 				else{
-					if(userinput[i] == "info.dephist.deploy.location.lat" || userinput[i] == "info.dephist.deploy.location.lon"){
+					if(userinput[i] == "dephist.deploy.location.lat" || userinput[i] == "dephist.deploy.location.lon"){
 						if(parseFloat(document.getElementById(userinput[i]).value).toString().length != document.getElementById(userinput[i]).value.length 
 							|| isNaN(parseFloat(document.getElementById(userinput[i]).value))){
 							window.alert(document.getElementById(userinput[i]).name + " is not a number!");
 						}
 						else{
-							if(userinput[i] == "info.dephist.deploy.location.lat" && (parseFloat(document.getElementById(userinput[i]).value) > 90 
+							if(userinput[i] == "dephist.deploy.location.lat" && (parseFloat(document.getElementById(userinput[i]).value) > 90 
 							|| parseFloat(document.getElementById(userinput[i]).value) < -90)){
 								window.alert(document.getElementById(userinput[i]).name + " must be between -90 and 90!");
 							}
-							if(userinput[i] == "info.dephist.deploy.location.lon" && (parseFloat(document.getElementById(userinput[i]).value) > 180 
+							if(userinput[i] == "dephist.deploy.location.lon" && (parseFloat(document.getElementById(userinput[i]).value) > 180 
 							|| parseFloat(document.getElementById(userinput[i]).value) < -180)){
 								window.alert(document.getElementById(userinput[i]).name + " must be between -180 and 180!");
 								}
 						}
 					}
 					
-					if(userinput[i] == "info.project.datetime.start"
-					|| userinput[i] == "info.project.datetime.end"){
+					if(userinput[i] == "project.datetime.start"
+					|| userinput[i] == "project.datetime.end"){
 						if(!isValidDate(document.getElementById(userinput[i]).value)){
 							window.alert(document.getElementById(userinput[i]).name +  "have to be in a valid YYYY-MM-DD form!");
 							}
@@ -224,24 +202,14 @@ function loadValue(){
 		document.getElementById("tagdata_form").reset();
 		var i;
 		for(i = 0; i < a.length; i++){
-			if(a[i][0] == "info.dephist.deploy.locality"){
-				var temp_entry = a[i][2];
-				temp_entry = temp_entry.replace(/\'/g, "")
-				temp_entry= temp_entry.replace(/[{}]/g, "");
-				var split_entry = temp_entry.split(",");
-				var n;
-				for(n = 0; n < 2; n++){
-					document.getElementById(a[i][0] + n).value = myTrim(split_entry[n]);
-				}
-			}
-			else if(a[i][0] == "info.dephist.device.datetime.start" || a[i][0] == "info.dephist.deploy.datetime.start"){
+			if(a[i][0] == "dephist.device.datetime.start" || a[i][0] == "dephist.deploy.datetime.start"){
 				var temp_entry = a[i][2];
 				var split_entry = temp_entry.split(" ");
 				document.getElementById(a[i][0] + 0).value = split_entry[0];
 				document.getElementById(a[i][0] + 1).value = split_entry[1];
 			}
 			if(document.getElementById(a[i][0]) != null && typeof(document.getElementById(a[i][0])) != 'undefined'){
-				if(a[i][0] == "info.udm.export"){
+				if(a[i][0] == "udm.export"){
 					if(a[i][2] == 1){
 						document.getElementById(a[i][0]).checked = true;
 					}
@@ -249,7 +217,7 @@ function loadValue(){
 						document.getElementById(a[i][0]).checked = false;
 					}
 				}
-				else if(a[i][0] =="info.dephist.device.tzone"){
+				else if(a[i][0] =="dephist.device.tzone"){
 					document.getElementById(a[i][0]).value = a[i][2];					
 				}
 				else{
@@ -275,22 +243,21 @@ function saveValues(){
 		var record = "";
 		var i;
 		for(i = 0; i < a.length; i++){
-			if(a[i][0] =="info.dephist.device.regset"){
+			if(a[i][0] =="dephist.device.regset"){
 				continue;
 			}
-			else if(a[i][0] == "info.dephist.device.datetime.start" || a[i][0] == "info.dephist.deploy.datetime.start"){
+			else if(a[i][0] == "dephist.device.datetime.start" || a[i][0] == "dephist.deploy.datetime.start"){
 				record +='"' + a[i][0] + '"' + "," + a[i][1] + ",";
 				record += '"' + document.getElementById(a[i][0]+0).value + " " + document.getElementById(a[i][0]+1).value + '"'  + "\n" ;
 			}
-			else if(a[i][0] == "info.dephist.deploy.locality"){
-				record += '"' + a[i][0] + '"' + "," + a[i][1] + "," + '"' + "{" + "'";
-				record += document.getElementById(a[i][0]+0).value + ", ";
-				record += document.getElementById(a[i][0]+1).value;
-				record += "'" + "}" + '"' +  "\n" ;
+			else if(a[i][0] == "dephist.deploy.locality"){
+				record += '"' + a[i][0] + '"' + "," + a[i][1] + "," + '"';
+				record += document.getElementById(a[i][0]).value;
+				record += + '"' +  "\n" ;
 			}
 			else{
 				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
-					if(a[i][0] == "info.sensors.list"){
+					if(a[i][0] == "sensors.list"){
 						record += '"' + a[i][0] + '"' + "," + a[i][1] + "," +  '"' + a[i][2] + '"' +  "\n";
 					}
 					else{
@@ -299,11 +266,11 @@ function saveValues(){
 					}
 				}
 				else{
-					if(a[i][0] != "info.udm.export"){
+					if(a[i][0] != "udm.export"){
 						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
 						record += stringOrInt(document.getElementById(a[i][0]).value) + "\n";
 					}
-					else if(a[i][0] =="info.dephist.device.tzone"){
+					else if(a[i][0] =="dephist.device.tzone"){
 						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
 						record += parseInt(document.getElementById(a[i][0]).value) + "\n";
 					}
@@ -311,13 +278,13 @@ function saveValues(){
 					
 					else{
 						var check;
-						if(document.getElementById("info.udm.export").checked){
+						if(document.getElementById("udm.export").checked){
 							check = 1;
 						}
 						else{
 							check = 0;
 						}
-						record += '"' + "info.udm.export" + '"' + "," + 0 + "," + check;
+						record += '"' + "udm.export" + '"' + "," + 0 + "," + check;
 					}
 				}
 			}
@@ -463,28 +430,28 @@ div.tab button.active {
 <div id="DeviceInfo" class="tabcontent">
   <h3> Device information </h3>
   <p>
-    Device Serial Number: <span style="color: red">*</span> <input name="Device Serial Number" type="text" id="info.device.serial" value = ""/><br /><br />
-    Device manufacturer:  <span style="color: red">*</span> <input name="Device manufacturer:" type="text" id="info.device.make" value = ""/><br /><br />
-	Type of device: <span style="color: red">*</span>  <input name="Type of device" type="text" id="info.device.type" value = ""/><br /><br />
-    Model Name and Version: <span style="color: red">*</span> <input name="Model Name and Version" type="text" id="info.device.model" value = ""/><br /><br />
-	URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="info.device.url" value = ""/><br /><br />
-	Device firmware version: <span style="color: red">*</span> <input name="Device firmware version" type="text" id="info.sensors.firm" value = ""/><br /><br />
-	Software off loader version: <span style="color: red">*</span> <input name="Software off loader version" type="text" id="info.sensors.soft" value = ""/><br /><br />
+    Device Serial Number: <span style="color: red">*</span> <input name="Device Serial Number" type="text" id="device.serial" value = ""/><br /><br />
+    Device manufacturer:  <span style="color: red">*</span> <input name="Device manufacturer:" type="text" id="device.make" value = ""/><br /><br />
+	Type of device: <span style="color: red">*</span>  <input name="Type of device" type="text" id="device.type" value = ""/><br /><br />
+    Model Name and Version: <span style="color: red">*</span> <input name="Model Name and Version" type="text" id="device.model" value = ""/><br /><br />
+	URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="device.url" value = ""/><br /><br />
+	Device firmware version: <span style="color: red">*</span> <input name="Device firmware version" type="text" id="sensors.firm" value = ""/><br /><br />
+	Software off loader version: <span style="color: red">*</span> <input name="Software off loader version" type="text" id="sensors.soft" value = ""/><br /><br />
 	</p>
 </div>
 <div id="TagAnimal" class="tabcontent">
 	<h3> Tag and animal information </h3>
 	<p>
-	Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="info.animal.id" value = ""/><br /><br />
-	Describe how the tag was attached (e.g. glued, implanted, suction cups): <span style="color: red">*</span> <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="info.dephist.deploy.method" value = ""/><br /><br />
-	Common name of species: <span style="color: red">*</span> <input name="Common name of species" type="text" id="info.animal.species.common" value = ""/><br /><br />
-	Scientific name: <span style="color: red">*</span> <input name="Scientific name" type="text" id="info.animal.species.science" value = "" /> <br /><br />
+	Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="animal.id" value = ""/><br /><br />
+	Describe how the tag was attached (e.g. glued, implanted, suction cups): <span style="color: red">*</span> <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="dephist.deploy.method" value = ""/><br /><br />
+	Common name of species: <span style="color: red">*</span> <input name="Common name of species" type="text" id="animal.species.common" value = ""/><br /><br />
+	Scientific name: <span style="color: red">*</span> <input name="Scientific name" type="text" id="animal.species.science" value = "" /> <br /><br />
 	</p>
 </div>
 <div id = "TimeZoneTime" class = "tabcontent">
 	<h3> Timezone and time information </h3>
 	<p>
-	Time zone of device (+- HRS UTC): <span style="color: red">*</span> <select name="Timezone of device" id="info.dephist.device.tzone" >
+	Time zone of device (+- HRS UTC): <span style="color: red">*</span> <select name="Timezone of device" id="dephist.device.tzone" >
 	<option timeZoneId="1" UTCAdjustment="UTC-12:00" useDaylightTime="0" value="-12">(UTC-12:00) International Date Line West</option>
 	<option timeZoneId="2" UTCAdjustment="UTC-11:00" useDaylightTime="0" value="-11">(UTC-11:00) Midway Island, Samoa</option>
 	<option timeZoneId="3" UTCAdjustment="UTC-10:00" useDaylightTime="0" value="-10">(UTC-10:00) Hawaii</option>
@@ -568,45 +535,44 @@ div.tab button.active {
 	<option timeZoneId="81" UTCAdjustment="UTC+12:00" useDaylightTime="0" value="12">(UTC+12:00) Fiji, Kamchatka, Marshall Is.</option>
 	<option timeZoneId="82" UTCAdjustment="UTC+13:00" useDaylightTime="0" value="13">(UTC+13:00) Nuku'alofa</option>
 </select>	<br /><br />
-	<!-- Regional settings for device(date format): <input name="Regional settings for device(date format)" type="text" id="info.dephist.device.regset"/><br /><br />-->
-	UTC Device start date (YYYY-MM-DD)<span style="color: red">*</span> : <input name="UTC Device start date" type="text" id="info.dephist.device.datetime.start0" value = ""/><br /><br />
-	UTC Device start time (military) (HH:MM:SS) <span style="color: red">*</span> : <input name=" UTC Device start time" type="text" id="info.dephist.device.datetime.start1" value = ""/><br /><br />
-	UTC Date of Deployment (YYYY-MM-DD) <span style="color: red">*</span> : <input name="UTC Date of Deployment" type="text" id="info.dephist.deploy.datetime.start0" value = ""/><br /><br />
-	UTC Time of Deployment (military) (HH:MM:SS) <span style="color: red">*</span> : <input name="UTC Time of Deployment" type="text" id="info.dephist.deploy.datetime.start1" value = ""/><br />
+	<!-- Regional settings for device(date format): <input name="Regional settings for device(date format)" type="text" id="dephist.device.regset"/><br /><br />-->
+	UTC Device start date (YYYY-MM-DD)<span style="color: red">*</span> : <input name="UTC Device start date" type="text" id="dephist.device.datetime.start0" value = ""/><br /><br />
+	UTC Device start time (military) (HH:MM:SS) <span style="color: red">*</span> : <input name=" UTC Device start time" type="text" id="dephist.device.datetime.start1" value = ""/><br /><br />
+	UTC Date of Deployment (YYYY-MM-DD) <span style="color: red">*</span> : <input name="UTC Date of Deployment" type="text" id="dephist.deploy.datetime.start0" value = ""/><br /><br />
+	UTC Time of Deployment (military) (HH:MM:SS) <span style="color: red">*</span> : <input name="UTC Time of Deployment" type="text" id="dephist.deploy.datetime.start1" value = ""/><br />
 	</p>
 </div>
 <div id = "Locality" class = "tabcontent">
 	<h3> Locality Information</h3>
 	<p>
-	Locality of Deployment <span style="color: red">*</span> : <input name="Locality of Deployment" type="text" id="info.dephist.deploy.locality0" value = ""/><br /><br />
-	Country of Deployment <span style="color: red">*</span> :<input name="Country of Deployment" type="text" id="info.dephist.deploy.locality1" value = ""/><br /><br />
-	Latitude of Deployment (decimal degrees) <span style="color: red">*</span> :  <input name="Latitude of Deployment" type="text" id="info.dephist.deploy.location.lat" value = ""/><br /><br />
-	Longitude of Deployment (decimal degrees) <span style="color: red">*</span> : <input name="Longitude of Deployment" type="text" id="info.dephist.deploy.location.lon" value = ""/><br /><br />
+	Locality of Deployment <span style="color: red">*</span> (write and separate by commas) : <input name="Locality of Deployment" type="text" id="dephist.deploy.locality" value = ""/><br /><br />
+	Latitude of Deployment (decimal degrees) <span style="color: red">*</span> :  <input name="Latitude of Deployment" type="text" id="dephist.deploy.location.lat" value = ""/><br /><br />
+	Longitude of Deployment (decimal degrees) <span style="color: red">*</span> : <input name="Longitude of Deployment" type="text" id="dephist.deploy.location.lon" value = ""/><br /><br />
 	</p>
 </div>
 <div id = "Project" class = "tabcontent">
 	<h3> Project information </h3>
 	<p>
-	Project Name <span style="color: red">*</span> : <input name="Project Name" type="text" id="info.project.name" value = ""/><br /><br />
-	Start date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="Start date for all project related deployments" type="text" id="info.project.datetime.start" value = ""/><br /><br />
-	End date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="End date for all project related deployments" type="text" id="info.project.datetime.end" value = ""/><br /><br />
+	Project Name <span style="color: red">*</span> : <input name="Project Name" type="text" id="project.name" value = ""/><br /><br />
+	Start date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="Start date for all project related deployments" type="text" id="project.datetime.start" value = ""/><br /><br />
+	End date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="End date for all project related deployments" type="text" id="project.datetime.end" value = ""/><br /><br />
 	</p>
 </div>
 <div id = "Provider" class = "tabcontent">
 	<h3> Provider information </h3>
 	<p>
-	Name of data provider / license holder <span style="color: red">*</span>: <input name="Name of data provider / license holder" type="text" id="info.provider.name" value = ""/><br /><br />
-	Affiliation of data provider <span style="color: red">*</span>: <input name="Affiliation etc of data provider" type="text" id="info.provider.details" value = ""/><br /><br />
-	URL to organisation holding animal data <span style="color: red">*</span>: <input name="URL to organisation holding animal data" type="text" id="info.animal.dbase.url" value = ""/><br /><br />
-	Email of data provider <span style="color: red">*</span>: <input name="Email of data provider" type="text" id="info.provider.email" value = ""/><br /><br />
-	Describe provider restrictions to data access and distribution <span style="color: red">*</span>: <input name="Describe provider restrictions to data access and distribution" type="text" id="info.provider.license" value = ""/><br /><br />
+	Name of data provider / license holder <span style="color: red">*</span>: <input name="Name of data provider / license holder" type="text" id="provider.name" value = ""/><br /><br />
+	Affiliation of data provider <span style="color: red">*</span>: <input name="Affiliation etc of data provider" type="text" id="provider.details" value = ""/><br /><br />
+	URL to organisation holding animal data <span style="color: red">*</span>: <input name="URL to organisation holding animal data" type="text" id="animal.dbase.url" value = ""/><br /><br />
+	Email of data provider <span style="color: red">*</span>: <input name="Email of data provider" type="text" id="provider.email" value = ""/><br /><br />
+	Describe provider restrictions to data access and distribution <span style="color: red">*</span>: <input name="Describe provider restrictions to data access and distribution" type="text" id="provider.license" value = ""/><br /><br />
 	</p>
 </div>
 <div id = "Citation" class = "tabcontent">
 	<h3>Citation information </h3>
-	Citation to be used in publications <span style="color: red">*</span>: <input name="Citation to be used in publications" type="text" id="info.provider.cite" value = ""/><br /><br />
-	DOI for data <span style="color: red">*</span>: <input name="DOI for data" type="text" id="info.provider.doi" value = ""/><br /><br />
-	Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="info.udm.export" /><br /><br /><br /><br />
+	Citation to be used in publications <span style="color: red">*</span>: <input name="Citation to be used in publications" type="text" id="provider.cite" value = ""/><br /><br />
+	DOI for data <span style="color: red">*</span>: <input name="DOI for data" type="text" id="provider.doi" value = ""/><br /><br />
+	Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="udm.export" /><br /><br /><br /><br />
   </p>
   </div>
   <p>
