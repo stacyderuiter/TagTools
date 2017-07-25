@@ -6,7 +6,7 @@ matlab2POS = function(x, timez = "UTC") {
   # in the UTC time zone, then converts that to a time/date string that 
   # should lose the time zone, and then it performs a second as.POSIXct()
   # conversion on the time/date string to get a POSIXct value in the user's 
-  # specified timezone. Time zones are a nightmare.
+  # specified timezone. Time zones are a goddamned nightmare.
   return(as.POSIXct(strftime(as.POSIXct(secs, origin = '1970-1-1', 
                                         tz = 'UTC'), format = '%Y-%m-%d %H:%M:%S', 
                              tz = 'UTC', usetz = FALSE), tz = timez))
