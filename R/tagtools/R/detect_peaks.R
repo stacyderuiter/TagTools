@@ -44,7 +44,7 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   #set default blanking time
   if (is.null(bktime)) {
     dpk <- diff(pk[, 1])
-    bktime <- quantile(dpk, c(.85), type = 9)
+    bktime <- stats::quantile(dpk, c(.85), type = 9)
   }
   
   #determine start and end times for each peak
