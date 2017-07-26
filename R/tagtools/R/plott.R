@@ -71,7 +71,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   # then use date/time objects
   # ==============================================================
   if (date_time_axis){
-    if (!is.null(info)){
+    if (exists('info')){
       recording_start <- info$dephist_device_datetime_start
     }
     if (class(recording_start)=='character'){
@@ -82,6 +82,9 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       times <- lapply(times, function(x, rs) lubridate::seconds(x) +
                       rs, rs=recording_start)
       x_lim <- recording_start + lubridate::seconds(x_lim)
+    }else{
+      # not enough info for date_time_axis
+      date_time_axis=FALSE
     }
   }
   
