@@ -2,10 +2,10 @@
 #' 
 #' This function detects peaks in data that exceed a specfied threshold and returns each peak's start time, end time, maximum peak value, and time of the maximum peak.
 #' @param data A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.
-#' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. "njerk"). If left blank, the data input will be immediatly passed through the peak detector. The function name must be within quotation marks.
+#' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. njerk). If left blank, the data input will be immediatly passed through the peak detector.
 #' @param sr The sampling rate in Hz of the date. This is the same as fs in other tagtools functions. This is used to calculate the bktime in the case that the input for bktime is missing.
 #' @param thresh The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
-#' @param bktime The specified length of time between signal values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default level for bktime is 5 times the sampling rate (fs). This is equivalent to 5 seconds of time.
+#' @param bktime The specified length of time between signal values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default value is set as the .85 quantile of the vector of time differences for signal values above the specified threshold.
 #' @param plot_peaks A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated. Look to the console for help on how to use the plot upon running of this function.
 #' @param ... Additional inputs to be passed to FUN
 #' @export
@@ -19,17 +19,15 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   
   #apply function specified in the inputs to data
   if (!is.null(FUN)) {
-    dnew <- get(FUN)(data,  ...)
+    dnew <- FUN(data,  ...)
   } else {
     dnew <- data
   }
-  
+  #set default threshold level
   if (is.null(thresh) == TRUE) {
-    thresh <- stats::quantile(dnew, c(0.99))
+    thresh <- stats::quantile(dnew, c(0.99), type = 9)
   }
-  if (is.null(bktime) == TRUE) {
-    bktime <- 5 * sr
-  }
+  
   if (is.null(plot_peaks) == TRUE) {
     plot_peaks <- TRUE
   }
@@ -42,6 +40,12 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   #determine peaks that are above the threshold
   pt <- d[, 2] >= thresh
   pk <- d[pt, ]
+  
+  #set default blanking time
+  if (is.null(bktime)) {
+    dpk <- diff(pk[, 1])
+    bktime <- quantile(dpk, c(.85), type = 9)
+  }
   
   #determine start and end times for each peak
   dt <- diff(pk[, 1])

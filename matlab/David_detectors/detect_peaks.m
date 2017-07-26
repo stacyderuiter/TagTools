@@ -12,7 +12,7 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %   FUN = A function to be applied to data before the data is run through 
 %       the peak detector. Only specify the function name (i.e. 'njerk'). 
 %       If left blank, the data input will be immediatly passed through the
-%       peak detector. The function name must be within quotation marks.
+%       peak detector.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
@@ -20,8 +20,9 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %   bktime = The specified length of time between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
-%       missing/empty the default level for bktime is 5 times the sampling
-%       rate (fs). This is equivalent to 5 seconds of time. 
+%       missing/empty the default value for the blanking time is set as the
+%       .85 quantile of the vector of time differences for signal values 
+%       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
 %       to manipulate the thresh and bktime values and observe the changes 
@@ -53,12 +54,9 @@ else
     dnew = data;
 end
 
+%determine default threshold
 if nargin < 4 || isempty(thresh)
     thresh = quantile(dnew, 0.99);
-end
-
-if nargin < 5 || isempty(bktime)
-    bktime = 5 * sr;
 end
 
 if nargin < 6 || isempty(plot_peaks)
@@ -75,6 +73,12 @@ end
 %determine peaks that are above the threshold
 pt = d(:,2) >= thresh;
 pk = d(pt,:);
+
+%determine default blanking time
+if nargin < 5 || isempty(bktime)
+    dpk = diff(pk(:,1));
+    bktime = quantile(dpk, .85);
+end
 
 %determine start and end times for each peak
 dt = diff(pk(:,1));
