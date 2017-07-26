@@ -23,6 +23,7 @@ msa <- function(A, ref) {
     if (length(A$meta_conv) > 0) {
       ref <- ref*A$meta_conv
     }
+    A <- A$data
   }
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
