@@ -33,7 +33,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
     par_opts <- list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=0.8)
   }
   if (missing(line_colors)){
-    lcols <- c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
+    line_colors <- c("#000000", "#009E73", "#9ad0f3", "#0072B2", "#e79f00", "#D55E00")
   }
   if (length(offset) < length(X)){
     offset <- rep(offset, length.out=length(X))
@@ -131,13 +131,13 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       }
     graphics::plot(x=times[[i]], y=y_data, ylab=panel_labels[i],
            xaxt="n", xlim=x_lim, type='l', ylim=y_lim,
-           col=lcols[1])
+           col=line_colors[1])
       draw_axis(side=1, x=times[[i]], 
                 date_time=sum(grepl('POSIX', class(times[[i]]))),
                 last_panel=(i == length(X)))
     if (is.matrix(data_i)){
       for (c in 2:ncol(data_i)){
-        graphics::lines(x=times[[i]], y=data_i[,c], col=lcols[c])
+        graphics::lines(x=times[[i]], y=data_i[,c], col=line_colors[c])
       }
     }
   }
