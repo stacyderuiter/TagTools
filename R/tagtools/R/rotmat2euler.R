@@ -2,7 +2,7 @@
 #' 
 #' This function is used to decompose a rotation (or direction cosine) matrix into Euler angles, pitch, roll, and heading.
 #' @param Q is a 3x3 rotation matrix.
-#' @return prh is a 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
+#' @return A 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
 #' @export
 
 rotmat2euler <- function(Q) {

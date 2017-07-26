@@ -5,7 +5,7 @@
 #' @param A The accelerometer signal matrix, A=[ax,ay,az] in any consistent unit (e.g., in g or m/s2). A can be in any frame.
 #' @param M The magnetometer signal matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss). M must be in the same frame as A.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing the inclination angle. The filter cut-off frequency is with respect to 1=Nyquist frequency. Filtering adds no group delay. If fc is not specified, no filtering is performed.
-#' @return incl  The magnetic field inclination angle in radians.
+#' @return The magnetic field inclination angle in radians.
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, the magnetic field vector has a positive inclination angle when it points below the horizon. Other frames can be used as long as A and M are in the same frame however the interpretation of incl will differ accordingly.
 #' @export

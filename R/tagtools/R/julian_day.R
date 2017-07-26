@@ -6,7 +6,7 @@
 #' @param y A single year or vector of years
 #' @param d A single day or vector of days
 #' @param m A single month or vector of months
-#' @return n See the description section for details on the return.
+#' @return See the description section for details on the return.
 #' @export
 #' @example julian_day(y = 2016, d = 12, m =10) #Returns: 286
 #'          julian_day(y = 2016, 286) #Returns: "2016-10-12"

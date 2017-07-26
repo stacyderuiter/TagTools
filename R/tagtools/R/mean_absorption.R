@@ -5,7 +5,7 @@
 #' @param r The path (slant) length in metres.
 #' @param depth The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth=c(dmax,dmin) for a path that extends between two depths.
 #' @param Ttab (optional) The temperature (a scalar) in degrees C or specifies a temperature profile Ttab = c(depth, tempr) where depth and tempr are equal-sized column vectors. Default value is an isothermal profile of 13 degrees.
-#' @return a The mean sound absorption over the path in dB.
+#' @return The mean sound absorption over the path in dB.
 #' @note After Kinsler and Frey pp. 159-160.
 #' @export
 #' @example mean_absorption(c(25e3, 60e3), 1000, c(0, 700))

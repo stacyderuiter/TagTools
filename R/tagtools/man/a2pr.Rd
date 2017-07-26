@@ -14,9 +14,11 @@ a2pr(A, fs, fc)
 \item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A before computing pitch and roll. The filter cut-off frequency is in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
 \value{
-p The pitch estimate in radians
-
-r The roll estimate in radians
+A list with 2 elements:
+\itemize{
+ \item{\strong{p: }} The pitch estimate in radians
+ \item{\strong{r: }} The roll estimate in radians
+}
 }
 \description{
 This is a non-iterative estimator with |pitch| constrained to <= 90 degrees. The pitch and roll estimates give the least-square-norm error between A and the A-vector that would be measured at the estimated pitch and roll. If A is in the animal frame, the resulting pitch and roll define the orientation of the animal with respect to its navigation frame. If A is in the tag frame, the pitch and roll will define the tag orientation with respect to its navigation frame.
@@ -34,6 +36,5 @@ samplematrix <- matrix(c(0.77, -0.6, -0.22, 0.45, -0.32, 0.99, 0.2, -0.56, 0.5),
                        byrow = TRUE, nrow = 3)
                 a2pr(samplematrix)
 #Returns: p = c(0.8780579, 0.4082165, 0.2603593) 
-#         r = c(-1.9222411, -0.3126323, -0.8419416) 
-#         v = c(1.000650, 1.133578, 0.776917)
+#         r = c(-1.9222411, -0.3126323, -0.8419416)
 }

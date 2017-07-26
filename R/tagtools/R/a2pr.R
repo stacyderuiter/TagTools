@@ -6,8 +6,11 @@
 #' @param A An nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param fs The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A before computing pitch and roll. The filter cut-off frequency is in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
-#' @return p The pitch estimate in radians
-#' @return r The roll estimate in radians
+#' @return A list with 2 elements:
+#' \itemize{
+#'  \item{\strong{p: }} The pitch estimate in radians
+#'  \item{\strong{r: }} The roll estimate in radians
+#' }
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A positive roll angle is a clockwise rotation around the x-axis. A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
 #' @export
@@ -16,8 +19,7 @@
 #'                        byrow = TRUE, nrow = 3)
 #'                 a2pr(samplematrix)
 #'#Returns: p = c(0.8780579, 0.4082165, 0.2603593) 
-#'#         r = c(-1.9222411, -0.3126323, -0.8419416) 
-#'#         v = c(1.000650, 1.133578, 0.776917)
+#'#         r = c(-1.9222411, -0.3126323, -0.8419416)
 
 a2pr <- function(A, fs, fc) {
   # input checks-----------------------------------------------------------

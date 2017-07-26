@@ -6,7 +6,7 @@
 #' @param d3 Give the value 0 if the tag was a dtag2, or 1 if a d3 (if 1, then it will be assumed that the TAGON in the cal file is in UTC and GMT2LOC will be used to covert to local).
 #' @param TAGON A vector with tagon time as [yyyy mm dd hh mm ss], in case there is no cal file for this tag available.
 #' @param GMT2LOC (optional) The conversion factor for GMT to local time, if d3=1 and tagon is given then GMT2LOC should be given as well.
-#' @return hms The output for a date/time string which is a matrix of strings where row n is a string indicating the local date and time for entry n of csts.
+#' @return The output for a date/time string which is a matrix of strings where row n is a string indicating the local date and time for entry n of csts.
 #' @export
 #' @example cst2hms("hi", c(1:2), 1, c(1111,11,11,11,11,11), 5)
 #'         #Returns: "1111-11-11 16:11:12 LMT" "1111-11-11 16:11:13 LMT"

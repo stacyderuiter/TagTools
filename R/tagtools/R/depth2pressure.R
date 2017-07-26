@@ -3,7 +3,7 @@
 #' This function is used to convert the depth (in meters) to the pressure in Pascals.
 #' @param d The depth in meters
 #' @param latitude The latitude in degrees
-#' @return p The pressure in Pa
+#' @return The pressure in Pa
 #' @note Based on the Leroy and Parthiot (1998) formula. See: http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO
 #' @export
 #' @example depth2pressure(1000, 27)
