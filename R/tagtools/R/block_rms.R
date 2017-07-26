@@ -4,7 +4,7 @@
 #' @param X A vector or a matrix containing samples of a signal in each column.
 #' @param n The number of samples from X to use in each analysis block.
 #' @param nov The number of samples that the next block overlaps the previous block.
-@return A list with 2 elements:
+#' @return A list with 2 elements:
 #' \itemize{
 #'  \item{\strong{y: }} A vector or matrix containing the RMS value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 #'  \item{\strong{t: }} The time at which each output in Y is reported, in units of samples of X.  So if t[1] = 12, then the value Y[1] corresponds to the “time” 12 samples in X. The times at which Y values are reported are the centers of the averaging windows.
