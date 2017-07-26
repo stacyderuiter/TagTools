@@ -5,7 +5,7 @@
 #' @param T The temperature in degrees C
 #' @param D (optional) The depth in meters (defaults to 1 m)
 #' @param S The salinity in part-per-thousand (defaults to 35 ppt)
-#' @return v The sound speed in m/s
+#' @return The sound speed in m/s
 #' @note Source: http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO
 #' @export
 #' @example sound_speed(8, 1000, 34)

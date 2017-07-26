@@ -4,7 +4,7 @@
 #' @param X A vector or a matrix containing samples of a signal in each column.
 #' @param n The number of samples from X to use in each analysis block.
 #' @param nov (optional) The number of samples that the next block overlaps the previous block. The default value is 0.
-#' @return Y is a vector or matrix containing the mean value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
+#' @return A vector or matrix containing the mean value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 #' @export
 
 block_mean <- function(X,n,nov) {

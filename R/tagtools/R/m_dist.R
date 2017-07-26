@@ -12,7 +12,7 @@
 #' @param baselineStart Start time (in seconds since start of the data set) of the baseline period (the mean data values for this period will be used as the 'control' to which all "comparison" data points (or windows) will be compared. if not specified, it will be assumed to be 0 (start of record).
 #' @param baselineEnd End time (in seconds since start of the data set) of the baseline period. If not specified, the entire data set will be used (baseline_end will be the last sampled time-point in the data set).
 #' @param BL_COV Logical.  If BL_COV=TRUE, then a covariance matrix using all data in baseline period will be used for calculating the Mahalanobis distance. Default is BL_COV=FALSE.
-#' @return D Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
+#' @return Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
 #' @export
 
 m_dist <- function(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV) {

@@ -6,7 +6,7 @@
 #' @param p A depth or altitude time series or a list of depth or altitude (e.g., from readtag.R). p can have any units and is in the form of a vector
 #' @param fs is the sampling rate of p in Hz.
 #' @param fc (optional) A smoothing filter cut-off frequency in Hz. If fc is not given, a default value is used of 0.2 Hz (5 second time constant).
-#' @return v The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
+#' @return The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
 #' @note The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.
 #' @export
 
