@@ -2,7 +2,7 @@
 % Please edit documentation in R/detect_peaks.R
 \name{detect_peaks}
 \alias{detect_peaks}
-\title{This function detects peaks in data that exceed a specfied threshold and returns each peak's start time, end time, maximum peak value, and time of the maximum peak.}
+\title{Detect peaks in signal vector data}
 \usage{
 detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
   plot_peaks = NULL, ...)
