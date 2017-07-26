@@ -80,7 +80,7 @@ end
 HDR = {HDR{[1 3:end]}} ;      % eliminate Time field as it will be combined with Date
 nf = length(HDR)-1 ;
 npartf = 0 ;
-delete('_ttpart*.mat') ;
+%delete('_ttpart*.mat') ;
 DN = [] ; X = [] ;
 
 while 1,
@@ -102,7 +102,14 @@ while 1,
       L = s(kl(kk)+1:kl(kk+1)-1) ;    % this line
       kc = find(L==',') ;
       L(kc) = 32 ;
-      D{kk} = char(L(1:kc(2)-1)') ;
+    
+      % Updated to allow compatibility with Octave datenum
+      dt=char(L(1:kc(2)-1)') ; %
+      ke = find(dt=='.') ;
+      dt(ke) = '-' ;
+      D{kk} = dt(1:ke(end)-1) ; 
+      %%%
+      
       xx = sscanf(char(L(kc(2)+1:end)'),'%f') ;
       if length(xx)>nf,
          fprintf('Too many fields in line: %d vs %d\n',length(xx),nf) ;
@@ -110,7 +117,8 @@ while 1,
       end
       x(kk,1:length(xx)) = xx' ;
    end
-   dn = datenum(D,'dd.mm.yyyy HH:MM:SS') ;
+   
+   dn = datenum(D,'dd-mm-yyyy HH:MM:SS'); % Updated to allow compatibility with Octave datenum
    X(end+(1:size(x,1)),1:size(x,2)) = x ;
    DN(end+(1:length(dn))) = dn ;
 

@@ -33,7 +33,6 @@ function    [V,q] = inv_axis(A)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 10 May 2017
 
-
 % energy ratio between plane-of-motion and axis of rotation
 k = find(~any(isnan(A),2)) ;
 QQ = A(k,:)'*A(k,:) ;      % form outer product of movement matrix
