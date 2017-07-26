@@ -12,7 +12,7 @@ merge_fields(s1, s2)
 \item{s2}{Arbitrary list e.g., containing metadata or settings.}
 }
 \value{
-s A list containing all of the fields in s1 and s2
+A list containing all of the fields in s1 and s2
 }
 \description{
 This function is used to merge the fields of two lists. If there are duplicate fields, the fields in s1 are taken.

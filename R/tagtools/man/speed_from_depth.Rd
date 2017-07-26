@@ -18,9 +18,11 @@ speed_from_depth(p, A, fs, fc = NULL, plim = NULL)
 \item{plim}{(optional) Specifies the minimum pitch angle in radians at which speed can be computed. Errors in speed estimation using this method increase strongly at low pitch angles. To avoid estimates with poor accuracy being used in later analyses, speed estimates at low pitch angles are replaced by NaN (not-a-number). The default threshold for this is 20 degrees.}
 }
 \value{
-s The forward speed estimate in m/s
-
-v The depth-rate (or vertical velocity) in m/s
+A list with 2 elements:
+\itemize{
+\item{\strong{s: }}The forward speed estimate in m/s
+\item{\strong{v: }} The depth-rate (or vertical velocity) in m/s
+}
 }
 \description{
 This function is used to estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth).

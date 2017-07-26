@@ -16,7 +16,7 @@ mean_absorption(freq, r, depth, Ttab = NULL)
 \item{Ttab}{(optional) The temperature (a scalar) in degrees C or specifies a temperature profile Ttab = c(depth, tempr) where depth and tempr are equal-sized column vectors. Default value is an isothermal profile of 13 degrees.}
 }
 \value{
-a The mean sound absorption over the path in dB.
+The mean sound absorption over the path in dB.
 }
 \description{
 This function is used to calculate the mean absorption in salt water over a frequency range.

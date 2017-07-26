@@ -18,7 +18,7 @@ cst2hms(tag, cst, d3, TAGON, GMT2LOC)
 \item{GMT2LOC}{(optional) The conversion factor for GMT to local time, if d3=1 and tagon is given then GMT2LOC should be given as well.}
 }
 \value{
-hms The output for a date/time string which is a matrix of strings where row n is a string indicating the local date and time for entry n of csts.
+The output for a date/time string which is a matrix of strings where row n is a string indicating the local date and time for entry n of csts.
 }
 \description{
 This function is used to convert a time in CST (seconds since start of recording) to year, month, day, hours, minutes, seconds local time.

@@ -14,7 +14,7 @@ euler2rotmat(p, r, h)
 \item{h}{The heading or yaw angle in radians.}
 }
 \value{
-Q One or more 3x3 rotation matrices. If p, r, and h are all scalars, Q is a 3x3 matrix, Q = H %*% P %*% R where H, P and R are the cannonical rotation matrices corresponding to the yaw, pitch and roll rotations, respectively. To rotate a vector or matrix of triaxial measurements, pre-multiply by Q. If p, r or h contain multiple values, Q is a 3-dimensional matrix with size 3x3xn where n is the number of Euler angle triples that are input. To access the k'th rotation matrix in Q use drop(Q[,,k]).
+One or more 3x3 rotation matrices. If p, r, and h are all scalars, Q is a 3x3 matrix, Q = H %*% P %*% R where H, P and R are the cannonical rotation matrices corresponding to the yaw, pitch and roll rotations, respectively. To rotate a vector or matrix of triaxial measurements, pre-multiply by Q. If p, r or h contain multiple values, Q is a 3-dimensional matrix with size 3x3xn where n is the number of Euler angle triples that are input. To access the k'th rotation matrix in Q use drop(Q[,,k]).
 }
 \description{
 This function is used to make a rotation (or direction cosine matrix out of sets of Euler angles, pitch, roll, and heading.

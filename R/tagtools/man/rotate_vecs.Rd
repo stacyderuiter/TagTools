@@ -12,7 +12,7 @@ rotate_vecs(V, Q)
 \item{Q}{is the rotation matrix. If Q is a single 3x3 matrix, the same rotation is appled to all vectors in V. If Q is a 3x3xn matrix where n is the number of rows in V, a different transformation given by Q[,, k] is applied to each row of V.}
 }
 \value{
-V is the rotated vector or matrix with the same size as the input V.
+The rotated vector or matrix with the same size as the input V.
 }
 \description{
 This function is used to rotate triaxial vector measurements from one frame to another.

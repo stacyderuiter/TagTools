@@ -14,7 +14,7 @@ depth_rate(p, fs, fc)
 \item{fc}{(optional) A smoothing filter cut-off frequency in Hz. If fc is not given, a default value is used of 0.2 Hz (5 second time constant).}
 }
 \value{
-v The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
+The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
 }
 \description{
 This function is used to estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.

@@ -18,7 +18,7 @@ odba(A, fs, fh = NULL, method = "fir", n = NULL)
 \item{n}{The rectangular window (moving average) length in samples. This is only needed if using the classic ODBA and VeDBA forms.}
 }
 \value{
-e A column vector of ODBA with the same number of rows as A. e has the same units as A.
+A column vector of ODBA with the same number of rows as A. e has the same units as A.
 }
 \description{
 This funciton is used to compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006. ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the inputaccelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.

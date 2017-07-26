@@ -16,11 +16,12 @@ m2h(M, A, fs, fc = NULL)
 \item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
 \value{
-h The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination.
-
-v The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
-
-incl The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
+A list with 3 elements:
+\itemize{
+\item{\strong{h: }} The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
+\item{\strong{v: }} The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
+\item{\strong{incl: }} The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
+}
 }
 \description{
 This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.

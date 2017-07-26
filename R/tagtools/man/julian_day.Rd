@@ -14,7 +14,7 @@ julian_day(y = NULL, m = NULL, d = NULL)
 \item{d}{A single day or vector of days}
 }
 \value{
-n See the description section for details on the return.
+See the description section for details on the return.
 }
 \description{
 This function is used to convert between dates and Julian day numbers. There are three different input arrangements, each of which returns a different output. For a discription of the different input arrangements, see below.

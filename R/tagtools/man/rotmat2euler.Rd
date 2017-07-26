@@ -10,7 +10,7 @@ rotmat2euler(Q)
 \item{Q}{is a 3x3 rotation matrix.}
 }
 \value{
-prh is a 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
+A 1x3 vector containing: prh=[p,r,h] where p is the pitch angle in radians, r is the roll angle in radians, and h is the heading or yaw angle in radians.
 }
 \description{
 This function is used to decompose a rotation (or direction cosine) matrix into Euler angles, pitch, roll, and heading.
