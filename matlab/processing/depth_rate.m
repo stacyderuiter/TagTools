@@ -28,7 +28,7 @@ function     v = depth_rate(p,fs,fc)
 %	   The group delay of the filters is removed.
 %
 %		Example:
-%		loadnc('testdata1')
+%		load_nc('testdata1')
 %		v = depth_rate(P)
 % 	    returns: .
 %
