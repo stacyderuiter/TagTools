@@ -124,8 +124,7 @@ if plot_peaks == true
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
-    rl = refline(0, thresh);
-    set(rl, 'LineStyle', '- -', 'Color', 'red')
+    line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
     hold off
     [x, y] = ginput(3);
     if length(x) == 3
@@ -147,8 +146,7 @@ elseif plot_peaks == false
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
-    rl = refline(0, thresh);
-    set(rl, 'LineStyle', '- -', 'Color', 'red')
+    line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
     hold off
 end
 
