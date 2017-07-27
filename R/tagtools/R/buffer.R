@@ -6,12 +6,12 @@
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix
 #' @param opt The vector of samples specified to precede x[1] in an overlapping buffer
 #' @param nodelay A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)
-#' @return A list with 2 elements:
+#' @return A list with 3 elements:
 #' \itemize{
 #' \item{\strong{X: }} A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
 #' \item{\strong{z: }} (if nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+#' \item{\strong{opt: }}(nodelay = FALSE) The last values, length of "p", of the matrix "X".
 #' }
-#' @return opt (nodelay = FALSE) The last values, length of "p", of the matrix "X".
 #' @export
 
 buffer <- function(x, n, p, opt, nodelay = FALSE) {
