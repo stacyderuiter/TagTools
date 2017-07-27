@@ -14,7 +14,7 @@ function		add_nc(fname,X)
 %		 storage of variables, consider using the usual 'save' function in Matlab and Octabe.
 %
 %		Example:
-%		 addnc('dog17_124a',A)
+%		 add_nc('dog17_124a',A)
 % 	    generates a file dog17_124a.nc and adds a variable A.
 %
 %     Valid: Matlab, Octave
