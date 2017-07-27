@@ -12,9 +12,13 @@
 #' }
 #' @note This function returns one invariant axis that applies to the entire input signal so it is important to choose a relevant sub-sample of movement data, A, to analyse.
 #' @export
-#' @example inv_axis(t(sin(2*pi*0.1*t((1:100))))%*%matrix(c(0.9, -0.4, 0.3), ncol = 3))
-#' #Returns: V = c(-0.1144137, 0.4183555, 0.9010484)
-#'           q = 2.573073e-09
+#' @example 
+#'  \dontrun{
+#'  s <- matrix(sin(2*pi*0.1*c(1:100)), ncol=1)
+#'  A <- s %*% c(0.9, -0.4, 0.3) + s^2 %*% c(0, 0.2, 0.1)
+#'  inv_axis_out <- inv_axis(A)
+#'    }
+#'  
 
 inv_axis <- function(data) {
   #energy ratio between plane-of-motion and axis of rotation

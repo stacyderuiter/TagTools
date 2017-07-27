@@ -12,7 +12,7 @@ depth2pressure(d, latitude)
 \item{latitude}{The latitude in degrees}
 }
 \value{
-p The pressure in Pa
+The pressure in Pa
 }
 \description{
 This function is used to convert the depth (in meters) to the pressure in Pascals.

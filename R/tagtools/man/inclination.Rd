@@ -14,7 +14,7 @@ inclination(A, M, fc = NULL)
 \item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing the inclination angle. The filter cut-off frequency is with respect to 1=Nyquist frequency. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
 \value{
-incl  The magnetic field inclination angle in radians.
+The magnetic field inclination angle in radians.
 }
 \description{
 This function is used to estimate the local magnetic field vector inclination angle directly from acceleration and magnetic field measurements.

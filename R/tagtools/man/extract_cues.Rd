@@ -16,9 +16,11 @@ extract_cues(x, fs, cues, len)
 \item{len}{is the length of the interval to extract in seconds. This should be a scalar.}
 }
 \value{
-X is a matrix containing sub-samples of x. If x is a vector, X has as many columns as there are cues, i.e., each cue generates a column of X. If x is a pxm matrix, X will be a qxmxn matrix where n is the size of cues and q is the length of the interval requested, i.e., round(fs*len) samples.
-
-cues is the list of cues actually used. cues that require data outside of x are rejected.
+A list with 2 elements:
+\itemize{
+\item{\strong{X: }} A matrix containing sub-samples of x. If x is a vector, X has as many columns as there are cues, i.e., each cue generates a column of X. If x is a pxm matrix, X will be a qxmxn matrix where n is the size of cues and q is the length of the interval requested, i.e., round(fs*len) samples.
+\item{\strong{cues: }} The list of cues actually used. cues that require data outside of x are rejected.
+}
 }
 \description{
 This function is used to extract multiple sub-samples of data from a vector or matrix.

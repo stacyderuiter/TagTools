@@ -20,9 +20,9 @@ ptrack(A, M, s, fs, fc = NULL, include_pe = NULL)
 \item{include_pe}{A conditional statement. If include_pe is TRUE, the estimated depth of altitude predicted will be returned with the estimated track.}
 }
 \value{
-T The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal'sposition at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
+The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal'sposition at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
 
-pe The estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
+OR, if include_pe = TRUE, this function returns the above value and the estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
 }
 \description{
 This function is used to estimate the simple dead-reckoned track (pseudo-track) based on speed and bodypointing angle.

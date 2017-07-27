@@ -14,9 +14,11 @@ zero_crossings(x, TH, Tmax = NULL)
 \item{Tmax}{(optional) The maximum duration in samples between threshold crossings. To be accepted as a zero-crossing, the signal must pass from below -TH to above TH, or vice versa, in no more than Tmax samples. This is useful to eliminate slow transitions. If Tmax is not given, there is no limit on the number of samples between threshold crossings.}
 }
 \value{
-K A vector of cues (in samples) to zero-crossings in x.
-
-s A vector containing the sign of each zero-crossing (1 = positive-going, -1 = negative-going). s is the same size as K. If no zero-crossings are found, K and s will be empty
+A list with 2 elements:
+\itemize{
+\item{\strong{K: }} A vector of cues (in samples) to zero-crossings in x.
+\item{\strong{s: }} A vector containing the sign of each zero-crossing (1 = positive-going, -1 = negative-going). s is the same size as K. If no zero-crossings are found, K and s will be empty
+}
 }
 \description{
 This function is used to find the zero-crossings in a vector using a hysteretic detector. This is useful, e.g., to locate cyclic postural changes due to propulsion.

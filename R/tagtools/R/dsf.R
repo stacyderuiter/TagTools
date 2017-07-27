@@ -16,24 +16,22 @@
 #' @note Data selection: This function works best if the sensor matrix, A, covers an interval in which propulsion is the main activity. This could be a complete dive or an interval of running or flapping flight. The interval length should be at least Nfft/fs seconds, i.e., 20 s for the default FFT length. 
 #' @export
 
-dsf <- function(A, fs, fc = NULL, Nfft) {
+dsf <- function(A, fs, fc = NULL, Nfft = NULL) {
   #default low-pass filter at 2.5 Hz
-  fcnull <- FALSE
   if (is.null(fc)) {
     fc <- 2.5
-    fcnull <- TRUE
   }
   #default FFT length
-  if (missing(Nfft)) {
+  if (is.null(Nfft)) {
     Nfft <- round(20 * fs)
   }
   PCNT <- 20
   if (fc > (fs/2)) {
-    fc <- vector(mode = "numeric", length = 0)
+    fc <- c()
   }
   #force Nfft to the nearest power of 2
   Nfft <- 2^(round(log(Nfft)/log(2)))
-  if (!fcnull) {
+  if (!is.null(fc)) {
     Af <- fir_nodelay(diff(A), 6 * fs / fc, fc / (fs / 2))$y
   } else {
     Af <- diff(A)
@@ -42,7 +40,7 @@ dsf <- function(A, fs, fc = NULL, Nfft) {
   S <- templist$SL
   f <- templist$f
   #sum spectral power in the three axes
-  v = rowSums(10^(S/10))
+  v <- rowSums(10^(S/10))
   m <- max(v)
   n <- which.max(v)
   p <- pracma::polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)

@@ -26,8 +26,9 @@ function    [V,q] = inv_axis(A)
 %		it is important to choose a relevant sub-sample of movement data, A, to analyse.
 %
 %		Example:
-%		 [V,q] = inv_axis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
-% 	    returns: V=[-0.0796;0.4773;0.8752], q=1.6241e-09.
+%		 s=sin(2*pi*0.1*(1:100)');
+%    A=s*[0.9 -0.4 0.3]+s.^2*[0 0.2 0.1];
+%    [V,q] = inv_axis(A)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

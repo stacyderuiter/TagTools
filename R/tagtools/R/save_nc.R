@@ -8,7 +8,9 @@
 #'		 in a NetCDF file because the supporting information in these structures is
 #'		 needed to describe the contents of the file. For non-archive and non-portable
 #'		 storage of variables, consider using \code{\link{save}} or various functions to write data to text files. 
+#' @param ... Additional sensor or metadata lists, if user has not bundled them all into a list already but is providing individual structures.
 #' @example
+#' @export
 #' \dontrun{savenc('dog17_124a',A,M,P,info)
 #' #or equivalently:
 #' savenc('dog17_124a',X=list(A,M,P,info))
@@ -17,16 +19,26 @@
 
 save_nc <- function(file, X, ...){
   # append .nc suffix to file name if needed
-  if (!grepl('.nc', file)){
+  if (!grepl('\\.nc', file)){
     file <- paste(file, '.nc', sep='')
   }
   
   # if one or more loose inputs are given, collect into a list
-  if (length(X$depid) > 0 | length(X$sampling_rate)>0){
+  if (length(X$depid) > 0){
     X <- list(X, ...)
+    names(X)[1] <- substitute(X)
   }
+  
+  # if there are multiple inputs, make sure that info
+  # (global attributes) is not the first one.
+  # this is because we can't create an empty nc file with
+  # no variable and only global attributes.
+  if (names(X)[1] == 'info'){
+    X <- c(X[2:length(X)], X[1])
+  }
+  
   # write sensors and metadata to file
   for (k in 1:length(X)){
-      add_nc(file, X[[k]])
+      add_nc(file, X[[k]], vname=names(X)[k])
   }
 }

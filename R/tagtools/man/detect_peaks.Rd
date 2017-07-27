@@ -23,7 +23,7 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
 \item{...}{Additional inputs to be passed to FUN}
 }
 \value{
-peaks A list containing vectors for the start times, end times, peak times, peak maxima, thresh, and bktime. All times are presented as the sampling value.
+A list containing vectors for the start times, end times, peak times, peak maxima, thresh, and bktime. All times are presented as the sampling value.
 }
 \description{
 This function detects peaks in data that exceed a specfied threshold and returns each peak's start time, end time, maximum peak value, and time of the maximum peak.

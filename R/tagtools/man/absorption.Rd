@@ -14,7 +14,7 @@ absorption(f, T, d)
 \item{d}{depth in meters}
 }
 \value{
-a The sound absorption in dB per metre.
+The sound absorption in dB per metre.
 }
 \description{
 Calculates the absorption coefficient for sound in seawater

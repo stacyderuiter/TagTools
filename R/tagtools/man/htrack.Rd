@@ -18,7 +18,7 @@ htrack(A, M, s, fs, fc = NULL)
 \item{fc}{(optional) Specifies the cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
 }
 \value{
-T The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal's position at the start of the measurements (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
+The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (termed 'northing' and 'easting', i.e, T=[northing,easting]) relative to the animal's position at the start of the measurements (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/fs,2/fs,... relative to the start time of the measurements.
 }
 \description{
 This function is used to estimate the simple horizontal dead-reckoned track (pseudo-track) based on speed and heading. This differs from ptrack in that the animals body angle is not considered. This makes it appropriate for animals that do not always move in the direction of their longitudinal axis.

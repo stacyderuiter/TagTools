@@ -16,7 +16,7 @@ extract(x, fs, tst, ted)
 \item{ted}{Defines the end time in seconds of the interval to be extracted from x.}
 }
 \value{
-X A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
+A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
 }
 \description{
 This function is used to extract a sub-sample of data from a vector or matrix.

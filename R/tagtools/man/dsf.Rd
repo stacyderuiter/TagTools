@@ -4,7 +4,7 @@
 \alias{dsf}
 \title{Estimate the dominant stroke frequency}
 \usage{
-dsf(A, fs, fc = NULL, Nfft)
+dsf(A, fs, fc = NULL, Nfft = NULL)
 }
 \arguments{
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
@@ -16,9 +16,11 @@ dsf(A, fs, fc = NULL, Nfft)
 \item{Nfft}{(optional) The FFT length and therefore the frequency resolution. The default value is the power of two closest to 20*fs, i.e., an analysis block length of about 20 s and a frequency resolution of about 0.05 Hz. A shorter FFT may be required if movement behaviour is very variable. A longer FFT may work well if propulsion is continuous and stereotyped.}
 }
 \value{
-fpk The dominant stroke frequency (i.e., the peak frequency in the sum of the acceleration power spectra) in Hz. Quadratic interpolation is used over the spectral peak to improve resolution.
-
-q The quality of the peak measured by the peak power divided by the mean power of the spectra. This is a dimensionless number which is large if there is a clear spectral peak.
+A list with 2 elements:
+\itemize{
+\item{\strong{fpk: }}The dominant stroke frequency (i.e., the peak frequency in the sum of the acceleration power spectra) in Hz. Quadratic interpolation is used over the spectral peak to improve resolution.
+\item{\strong{q: }} The quality of the peak measured by the peak power divided by the mean power of the spectra. This is a dimensionless number which is large if there is a clear spectral peak.
+}
 }
 \description{
 This function can be used to estimate the dominant stroke frequency from triaxial accelerometer data [ax,ay,az].

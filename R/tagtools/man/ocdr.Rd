@@ -18,7 +18,7 @@ ocdr(p, A, fs, fc, plim)
 \item{plim}{(optional) Specifies the minimum pitch angle in radians at which speed can be computed. Errors in speed estimation using this method increase strongly at low pitch angles. To avoid estimates with poor accuracy being used in later analyses, speed estimates at low pitch angles are replaced by NaN (not-a-number). The default threshold for this is 20 degrees.}
 }
 \value{
-s The forward speed estimate in m/s
+The forward speed estimate in m/s
 }
 \description{
 This function is used to estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.

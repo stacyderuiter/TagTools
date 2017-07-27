@@ -18,7 +18,7 @@ spec_lev(x, nfft, fs, w, nov)
 \item{nov}{The number of samples to overlap each segment. The default value is half of the window length.}
 }
 \value{
-SL The spectrum level at each frequency in dB RMS re root-Hz.
+The spectrum level at each frequency in dB RMS re root-Hz.
 }
 \description{
 This function is used to compute the spectrum level of a signal x.
