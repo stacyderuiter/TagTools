@@ -14,7 +14,7 @@ sound_speed(T, D = NULL, S = NULL)
 \item{S}{The salinity in part-per-thousand (defaults to 35 ppt)}
 }
 \value{
-v The sound speed in m/s
+The sound speed in m/s
 }
 \description{
 This function is used to estimate the sound speed using Coppens equation

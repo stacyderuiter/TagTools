@@ -14,7 +14,7 @@ block_mean(X, n, nov)
 \item{nov}{(optional) The number of samples that the next block overlaps the previous block. The default value is 0.}
 }
 \value{
-Y is a vector or matrix containing the mean value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
+A vector or matrix containing the mean value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 }
 \description{
 This function is used to compute the means of successive blocks of samples.

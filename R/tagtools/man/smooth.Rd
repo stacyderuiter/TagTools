@@ -12,7 +12,7 @@ smooth(x, n)
 \item{n}{The smoothing parameter - use a larger number to smooth more. n must be greater than 1. Signal components above 1/n of the Nyquist frequency are filtered out.}
 }
 \value{
-y The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient. Smooth uses fir_nodelay to perform the filtering and so introduces no delay.
+The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient. Smooth uses fir_nodelay to perform the filtering and so introduces no delay.
 }
 \description{
 This funciton is used to low pass filter (smooth) a regularly-sampled time series.

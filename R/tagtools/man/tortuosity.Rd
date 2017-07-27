@@ -14,7 +14,7 @@ tortuosity(T, fs, intvl)
 \item{intvl}{The time interval in seconds over which tortuosity is calculated. This should be chosen according to the scale of interest, e.g., the typical length of a foraging bout.}
 }
 \value{
-t The tortuosity index which is between 0 and 1 as described above. t contains a value for each period of intvl seconds.
+The tortuosity index which is between 0 and 1 as described above. t contains a value for each period of intvl seconds.
 }
 \description{
 This function is used to measure the toruosity of a regularly sampled horizontal track. Tortuosity can be measured in a number of ways. This function compares the stretched-out track length (STL) over an interval of time with the distance made good (DMG, i.e., the distance actually covered in the interval). The index returned is (STL-DMG)/STL which is 0 for straightline movement and 1 for extreme circular movement.

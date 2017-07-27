@@ -18,9 +18,11 @@ buffer(x, n, p, opt, nodelay = FALSE)
 \item{nodelay}{A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)}
 }
 \value{
-X A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
-
-z (nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+A list with 2 elements:
+\itemize{
+\item{\strong{X: }} A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
+\item{\strong{z: }} (if nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+}
 
 opt (nodelay = FALSE) The last values, length of "p", of the matrix "X".
 }
