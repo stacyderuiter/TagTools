@@ -1,10 +1,10 @@
 #' Load a tag dataset from a netCDF file.
 #' 
-#' This function is used to load a tag dataset from a netCDF file.
 #' @description This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
 #' @param file File name (and path, if necessary) of netCDF file to be read, as a quoted character string.
 #' @param which_vars (Optional) A list of quoted character strings giving the exact names of variables to be read in. Default is to read all variables present in the file. parameters should be read in.
 #' @return An \code{animaltag} object (a list) containing sensor and metadata structures. The item names in X will be the same as the names of the variables in the NetCDF file (plus an "info" one), e.g., if the file contains A and P, output object X will have fields X$A, X$P and X$info (the file metadata).
+#' @export
 #' @example \dontrun{load_nc('testset1.nc')}
 #' 
 

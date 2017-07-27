@@ -1,6 +1,6 @@
-function		addnc(fname,X)
+function		add_nc(fname,X)
 
-%		addnc(fname,X)
+%		add_nc(fname,X)
 %		Add a variable to a NetCDF archive file. If the archive file does not exist,
 %		it is created. The file is assumed to be in the current working directory 
 %		unless a pathname is added to the beginning of fname.
