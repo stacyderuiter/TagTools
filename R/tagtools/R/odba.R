@@ -9,8 +9,7 @@
 #' @return A column vector of ODBA with the same number of rows as A. e has the same units as A.
 #' @note When hoping to use the default (FIR filtering) method to calculate odba, use the inputs A, fs, and fh. When hoping to use the "vedba" or "wilson" method, use the inputs A, n, and method.
 #' @export
-#' @example A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7), byrow = TRUE, nrow = 3)
-#'          e <- odba(A, method = "vedba", n = 5)
+
 
 odba <- function(A, fs, fh = NULL, method = "fir", n = NULL) {
   if (nargs() < 3) {

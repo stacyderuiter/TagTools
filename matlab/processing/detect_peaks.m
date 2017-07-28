@@ -1,7 +1,7 @@
 function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
-% This function detects peaks in jerk data that exceed a specfied 
+% This function detects peaks in jerk data that exceed a specified 
 %   threshold and returns each peak's start time, end time, maximum jerk
-%   value, and time of the maximum jerk.
+%   value, time of the maximum jerk, threshold level, and blanking time.
 %
 % INPUTS:
 %   data = A vector (of all positive values) or matrix of data to be used 
@@ -11,8 +11,8 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       the bktime in the case that the input for bktime is missing.
 %   FUN = A function to be applied to data before the data is run through 
 %       the peak detector. Only specify the function name (i.e. 'njerk'). 
-%       If left blank, the data input will be immediatly passed through the
-%       peak detector.
+%       If left blank, the data input will be immediately passed through 
+%       the peak detector.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
