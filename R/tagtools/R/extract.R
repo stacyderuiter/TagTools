@@ -9,6 +9,8 @@
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
 #' @export
+#' BW <- beaked_whale
+#' extract(x = BW$A$data, fs = BW$A$sampling_rate, tst = 3, ted = 100)
 
 extract <- function(x, fs, tst, ted) {
   if (missing(ted)) {

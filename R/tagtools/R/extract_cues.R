@@ -12,6 +12,9 @@
 #' }
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @export
+#' @example 
+#' BW <- beaked_whale
+#' list <- extract_cues(x = BW$A$data, fs = BW$A$sampling_rate, cues = 6, len = 11)
 
 extract_cues <- function(x, fs, cues, len) {
   if (missing(len)) {

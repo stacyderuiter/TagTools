@@ -6,13 +6,20 @@
 #' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix
 #' @param opt The vector of samples specified to precede x[1] in an overlapping buffer
 #' @param nodelay A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)
-#' @return A list with 3 elements:
+#' @return A list with 3 elements is returned if nodelay = FALSE:
 #' \itemize{
 #' \item{\strong{X: }} A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
-#' \item{\strong{z: }} (if nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
-#' \item{\strong{opt: }}(nodelay = FALSE) The last values, length of "p", of the matrix "X".
+#' \item{\strong{z: }}  The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+#' \item{\strong{opt: }} The last values, length of "p", of the matrix "X".
 #' }
+#' @return If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
 #' @export
+#' @example x <- c(1:10)
+#'          n <- 3
+#'          p <- 2
+#'          opt <- c(2,1)
+#'          list1 <- buffer(x, n, p, opt)
+#'          list2 <- buffer(x, n, p, nodelay = TRUE)
 
 buffer <- function(x, n, p, opt, nodelay = FALSE) {
   if(missing(x)|| missing(n) || missing(p)){

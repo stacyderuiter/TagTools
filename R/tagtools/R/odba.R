@@ -9,7 +9,11 @@
 #' @return A column vector of ODBA with the same number of rows as A. e has the same units as A.
 #' @note When hoping to use the default (FIR filtering) method to calculate odba, use the inputs A, fs, and fh. When hoping to use the "vedba" or "wilson" method, use the inputs A, n, and method.
 #' @export
-
+#' @example 
+#' SW <- sperm_whale
+#' e <- odba(A = SW$A$data, fs = SW$A$sampling_rate, fh = 4)
+#' ba <- list(e = e)
+#' plott(ba, SW$A$sampling_rate)
 
 odba <- function(A, fs, fh = NULL, method = "fir", n = NULL) {
   if (nargs() < 3) {

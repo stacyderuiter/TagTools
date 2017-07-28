@@ -12,6 +12,11 @@
 #' @note Output sampling rate is the same as the input sampling rate so s has the same size as p.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A descending animal will have a negative pitch angle.
 #' @export
+#' @example 
+#' HS <- harbor_seal
+#' s <- ocdr(p = HS$P$data, A = HS$A$data, fs = HS$P$sampling_rate, fc = NULL, plim = NULL)
+#' speed <- list(s = s)
+#' plott(speed, testset2$P$sampling_rate)
 
 ocdr <- function(p, A, fs, fc, plim) {
   if (missing(A) | missing(p)) {
