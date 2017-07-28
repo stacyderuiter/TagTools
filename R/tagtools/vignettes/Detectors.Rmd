@@ -43,23 +43,23 @@ Case Study
 ###Detecting lunge feeding events of a blue whale from triaxial acceleration data
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this case study, I will be providing an example on how to use the detect_peaks function in order to detect the times of lunge feedings events of a blue whale. Previous studies have shown the effectiveness of using the norm jerk of triaxial acceleration to detect the presence of lunge feeding events in tag data (Simon et al. 2012; Owen et al. 2016). Thankfully, the tagtools package has the function njerk which can be used to convert our acceleration matrix into the norm jerk signal vector.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the blue whale data from the tagtools package and generate my acceleration matrix (within the whale frame). The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "fs" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the blue whale data from the tagtools package and generate my acceleration matrix (within the whale frame). The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
 ```{r, results = "hide", message=FALSE}
 library(readr)
 bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
-fs <- bw11_210a_tagdata$fs[1]  
+sampling_rate <- bw11_210a_tagdata$sampling_rate[1]  
 ```
 Next, I will generate the norm jerk signal using the function njerk. A plot is shown to provide a helpful visualization of the signal.
 ```{r, fig.width=7, fig.height=5}
-jerk <- njerk(A = Aw, fs = fs)
+jerk <- njerk(A = Aw, sampling_rate = sampling_rate)
 X <- list(jerk = jerk)
-plott(X, fs, line_colors = "blue") 
+plott(X, sampling_rate, line_colors = "blue") 
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you can see, what used to be an acceleration matrix has now been converted into a signal vector the same length as Aw with all positive values. From this plot, you can already begin to get an idea of where some of the lunge feeding events might be if you notice the occasional peaks in the signal. However, The peaks to the right of the 60000 time value begin to look unlike any of the other data, and it is likely that these seemingly outlier peaks will skew our results. Therefore, the next step in detecting the event of a lunge feeding behavior is to gather the rest of the data necessary to use the detect_peaks function and remove the outlier peaks from our signal. In order to run the detect_peaks function, we must have have the variable "sr", which is the sampling rate of our "data" input. If you are thinking to yourself, "Isn't that the same as 'fs', which we already gathered?" You are correct. However, due to the nature of the function, the sampling rate must be labeled as something other than "fs".
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you can see, what used to be an acceleration matrix has now been converted into a signal vector the same length as Aw with all positive values. From this plot, you can already begin to get an idea of where some of the lunge feeding events might be if you notice the occasional peaks in the signal. However, The peaks to the right of the 60000 time value begin to look unlike any of the other data, and it is likely that these seemingly outlier peaks will skew our results. Therefore, the next step in detecting the event of a lunge feeding behavior is to gather the rest of the data necessary to use the detect_peaks function and remove the outlier peaks from our signal. In order to run the detect_peaks function, we must have have the variable "sr", which is the sampling rate of our "data" input. If you are thinking to yourself, "Isn't that the same as 'sampling_rate', which we already gathered?" You are correct. However, due to the nature of the function, the sampling rate must be labeled as something other than "sampling_rate".
 ```{r, results='hide'}
-sr <- bw11_210a_tagdata$fs[1]  
+sr <- bw11_210a_tagdata$sampling_rate[1]  
 jerk <- jerk[1:60000]
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At this point, we are almost ready to apply our norm jerk signal to the detect_peaks function. One thing to consider first, however, is whether we want to set a specified threshold and/or blanking time value or if we are okay simply using the default values for each of these inputs. In this instance, let's assume that we don't know what the perfect threshold value or blanking time should be, so we will use the default settings (for now).
@@ -68,17 +68,17 @@ detect_peaks(data = jerk, sr = sr, FUN = NULL,
                  thresh = NULL, bktime = NULL, plot_peaks = TRUE)
 ```
 ```{r, include = FALSE}
-peaks <- detect_peaks(data = Aw[1:60000, ], sr = sr, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = TRUE, fs = fs)
+peaks <- detect_peaks(data = Aw[1:60000, ], sr = sr, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = TRUE, sampling_rate = sampling_rate)
 ```
 ```{r, echo = FALSE, fig.width=7, fig.height=5}
 X <- list(jerk = jerk)
-plott(X, fs, line_colors = "blue")
+plott(X, sampling_rate, line_colors = "blue")
 ```
 
 In the case where we did not need/want to see the jerk signal before running the detect_peaks function, we could have produced the same results using the following code:
 ```{r, message = FALSE, eval = FALSE}
 detect_peaks(data = Aw[1:60000, ], sr = sr, FUN = "njerk", 
-                thresh = NULL, bktime = NULL, plot_peaks = TRUE, fs = fs)
+                thresh = NULL, bktime = NULL, plot_peaks = TRUE, sampling_rate = sampling_rate)
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now, looking at the generated plot we can see the same signal as before, but now the plot has markers identifying all of the peaks that were detected. At this time, you can decide if you wish to change the level of the threshold or blanking time, consequentally rerunning the function. If you wish to accept the peak detections displayed, you can end the function and obtain the output list of detection times and levels. In order to fully walk through the capabilities of this function, let's imagine that you wish to change both the threshold and the blanking time values to see how the output might change. To do this yourself, you would click within the plot, but given that I cannot do that, I will list the coordinates [x, y] as if I had clicked in three different locations on the plot: [19873, 0.874], [20000, 1.258], [19950, 0.736]. Based off of these three coordinates, the threshold value when the function is rerun will be 0.874, and the blanking time will be 50. Below is the new plot and a summary of our results. I have included the new code to provide a helpful visual, but using this functioon on your own, it is not necessary to retype the function after changing your threshold and/or blanking time from the interactive plot.
@@ -87,5 +87,5 @@ peaks <- detect_peaks(data = jerk, sr = sr, FUN = NULL,
                           thresh = 0.874, bktime = 50, plot_peaks = TRUE)
 ```
 ```{r, echo = FALSE, fig.width=7, fig.height=5}
-plott(X, fs, line_colors = "blue")
+plott(X, sampling_rate, line_colors = "blue")
 str(peaks)

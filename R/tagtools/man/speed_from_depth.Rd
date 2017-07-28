@@ -4,16 +4,16 @@
 \alias{speed_from_depth}
 \title{Estimate the forward speed of a diving animal}
 \usage{
-speed_from_depth(p, A, fs, fc = NULL, plim = NULL)
+speed_from_depth(p, A, sampling_rate, fc = NULL, plim = NULL)
 }
 \arguments{
-\item{p}{The depth vector (a regularly sampled time series) in meters. sampled at fs Hz. This can either be a sensor list, or a vector.}
+\item{p}{The depth vector (a regularly sampled time series) in meters. sampled at sampling_rate Hz. This can either be a sensor list, or a vector.}
 
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.}
 
-\item{fs}{The sampling rate of p and A in Hz (samples per second).}
+\item{sampling_rate}{The sampling rate of p and A in Hz (samples per second).}
 
-\item{fc}{(optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
+\item{fc}{(optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
 
 \item{plim}{(optional) Specifies the minimum pitch angle in radians at which speed can be computed. Errors in speed estimation using this method increase strongly at low pitch angles. To avoid estimates with poor accuracy being used in later analyses, speed estimates at low pitch angles are replaced by NaN (not-a-number). The default threshold for this is 20 degrees.}
 }
@@ -25,10 +25,10 @@ A list with 2 elements:
 }
 }
 \description{
-This function is used to estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,fs,fc) just estimate the depth-rate (i.e., the first differential of the depth).
+This function is used to estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle. or v=speed_from_depth(p,sampling_rate,fc) just estimate the depth-rate (i.e., the first differential of the depth).
 }
 \details{
-Possible input combinations: speed_from_depth(p,A) if p and A are lists, speed_from_depth(p,A,fc = fc) if p and A are lists, speed_from_depth(p,A,fc = fc,plim = plim) if p and A are lists, speed_from_depth(p,A,fs) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc) if p and A are vectors/matrices, speed_from_depth(p,A,fs,fc,plim) if p and A are vectors/matrices.
+Possible input combinations: speed_from_depth(p,A) if p and A are lists, speed_from_depth(p,A,fc = fc) if p and A are lists, speed_from_depth(p,A,fc = fc,plim = plim) if p and A are lists, speed_from_depth(p,A,sampling_rate) if p and A are vectors/matrices, speed_from_depth(p,A,sampling_rate,fc) if p and A are vectors/matrices, speed_from_depth(p,A,sampling_rate,fc,plim) if p and A are vectors/matrices.
 }
 \note{
 Output sampling rate is the same as the input sampling rate so s and v have the same size as p.

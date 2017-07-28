@@ -4,14 +4,14 @@
 \alias{spec_lev}
 \title{Compute the spectrum level of a signal x.}
 \usage{
-spec_lev(x, nfft, fs, w, nov)
+spec_lev(x, nfft, sampling_rate, w, nov)
 }
 \arguments{
 \item{x}{A vector containing the signal to be processed. For signals with multiple channels, each channel should be in a column of x.}
 
 \item{nfft}{The length of the fft to use. Choose a power of two for fastest operation. Default value is 512.}
 
-\item{fs}{The sampling rate of x in Hz. Default value is 1. fs is the vector of frequencies at which SL is calculated.}
+\item{sampling_rate}{The sampling rate of x in Hz. Default value is 1. sampling_rate is the vector of frequencies at which SL is calculated.}
 
 \item{w}{The window length. The default value is nfft. If w<nfft, each segment of w samples is zero-padded to nfft.}
 
@@ -20,7 +20,7 @@ spec_lev(x, nfft, fs, w, nov)
 \value{
 A list with 2 elements:
 \itemize{
-\item{\strong{SL: }}The spectrum level at each frequency in dB RMS re root-Hz. The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
+\item{\strong{SL: }}The spectrum level at each frequency in dB RMS re root-Hz. The spectrum is single-sided and extends to sampling_rate/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(sampling_rate). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
 \item{\strong{f: }} The vector of frequencies at which SL is calculated.
 }
 }
@@ -28,5 +28,5 @@ A list with 2 elements:
 This function is used to compute the spectrum level of a signal x.
 }
 \note{
-The spectrum is single-sided and extends to fs/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(fs). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
+The spectrum is single-sided and extends to sampling_rate/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(sampling_rate). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
 }

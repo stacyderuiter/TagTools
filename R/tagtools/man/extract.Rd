@@ -4,19 +4,19 @@
 \alias{extract}
 \title{Extract a sub-sample of data}
 \usage{
-extract(x, fs, tst, ted)
+extract(x, sampling_rate, tst, ted)
 }
 \arguments{
 \item{x}{A vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.}
 
-\item{fs}{the sampling rate in Hz of the data in x.}
+\item{sampling_rate}{the sampling rate in Hz of the data in x.}
 
 \item{tst}{Defines the start time in seconds of the interval to be extracted from x.}
 
 \item{ted}{Defines the end time in seconds of the interval to be extracted from x.}
 }
 \value{
-A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
+A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(sampling_rate*(tend-tstart)) samples.
 }
 \description{
 This function is used to extract a sub-sample of data from a vector or matrix.
