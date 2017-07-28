@@ -14,6 +14,8 @@
 #' @param BL_COV Logical.  If BL_COV=TRUE, then a covariance matrix using all data in baseline period will be used for calculating the Mahalanobis distance. Default is BL_COV=FALSE.
 #' @return Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
 #' @export
+#' BW <- beaked_whale
+#' dframe <- m_dist(BW$A$data, BW$A$sampling_rate)
 
 m_dist <- function(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV) {
   #Input checking---------------------------------------
