@@ -2,16 +2,19 @@
 #' 
 #' This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.
 #' @param p A depth or altitude time series (vector) in meters.
-#' @param fs The sampling rate of the sensor data in Hz (samples per second).
+#' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second).
 #' @param mindepth The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.
 #' @param surface (optional) The threshold in meters at which the animal is presumed to have reached the surface. Default value is 1. A smaller value can be used if the dive/altitude data are very accurate and you need to detect shallow dives/flights.
 #' @param findall (optional) When 1 forces the algorithm to include incomplete dives at the start and end of the record. Default is 0 which only recognizes complete dives.
-#' @return T is a structure array with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
+#' @return T is a list with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
 #' @export
+#' @example 
+#' BW <- beaked_whale
+#' T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
 
-find_dives <- function(p, fs, mindepth, surface = NULL, findall = NULL) {
+find_dives <- function(p, sampling_rate, mindepth, surface = NULL, findall = NULL) {
   if (missing(mindepth)) {
-    stop("inputs for p, fs, and mindepth are all required")
+    stop("inputs for p, sampling_rate, and mindepth are all required")
   }
   if (is.null(surface)) {
     surface <- 1          #maximum p value for a surfacing
@@ -53,20 +56,20 @@ find_dives <- function(p, fs, mindepth, surface = NULL, findall = NULL) {
   ton <- ton[1:k]
   toff >- toff[1:k]
   #filter vertical velocity to find actual surfacing moments
-  n <- round(4 * fs / dp_lp)
-  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * fs, n, dp_lp / (fs / 2))$y
+  n <- round(4 * sampling_rate / dp_lp)
+  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))$y
   #for each ton, look back to find last time whale was at the surface
   #for each toff, look forward to find next time whale is at the surface
   dmax <- matrix(0, length(ton), 2)
   for (k in 1:length(ton)) {
-    ind <- ton[k] + (-round(searchlen * fs):0)
+    ind <- ton[k] + (-round(searchlen * sampling_rate):0)
     ind <- ind[which(ind > 0)]
     ki = max(which(dp[ind] < dpthresh)) 
     if (identical(ki, empty)) {
       ki <- 1
     }
     ton[k] = ind[ki] ;
-    ind <- toff[k] + (0:round(searchlen * fs)) 
+    ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
     ind <- ind[which(ind <= length(p))] 
     ki <- min(which(dp[ind] > -dpthresh))
     if (identical(ki, empty)) {
@@ -75,11 +78,11 @@ find_dives <- function(p, fs, mindepth, surface = NULL, findall = NULL) {
     toff[k] <- ind[ki]
     dm <- max(p[ton[k]:toff[k]])
     km <- which.max(p[ton[k]:toff[k]])
-    dmax[k, ] <- c(dm, ((ton[k] + km - 1) / fs))
+    dmax[k, ] <- c(dm, ((ton[k] + km - 1) / sampling_rate))
   }
   #assemble output
   t0 <- cbind(ton,toff)
-  t1 <- t0 / fs
+  t1 <- t0 / sampling_rate
   t2 <- dmax
   t <- cbind(t1, t2)
   t <- matrix(t[stats::complete.cases(t)], byrow = FALSE, ncol = 4)

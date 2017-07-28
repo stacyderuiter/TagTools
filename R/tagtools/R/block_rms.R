@@ -6,7 +6,7 @@
 #' @param nov The number of samples that the next block overlaps the previous block.
 #' @return A list with 2 elements:
 #' \itemize{
-#'  \item{\strong{y: }} A vector or matrix containing the RMS value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
+#'  \item{\strong{Y: }} A vector or matrix containing the RMS value of each block. If X is a mxn matrix, Y is pxn where p is the number of complete n-length blocks with nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 #'  \item{\strong{t: }} The time at which each output in Y is reported, in units of samples of X.  So if t[1] = 12, then the value Y[1] corresponds to the “time” 12 samples in X. The times at which Y values are reported are the centers of the averaging windows.
 #' }
 #' @note Output sampling rate is the same as the input sampling rate so s and v have the same size as p.
@@ -15,8 +15,6 @@
 #' @example 
 #' X <- matrix(c(1:20), byrow = TRUE, nrow = 4)
 #' block_rms(X, n = 2, nov = NULL)
-#'  #Results: y <- matrix(c(4.30, 5.14, 6.04, 6.96, 7.90, 13.72, 14.71, 15.70, 16.68, 17.67), byrow = TRUE, nrow = 2)
-#'            t <- c(1, 3)
 
 block_rms <- function(X, n, nov = NULL) {
   # input checks-----------------------------------------------------------

@@ -9,6 +9,10 @@
 #' @return The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
 #' @note The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.
 #' @export
+#' BW <- beaked_whale
+#' v <- depth_rate(p = BW$P$data, fs = BW$P$sampling_rate, fc = .8)
+#' depthrate <- list(v = v)
+#' plott(depthrate, BW$P$sampling_rate)
 
 depth_rate <- function(p, fs, fc) {
   if (missing(p)) {

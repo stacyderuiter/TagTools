@@ -18,7 +18,7 @@ find_dives(p, fs, mindepth, surface = NULL, findall = NULL)
 \item{findall}{(optional) When 1 forces the algorithm to include incomplete dives at the start and end of the record. Default is 0 which only recognizes complete dives.}
 }
 \value{
-T is a structure array with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
+T is a list with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
 }
 \description{
 This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.

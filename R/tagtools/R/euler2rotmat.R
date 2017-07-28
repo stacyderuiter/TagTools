@@ -9,10 +9,7 @@
 #' @example vec1 <- matrix(c(1:10), nrow = 10)
 #'          vec2 <- matrix(c(11:20), nrow = 10)
 #'          vec3 <- matrix(c(21:30), nrow = 10)
-#' Q <- euler2rotmat(p = vec1, r = vec2, h = vec3)
-#' #Returns: first matrix of Q <- c(-0.2959394, -0.4645966, -0.834607648,
-#'                                   0.4520470,  0.7015905, -0.550839682,
-#'                                   0.8414710, -0.5402970,  0.002391215) 
+#'          Q <- euler2rotmat(p = vec1, r = vec2, h = vec3) 
 
 euler2rotmat <- function(p, r, h) {
   # input checks-----------------------------------------------------------

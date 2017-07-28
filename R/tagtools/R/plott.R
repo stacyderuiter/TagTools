@@ -19,6 +19,11 @@
 #' @return A plot of time-series data 
 #' @export
 #' @note This is a flexible plotting tool which can be used to display and explore sensor data with different sampling rates on a uniform time grid. 
+#' @example \dontrun{
+#' HS <- harbor_seal
+#' list <- list(depth = HS$P$data, A = HS$A$data)
+#' plott(list, HS$P$sampling_rate, r = c(TRUE, FALSE))
+#' }
 
 plott <- function(X, fsx=NULL, r=FALSE, offset=0, 
                   date_time_axis=TRUE,

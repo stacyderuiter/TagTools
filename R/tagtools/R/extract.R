@@ -2,15 +2,17 @@
 #' 
 #' This function is used to extract a sub-sample of data from a vector or matrix.
 #' @param x A vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
-#' @param fs the sampling rate in Hz of the data in x.
+#' @param sampling_rate the sampling rate in Hz of the data in x.
 #' @param tst Defines the start time in seconds of the interval to be extracted from x.
 #' @param ted Defines the end time in seconds of the interval to be extracted from x.
-#' @return A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(fs*(tend-tstart)) samples.
+#' @return A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(sampling_rate*(tend-tstart)) samples.
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
 #' @export
+#' BW <- beaked_whale
+#' extract(x = BW$A$data, sampling_rate = BW$A$sampling_rate, tst = 3, ted = 100)
 
-extract <- function(x, fs, tst, ted) {
+extract <- function(x, sampling_rate, tst, ted) {
   if (missing(ted)) {
     stop("inputs for all arguments are required")
   }
@@ -22,8 +24,8 @@ extract <- function(x, fs, tst, ted) {
   }
   npre <- NULL
   npst <- NULL
-  kst <- round(fs * tst) + 1
-  ked <- round(fs * ted)
+  kst <- round(sampling_rate * tst) + 1
+  ked <- round(sampling_rate * ted)
   if (kst > nrow(x)) {
     return(X)
   } else {
