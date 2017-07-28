@@ -7,7 +7,7 @@ for (s in 1:3){
   beaked_whale[[s]]$sampling_rate <- beaked_whale[[s]]$sampling_rate/df
 }
 
-save(beaked_whale, file='beaked_whale.Rdata')
+save(beaked_whale, file='beaked_whale.RData')
 
 harbor_seal <- load_nc('testset2.nc')
 
@@ -23,7 +23,7 @@ for (s in 1:3){
 }
 
 
-save(harbor_seal, file='harbor_seal.Rdata')
+save(harbor_seal, file='harbor_seal.RData')
 
 sperm_whale <- load_nc('testset3.nc')
 for (s in 1:3){

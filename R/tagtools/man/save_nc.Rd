@@ -13,6 +13,8 @@ save_nc(file, X, ...)
 in a NetCDF file because the supporting information in these structures is
 needed to describe the contents of the file. For non-archive and non-portable
 storage of variables, consider using \code{\link{save}} or various functions to write data to text files.}
+
+\item{...}{Additional sensor or metadata lists, if user has not bundled them all into a list already but is providing individual structures.}
 }
 \description{
 This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
