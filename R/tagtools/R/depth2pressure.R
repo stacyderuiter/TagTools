@@ -7,7 +7,7 @@
 #' @note Based on the Leroy and Parthiot (1998) formula. See: http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO
 #' @export
 #' @example depth2pressure(1000, 27)
-#'          Returns: 10075403 Pa
+#'          #Returns: 10075403 Pa
 
 depth2pressure <- function(d, latitude) {
   if (missing(latitude)) {

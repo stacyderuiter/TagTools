@@ -2,11 +2,11 @@
 #' 
 #' This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #' 
-#' Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,fs,fc) if A and M are matrices.
+#' Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,sampling_rate,fc) if A and M are matrices.
 #' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
 #' @param A A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
-#' @param fs The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
-#' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
+#' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
+#' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @return A list with 3 elements:
 #' \itemize{
 #' \item{\strong{h: }} The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
@@ -21,18 +21,18 @@
 #'                                                 A = matrix(c(-0.3, 0.52, 0.8), nrow = 1), fc = NULL)
 #' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.
 
-m2h <- function(M, A, fs, fc = NULL) {
+m2h <- function(M, A, sampling_rate, fc = NULL) {
   if (nargs() < 2) {
     stop("inputs for both M and A are required")
   }
   if (is.list(M) & is.list(A)) {
     if (nargs() > 2) {
-      fc <- fs
+      fc <- sampling_rate
     }
-    fs <- M$fs
+    sampling_rate <- M$sampling_rate
     M <- M$data
     A <- A$data
-    if (A$fs != M$fs) {
+    if (A$sampling_rate != M$sampling_rate) {
       stop("A and M must be at the same sampling rate")
     }
   } else {
@@ -40,7 +40,7 @@ m2h <- function(M, A, fs, fc = NULL) {
       fc <- c()
     } else {
       if (nargs() == 3) {
-        stop("Need to specify fs and fc if calling m2h with matrix inputs")
+        stop("Need to specify sampling_rate and fc if calling m2h with matrix inputs")
       }
     }
   }
@@ -54,8 +54,8 @@ m2h <- function(M, A, fs, fc = NULL) {
     stop("A and M must have the same number of rows/n")
   }
   if (!is.null(fc)) {
-    nf <- round(4 * fs / fc)
-    fc <- fc / (fs / 2)
+    nf <- round(4 * sampling_rate / fc)
+    fc <- fc / (sampling_rate / 2)
     if (nrow(M) > nf) {
       M <- fir_nodelay(M, nf, fc)$y
       A <- fir_nodelay(A, nf, fc)$y

@@ -13,8 +13,6 @@
 #' @export
 #' @example samplematrix <- matrix(c(1,3,5,7,9,11,13,15,17), byrow = TRUE, ncol = 3)
 #'          list <- block_mean(samplematrix, n = 3, nov = 1)
-#'          list$Y = c(7, 9, 11)
-#'          list$t = 2
 
 block_mean <- function(X,n,nov) {
   if (missing(nov)) {
