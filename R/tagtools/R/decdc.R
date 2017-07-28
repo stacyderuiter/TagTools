@@ -18,6 +18,10 @@ decdc <- function(x,df) {
   if (nrow(x) < 2) {
     warning("make sure that you have input your data as a column vector or a matrix")
   }
+  if (!is.matrix(x) & length(dim(x))==1){
+    # if data is not a matrix, make it one
+    x <- matrix(x, ncol=1)
+  }
   if (round(df) != df) {
     df <- round(df)
     warning("decdc needs integer decimation factor")

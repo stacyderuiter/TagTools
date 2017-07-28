@@ -18,13 +18,12 @@ buffer(x, n, p, opt, nodelay = FALSE)
 \item{nodelay}{A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)}
 }
 \value{
-A list with 2 elements:
+A list with 3 elements:
 \itemize{
 \item{\strong{X: }} A matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
 \item{\strong{z: }} (if nodelay = FALSE) The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
+\item{\strong{opt: }}(nodelay = FALSE) The last values, length of "p", of the matrix "X".
 }
-
-opt (nodelay = FALSE) The last values, length of "p", of the matrix "X".
 }
 \description{
 This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
