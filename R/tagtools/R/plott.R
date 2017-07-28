@@ -140,11 +140,12 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       draw_axis(side=1, x=times[[i]], 
                 date_time=sum(grepl('POSIX', class(times[[i]]))),
                 last_panel=(i == length(X)))
-    if (is.matrix(data_i) & dim(data_i)[2]>1){
+    if (is.matrix(data_i)){
+      if (dim(data_i)[2]>1){
       for (c in 2:ncol(data_i)){
         graphics::lines(x=times[[i]], y=data_i[,c], col=line_colors[c])
       }
-    }
+    }}
   }
   graphics::mtext(x_lab, side=1, line=2)
   
