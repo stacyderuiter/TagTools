@@ -1,259 +1,121 @@
-% CATS
-datapath='C:\Users\DTag-Builder\Dropbox\MATLAB-TOOLS\tagTools\io\CATS\mn160727-11\raw';
-fbase='20160730-091117-Froback-11';
-suffix='.csv';
-filename=[datapath '\' fbase '.csv'];
+function 	ncfile = read_cats(fname,depid)
 
-%% Get number of lines in file
-message='Calculating number of lines in file!';
-disp(message);
-tic
-fid = fopen(filename, 'r');
-chunksize = 1e6; % read chuncks of 1MB at a time
-numlines = 0;
-while ~feof(fid)
-    ch = fread(fid, chunksize, '*uchar');
-    if isempty(ch)
-        break
-    end
-    numlines = numlines + sum(ch == sprintf('\n'));
-end
-fclose(fid);
-toc
-message=['File contains: ' num2str(numlines) ' lines'];
-disp(message)
+% 		ncfile = read_cats(fname,depid)
+%		Read data files from a CATS data Logger. This function
+%     generates a netCDF file in the current working directory containing
+%		the variables in the data file including:
+%		A Accelerometer data structure
+% 		M Magnetometer data structure
+% 		T Temperature sensor data structure
+%		info	Information structure for the deployment
+%      
+% 		Inputs:
+%     fname is the file name of the CATS csv file including the complete 
+%      path name if the file is not in the current working directory or in a
+%      directory on the path. The .csv suffix is not needed.
+% 		depid is a string containing the deployment identification code assigned
+%      to this deployment, for example, mn12_186a.
+%  
+% 		Results:
+%     ncfile if the name of the NetCDF file containing the tag data. It will
+%      be 'depid'_raw.nc (e.g., mn12_186a_raw.nc).
+%
+%		Warning: CATS loggers can produce very large csv files which are slow to
+%		process. This function is optimised for speed and memory use so will
+%		tolerate large files. But processing could be slow.
+%
+% 		Example:
+% 		fn = read_cats('cats_test_sample','mn16_209a')
+%		loadnc(fn)
+%		% The workspace should now contain variables A, M, G, T, P, L and info
+%		% each of which is a structure.
+%
+%     Valid: Matlab, Octave
+%     markjohnson@st-andrews.ac.uk
+%     last modified: 22 July 2017
 
-bsize=chunksize;
-blocks=ceil(numlines/bsize);
-
-%% Get header
-fid=fopen(filename,'r');
-fheader=textscan(fid,'%s',1,'Delimiter','\n');
-[nrows, nfields]=size(cell2mat(regexp(fheader{1},',')));
-fclose(fid);
-
-%% CATS Sensor names & metadata from txt file
-% sensvocab
-
-fid=fopen([datapath '\' fbase '.txt'],'r');
-lines = textscan(fid, '%s', 'Delimiter', '\n');
-fclose(fid);
-lines = lines{1};
-
-
-%% Get line numbers for keywords (block identifiers)
-keywrd={'device','logging','duty','camera','available','activated'};
-blockid=zeros(length(keywrd),1);
-for k=1:length(keywrd)
-    blockid(k) = find(~cellfun(@isempty, strfind(lines,keywrd(k))));
+if nargin<1,
+    help read_cats
+    return
 end
 
-%% Get line numbers for block spacers (blank lines)
-blanks= find(cellfun('isempty', lines));
+[V,HDR] = read_cats_csv(fname) ;
+info.depid=depid;
+info.data_source=fname;
+info.data_nfiles=1;
+info.data_format='csv';
+info.device_serial=[];
+info.device_make='CATS';
+info.device_type='Archival';
+info.device_model_name=[];
+info.device_model_version=[];
+info.device_url=[];
+info.dephist_device_tzone='UTC';
+info.dephist_device_regset='dd-mm-yyyy HH:MM:SS';
+info.dephist_device_datetime_start=datestr(V(1,1));
 
-%% Block info
-dinf=lines(blockid(1)+1:blanks(find(blanks>blockid(1),1,'first'))-1);
-dlog=lines(blockid(2)+1:blanks(find(blanks>blockid(2),1,'first'))-1);
-dduty=lines(blockid(3)+1:blanks(find(blanks>blockid(3),1,'first'))-1);
-camera=lines(blockid(4)+1:blanks(find(blanks>blockid(4),1,'first'))-1);
-sens1=lines(blockid(5)+1:blanks(find(blanks>blockid(5),1,'first'))-1);
-sens2=lines(blockid(6)+1:blanks(find(blanks>blockid(6),1,'first'))-1);
+dT = diff(V(:,1)-V(1,1));
+md = median(dT) ;
+km = find(abs(dT-md)<0.5*md) ;
+if length(km)<0.75*length(dT),
+	fprintf('Warning: Many gaps in sampling. Inferred sampling rate may be inaccurate\n') ;
+end	
+FS = 1/(mean(dT(km))*3600*24) ;		% inferred sampling rate in Hertz
 
-%% Get device information
-sn=char(dinf(find(~cellfun(@isempty,strfind(dinf,'sn')),1,'first')));
-sn=(sn(regexp(sn,'=')+1:end));
-id=char(dinf(find(~cellfun(@isempty,strfind(dinf,'id')),1,'first')));
-id=(id(regexp(id,'=')+1:end));
-tzone=char(dinf(find(~cellfun(@isempty,strfind(dinf,'utc')),1,'first')));
-tzone=(tzone(regexp(tzone,'=')+1:end));
+% find out which sensors are present
+Sens = {'Acc','Mag','Gyr','Temp','Depth','Light'} ;
+% TODO: find out what to do about GPS and other sensor channels
+sl = '' ; SS = zeros(length(Sens),1) ;
+ax = [3,3,3,1,1,1] ;
+Sens_name = {'3 axis Accelerometer','3 axis Magnetometer','3 axis Gyroscope',...
+	'Temperature','Pressure','Light level'} ;
 
-%% Get logger information
-sdt=char(dlog(find(~cellfun(@isempty,strfind(dlog,'UTC')),1,'first')));
-sdt=(sdt(regexp(sdt,'=')+1:end));
-edt=char(dlog(find(~cellfun(@isempty,strfind(dlog,'UTC')),1,'last')));
-edt=(edt(regexp(edt,'=')+1:end));
-
-%% Dutycycle
-dcycle=cell(length(dduty),2);
-for k=1:length(dduty)
-    cyc=char(dduty(k));
-    dcycle(k,1)=cellstr(cyc(regexp(cyc,'_')+1:(regexp(cyc,'_')+2)));
-    dcycle(k,2)=cellstr(cyc(regexp(cyc,'=')+1:end));
+for k=1:length(Sens),
+	if any(strncmpi(HDR,Sens{k},length(Sens{k}))),
+		sl = [sl,',',Sens_name{k}] ;
+		SS(k) = 1 ;
+	end
 end
 
-%% Camera
-cv=char(camera(find(~cellfun(@isempty,strfind(camera,'version')),1,'first')));
-cv=(cv(regexp(cv,'=')+1:end));
-cmode=char(camera(find(~cellfun(@isempty,strfind(camera,'mode')),1,'last')));
-cmode=(cmode(regexp(cmode,'=')+1:end));
-[~,~]=size(camera);
+info.sensors_list = sl(2:end) ;
+ncfile = [depid '_raw'] ;
+savenc(ncfile,info) ;
 
-%% Generate a table of available sensors
-[r,c]=size(sens1);
-sblocks = find(~cellfun(@isempty, strfind(sens1,'unid')));
-unid=cell(r/3, 1);
-
-for k=1:r/3
-    unid(k,1)={k};
-    sid=char(sens1(sblocks(k)));
-    unid(k,2)=cellstr(sid(regexp(sid,'=')+1:end));
-    sname=char(sens1(sblocks(k)+1));
-    unid(k,3)=cellstr(sname(regexp(sname,'=')+1:end));
-    nchns=char(sens1(sblocks(k)+2));
-    unid(k,4)=cellstr(nchns(regexp(nchns,'=')+1:end));
+for k=1:length(Sens),
+	if SS(k),
+		save_sens_struct(V,depid,HDR,FS,fname,Sens{k},ax(k)) ;
+	end
 end
-clear k
+return
 
-%% Populate table with sensor information if used
-keywrd={'interval','offset','factor','coefficient'};
-for k=1:length(keywrd)
-    sblocks = find(~cellfun(@isempty, strfind(sens2,keywrd(k))));
-    [nr,nc]=size(unid);
-    [r,c]=size(sblocks);
-    for kk=1:r
-        sinfo=char(sens2(sblocks(kk)));
-        sid=str2double(sinfo(1:2));
-        sval=(sinfo(regexp(sinfo,'=')+1:end));
-        if strcmp(keywrd(k),'interval')==1
-            unid(sid,nc+1)={1};  %Sensor used (binary)
-            unid(sid,nc+2)=cellstr(sval); %Sensor sample rate
-        else
-            unid(sid,nc+1)=cellstr(sval);
-        end
-    end
+
+function		save_sens_struct(X,depid,CH,FS,fname,name,naxes)
+%
+k = find(strncmpi(CH,name,length(name))) ;
+if ~isempty(k),
+	if length(k)<naxes,
+		fprintf(' Warning: %d axes of %s missing in data\n',naxes-length(k),name) ;
+	end
+	if naxes>1,
+		ax = strvcat(CH{k}) ;
+		ax = ax(:,end)' ;
+		[ax,I] = sort(abs(ax)) ;		% sort into order of X, Y and Z
+		k = k(I) ;
+	else
+		k = k(1) ;
+	end
+	if strncmpi(name,'gyr',3),
+		scf = 0.001 ;	% gyroscope unit is mrad/s. Multiply by 0.001 to get rad/s
+	else
+		scf = 1 ;		% all other units are standard
+	end
+	S = sens_struct(X(:,k)*scf,FS,depid,name) ;
+	S.history = 'read_cats' ;
+	S.files = fname ;
+	if strncmpi(name,'light',5),
+		S.unit = '1' ;
+		S.unit_name = 'counts' ;
+		S.unit_label = 'counts' ;
+	end
+	addnc([depid '_raw'],S) ;
 end
-
-%%
-vid=find(~cellfun(@isempty,unid(:,5)));
-avocab={'Date','Time','System','BATT','Camera','Flags','LED'}';
-svocab=unid(vid,3);
-tvocab=[avocab(1:2); svocab; avocab(3:end)];
-fid=fopen([datapath '\' fbase '.csv'],'r');
-header= textscan(fid, '%s',1, 'Delimiter', '\n');
-fclose(fid);
-
-%%
-delim=regexp(char(header{1}),',');
-fcol=cell(length(tvocab),3);
-for k=1:length(tvocab)
-    fcol(k,1)={k};
-    fcol(k,2)=cellstr(tvocab{k});
-    col=(strfind(char(header{1}),tvocab(k)));
-    fcol(k,3)={col};
-end
-
-%% Read in big file
-%% Read in big file
-spos=[1 delim+1];
-epos=[delim-1 length(char(header{1}))];
-
-tablespec={1};
-for k=1:length(spos)
-    
-    fheader=char(header{1});
-    colname=fheader(spos(k):epos(k));
-    units=colname(regexp(colname,'[')+1:end-1);
-    wsp=regexp(colname,'\s');
-    if iscell(wsp)
-        wsp=cell2mat(wsp);
-    end
-    if wsp(1,1)==1
-        wsp=wsp(1,2);
-    else
-        wsp=wsp(1,1);
-    end
-    keywrd=(colname(1:wsp-1));
-   
-   switch keywrd
-        case {'Date'}
-            fmtspec='%s';
-        case {'Time'}
-            fmtspec='%s';
-        case {'Accelerometer'}
-            fmtspec='%f';
-        case {'Gyroscope'}
-            fmtspec='%f';
-        case {'Magnetometer'}
-            fmtspec='%f';
-        case {'Temperature'}
-            fmtspec='%f';
-        case {'GPS'}
-            gpscol=colname(regexp(colname,'\d'));
-            if gpscol<3 && gpscol>4
-                fmtspec='%s';
-            else
-                fmtspec='%f';
-            end
-        case {'Depth'}
-            fmtspec='%f';
-        case {'Light'}
-            fmtspec='%d';
-        case {'Barometer'}
-            fmtspec='%f';
-        case {'Pitot'}
-            fmtspec='%f';
-        case {'BATT'}
-            fmtspec='%f';
-        case {'Camera'}
-            fmtspec='%d';
-        case {'Flags'}
-            fmtspec='%s';
-        case {'LED'}
-            fmtspec='%d';
-        case {'System'}
-            fmtspec='%s';
-        otherwise
-            fmtspec='%s';
-    end
-    
-    tablespec{k,1}=colname;
-    tablespec{k,2}=units;
-    tablespec{k,3}=fmtspec;
-    
-end
-
-fmtspec=cell2mat(tablespec(:,3)');
-
-%% Read in data
-fclose('all');
-tstart=tic;
-% fid=fopen([datapath '\' fbase '.csv'],'r');
-data=[];
-% fmtspec='%*s%*s%f%f%f%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s%*s';
-for k=1:blocks
-    fid=fopen([datapath '\' fbase '.csv'],'r');
-        message=['Processing block:' num2str(k) ' of ' num2str(blocks) ' blocks'];
-        disp(message)
-    if k==1
-        C = textscan(fid,fmtspec,bsize,'Delimiter',',','HeaderLines',1);
-        fclose(fid);
-    else
-        C = textscan(fid,fmtspec,bsize,'Delimiter',',','HeaderLines',(k-1)*bsize);
-        fclose(fid);
-    end
-    if k<10
-    savename=[datapath '\' 'A00' num2str(k).mat]
-    end
-    if k<100
-        savename=[datapath '\' 'A0' num2str(k).mat]
-    end
-    if k<100
-        savename=[datapath '\' 'A' num2str(k).mat]
-    end
-    A=cell2mat(C);
-    save(savename,'A');
-    data=[data,A];
- 
-end
-
-fclose(fid);
-toc(tstart)
-%%
-
-toc(tstart)
-
-savename=[datapath '\' fbase '.mat'];
-save(savename,'cats');
-
-
-

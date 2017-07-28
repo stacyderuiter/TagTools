@@ -1,4 +1,4 @@
-function      [y,xx,v,h] = decdc(x,df)
+function      y = decdc(x,df)
 
 %     y = decdc(x,df)
 %     Reduce the sampling rate of a time series by an integer factor.
@@ -60,6 +60,8 @@ if isstruct(x),
 		return
 	end
 	x = x.data ;
+else
+   X = [] ;
 end
 
 flen = 12*df ;

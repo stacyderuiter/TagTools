@@ -1,8 +1,13 @@
-function    X = sens_struct(data,fs,depid,type)
+function    X = sens_struct(data,fs,depid,type,name)
 
 %    X = sens_struct(data,fs,depid,type)  % regularly sampled data
 %    or
 %    X = sens_struct(data,T,depid,type)   % irregularly sampled data
+%    or
+%    X = sens_struct(data,fs,depid,type,name)  % regularly sampled data
+%    or
+%    X = sens_struct(data,T,depid,type,name)   % irregularly sampled data
+%
 %    Generate a sensor structure from a sensor data vector or matrix.
 %
 %    Inputs:
@@ -20,6 +25,8 @@ function    X = sens_struct(data,fs,depid,type)
 %     sensor names in the sensor_names.csv file. If more than one sensor 
 %     matches type, a warning will be given. type can be in upper or lower 
 %     case.
+%    name is the optional name to give the variable, e.g., T_EXT. If a name
+%     is not given, a default value will be selected.
 %
 %    Returns:
 %    X is a sensor structure with metadata fields pre-populated from the 
@@ -87,12 +94,19 @@ if size(data,2)~=nc,
    fprintf('Warning: size of data does not match number of columns (%d) expected for %s\n',nc,S(k).name) ;
 end
 
-X.name = S(k).abbrev ;
+if nargin<5,
+   X.name = S(k).abbrev ;
+else
+   X.name = name ;
+end
+
 X.full_name = S(k).name ;
 X.description = S(k).description ;
 X.unit = S(k).def_units ;
 X.unit_name = S(k).def_unit_name ;
 X.unit_label = S(k).def_label ;
+X.start_offset = 0 ;
+X.start_offset_units = 'second' ;
 
 if ~isempty(S(k).def_cols),
    if isempty(fs),

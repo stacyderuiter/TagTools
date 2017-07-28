@@ -78,7 +78,11 @@ if ~isstruct(Z),
    % below number carefully chosen to precisely match to decdc.
    % do not change!
    npre = floor(df*(nf-1)/2-1) ;
-   Z.z = [2*x(1,:)-x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
+   
+   %Z.z = [2*x(1,:)-x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
+   % above line fixed to following (SDR 25/7/17)
+   Z.z = repmat(2*x(1,:),nh-df-npre,1) - x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
+
    Z.ov = [] ;
    x = x(npre+1:end,:) ;
 end

@@ -1,6 +1,6 @@
-function    s = strip_quotes(s)
+function    s = stripquotes(s)
 %
-%     s = strip_quotes(s)
+%     s = stripquotes(s)
 %     Remove bracketing double quotes from string or
 %     cell array containing strings.
 %

@@ -1,6 +1,6 @@
-function       [X,headers] = read_csv(fname,hdr,rr)
+function       [X,headers] = read_csv(fname,hdr,rr,delim)
 %
-%     [X,fields] = read_csv(fname,hdr,rr)
+%     [X,fields] = read_csv(fname,hdr,rr,delim)
 %     Read data from a CSV file. The file is assumed to have a list of column
 %     names in the first line followed by lines of data. Each line must have the
 %     same number of elements as the first line. Empty cells are allowed.
@@ -23,11 +23,8 @@ function       [X,headers] = read_csv(fname,hdr,rr)
 %     markjohnson@st-andrews.ac.uk
 %     last modified: 12 July 2017
 
-X = {} ;
-headers = {} ;
-f = fopen(fname,'rt') ;
-if f<0,
-   fprintf('Cannot open file %s\n',fname) ;
+if nargin<1,
+   help read_csv ;
    return
 end
 
@@ -39,11 +36,25 @@ if nargin<3,
    rr = [] ;      % default is to read all rows
 end
 
+if nargin<4 || isempty(delim),
+   delim = [44,9] ;           % ',' and '\t'
+else
+   delim = abs(delim) ;
+end
+
+X = {} ;
+headers = {} ;
+f = fopen(fname,'rt') ;
+if f<0,
+   fprintf('Cannot open file %s\n',fname) ;
+   return
+end
+
 lk = 1 ;                                 % line count
 if hdr>0,
    hh = fgetl(f) ;
    lk = lk+1 ;
-   headers = parseline(hh) ;     % break header into field names
+   headers = parseline(hh,delim) ;     % break header into field names
 end
 
 nfields = length(headers) ;
@@ -64,7 +75,7 @@ while 1,
    ss = fgetl(f) ;
    lk = lk+1 ;
    if isempty(ss) | ss<0, break, end
-   x = parseline(ss) ;
+   x = parseline(ss,delim) ;
    if isempty(S) & nfields==0,
       nfields = length(x) ;
    end
@@ -92,7 +103,7 @@ headers = strip_quotes(headers) ;
 % check field names to make sure they have no illegal characters
 for k=1:length(headers),
    h = headers{k} ;
-   h(ismember(h,'-/\() ')) = '_' ;
+   h(ismember(h,'-/\().:, ')) = '_' ;
    headers{k} = h ;
 end
 if ~isempty(S),
@@ -101,12 +112,12 @@ end
 return
 
 
-function    x = parseline(s)
+function    x = parseline(s,delim)
 %
 %
 x = {} ;
 s = deblank(s) ;
-if s(end)==',',
+if ismember(abs(s(end)),delim),
    endfield = 1 ;
 else
    endfield = 0 ;
@@ -125,7 +136,7 @@ while ~isempty(s),
          s = s(k(1)+2:end) ;
       end
    else
-      k = find(s==',') ;
+      k = find(ismember(abs(s),delim)) ;
       if isempty(k),
          x{end+1} = s(1:end) ;
          break ;

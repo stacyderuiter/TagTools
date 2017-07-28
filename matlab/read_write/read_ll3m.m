@@ -1,7 +1,7 @@
 function 	ncfile = read_ll3m(datapath,depid)
 
 % 		ncfile = read_ll3m(datapath,depid)
-%		Read data files from a Little Leonardo LL3M data Logger. This functions 
+%		Read data files from a Little Leonardo LL3M data Logger. This function
 %     generates a netCDF file in the current working directory containing:
 %		A Accelerometer data structure
 % 		M Magnetometer data structure
@@ -23,8 +23,8 @@ function 	ncfile = read_ll3m(datapath,depid)
 % 		Example:
 % 		datapath='C:\tagTools\testdata\mn12_186a'
 % 		depid='mn12_186a'
-% 		read_ll3m(datapath,depid)
-%		loadnc([depid '_raw'])
+% 		fn = read_ll3m(datapath,depid)
+%		loadnc(fn)
 %		% The workspace should now contain variables A, M, P, T, S and info
 %		% each of which is a structure.
 %
@@ -50,6 +50,7 @@ end
 
 X = cell(length(files),1) ; CH = cell(length(files),1) ; 
 STT = cell(length(files),1) ; FS = zeros(length(files),1) ;
+fnames = '' ;
 for k=1:length(files),
 	hdr = read_csv([datapath files(k).name],[],[1 10]) ;		% read the header in lines 1..10
 	X{k} = dlmread([datapath files(k).name],'\t',10,0) ;		% read the data in the remainder of the file	[X{end+1},hdr] = read_llm3file(fname) ;
@@ -69,28 +70,38 @@ for k=1:length(files),
 	CH{k} = strip_quotes(hdr{2,2}) ;						% sensor channel
 	STT{k} = [strip_quotes(hdr{7,2}),' ',strip_quotes(hdr{8,2})] ;		% date and time
 	FS(k) = 1./str2num(hdr{10,2}) ;		% convert sampling interval to sampling rate
+	fnames(end+(1:length(files(k).name)+1)) = [files(k).name ','] ;
 end
 
 stt = datestr(datenum(STT,'dd/mm/yyyy HH:MM:SS')) ;
 info.depid=depid;
+info.data_source=fnames(1:end-1);
+info.data_nfiles=length(files);
+info.data_format='csv';
 info.device_serial=[];
 info.device_make='Little Leonardo Inc., Japan';
 info.device_type='Archival';
 info.device_model_name=[];
 info.device_model_version=[];
 info.device_url=[];
+info.sensors_list='3 axis Accelerometer,3 axis Magnetometer,Pressure,Temperature,Speed';
+info.dephist_device_tzone='unknown';
+info.dephist_device_regset='dd-mm-yyyy HH:MM:SS';
+stt = datenum(strvcat(STT{:}),'dd/mm/yyyy HH:MM:SS') ;
+info.dephist_device_datetime_start=datestr(min(stt));
+toffs=24*3600*(stt-min(stt)) ;
 
 ncfile = [depid '_raw'] ;
 savenc(ncfile,info) ;
-save_sens_struct3(X,depid,CH,FS,files,'Acceleration','acc') ;
-save_sens_struct3(X,depid,CH,FS,files,'Compass','mag') ;
-save_sens_struct1(X,depid,CH,FS,files,'Depth','pr') ;
-save_sens_struct1(X,depid,CH,FS,files,'Temperature','Int_t') ;
-save_sens_struct1(X,depid,CH,FS,files,'Propeller','sp') ;
+save_sens_struct3(X,depid,CH,FS,toffs,files,'Acceleration','acc') ;
+save_sens_struct3(X,depid,CH,FS,toffs,files,'Compass','mag') ;
+save_sens_struct1(X,depid,CH,FS,toffs,files,'Depth','pr') ;
+save_sens_struct1(X,depid,CH,FS,toffs,files,'Temperature','Int_t') ;
+save_sens_struct1(X,depid,CH,FS,toffs,files,'Propeller','sp') ;
 return
 
 
-function		save_sens_struct3(X,depid,CH,FS,files,name,type)
+function		save_sens_struct3(X,depid,CH,FS,toffs,files,name,type)
 %
 k = find(strncmpi(CH,name,length(name))) ;
 if ~isempty(k),
@@ -106,13 +117,14 @@ if ~isempty(k),
 	S.unit = '1' ;
 	S.unit_name = 'counts' ;
 	S.unit_label = 'counts' ;
+	S.start_offset = min(toffs(k)) ;
 	fn = strcat([files(k).name ',']) ;
 	S.files = fn(1:end-1) ;
 	addnc([depid '_raw'],S) ;
 end
 
 
-function		save_sens_struct1(X,depid,CH,FS,files,name,type)
+function		save_sens_struct1(X,depid,CH,FS,toffs,files,name,type)
 %
 k = find(strncmpi(CH,name,length(name))) ;
 if ~isempty(k),
@@ -126,6 +138,7 @@ if ~isempty(k),
 	S.unit = '1' ;
 	S.unit_name = 'counts' ;
 	S.unit_label = 'counts' ;
+	S.start_offset = toffs(k) ;
 	fn = strcat([files(k).name ',']) ;
 	S.files = fn(1:end-1) ;
 	addnc([depid '_raw'],S) ;
