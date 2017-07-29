@@ -1,0 +1,9 @@
+---
+title: "Event Detection"
+author: David Sweeney
+date: 8 August 2017
+output: ioslides_presentation
+---
+##Signal Detection Theory
+- What is noise?
+- What is a signal?
