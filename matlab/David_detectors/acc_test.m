@@ -14,10 +14,9 @@ function detections_acc = acc_test(detections, events, fs, indices, bktime)
 %       manual determination methods or a matrix/cell array containing the
 %       start and end times of a known event.
 %   fs = The sampling rate in Hz of the detections and events data.
-%   indices = The number of indices from the data previously used to
-%       automatically detect behavior events.
-%   bktime = The blanking time used in the automated event detection
-%       function.
+%   tpevents = The number of total possible events that could have occurred
+%       throughout the time of the tag recording. Can be determined by the
+%       equation: (indices / fs) / (necessary time between events)
 %
 % OUTPUTS:
 %   detection_acc = A structure containing the number of hits, misses, and
