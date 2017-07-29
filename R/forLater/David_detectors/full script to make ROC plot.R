@@ -81,4 +81,5 @@ x <- c(far1,far2,far3,far4,far5,far6,far7,far8,far9,far10,far11,far12,far13,far1
 y <- c(hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr15,hr16,hr17,hr18,hr19)
 xy <- cbind(x,y)
 xy <- xy[order(xy[, 1]), ]
-plot(xy[,1],xy[,2], type = "l")
+xy <- rbind(c(0,0), xy, c(1,1))
+plot(xy[,1],xy[,2], type = "l", xlim = c(0,1), ylim = c(0,1))
