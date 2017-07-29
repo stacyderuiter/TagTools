@@ -1,4 +1,4 @@
-function detections_acc = acc_test(detections, events, fs, tpevents)
+function detections_acc = acc_test(detections, events, fs, indices, bktime)
 % Determines the number of true positives, false negatives, and false 
 %   positives automatically detected events from tagtools (i.e. 
 %   detect_peak.m) and known event occurences from manual determination 
@@ -14,18 +14,20 @@ function detections_acc = acc_test(detections, events, fs, tpevents)
 %       manual determination methods or a matrix/cell array containing the
 %       start and end times of a known event.
 %   fs = The sampling rate in Hz of the detections and events data.
-%   tpevents = The number of total possible events that could have occurred
-%       throughout the time of the tag recording. Can be determined by the
-%       equation: (indices / fs) / (necessary time between events)
+%   indices = The number of indices from the data previously used to
+%       automatically detect behavior events.
+%   bktime = The blanking time used in the automated event detection
+%       function.
 %
 % OUTPUTS:
 %   detection_acc = A structure containing the number of hits, misses, and
 %       false alarmss found between the detection and events inputs. A hit
 %       constitutes a correct detection of an event. A miss constitutes an
 %       event that was not detected. A false alarms constitues an incorrect
-%       detection of a nonexistant event.
+%       detection of a nonexistant event. The hit rate and false alarm rate
+%       are also included in the structure.
 
-if nargin < 2
+if nargin < 5
     help acc_test
 end
 
@@ -40,6 +42,8 @@ end
 if size(events, 1) < size(events, 2)
     events = events';
 end
+
+tpevents = indices / bktime;
 
 if size(events, 2) > 1
     count_hits = 0;
