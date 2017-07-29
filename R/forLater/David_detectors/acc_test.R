@@ -18,6 +18,7 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   if (nargs() < 4) {
     stop("inputs for all arguments are required")
   }
+  events <- events * 5
   #determine the number of hits, false alarms, and misses
   count_hits <- 0
   count_false_alarms <- 0
