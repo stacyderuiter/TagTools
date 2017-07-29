@@ -48,7 +48,7 @@ Case Study
 library(readr)
 bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
-sampling_rate <- bw11_210a_tagdata$sampling_rate[1]  
+sampling_rate <- bw11_210a_tagdata$fs[1]  
 ```
 Next, I will generate the norm jerk signal using the function njerk. A plot is shown to provide a helpful visualization of the signal.
 ```{r, fig.width=7, fig.height=5}
