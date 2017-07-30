@@ -23,8 +23,8 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   count_hits <- 0
   count_false_alarms <- 0
   for (j in 1:length(detections)) {
-    detplus <- detections[j] <= (events + (10 * sampling_rate))
-    detminus <- detections[j] >= (events - (10 * sampling_rate))
+    detplus <- detections[j] <= (events + (5 * sampling_rate))
+    detminus <- detections[j] >= (events - (5 * sampling_rate))
     det <- which(detplus == detminus)
     if (length(det) == 1) {
       count_hits <- count_hits + 1

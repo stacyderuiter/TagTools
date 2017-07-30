@@ -66,8 +66,8 @@ if size(events, 2) == 1
     count_hits = 0;
     count_false_alarms = 0;
     for j = 1:length(detections)
-        detplus = detections(j) <= (events + (10 * fs));
-        detminus = detections(j) >= (events - (10 * fs));
+        detplus = detections(j) <= (events + (5 * fs));
+        detminus = detections(j) >= (events - (5 * fs));
         det = detplus == detminus;
         if sum(det(1:end)) == 1
             count_hits = count_hits + 1;
