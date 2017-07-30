@@ -8,10 +8,10 @@
 #' @return A list with 5 elements:
 #' \itemize{
 #'  \item{\strong{count_hits: }} The number of true positive detectinos
-#'  \item{\strong{r: }} The number of false positive detections
-#'  \item{\strong{r: }} The number of missed detections
-#'  \item{\strong{r: }} The rate of true positive detections
-#'  \item{\strong{r: }} The rate of false positive detections
+#'  \item{\strong{count_false_alarms: }} The number of false positive detections
+#'  \item{\strong{count_misses: }} The number of missed detections
+#'  \item{\strong{hits_rate: }} The rate of true positive detections
+#'  \item{\strong{false_alarm_rate: }} The rate of false positive detections
 #' }
 
 acc_test <- function(detections, events, sampling_rate, tpevents) {
