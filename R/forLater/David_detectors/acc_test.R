@@ -4,7 +4,7 @@
 #' @param detections A vector containing the know times (indices from start of tag recording) at which an automatically detected event was determined to have taken place.
 #' @param events A vector containing the known times (indices from start of tag recording) at which an event was known to have taken place from manual determination methods.
 #' @param sampling_rate The sampling rate in Hz of the detections and events data
-#' @param tpevents The number of total possible events that could have occurred throughout the time of the tag recording. Can be determined by the equation: (indices / sampling_rate) / (necessary time between events)
+#' @param tpevents The number of total possible events that could have occurred throughout the time of the tag recording. Can be determined by the equation: (samples / sampling_rate) / (necessary time between events)
 #' @return A list with 5 elements:
 #' \itemize{
 #'  \item{\strong{count_hits: }} The number of true positive detectinos
