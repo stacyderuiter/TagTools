@@ -81,5 +81,5 @@ ROC_plot <- function(data, sampling_rate, FUN, indices, events, tpevents) {
   xy <- cbind(x,y)
   xy <- xy[order(xy[, 1]), ]
   xy <- rbind(c(0,0), xy, c(1,1))
-  plot(xy[,1],xy[,2], type = "l", xlim = c(0,1), ylim = c(0,1))
+  plot(xy[,1],xy[,2], type = "l", xlim = c(0,1), ylim = c(0,1), xlab = "FP Rate", ylab = "TP Rate")
 }
