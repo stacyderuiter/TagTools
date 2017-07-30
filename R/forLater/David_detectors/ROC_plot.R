@@ -38,7 +38,7 @@ detections18 <- detect_peaks(Aw, sr, FUN, thresh = .9, bktime = 25, plot_peaks =
 detections19 <- detect_peaks(Aw, sr, FUN, thresh = .95, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
 indices <- 76835
 tpevents <- (indices / sampling_rate) / 35  #(Goldbogen et al. 2006)
-events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")
+events <- readr::read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")
 hr1 <- acc_test(detections1, events, sampling_rate, tpevents)$hits_rate
 far1 <- acc_test(detections1, events, sampling_rate, tpevents)$false_alarm_rate
 hr2 <- acc_test(detections2, events, sampling_rate, tpevents)$hits_rate
