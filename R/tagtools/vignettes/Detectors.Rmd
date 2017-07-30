@@ -89,3 +89,11 @@ peaks <- detect_peaks(data = jerk, sr = sr, FUN = NULL,
 ```{r, echo = FALSE, fig.width=7, fig.height=5}
 plott(X, sampling_rate, line_colors = "blue")
 str(peaks)
+```
+
+####ROC Curves and Detection Optimization
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receiver operating characteristic (ROC) curves are a type of plot that are used within the context of automated event detecting in order to enhance the overall performance of the detector function by determining an optimal threshold value. These plots display the rate of true positive detections over the rate of false positive detections. The rate of true positive detections is calulated by dividing the number of true positive detections by the number of actual events. the rate of false positive detections is calculated by dividing the number of false positive detections by the total number of possible events within the time of tag recording. Determining the number of total possible events can be very difficult, unfortunately, because in a biological system, the value is dependent on a long list of determining factors. For example, the number of times a whale can lunge feed within a given amount of time is dependent on the availability of its food source, the energy it possesses to swim through currents, the time required to filter water through its baleen after engulfing prey, etc. In a paper written by Jeremy Goldbogen of Stanford University, fin whales were determined to be able to lunge feed every 44.5±19.1 seconds (Goldbogen et al. 2006). Therefore, since blue whales are of similar size to fin whales, averaging only a few meters longer, I would guess that blue whales are able to lunge feed after a minimum of 35 seconds since the previous feeding event. Using this number, we can determine the total possible number of lunge feeding events by dividing the total number of samples in our data by the sampling_rate, and then dividing this number by 35. By doing this we get a number of about 343 total possible lunge feeding events by our blue whale.
+```{r}
+tpevents <- (60000 / sampling_rate) / 35
+```
+
