@@ -4,6 +4,51 @@ author: David Sweeney
 date: 8 August 2017
 output: ioslides_presentation
 ---
-##Signal Detection Theory
+
+## Signal Detection Theory
+
+- Definition:
+    - The process of discerning between noise and a signal
 - What is noise?
+    - Irrelevant and undesired stimuli
 - What is a signal?
+    - Informative and unique stimuli
+
+## Detection Threshold
+
+- Definition:
+    - The ratio of signal power to noise power required for a signal to be present
+- A threshold is set by a preassigned level of detection correctness
+- Helpful example: Hearing tests
+
+## Setting a Threshold
+
+- Thresholds that are too high:
+    - Many missed detections
+    - Low probability of FP and TP
+- Thresholds that are too low:
+    - Many FP and TP detections
+- Optimal threshold level:
+    - High rate of TP and low rate of FP
+    - ROC Curves
+
+## Blanking Time
+
+- Definition:
+    - Amount of time within within which all values exceeding the threshold level constitute the same signal.
+
+
+## ROC Curve
+
+- Receiver Operating Characteristic curves plot rate of TP detections against rate of FP detections
+- Two main purposes:
+    - Determine overall performance of signal detector
+    - Help set the optimal threshold level
+
+# Example: Automated Detection of Lunge Feeding
+
+## Detecting Events
+
+## Generate ROC Curve
+
+## Improve Overall Detection
