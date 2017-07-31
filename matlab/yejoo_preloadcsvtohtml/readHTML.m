@@ -16,7 +16,7 @@ function readHTML(masterHTML, csvfilename)
         if u == 1,
             fields_array_string = strcat("[", '"', fields2{u}, '"');
         else
-            if u ~= length(fields2),
+            if u < length(fields2),
                 if fields2{u}(1) == '"' && fields2{u}(length(fields2{u})) == '"'
                      fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'");
                 else
@@ -141,7 +141,7 @@ function [id, ret_field] = parseCSV(csvfilename)
     while ischar(tline),
         [token,remain1] = strtok(tline, ',');
          if strcmp(token,"dephist.device.datetime.start") || strcmp(token,"dephist.deploy.datetime.start")
-            change_token = token(1:end-1);
+            change_token = token(1:end);
             token0 = strcat(change_token, '0');
             id{end+1} = token0;
             token1 = strcat(change_token, '1');

@@ -7,13 +7,7 @@
 
 var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
 
-var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial",
-	"device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft",
-	"sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url",
-	"dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",
-	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method",
-	"project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email",
-	"provider.license", "provider.cite", "provider.doi", "udm.export"];
+var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial","device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft","sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url","dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method","project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email","provider.license", "provider.cite", "provider.doi", "udm.export"];
 var other_field = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1];	
 function findIndexbyField(str, array){ 
 	var i;
@@ -250,39 +244,23 @@ function saveValues(){
 		var i;
 		for(i = 0; i < a.length; i++){
 			if(a[i][0] =="dephist.device.regset"){
-				continue;
+				record += a[i][0]  + "," + a[i][1] + "," + a[i][2] + "\n";
 			}
 			else if(a[i][0] == "dephist.device.datetime.start" || a[i][0] == "dephist.deploy.datetime.start"){
-				record +='"' + a[i][0] + '"' + "," + a[i][1] + ",";
-				record += '"' + document.getElementById(a[i][0]+0).value + " " + document.getElementById(a[i][0]+1).value + '"'  + "\n" ;
-			}
-			else if(a[i][0] == "dephist.deploy.locality"){
-				record += '"' + a[i][0] + '"' + "," + a[i][1] + "," + '"';
-				record += document.getElementById(a[i][0]).value;
-				record += + '"' +  "\n" ;
+				record += a[i][0] + "," + a[i][1] + ",";
+				record +=  document.getElementById(a[i][0]+0).value + " " + document.getElementById(a[i][0]+1).value  + "\n" ;
 			}
 			else{
 				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
-					if(a[i][0] == "sensors.list"){
-						record += '"' + a[i][0] + '"' + "," + a[i][1] + "," +  '"' + a[i][2] + '"' +  "\n";
-					}
-					else{
-						record += '"' + a[i][0] + '"' + "," + a[i][1] + ",";
-						record += stringOrInt(a[i][2]) + "\n" ;
-					}
+					record += a[i][0] + "," + a[i][1] + ",";
+					record += comma_or_not(a[i][2]) + "\n" ;
 				}
 				else{
-					if(a[i][0] != "udm.export"){
-						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
-						record += stringOrInt(document.getElementById(a[i][0]).value) + "\n";
-					}
-					else if(a[i][0] =="dephist.device.tzone"){
-						record += '"' + document.getElementById(a[i][0]).id + '"' + "," + a[i][1] + ",";
+					if(a[i][0] =="dephist.device.tzone"){
+						record +=  document.getElementById(a[i][0]).id + "," + a[i][1] + ",";
 						record += parseInt(document.getElementById(a[i][0]).value) + "\n";
 					}
-
-					
-					else{
+					else if(a[i][0] == "udm.export" ){
 						var check;
 						if(document.getElementById("udm.export").checked){
 							check = 1;
@@ -290,7 +268,11 @@ function saveValues(){
 						else{
 							check = 0;
 						}
-						record += '"' + "udm.export" + '"' + "," + 0 + "," + check;
+						record += "udm.export" + "," + 0 + "," + check + "\n";
+					}
+					else{
+						record +=  document.getElementById(a[i][0]).id + "," + a[i][1] + ",";
+						record += comma_or_not(document.getElementById(a[i][0]).value) + "\n";
 					}
 				}
 			}
@@ -319,12 +301,12 @@ function saveValues(){
 
 	}
 };
-function stringOrInt(value){
-	if(parseFloat(value).toString().length == value.length && !isNaN(parseFloat(value))){
-		return value;
+function comma_or_not(value){
+	if (value.indexOf(',') > -1){
+		return '"' + value + '"';
 	}
 	else{
-		return '"' + value + '"';
+		return value;
 	}
 };
 
