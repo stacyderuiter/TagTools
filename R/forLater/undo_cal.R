@@ -46,11 +46,11 @@ undo_cal <- function(X,T){
 
 undo_cal1 <- function(X,T){
   if("cal_map" %in% names(X)){
-    X$data = X$data * solve(X$map) 
+    X$data = X$data %*% solve(X$map) 
     X$cal_map <- diag(ncol(X$data)) 
   }
   if("cal_cross" %in% names(X)){
-    X$data <- X$data * solve(X$cross)
+    X$data <- X$data %*% solve(X$cross)
     X$cal_cross <- diag(ncol(X$data)) ;
   }
   if ((length(T)!= 0) & ("cal_tcomp"  %in% names(X) ) & (nrow(T)==nrow(X$data))){
@@ -60,7 +60,7 @@ undo_cal1 <- function(X,T){
     else{
       tref <- X$cal_tref
     }
-    X$data = X$data - (T-tref)*X$tcomp 
+    X$data = X$data - (T-tref) %*%X$tcomp 
     X$cal_tcomp = matrix(0,1,ncol(X)) 
   }
   if("cal_poly" %in% names(X)){
