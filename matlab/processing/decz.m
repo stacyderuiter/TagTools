@@ -81,7 +81,7 @@ if ~isstruct(Z),
    
    %Z.z = [2*x(1,:)-x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
    % above line fixed to following (SDR 25/7/17)
-   Z.z = repmat(2*x(1,:),nh-df-npre,1) - x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
+   Z.z = [repmat(2*x(1,:),nh-df-npre,1) - x(1+(nh-df-npre:-1:1),:);x(1:npre,:)] ;
 
    Z.ov = [] ;
    x = x(npre+1:end,:) ;
