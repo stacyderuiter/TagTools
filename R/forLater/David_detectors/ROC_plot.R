@@ -1,24 +1,5 @@
-ROC_plot <- function(data, sampling_rate, FUN, indices, events, tpevents) {
+ROC_plot <- function(data, sampling_rate, FUN, bktime, indices, events, tpevents) {
   sr <- sampling_rate
-  bktime1 <- detect_peaks(data, sr, FUN, thresh = .05, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime2 <- detect_peaks(data, sr, FUN, thresh = .1, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime3 <- detect_peaks(data, sr, FUN, thresh = .15, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime4 <- detect_peaks(data, sr, FUN, thresh = .2, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime5 <- detect_peaks(data, sr, FUN, thresh = .25, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime6 <- detect_peaks(data, sr, FUN, thresh = .3, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime7 <- detect_peaks(data, sr, FUN, thresh = .35, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime8 <- detect_peaks(data, sr, FUN, thresh = .4, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime9 <- detect_peaks(data, sr, FUN, thresh = .45, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime10 <- detect_peaks(data, sr, FUN, thresh = .5, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime11 <- detect_peaks(data, sr, FUN, thresh = .55, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime12 <- detect_peaks(data, sr, FUN, thresh = .6, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime13 <- detect_peaks(data, sr, FUN, thresh = .65, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime14 <- detect_peaks(data, sr, FUN, thresh = .7, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime15 <- detect_peaks(data, sr, FUN, thresh = .75, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime16 <- detect_peaks(data, sr, FUN, thresh = .8, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime17 <- detect_peaks(data, sr, FUN, thresh = .85, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime18 <- detect_peaks(data, sr, FUN, thresh = .9, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
-  bktime19 <- detect_peaks(data, sr, FUN, thresh = .95, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$bktime
   detections1 <- detect_peaks(data, sr, FUN, thresh = .05, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
   detections2 <- detect_peaks(data, sr, FUN, thresh = .1, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
   detections3 <- detect_peaks(data, sr, FUN, thresh = .15, bktime = 25, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
