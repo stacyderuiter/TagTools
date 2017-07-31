@@ -53,7 +53,7 @@ undo_cal1 <- function(X,T){
     X$data <- X$data %*% solve(X$cross)
     X$cal_cross <- diag(ncol(X$data)) ;
   }
-  if ((!missing(T) && !is.null(T) && length(T) != 0) & ("cal_tcomp"  %in% names(X) ) && (nrow(T)==nrow(X$data))){
+  if ((!missing(T) && !is.null(T) && length(T) != 0) && ("cal_tcomp"  %in% names(X) ) && (nrow(T)==nrow(X$data))){
     if (!("cal_tref" %in% names(X))){
       tref <- 0 
     }
