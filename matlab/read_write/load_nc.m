@@ -1,8 +1,8 @@
-function    X = loadnc(fname)
+function    X = load_nc(fname)
 
-%     loadnc(fname)
+%     load_nc(fname)
 %		or
-%		X=loadnc(fname)
+%		X=load_nc(fname)
 %     Load variables from a NetCDF archive file. The file is assumed to be in 
 %		the current working directory unless a pathname is added to the beginning 
 %		of fname. If no output argument is given, the variables will be created in
@@ -21,7 +21,7 @@ function    X = loadnc(fname)
 %		 X.info (the file metadata).
 %
 %		Example:
-%		 loadnc('testset1')
+%		 load_nc('testset1')
 % 	    loads variables from file testset1.nc into the workplace.
 %
 %     Valid: Matlab, Octave
@@ -30,7 +30,7 @@ function    X = loadnc(fname)
 
 X = [] ;
 if nargin<1,
-   help loadnc
+   help load_nc
    return
 end
 

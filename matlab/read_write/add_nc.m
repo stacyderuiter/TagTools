@@ -1,6 +1,6 @@
-function		addnc(fname,X)
+function		add_nc(fname,X)
 
-%		addnc(fname,X)
+%		add_nc(fname,X)
 %		Add a variable to a NetCDF archive file. If the archive file does not exist,
 %		it is created. The file is assumed to be in the current working directory 
 %		unless a pathname is added to the beginning of fname.
@@ -14,7 +14,7 @@ function		addnc(fname,X)
 %		 storage of variables, consider using the usual 'save' function in Matlab and Octabe.
 %
 %		Example:
-%		 addnc('dog17_124a',A)
+%		 add_nc('dog17_124a',A)
 % 	    generates a file dog17_124a.nc and adds a variable A.
 %
 %     Valid: Matlab, Octave
@@ -22,11 +22,11 @@ function		addnc(fname,X)
 %     last modified: 12 July 2017
 
 if nargin<2,
-	help addnc
+	help add_nc
 end
 	
 if ~isstruct(X),
-	fprintf('addnc can only save sensor or metadata structures\n') ;
+	fprintf('add_nc can only save sensor or metadata structures\n') ;
 	return
 end
 	
