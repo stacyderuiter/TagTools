@@ -32,6 +32,7 @@ spectrum_level <- function(x, nfft, sampling_rate, w = NULL, nov = NULL) {
     w <- w[2:(length(w)-1)]
   }
   P <- matrix(0, (nfft/2), ncol(x))
+  w <- matrix(w, nrow = length(w), ncol = 1)
   for (k in 1:ncol(x)) {
     X <- buffer(x[, k], length(w), nov, nodelay = TRUE)
     X <- pracma::detrend(X) * pracma::repmat(w, 1, ncol(X))
