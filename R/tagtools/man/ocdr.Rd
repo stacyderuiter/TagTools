@@ -4,16 +4,16 @@
 \alias{ocdr}
 \title{Estimate the forward speed}
 \usage{
-ocdr(p, A, fs, fc, plim)
+ocdr(p, A, sampling_rate, fc, plim)
 }
 \arguments{
-\item{p}{The depth or altitude vector (a regularly sampled time series) or depth or altitude sensors list in meters, sampled at fs Hz.}
+\item{p}{The depth or altitude vector (a regularly sampled time series) or depth or altitude sensors list in meters, sampled at sampling_rate Hz.}
 
 \item{A}{The nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2. A must have the same number of rows as p.}
 
-\item{fs}{The sampling rate of p and A in Hz (samples per second).}
+\item{sampling_rate}{The sampling rate of p and A in Hz (samples per second).}
 
-\item{fc}{(optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
+\item{fc}{(optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
 
 \item{plim}{(optional) Specifies the minimum pitch angle in radians at which speed can be computed. Errors in speed estimation using this method increase strongly at low pitch angles. To avoid estimates with poor accuracy being used in later analyses, speed estimates at low pitch angles are replaced by NaN (not-a-number). The default threshold for this is 20 degrees.}
 }
@@ -24,7 +24,7 @@ The forward speed estimate in m/s
 This function is used to estimate the forward speed of a flying or diving animal by first computing the altitude or depth-rate (i.e., the first differential of the pressure in meters) and then correcting for the pitch angle. This is called the Orientation Corrected Depth Rate. There are two major assumptions in this method: (i) the animal moves in the direction of its longitudinal axis, and (ii) the frame of A coincides with the animal's axes.
 }
 \details{
-Possible input combinations: ocdr(p,A) if p and A are lists, ocdr(p,A,fc = fc) if p and A are lists, ocdr(p,A,fc = fc,plim = plim) if p and A are lists, ocdr(p,A,fs) if p and A are vectors/matrices, ocdr(p,A,fs,fc) if p and A are vectors/matrices, ocdr(p,A,fs,fc,plim) if p and A are vectors/matrices.
+Possible input combinations: ocdr(p,A) if p and A are lists, ocdr(p,A,fc = fc) if p and A are lists, ocdr(p,A,fc = fc,plim = plim) if p and A are lists, ocdr(p,A,sampling_rate) if p and A are vectors/matrices, ocdr(p,A,sampling_rate,fc) if p and A are vectors/matrices, ocdr(p,A,sampling_rate,fc,plim) if p and A are vectors/matrices.
 }
 \note{
 Output sampling rate is the same as the input sampling rate so s has the same size as p.

@@ -4,12 +4,12 @@
 \alias{tortuosity}
 \title{Measure tortuosity index}
 \usage{
-tortuosity(T, fs, intvl)
+tortuosity(T, sampling_rate, intvl)
 }
 \arguments{
 \item{T}{Contains the animal positions in a local horizontal plane. T has a row for each position and two columns: northing and easting. The positions can be in any consistent spatial unit, e.g., metres, km, nautical miles, and are referenced to an arbitrary 0,0 location. T cannot be in degrees as the distance equivalent to a degree latitude is not the same as for a degree longitude.}
 
-\item{fs}{The sampling rate of the positions in Hertz (samples per second).}
+\item{sampling_rate}{The sampling rate of the positions in Hertz (samples per second).}
 
 \item{intvl}{The time interval in seconds over which tortuosity is calculated. This should be chosen according to the scale of interest, e.g., the typical length of a foraging bout.}
 }

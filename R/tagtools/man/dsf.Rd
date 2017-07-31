@@ -4,16 +4,16 @@
 \alias{dsf}
 \title{Estimate the dominant stroke frequency}
 \usage{
-dsf(A, fs, fc = NULL, Nfft = NULL)
+dsf(A, sampling_rate, fc = NULL, Nfft = NULL)
 }
 \arguments{
 \item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
-\item{fs}{The sampling rate of the sensor data in Hz (samples per second).}
+\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second).}
 
-\item{fc}{(optional) The cut-off frequency in Hz of a low-pass filter to apply to A before computing the spectra. This prevents high frequency transients e.g., in foraging, from dominating the spectra. The filter  length is 6*fs/fc. If fc is not specified, it defaults to 2.5 Hz. If fc>fs/2, the filtering operation is skipped.}
+\item{fc}{(optional) The cut-off frequency in Hz of a low-pass filter to apply to A before computing the spectra. This prevents high frequency transients e.g., in foraging, from dominating the spectra. The filter  length is 6*sampling_rate/fc. If fc is not specified, it defaults to 2.5 Hz. If fc>sampling_rate/2, the filtering operation is skipped.}
 
-\item{Nfft}{(optional) The FFT length and therefore the frequency resolution. The default value is the power of two closest to 20*fs, i.e., an analysis block length of about 20 s and a frequency resolution of about 0.05 Hz. A shorter FFT may be required if movement behaviour is very variable. A longer FFT may work well if propulsion is continuous and stereotyped.}
+\item{Nfft}{(optional) The FFT length and therefore the frequency resolution. The default value is the power of two closest to 20*sampling_rate, i.e., an analysis block length of about 20 s and a frequency resolution of about 0.05 Hz. A shorter FFT may be required if movement behaviour is very variable. A longer FFT may work well if propulsion is continuous and stereotyped.}
 }
 \value{
 A list with 2 elements:
@@ -31,5 +31,5 @@ Animals tend to produce propulsive movements with a narrow frequency range. Thes
 \note{
 Frame: This function makes no assumption about accelerometer frame. Data in any frame can be used.
 
-Data selection: This function works best if the sensor matrix, A, covers an interval in which propulsion is the main activity. This could be a complete dive or an interval of running or flapping flight. The interval length should be at least Nfft/fs seconds, i.e., 20 s for the default FFT length.
+Data selection: This function works best if the sensor matrix, A, covers an interval in which propulsion is the main activity. This could be a complete dive or an interval of running or flapping flight. The interval length should be at least Nfft/sampling_rate seconds, i.e., 20 s for the default FFT length.
 }

@@ -4,12 +4,12 @@
 \alias{extract_cues}
 \title{Extract multiple sub-samples of data}
 \usage{
-extract_cues(x, fs, cues, len)
+extract_cues(x, sampling_rate, cues, len)
 }
 \arguments{
 \item{x}{is a vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.}
 
-\item{fs}{is the sampling rate in Hz of the data in x.}
+\item{sampling_rate}{is the sampling rate in Hz of the data in x.}
 
 \item{cues}{defines the start time in seconds of the intervals to be extracted from x.}
 
@@ -18,7 +18,7 @@ extract_cues(x, fs, cues, len)
 \value{
 A list with 2 elements:
 \itemize{
-\item{\strong{X: }} A matrix containing sub-samples of x. If x is a vector, X has as many columns as there are cues, i.e., each cue generates a column of X. If x is a pxm matrix, X will be a qxmxn matrix where n is the size of cues and q is the length of the interval requested, i.e., round(fs*len) samples.
+\item{\strong{X: }} A matrix containing sub-samples of x. If x is a vector, X has as many columns as there are cues, i.e., each cue generates a column of X. If x is a pxm matrix, X will be a qxmxn matrix where n is the size of cues and q is the length of the interval requested, i.e., round(sampling_rate*len) samples.
 \item{\strong{cues: }} The list of cues actually used. cues that require data outside of x are rejected.
 }
 }

@@ -4,16 +4,16 @@
 \alias{m2h}
 \title{Compute heading, field intensity, and inclination angle}
 \usage{
-m2h(M, A, fs, fc = NULL)
+m2h(M, A, sampling_rate, fc = NULL)
 }
 \arguments{
 \item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
 
 \item{A}{A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
-\item{fs}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.}
+\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.}
 
-\item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
+\item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
 \value{
 A list with 3 elements:
@@ -27,7 +27,7 @@ A list with 3 elements:
 This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 }
 \details{
-Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,fs,fc) if A and M are matrices.
+Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,sampling_rate,fc) if A and M are matrices.
 }
 \note{
 Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).
