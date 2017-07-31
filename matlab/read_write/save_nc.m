@@ -1,6 +1,6 @@
-function    savenc(fname,X,varargin)
+function    save_nc(fname,X,varargin)
 %
-%     savenc(fname,X,...)
+%     save_nc(fname,X,...)
 %     Save one or more variables to a NetCDF archive file.
 %     Warning, this will overwrite any previous NetCDF file with the same name.
 %		it is created. The file is assumed to be in the current working directory 
@@ -16,7 +16,7 @@ function    savenc(fname,X,varargin)
 %		 usual 'save' function in Matlab and Octave.
 %
 %		Example:
-%		 savenc('dog17_124a',A,M,P,info)
+%		 save_nc('dog17_124a',A,M,P,info)
 % 	    generates a file dog17_124a.nc and adds variables A, M and P, and a metadata
 %		 structure.
 %
@@ -26,7 +26,7 @@ function    savenc(fname,X,varargin)
 
 
 if nargin<2,
-   help savenc
+   help save_nc
    return
 end
 
@@ -40,20 +40,20 @@ if exist(fname,'file'),
 end
 	
 if ~isstruct(X),
-	fprintf('savenc can only save sensor or metadata structures\n') ;
+	fprintf('save_nc can only save sensor or metadata structures\n') ;
 	return
 end
 	
 if isfield(X,'info'),		% X is a set of sensor structures
 	f = fieldnames(X) ;
 	for k=1:length(f),
-		addnc(fname,X.(f{k})) ;
+		add_nc(fname,X.(f{k})) ;
 	end
 else
-	addnc(fname,X) ;
+	add_nc(fname,X) ;
 end
 
 % save the remaining variables to the file
 for k=1:nargin-2, 
-   addnc(fname,varargin{k}) ;
+   add_nc(fname,varargin{k}) ;
 end
