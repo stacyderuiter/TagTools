@@ -1,6 +1,6 @@
-function    save_nc(fname,varargin)
+function    savenc(fname,X,varargin)
 %
-%     save_nc(fname,...)
+%     savenc(fname,X,...)
 %     Save one or more variables to a NetCDF archive file.
 %     Warning, this will overwrite any previous NetCDF file with the same name.
 %		it is created. The file is assumed to be in the current working directory 
@@ -9,13 +9,14 @@ function    save_nc(fname,varargin)
 %		Inputs:
 %		fname is the name of the metadata file. If the name does not include a .nc
 %		 suffix, this will be added automatically.
-%		X is a sensor or metadata structure. Only these kind of variables can be saved
-%		 in a NetCDF file because the supporting information in these structures is
-%		 needed to describe the contents of the file. For non-archive and non-portable
-%		 storage of variables, consider using the usual 'save' function in Matlab and Octave.
+%		X (and any subsequent inputs) is a sensor or metadata structure, or a set of sensor
+%		 structures. Only these kind of variables can be saved in a NetCDF file because the 
+%		 supporting information in these structures is needed to describe the contents of 
+%		 the file. For non-archive and non-portable storage of variables, consider using the 
+%		 usual 'save' function in Matlab and Octave.
 %
 %		Example:
-%		 save_nc('dog17_124a',A,M,P,info)
+%		 savenc('dog17_124a',A,M,P,info)
 % 	    generates a file dog17_124a.nc and adds variables A, M and P, and a metadata
 %		 structure.
 %
@@ -35,10 +36,24 @@ if length(fname)<3 || ~all(fname(end+(-2:0))=='.nc'),
 end
 
 if exist(fname,'file'),
-	delete(fname) ;
+	delete(which(fname)) ;
 end
 	
-% save the variables to the file
-for k=1:nargin-1, 
+if ~isstruct(X),
+	fprintf('savenc can only save sensor or metadata structures\n') ;
+	return
+end
+	
+if isfield(X,'info'),		% X is a set of sensor structures
+	f = fieldnames(X) ;
+	for k=1:length(f),
+		addnc(fname,X.(f{k})) ;
+	end
+else
+	addnc(fname,X) ;
+end
+
+% save the remaining variables to the file
+for k=1:nargin-2, 
    addnc(fname,varargin{k}) ;
 end

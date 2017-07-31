@@ -28,7 +28,7 @@ function      V = rotate_vecs(V,Q)
 %     Last modified: 10 May 2017
 
 if nargin<2,
-   help rotate_vec ;
+   help rotate_vecs ;
    return
 end
 

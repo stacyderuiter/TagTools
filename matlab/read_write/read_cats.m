@@ -50,7 +50,7 @@ info.device_type='Archival';
 info.device_model_name=[];
 info.device_model_version=[];
 info.device_url=[];
-info.dephist_device_tzone='UTC';
+info.dephist_device_tzone=0;
 info.dephist_device_regset='dd-mm-yyyy HH:MM:SS';
 info.dephist_device_datetime_start=datestr(V(1,1));
 

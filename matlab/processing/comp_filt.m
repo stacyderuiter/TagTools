@@ -24,8 +24,10 @@ function    Xf = comp_filt(X,fs,fc)
 %		vector or matrix of the same size as X, and at the same sampling rate as X.
 %
 %	  Example:
-%		Xf = comp_filt(X,fs,fc)
-% 	   returns: .
+%		loadnc('testset1')
+%		Xf = comp_filt(A,[0.18 0.8])
+%		plott(P,'r',Xf{1},A.fs,,Xf{2},A.fs,Xf{3},A.fs)
+% 	   % plots a dive profile and three filtered versions of A: low, mid and high frequency.
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
@@ -43,7 +45,7 @@ if isstruct(X),
 	X = X.data ;
 else
 	if nargin<3,
-		help comp_filt
+		help compfilt
 		return
 	end
 end

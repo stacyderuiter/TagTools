@@ -73,7 +73,7 @@ if isstruct(p) && isstruct(A),
 	fc = fs ;
 	fs = p.fs ;
 	p = p.data ;
-   A = A.data ;
+   A = A.data
 else
    if nargin<3,
       fprintf('ocdr: fs required for vector/matrix sensor data\n');

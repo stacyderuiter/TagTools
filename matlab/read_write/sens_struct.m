@@ -59,7 +59,7 @@ if length(fs)==1,    % regularly sampled data
 
 else                 % irregular data
    if length(fs) ~= size(data,1),
-      fprintf('Error: number of sampling times does not match number of samples\n') ;
+      fprintf(' Error: number of sampling times does not match number of samples\n') ;
       return
    end
    X.data = [fs(:),data] ;
@@ -77,21 +77,22 @@ X.history = 'sens_struct' ;
 [S,hdr]=read_csv('sensor_names.csv',1) ;
 k = strncmpi(type,{S.name},length(type)) ;
 if all(k==0),
-   fprintf('Warning: unknown sensor type %s. Set metadata manually\n', type) ;
+   fprintf(' Warning: unknown sensor type %s. Set metadata manually\n', type) ;
    X.name = type ;
+	X.type = type ;
    return ;
 end
 
 if sum(k)>1,
-   fprintf('More than one sensor type match "%s". Retry with a longer type name.\n',type) ;
-   X= [] ;
+   fprintf(' More than one sensor type match "%s". Retry with a longer type name.\n',type) ;
+   X = [] ;
    return
 end
 
 k = find(k) ;
 nc = str2double(S(k).axes) ;
 if size(data,2)~=nc,
-   fprintf('Warning: size of data does not match number of columns (%d) expected for %s\n',nc,S(k).name) ;
+   fprintf(' Warning: size of data does not match number of columns (%d) expected for %s\n',nc,S(k).name) ;
 end
 
 if nargin<5,
@@ -100,6 +101,7 @@ else
    X.name = name ;
 end
 
+X.type = S(k).type ;
 X.full_name = S(k).name ;
 X.description = S(k).description ;
 X.unit = S(k).def_units ;

@@ -1,36 +1,39 @@
 function     v = depth_rate(p,fs,fc)
 
-%     v = depth_rate(p)           % p is a sensor structure
-%	  or
-%     v = depth_rate(p,fc)        % p is a sensor structure
-%	  or
-%     v = depth_rate(p,fs)        % p is a vector
-%	  or
-%     v = depth_rate(p,fs,fc)     % p is a vector
-%     Estimate the vertical velocity by differentiating a depth or 
-%	  altitude time series. A low-pass filter reduces the sensor
-%	  noise that is amplified by the differentiation.
-%		
-%	  Inputs:
-%     p is a depth or altitude time series. p can have any units and can be in
-%      a vector or can be a sensor structure.
-%	   fs is the sampling rate of p in Hz. This is only needed if p is not a sensor
-%      structure.
-%     fc is an optional smoothing filter cut-off frequency in Hz. If fc
-%	   is not given, a default value is used of 0.2 Hz (5 second time constant).
+%     v = depth_rate(p)          % p is a sensor structure
+%		or
+%     v = depth_rate(p,fc)       % p is a sensor structure
+%		or
+%     v = depth_rate(p,fs)       % p is a vector
+%		or
+%     v = depth_rate(p,fs,fc)    % p is a vector
 %
-%	  Returns:
+%     Estimate the vertical velocity by differentiating a depth or 
+%		altitude time series. A low-pass filter reduces the sensor
+%		noise that is amplified by the differentiation.
+%		
+%		Inputs:
+%     p is a sensor structure or vector containing a depth or altitude 
+%      time series. p can have any units.
+%		fs is the sampling rate of p in Hz. This is only needed if p is not
+%      a sensor structure.
+%     fc is an optional smoothing filter cut-off frequency in Hz. If fc
+%		 is not given, a default value is used of 0.2 Hz (i.e., a smoothing
+%      time constant of 5 seconds).
+%
+%     Returns
 %     v is the vertical velocity with the same sampling rate as p. v
-%	  has the same dimensions as p. The unit of v depends on the unit
-%	  of p. If p is in meters, v is in meters/second
+%		 has the same dimensions as p. The unit of v depends on the unit
+%		 of p. If p is in meters, v is in meters/second
 %
 %     The low-pass filter is a symmetric FIR with length 4fs/fc.
-%	   The group delay of the filters is removed.
+%		The group delay of the filters is removed.
 %
 %		Example:
-%		load_nc('testdata1')
-%		v = depth_rate(P)
-% 	    returns: .
+%		 loadnc('testset1')
+%		 v = depth_rate(P);
+%		 plott(v,P.sampling_rate)
+% 	    % plots the vertical speed for the example dive profile.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -43,17 +46,24 @@ if nargin<1,
 end
 
 if isstruct(p),
-   if nargin>1,
-	  fc = fs ;
-   else
-	  fc = [] ;
-   end
-   fs = p.fs ;
-   p = p.data ;
+	if nargin>1,
+		fc = fs ;
+	else
+		fc = [] ;
+	end
+	fs = p.sampling_rate ;
+	p = p.data ;
 else
-   if nargin<3 | isempty(fc),
-      fc = 0.2 ;
-   end
+	if nargin==2,
+		fc = [] ;
+	elseif nargin<2,
+	   fprintf('Error: Need to specify fs if calling depth_rate with a matrix input\n') ;
+	   return
+	end
+end	
+
+if isempty(fc),
+   fc = 0.2 ;
 end
 
 nf = round(4*fs/fc) ;

@@ -62,7 +62,7 @@ function    [T,pe] = ptrack(A,M,s,fs,fc)
 
 T = [] ; pe = [] ;
 if nargin<3,
-   help p_track
+   help ptrack
    return
 end
 
@@ -71,18 +71,17 @@ if isstruct(M) && isstruct(A),
 		fc = fs ;
 	else
 		fc = [] ;
-    end
-    if A.fs ~= M.fs,
-		fprintf('p_track: A and M must be at the same sampling rate\n') ;
-		return
 	end
 	fs = M.fs ;
 	M = M.data ;
 	A = A.data ;
-
+	if A.fs ~= M.fs,
+		fprintf('ptrack: A and M must be at the same sampling rate\n') ;
+		return
+	end
 else
 	if nargin<4,
-		help p_track
+		help ptrack
 		return
 	end
 	if nargin<5,
@@ -94,15 +93,14 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
-nf = 4*fs/fc 
+nf = 4*fs/fc ;
 A = fir_nodelay(A,nf,fc/(fs/2)) ;
 M = fir_nodelay(M,nf,fc/(fs/2)) ;
-W = body_axes(A,M) ;
+W = bodyaxes(A,M) ;
 X = squeeze(W(:,1,:))' ;
 T = cumsum((s/fs).*X) ;
 
 if nargout>=2,
-   [pitch,r] = a2pr(A,fs,fc);
    pe = -cumsum((s/fs).*sin(pitch)) ;
 end
 

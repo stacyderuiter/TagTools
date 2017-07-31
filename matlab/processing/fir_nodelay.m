@@ -1,4 +1,4 @@
-function    [y,h] = fir_nodelay(x,n,fc,qual)
+function    [y,h] = fir_nodelay(x,n,fp,qual)
 
 %     [y,h] =fir_nodelay(x,n,fc,qual)
 %     Delay-free filtering using a linear-phase (symmetric) FIR filter
@@ -61,9 +61,9 @@ function    [y,h] = fir_nodelay(x,n,fc,qual)
 
 n = floor(n/2)*2 ;   % n must be even for an integer group delay
 if nargin==4,
-   h = fir1(n,fc,qual);
+   h = fir1(n,fp,qual);
 else
-   h = fir1(n,fc);
+   h = fir1(n,fp);
 end
 
 noffs = floor(n/2) ;

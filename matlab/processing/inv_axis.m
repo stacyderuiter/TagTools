@@ -26,17 +26,21 @@ function    [V,q] = inv_axis(A)
 %		it is important to choose a relevant sub-sample of movement data, A, to analyse.
 %
 %		Example:
-%		 s=sin(2*pi*0.1*(1:100)');
-%    A=s*[0.9 -0.4 0.3]+s.^2*[0 0.2 0.1];
-%    [V,q] = inv_axis(A)
+%		 [V,q] = inv_axis(sin(2*pi*0.1*(1:100)')*[0.9 -0.4 0.3])
+% 	    returns: V=[-0.2140 ;0.2305;0.9493], q is very small.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 10 May 2017
 
+if nargin<1,
+	help inv_axis
+	return
+end
+	
 % energy ratio between plane-of-motion and axis of rotation
 k = find(~any(isnan(A),2)) ;
 QQ = A(k,:)'*A(k,:) ;      % form outer product of movement matrix
-[V,D,~] = svd(QQ) ;         	% do singular value decomposition 
+[V,D] = svd(QQ) ;         	% do singular value decomposition 
 V = V(:,3) ;				   % this is the least varying axis (i.e., the one with the smallest SV)
 q = D(3,3)/sqrt(D(1,1)*D(2,2)) ;  % what fraction of movement is in the 'invariant' axis

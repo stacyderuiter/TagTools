@@ -1,0 +1,92 @@
+calibration
+ crop
+ crop_all
+ crop_to
+ fix_offset_3d
+ fix_pressure
+ rough_cal_3d
+ spherical_cal
+ undo_cal
+
+constants
+ absorption
+ acc_wgs84
+ depth2pressure
+ julian_day
+ mean_absorption
+ sound_speed
+
+plotting
+ col_line
+ col_line3
+ image_irreg
+ plot_3d_model
+ plott
+ rot_3d_model
+
+processing
+ a2pr
+ block_mean
+ block_rms
+ body_axes
+ comp_filt
+ decdc
+ decz
+ depth_rate
+ dsf
+ euler2rotmat
+ extract
+ extract_cues
+ find_dives
+ fir_nodelay
+ hilbert_env
+ htrack
+ inclination
+ inv_axis
+ m2h
+ median_filter
+ merge_fields
+ msa
+ njerk
+ norm2
+ ocdr
+ odba
+ ptrack
+ residence_index
+ rms_track
+ rotate_vecs
+ rotmat2euler
+ smooth
+ tortuosity
+ zero_crossings
+
+sound
+ get_audio
+ spec2tol
+ spectrum_level
+ wavseq_read
+
+tagiofuns
+ addnc
+ change_fnames
+ csv2struct
+ get_d3_cuetab
+ loadnc
+ read_cats
+ read_cats_csv
+ read_csv
+ read_d3
+ read_d3_swv
+ read_d3_xml
+ read_dd
+ read_dd_txt
+ read_ll3m
+ savenc
+ sens2var
+ sens_struct
+ strip_quotes
+
+testdata
+ make_test_set1
+ make_test_set2
+ make_test_set3
