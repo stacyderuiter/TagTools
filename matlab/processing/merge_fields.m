@@ -14,6 +14,7 @@ function    s = merge_fields(s1,s2)
 %		s1 = struct('a',1,'b',[2 3 4])
 %		s2 = struct('b',3,'c','cat')
 %		s = merge_fields(s1,s2)
+%		Returns: s containing s.b=[2,3,4], s.c='cat', s.a=1
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -26,7 +27,7 @@ if nargin<2,
 end
 
 if ~isstruct(s1) & ~isstruct(s2),
-	fprintf('Both inputs must be structures in merge_fields\n') ;
+	fprintf('Both inputs must be structures in mergefields\n') ;
 	return
 end
 	

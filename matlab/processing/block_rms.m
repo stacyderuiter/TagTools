@@ -13,13 +13,17 @@ function    [Y,t] = block_rms(X,n,nov)
 %		mxn matrix, Y is pxn where p is the number of complete n-length blocks with 
 %		nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 %		Example:
-%		 [Y,t] = block_rms()
-% 	    returns: 
+%		 TBD 
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 10 May 2017
 
+if nargin<2
+	help block_rms
+	return
+end
+	
 if nargin<3,
    nov = 0 ;
 end

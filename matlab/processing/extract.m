@@ -53,4 +53,4 @@ if ked>size(x,1),
 	ked = size(x,1) ;
 end
 
-X = [NaN*zeros(npre,size(x,2));x(kst:ked,:);NaN*zeros(npst,size(x,2))] ;
+X = [NaN*zeros(npre,size(X,2));x(kst:ked,:);NaN*zeros(npst,size(X,2))] ;

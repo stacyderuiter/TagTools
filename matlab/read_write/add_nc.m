@@ -1,6 +1,6 @@
-function		add_nc(fname,X)
+function		addnc(fname,X)
 
-%		add_nc(fname,X)
+%		addnc(fname,X)
 %		Add a variable to a NetCDF archive file. If the archive file does not exist,
 %		it is created. The file is assumed to be in the current working directory 
 %		unless a pathname is added to the beginning of fname.
@@ -11,10 +11,10 @@ function		add_nc(fname,X)
 %		X is a sensor or metadata structure. Only these kind of variables can be saved
 %		 in a NetCDF file because the supporting information in these structures is
 %		 needed to describe the contents of the file. For non-archive and non-portable
-%		 storage of variables, consider using the usual 'save' function in Matlab and Octave.
+%		 storage of variables, consider using the usual 'save' function in Matlab and Octabe.
 %
 %		Example:
-%		 add_nc('dog17_124a',A)
+%		 addnc('dog17_124a',A)
 % 	    generates a file dog17_124a.nc and adds a variable A.
 %
 %     Valid: Matlab, Octave
@@ -22,11 +22,11 @@ function		add_nc(fname,X)
 %     last modified: 12 July 2017
 
 if nargin<2,
-	help savenc
+	help addnc
 end
 	
 if ~isstruct(X),
-	fprintf('savenc can only save sensor or metadata structures\n') ;
+	fprintf('addnc can only save sensor or metadata structures\n') ;
 	return
 end
 	
@@ -36,7 +36,7 @@ if length(fname)<3 || ~all(fname(end+(-2:0))=='.nc'),
 end
 
 % test if X is a metadata structure or a sensor structure
-if ~isfield(X,'name')
+if ~isfield(X,'data')      % only sensor structures have a data field
 	vname = [] ;
 else
 	vname = X.name ;
@@ -68,30 +68,24 @@ end
 if ~isempty(vname),		% X is a sensor structure
 	if ~isfield(X,'data') || isempty(X.data),
 		nccreate(fname,vname);
-	else
-		nccreate(fname,vname,'Dimensions',{'samples',size(X.data,1),'axis',size(X.data,2)});
+   else
+      if size(X.data,2)>1,
+         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1),[vname '_axis'],size(X.data,2)});
+      else
+         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1)});
+      end
 		ncwrite(fname,vname,X.data);
 	end
 
-	ncwriteatt(fname,vname,'name',X.name);
-	if isfield(X,'fs'),
-		ncwriteatt(fname,vname,'sampling','regular');
-		ncwriteatt(fname,vname,'sampling_rate',X.fs);
-		ncwriteatt(fname,vname,'sampling_rate_unit','Hz');
-	end
-	
-	if ~isfield(X,'meta'),
-		fprintf('Warning: No metadata in variable %s\n',X.name);
-	else
-		F = fieldnames(X.meta) ;
-		V = struct2cell(X.meta) ;
-		for k=1:length(F),
-			if ~ischar(V{k})
-				fprintf('All metadata fields must be strings: leaving field %s blank\n',F{k}) ;
-				ncwriteatt(fname,vname,['meta_' F{k}],'') ;
-			else
-				ncwriteatt(fname,vname,['meta_' F{k}],V{k}) ;
-			end
+   F = fieldnames(X) ;
+	V = struct2cell(X) ;
+	for k=1:length(F),
+      if strcmp(F{k},'data'), continue, end
+      if iscell(V{k}) || isstruct(V{k}),
+			fprintf('Metadata must be strings or numbers: leaving field %s blank\n',F{k}) ;
+			ncwriteatt(fname,vname,F{k},'') ;
+		else
+			ncwriteatt(fname,vname,F{k},V{k}) ;
 		end
 	end
 
@@ -113,8 +107,8 @@ end
 F = fieldnames(X) ;
 V = struct2cell(X) ;
 for k=1:length(F),
-	if ~ischar(V{k})
-		fprintf('All metadata fields must be strings: leaving field %s blank\n',F{k}) ;
+   if ~isempty(V{k}) && (iscell(V{k}) || isstruct(V{k})),
+	   fprintf('Metadata must be strings or numbers: leaving field %s blank\n',F{k}) ;
 		ncwriteatt(fname,'/',F{k},'') ;
 	else
 		ncwriteatt(fname,'/',F{k},V{k}) ;

@@ -1,7 +1,7 @@
 function    t = tortuosity(T,fs,intvl)
 
 %    t = tortuosity(T,fs,intvl)
-%    Measure tortuosity index of a regularly sampled horizontal track.
+%    Measure tortuousity index of a regularly sampled horizontal track.
 %    Tortuosity can be measured in a number of ways. This function
 %    compares the stretched-out track length (STL) over an interval of
 %    time with the distance made good (DMG, i.e., the distance actually

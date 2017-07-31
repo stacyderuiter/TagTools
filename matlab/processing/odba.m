@@ -21,7 +21,7 @@ function    e = odba(A,fs,fh,method)
 %		   of the frame of A. The 1-norm method has a more complex dependency on frame.
 %       fs is the sampling rate in Hz of the acceleration signals.
 %       fh is the high-pass filter cut-off frequency in Hz. This should be chosen
-%		   to be about half of the stroking rate for the animal (e.g., using dsf.m).
+%		   to be about half of the stroking rate for the animal (e.g., using dsa.m).
 %			fs and fh are only needed if using the default (FIR filtering) method.
 %		  n is the rectangular window (moving average) length in samples. This is only
 %		   needed if using the classic ODBA and VeDBA forms.

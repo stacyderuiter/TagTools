@@ -17,7 +17,7 @@ function 	ncfile = read_ll3m(datapath,depid)
 %      to this deployment, for example, mn12_186a.
 %  
 % 		Results:
-%     ncfile if the name of the NetCDF file containing the tag data. It will
+%     ncfile is the name of the NetCDF file containing the tag data. It will
 %      be 'depid'_raw.nc (e.g., mn12_186a_raw.nc).
 %
 % 		Example:

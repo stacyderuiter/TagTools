@@ -22,7 +22,7 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 %
 %		Example:
 %		 X = extract_cues()
-% 	    returns: X=.
+% 	    returns: TBD
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -55,3 +55,4 @@ else
       X(:,:,kk) = x(kcues(kk)+(1:klen),:) ;
    end
 end
+

@@ -27,8 +27,8 @@ function    Q = euler2rotmat(p,r,h)
 %		 Example:
 %		  Q = euler2rotmat([22 -22 85]*pi/180)
 % 	     returns: Q = [0.080809  -0.911425  -0.403453
-%   				   0.923656   0.220605  -0.313358
-%   				   0.374607  -0.347329   0.859670]
+%   						 0.923656   0.220605  -0.313358
+%   						 0.374607  -0.347329   0.859670]
 %
 %      Valid: Matlab, Octave
 %      markjohnson@st-andrews.ac.uk
@@ -36,7 +36,7 @@ function    Q = euler2rotmat(p,r,h)
 
 
 if nargin~=1 && nargin~=3,
-   help euler2rot_mat
+   help euler_to_rotmat
    return
 end
 

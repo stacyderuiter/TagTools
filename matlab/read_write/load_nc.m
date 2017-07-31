@@ -1,8 +1,8 @@
-function    X = load_nc(fname)
+function    X = loadnc(fname)
 
-%     load_nc(fname)
+%     loadnc(fname)
 %		or
-%		X=load_nc(fname)
+%		X=loadnc(fname)
 %     Load variables from a NetCDF archive file. The file is assumed to be in 
 %		the current working directory unless a pathname is added to the beginning 
 %		of fname. If no output argument is given, the variables will be created in
@@ -21,7 +21,7 @@ function    X = load_nc(fname)
 %		 X.info (the file metadata).
 %
 %		Example:
-%		 load_nc('testset1')
+%		 loadnc('testset1')
 % 	    loads variables from file testset1.nc into the workplace.
 %
 %     Valid: Matlab, Octave
@@ -30,7 +30,7 @@ function    X = load_nc(fname)
 
 X = [] ;
 if nargin<1,
-   help load_nc
+   help loadnc
    return
 end
 
@@ -40,6 +40,7 @@ if length(fname)<3 || ~all(fname(end+(-2:0))=='.nc'),
 end
 
 if ~exist(fname,'file'),
+   fprintf(' File %s not found\n', fname);
 	return ;
 end
 
@@ -63,7 +64,7 @@ for k=1:length(F),
 	fn = F{k} ;
  	if fn(1)=='_', continue, end		% skip place-holder variable
 	X.(fn).data = ncread(fname,fn);
-	if T.Variables(k).Size(1)==1 && X.(fn).data(1) == T.Variables(k).FillValue,
+	if (T.Variables(k).Size==1) & (X.(fn).data(1) == T.Variables(k).FillValue),
 		X.(fn).data = [] ;
 	end
 	

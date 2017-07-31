@@ -37,7 +37,8 @@ decdc <- function(x,df) {
     bcd <- x[, k]
     cde <- (2 * x[xlen, k]) - (x[xlen - c(1:(flen + 1),k)])
     xx <- c(abc, bcd, cde)
-    v <- pracma::conv(h,xx)
+    v <- signal::conv(h,xx)
+ #   v <- pracma::conv(h,xx) # results identical and signal is a bit faster? SDR
     y[,k] <- v[dc]
   }
   return(y)

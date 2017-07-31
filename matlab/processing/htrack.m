@@ -1,4 +1,4 @@
-function    T = htrack(A,M,s,fs,fc)
+function    [T,pe] = htrack(A,M,s,fs,fc)
 
 %    T=htrack(A,M,s,fs)			% A and M are matrices
 %	  or
@@ -61,9 +61,9 @@ function    T = htrack(A,M,s,fs,fc)
 %    markjohnson@st-andrews.ac.uk
 %    Last modified: 10 May 2017
 
-T = [] ;
+T = [] ; pe = [] ;
 if nargin<3,
-   help h_track
+   help htrack
    return
 end
 
@@ -72,17 +72,17 @@ if isstruct(M) && isstruct(A),
 		fc = fs ;
 	else
 		fc = [] ;
-    end
-    if A.fs ~= M.fs,
-		fprintf('h_track: A and M must be at the same sampling rate\n') ;
-		return
 	end
 	fs = M.fs ;
 	M = M.data ;
 	A = A.data ;
+	if A.fs ~= M.fs,
+		fprintf('ptrack: A and M must be at the same sampling rate\n') ;
+		return
+	end
 else
 	if nargin<4,
-		help h_track
+		help htrack
 		return
 	end
 	if nargin<5,
@@ -94,7 +94,7 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
-nf = 4*fs/fc 
+nf = 4*fs/fc ;
 hd = m2h(M,A,fs,fc);
 if length(s)==1,
 	s = repmat(s/fs,size(hd,1),2) ;
