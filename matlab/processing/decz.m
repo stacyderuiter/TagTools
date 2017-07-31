@@ -103,7 +103,8 @@ end
 
 Z.ov = [] ;
 for k=1:size(x,2),
-   [X,zz,z] = buffer(x(:,k),nh,nh-df,Z.z(:,k)) ;
+   %[X,zz,z] = buffer(x(:,k),nh,nh-df,Z.z(:,k)) ;
+   [X,zz,z] = buffer([Z.z(:,k);x(:,k)],nh,nh-df,'nodelay') ;
    if k==1,
       y = zeros(size(X,2),size(x,2)) ;
    end
