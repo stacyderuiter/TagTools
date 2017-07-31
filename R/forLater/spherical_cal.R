@@ -70,7 +70,8 @@ spherical_cal <- function(X,n,method){
     method = c()
   }
   # remove any rows in X with NaNs
-  X <- X[!is.na(X),]
+  
+  X <- na.omit(X)
   nv1 <- 3 ;		# number of variables for offset
   nv2 <- 5 ;		# number of variables for gain and offset
   nv3 <- 8 ;		# number of variables for gain, offset and cross
