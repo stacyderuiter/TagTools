@@ -28,7 +28,7 @@ undo_cal <- function(X,T){
   if("info" %in% names(X)){
     f <- names(X)
     for(k in 1:length(f)){
-      if(grep(f[[k]],'info'){
+      if(identical(f[[k]],'info')){
         next
       } 
       X$f[[k]] = undo_cal1(X$f[[k]],T) 
@@ -53,7 +53,7 @@ undo_cal1 <- function(X,T){
     X$data <- X$data %*% solve(X$cross)
     X$cal_cross <- diag(ncol(X$data)) ;
   }
-  if ((length(T)!= 0) & ("cal_tcomp"  %in% names(X) ) & (nrow(T)==nrow(X$data))){
+  if ((!missing(T) && !is.null(T) && length(T) != 0) & ("cal_tcomp"  %in% names(X) ) && (nrow(T)==nrow(X$data))){
     if (!("cal_tref" %in% names(X))){
       tref <- 0 
     }
@@ -76,7 +76,7 @@ undo_cal1 <- function(X,T){
   }
   
   X$frame <- 'raw' 
-  if (!("history" %in% names(X)) | length(X$history) == 0 | X$history == NULL){
+  if (!("history" %in% names(X)) | length(X$history) == 0 | is.null(X$history) ){
     X$history <- 'undo_cal' 
   }
   else{
