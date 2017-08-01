@@ -26,16 +26,16 @@ fix_offset_3d <- function(X) {
   if (ncol(x) != 3) {
     stop("input data must be from a 3-axis sensor")
   }
-  k <- t(na.omit(t(x)))
-  bsq <- rowSums(x[k, ]^2)
+  k <- complete.cases(x)
+  bsq <- rowSums(x[k,]^2)
   mb <- sqrt(mean(bsq))
-  XX <- c((2 * x[k, ]), pracma::repmat(mb, length(k), 1))
-  R <- t(XX) * XX
+  XX <- c((2 * x[k,]), pracma::repmat(mb, length(k), 1))
+  R <- t(XX) %*% XX
   if (kappa(R, exact = TRUE) > 1e3) {
     stop("condition too poor to get reliable solution")
   }
   P <- sum(pracma::repmat(bsq, 1, 4) * XX)
-  H <- -inv(R)*t(P)
+  H <- -solve(R)%*%t(P)
   ones <- matrix(1, 3, 1)
   G$poly <- c(ones, H[1:3])
   x <- x + pracma::repmat(t(H[1:3]), nrow(x), 1)
@@ -55,7 +55,7 @@ fix_offset_3d <- function(X) {
     G$poly[,2] <- inv(X$cal_cross) * G$poly[, 2]
   }
   X$cal_poly <- G$poly
-  if ("history" %in% names(X) == TRUE) | (is.null(X$history)) {
+  if( ("history" %in% names(X) == TRUE) | (is.null(X$history))) {
     X$history <- "fix_offset_3d"
   } else {
     X$history <- c(X$history, "fix_offset_3d")
