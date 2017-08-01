@@ -18,6 +18,7 @@
 #'          Xdata <- list(datatest = P2$X)
 #'          plott(Xdata)
 #'          #plot shows the dive profile and acceleration of the second dive
+#' @export
 
 crop_to <- function(X, sampling_rate = NULL, tcues = NULL) {
   T <- c()

@@ -4,14 +4,15 @@
 \alias{find_dives}
 \title{Find time cues for dives}
 \usage{
-find_dives(p, sampling_rate, mindepth, surface = NULL, findall = NULL)
+find_dives(p, mindepth, sampling_rate = NULL, surface = NULL,
+  findall = NULL)
 }
 \arguments{
 \item{p}{A depth or altitude time series (vector) in meters.}
 
-\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second).}
-
 \item{mindepth}{The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.}
+
+\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second).}
 
 \item{surface}{(optional) The threshold in meters at which the animal is presumed to have reached the surface. Default value is 1. A smaller value can be used if the dive/altitude data are very accurate and you need to detect shallow dives/flights.}
 

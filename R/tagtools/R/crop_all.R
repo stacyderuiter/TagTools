@@ -12,6 +12,7 @@
 #'          testdata <- list(P = X$P, A = X$A)
 #'          plott(testdata)
 #'          #plot shows the dive profile and acceleration of the second dive
+#' @export
 
 crop_all <- function(tcues, X) {
   if (missing(X)) {
