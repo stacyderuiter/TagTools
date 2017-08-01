@@ -2,16 +2,16 @@
 % Please edit documentation in R/m2h.R
 \name{m2h}
 \alias{m2h}
-\title{Compute heading, field intensity, and inclination angle}
+\title{Heading from accelerometer and magnetometer data}
 \usage{
-m2h(M, A, sampling_rate, fc = NULL)
+m2h(M, A, sampling_rate = NULL, fc = NULL)
 }
 \arguments{
 \item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
 
 \item{A}{A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
-\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.}
+\item{sampling_rate}{(optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If \code{A} and \code{M} are sensor data lists, then sampling_rate is obtained from them.}
 
 \item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.}
 }
@@ -19,15 +19,12 @@ m2h(M, A, sampling_rate, fc = NULL)
 A list with 3 elements:
 \itemize{
 \item{\strong{h: }} The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
-\item{\strong{v: }} The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
-\item{\strong{incl: }} The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
+\item{\strong{v: }} The estimated magnetic field intensity in the same units as M. This is computed by taking the 2-norm of M, after filtering (if any filtering was specified).
+\item{\strong{incl: }} The estimated magnetic field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
 }
 }
 \description{
-This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
-}
-\details{
-Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,sampling_rate,fc) if A and M are matrices.
+This function is used to compute the heading, field intensity, and the inclination angle by gimballing the magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 }
 \note{
 Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).
@@ -35,4 +32,7 @@ Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. North and east are magnetic, not true. In these frames a positive heading is a clockwise rotation around the z-axis.
 
 The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
+}
+\seealso{
+\code{\link{a2pr}}
 }
