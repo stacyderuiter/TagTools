@@ -1,0 +1,38 @@
+field,required,params
+depid,1,hs16_265c
+dtype.source,0,"hs16_265cprh.mat,hs16_265ctrk.mat"
+dtype.datetime.made,0,17/07/2017 22:55:00
+dtype.nfiles,0,1
+dtype.format,0,MAT
+device.serial,1,
+device.make,1,DTAG
+device.type,1,Archival
+device.model,1,DTAG4
+device.url,0,https://www.soundtags.org
+sensors.firm,1,Not specified
+sensors.soft,1,Not specified
+sensors.list,0,"3axis Accelerometer,3 axis Magnetometer,Pressure,GPS"
+animal.id,0,Unknown
+animal.species.common,1,Harbour seal
+animal.species.science,1,Phoca vitulina
+animal.dbase.url,1,
+dephist.device.tzone,1,0
+dephist.device.regset,1,dd/mm/yyyy HH:MM:SS
+dephist.device.datetime.start,1,2016-09-21 07:55:22
+dephist.deploy.locality,1,"Husum,Germany"
+dephist.deploy.location.lat,1,54.445
+dephist.deploy.location.lon,1,8.674
+dephist.deploy.datetime.start,1,2016-09-21 07:55:22
+dephist.deploy.method,1,Glue
+project.name,1,UWE 2016
+project.datetime.start,1,2016-09-21
+project.datetime.end,1,2016-11-01
+provider.name,1,Mark Johnson
+provider.details,1,Univ St Andrews
+provider.email,1,info@animaltags.org
+provider.license,1,Contact data provider
+provider.cite,1,Contact data provider
+provider.doi,1,Contact data provider
+udm.export,0,1
+udm.segment,0,"184588,188404"
+udm.segment.unit,0,seconds since tag start
