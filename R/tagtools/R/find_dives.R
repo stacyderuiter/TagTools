@@ -12,9 +12,23 @@
 #' BW <- beaked_whale
 #' T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
 
-find_dives <- function(p, sampling_rate, mindepth, surface = NULL, findall = NULL) {
-  if (missing(mindepth)) {
-    stop("inputs for p, sampling_rate, and mindepth are all required")
+find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findall = NULL) {
+  if (nargs() < 2) {
+    stop("inputs for p and mindepth are required")
+  }
+  if (is.list(p)) {
+    sampling_rate <- p$sampling_rate
+    p <- p$data
+    if (is.null(p)) {
+      stop("p cannot be an empty vector")
+    }
+  } else {
+    if (nrow(p) == 1) {
+      p <- t(p)
+    }
+    if (is.null(sampling_rate)) {
+      stop("sampling_rate is required when p is a vector")
+    }
   }
   if (is.null(surface)) {
     surface <- 1          #maximum p value for a surfacing
@@ -54,7 +68,7 @@ find_dives <- function(p, sampling_rate, mindepth, surface = NULL, findall = NUL
   }
   #truncate dive list to only dives with starts and stops in the record
   ton <- ton[1:k]
-  toff >- toff[1:k]
+  toff <- toff[1:k]
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * sampling_rate / dp_lp)
   dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))$y
