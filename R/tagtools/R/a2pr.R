@@ -6,6 +6,7 @@
 #' @param A An nx3 acceleration matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A before computing pitch and roll. The filter cut-off frequency is in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
+#' @seealso \code{\link{m2h}}
 #' @return A list with 2 elements:
 #' \itemize{
 #'  \item{\strong{p: }} The pitch estimate in radians
@@ -19,31 +20,19 @@
 #'                        byrow = TRUE, nrow = 3)
 #' list <- a2pr(samplematrix)
 
-a2pr <- function(A, sampling_rate, fc) {
+a2pr <- function(A, sampling_rate=NULL, fc=NULL) {
   # input checks-----------------------------------------------------------
-  if (missing(A)) {
-    stop("Input for A is required")
-  }
   if (is.list(A)) {
-    if (nargs() > 1) {
-      fc <- sampling_rate
-    } else {
-      fc <- c()
-    }
     sampling_rate <- A$sampling_rate
     A <- A$data
-  } else {
-    if (nargs() == 1) {
-      fc <- c()
-    } else {
-      if (nargs() == 2) {
+  } 
+  if (is.matrix(A) & missing(sampling_rate)) {
         stop("Need to specify sampling_rate and fc if calling a2pr with a matrix")
-      }
-    }
   }
+
   # catch the case of a single acceleration vector
   if (min(c(nrow(A), ncol(A))) == 1) {
-    A <- t(A)
+    A <- matrix(A, ncol=1)
   }
   if (!is.null(fc)) {
     A <- fir_nodelay(A, round(4 / fc), fc / (sampling_rate / 2))$y

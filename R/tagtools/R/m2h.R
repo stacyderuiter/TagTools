@@ -1,6 +1,6 @@
 #' Compute heading, field intensity, and inclination angle 
 #' 
-#' This function is used to compute the heading, field intensity, and the inclination angle by gimballingthe magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
+#' This function is used to compute the heading, field intensity, and the inclination angle by gimballing the magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #' 
 #' Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,sampling_rate,fc) if A and M are matrices.
 #' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
@@ -10,25 +10,20 @@
 #' @return A list with 3 elements:
 #' \itemize{
 #' \item{\strong{h: }} The heading in radians in the same frame as M. The heading is with respect to magnetic north (i.e., the north vector of the navigation frame) and so must be corrected for declination. 
-#' \item{\strong{v: }} The estimated magnetic field intensity in the same units as M. This is just the 2-norm of M after filtering (if specified).
-#' \item{\strong{incl: }} The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
+#' \item{\strong{v: }} The estimated magnetic field intensity in the same units as M. This is computed by taking the 2-norm of M, after filtering (if any filtering was specified).
+#' \item{\strong{incl: }} The estimated magnetic field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. By convention, a field vector pointing below the horizon has a positive inclination angle. See note in the function if using incl.
 #' }
 #' @note Output sampling rate is the same as the input sampling rate (i.e. h, v, and incl are estimated with the same sampling rate as M and A and so are each nx1 vectors).
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. North and east are magnetic, not true. In these frames a positive heading is a clockwise rotation around the z-axis. 
 #' @note The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
+#' @seealso \code{\link{a2pr}}
 #' @export
 #' @example list(h = h, v = v, incl = incl) <- m2h(M = matrix(c(22, -24, 14), nrow = 1), 
 #'                                                 A = matrix(c(-0.3, 0.52, 0.8), nrow = 1), fc = NULL)
 #' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.
 
-m2h <- function(M, A, sampling_rate, fc = NULL) {
-  if (nargs() < 2) {
-    stop("inputs for both M and A are required")
-  }
+m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
   if (is.list(M) & is.list(A)) {
-    if (nargs() > 2) {
-      fc <- sampling_rate
-    }
     sampling_rate <- M$sampling_rate
     M <- M$data
     A <- A$data
@@ -36,11 +31,8 @@ m2h <- function(M, A, sampling_rate, fc = NULL) {
       stop("A and M must be at the same sampling rate")
     }
   } else {
-    if (nargs() == 2) {
-      fc <- c()
-    } else {
-      if (nargs() == 3) {
-        stop("Need to specify sampling_rate and fc if calling m2h with matrix inputs")
+    if (is.null(fc) | is.null(sampling_rate)) {
+    stop("Need to specify sampling_rate and fc if calling m2h with matrix inputs")
       }
     }
   }
