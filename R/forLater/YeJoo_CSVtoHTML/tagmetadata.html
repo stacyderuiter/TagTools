@@ -6,7 +6,7 @@
 
 
 var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
-
+var uploadBool = false;
 var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial","device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft","sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url","dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method","project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email","provider.license", "provider.cite", "provider.doi", "udm.export"];
 var other_field = ["NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"];	
 function findIndexbyField(str, array){ 
@@ -60,7 +60,7 @@ function myTrim(x) {
 						}
 					}
 				}
-				
+				uploadBool = true;
 				
 			}
 			reader.readAsText(csvFileUpload.files[0]);
@@ -234,7 +234,7 @@ function loadValue(){
 function saveValues(){
 	if(validateForm()){
 		var a = [];
-		if(localStorage.getItem('storeData') != null && localStorage.getItem('storeData') != ""){
+		if(uploadBool && localStorage.getItem('storeData') != null && localStorage.getItem('storeData') != ""){
 			a = parseCSV(localStorage.getItem('storeData'));
 		}
 		else{
@@ -254,7 +254,12 @@ function saveValues(){
 			else{
 				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
 					record += a[i][0] + "," + a[i][1] + ",";
-					record += a[i][2] + "\n" ;
+					if(a[i][2].indexOf('"') > -1){
+						record += a[i][2] + "\n" ;
+					}
+					else{
+						record += comma_or_not(a[i][2]) + "\n" ;
+					}
 				}
 				else{
 					if(a[i][0] =="dephist.device.tzone"){
