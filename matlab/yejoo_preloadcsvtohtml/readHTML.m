@@ -7,9 +7,7 @@ function readHTML(masterHTML, csvfilename)
     newS = s;
     fclose(htmlID);
     fields_findstring = "other_field = ";
-    for p = 1:length(s)
-        fields_array_index = find(contains(s, fields_findstring));
-    end
+    fields_array_index = find(contains(s, fields_findstring));
     [fields_field_split, unused] = strsplit(s{fields_array_index}, "[");
     fields_array_string = "";
     for u = 1:length(fields2)
@@ -17,25 +15,31 @@ function readHTML(masterHTML, csvfilename)
             fields_array_string = strcat("[", '"', fields2{u}, '"');
         else
             if u < length(fields2),
-                if fields2{u}(1) == '"' && fields2{u}(length(fields2{u})) == '"'
-                     fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'");
+                if isempty(fields2{u})
+                    fields_array_string = strcat(fields_array_string, " ", ",", '""');
                 else
-                    fields_array_string = strcat(fields_array_string, " ", ",",  '"', fields2{u}, '"' );
+                    if fields2{u}(1) == '"' && fields2{u}(end) == '"'
+                         fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'");
+                    else
+                        fields_array_string = strcat(fields_array_string, " ", ",",  '"', fields2{u}, '"' );
+                    end
                 end
             else
-                if fields2{u}(1) == '"' && fields2{u}(length(fields2{u})) == '"'
-                     fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'", "]");
+                if isempty(fields2{u}),
+                     fields_array_string = strcat(fields_array_string, " ", ",", '""', "]");
                 else
-                    fields_array_string = strcat(fields_array_string, " ", ",", '"', fields2{u},'"', "]");
+                    if fields2{u}(1) == '"' && fields2{u}(end) == '"'
+                         fields_array_string = strcat(fields_array_string, " ", ",", "'", fields2{u}, "'", "]");
+                    else
+                        fields_array_string = strcat(fields_array_string, " ", ",", '"', fields2{u},'"', "]");
+                    end
                 end
             end
         end
     end
    newS{fields_array_index} = strcat(fields_field_split{1}, " ", fields_array_string);
    csv_findstring = "csv_fields = ";
-    for p = 1:length(s)
-        csv_array_index = find(contains(s, csv_findstring));
-    end
+   csv_array_index = find(contains(s, csv_findstring));
    [csv_field_split, unused] = strsplit(s{csv_array_index}, "[");
     csv_array_string = "";
     for u = 1:length(id2)
@@ -51,9 +55,7 @@ function readHTML(masterHTML, csvfilename)
     end
      newS{csv_array_index} = strcat(csv_field_split{1}, " ", csv_array_string);
     req_findstring = "req_field = ";
-    for p = 1:length(s)
-        req_array_index = find(contains(s, req_findstring));
-    end
+    req_array_index = find(contains(s, req_findstring));
    [req_field_split, unused] = strsplit(s{req_array_index}, "[");
     req_array_string = "";
     for u = 1:length(req_fields2)
@@ -86,7 +88,7 @@ function readHTML(masterHTML, csvfilename)
             continue;
         end
         if strcmp(id(indices(n)), "udm.export")
-            [C,matches] = strsplit(s{c(char(id(indices(n))))}, '" />');
+            [C,~] = strsplit(s{c(char(id(indices(n))))}, '" />');
             tempcell = C{2};
             if fields{indices(n)} == '1'
                 C{2} = '" checked />';
@@ -100,10 +102,14 @@ function readHTML(masterHTML, csvfilename)
             [C,matches] = strsplit( s{c(char(id(indices(n))))},'value = ""');
             if ~isempty(matches)
                 tempcell = C{2};
-                if fields{indices(n)}(1) ~= '"' && fields{indices(n)}(length(fields{indices(n)})) ~= '"'
-                    C{2} = strcat(' value=','"',fields{indices(n)},'"',' ');
+                if isempty(fields{indices(n)})
+                    C{2} = ' value= "NA" ';
                 else
-                     C{2} = strcat(' value=',fields{indices(n)},' ');
+                    if fields{indices(n)}(1) ~= '"' && fields{indices(n)}(length(fields{indices(n)})) ~= '"'
+                        C{2} = strcat(' value=','"',fields{indices(n)},'"',' ');
+                    else
+                         C{2} = strcat(' value=',fields{indices(n)},' ');
+                    end
                 end
                 C{3} = tempcell;
                 newS{c(char(id(indices(n))))} = [C{1} C{2} C{3}];
@@ -113,7 +119,7 @@ function readHTML(masterHTML, csvfilename)
             f_str = strcat("value=",'"',fields{indices(n)},'"');
             for m = (c(char(id(indices(n))))+ 1): (c(char(id(indices(n))))+82)
                 if ~isempty(strfind(s{m}, f_str))
-                     [C,matches] = strsplit( s{m},'>(');
+                     [C,~] = strsplit( s{m},'>(');
                      tempcell = C{2};
                       C{2} = " selected >(";
                       C{3} = tempcell;
@@ -123,6 +129,10 @@ function readHTML(masterHTML, csvfilename)
             end
         end
     end
+    
+    clear_index = find(contains(s, "<script>"));
+    newS = [newS(1:clear_index); {"window.localStorage.clear()"}; newS(clear_index+1:end) ];
+
     % Write cell A into txt
     new_html_id = fopen('dynamic_tagmetadata.html', 'w');
     for i = 1:numel(newS)

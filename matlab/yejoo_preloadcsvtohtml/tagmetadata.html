@@ -8,7 +8,7 @@
 var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
 
 var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial","device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft","sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url","dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method","project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email","provider.license", "provider.cite", "provider.doi", "udm.export"];
-var other_field = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1];	
+var other_field = ["NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"];	
 function findIndexbyField(str, array){ 
 	var i;
 	arrlength = array.length;
@@ -104,10 +104,10 @@ function parseCSV(str) {
     }
     return arr;
 };
-function cbind(arr1,arr2){
+function cbind(arr1,arr2,arr3){
 	var res_arr = [];
 	for(var row = 0; row < arr1.length; row ++){
-		res_arr.push([arr1[row], arr2[row]]);
+		res_arr.push([arr1[row], arr2[row], arr3[row]]);
 	}
 	return res_arr;
 };
@@ -234,11 +234,12 @@ function loadValue(){
 function saveValues(){
 	if(validateForm()){
 		var a = [];
-		if(localStorage.getItem('storeData') != ""){
+		if(localStorage.getItem('storeData') != null && localStorage.getItem('storeData') != ""){
 			a = parseCSV(localStorage.getItem('storeData'));
 		}
 		else{
 			a = cbind(csv_fields, req_field, other_field);
+			a.unshift(["field", "required", "params"]);
 		}
 		var record = "";
 		var i;
@@ -253,7 +254,7 @@ function saveValues(){
 			else{
 				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
 					record += a[i][0] + "," + a[i][1] + ",";
-					record += comma_or_not(a[i][2]) + "\n" ;
+					record += a[i][2] + "\n" ;
 				}
 				else{
 					if(a[i][0] =="dephist.device.tzone"){
