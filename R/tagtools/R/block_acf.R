@@ -25,11 +25,13 @@ block_acf <- function(resids, blocks, max_lag,
     
     # get indices of last element of each block (excluding the last block)
     i1 <- cumsum(as.vector(utils::head(tapply(blocks, blocks, length), -1)))
-    r <- resids
     block_acf <- matrix(1, nrow = max_lag + 1, ncol = 1)
+    r <- resids
+    
     for (k in 1:max_lag) {
+      # insert NA before first entry of each new block
         for (b in 1:length(i1)) {
-            r <- append(r, NA, i1[b])
+            r <- append(resids, NA, i1[b])
         }
         # adjust for the growing r
         i1 <- i1 + utils::head(c(0:(-1 + nlevels(blocks))), -1)

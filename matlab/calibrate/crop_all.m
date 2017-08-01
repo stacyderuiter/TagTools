@@ -10,7 +10,7 @@ function		[X,varargout] = crop_all(tcues,X,varargin)
 %     Inputs:
 %		tcues is a two-element vector containing the start and end time cue
 %		 in seconds of the data segment to keep, i.e., tcues = [start_time, end_time].
-%     X is a sensor structure or a set of sensor structures (e.g., from loadnc).
+%     X is a sensor structure or a set of sensor structures (e.g., from load_nc).
 %		Y,... are additional sensor structures.
 %
 %     Results:
