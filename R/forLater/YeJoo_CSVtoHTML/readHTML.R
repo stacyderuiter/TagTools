@@ -123,11 +123,11 @@ readHTML <- function(masterHTML, csvfilename){
       }
     }
   }
-  clearindex = grep("<script>", htmlFile)
-  prev <- newHTML[1:clearindex]
-  leftover <- newHTML[clearindex+1: length(newHTML)]
-  clear_string <- "window.localStorage.clear()"
-  newHTML <- c(prev, clear_string,leftover)
+ # clearindex = grep("<script>", htmlFile)
+ #prev <- newHTML[1:clearindex]
+  #leftover <- newHTML[clearindex+1:length(newHTML)]
+  #clear_string <- "window.localStorage.clear()"
+  #newHTML <- c(prev, clear_string,leftover)
   fileConn<-file("dynamic_tagmetadata.html")
   writeLines(newHTML, fileConn)
   close(fileConn)
