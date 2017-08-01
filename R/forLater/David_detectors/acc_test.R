@@ -18,8 +18,6 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   if (nargs() < 4) {
     stop("inputs for all arguments are required")
   }
-  events <- events * 5
-  #determine the number of hits, false alarms, and misses
   count_hits <- 0
   count_false_alarms <- 0
   for (j in 1:length(detections)) {
@@ -34,9 +32,9 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
       }
     }
   }
-  count_misses <- nrow(events) - count_hits
+  count_misses <- length(events) - count_hits
   #calculate the hit rate and false alarm rate
-  hits_rate <- count_hits / nrow(events)
+  hits_rate <- count_hits / length(events)
   false_alarm_rate <- count_false_alarms / tpevents
   detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
                             count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
