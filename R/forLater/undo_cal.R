@@ -28,10 +28,10 @@ undo_cal <- function(X,T){
   if("info" %in% names(X)){
     f <- names(X)
     for(k in 1:length(f)){
-      if(identical(f[[k]],'info')){
+      if(identical(f[k],'info')){
         next
       } 
-      X$f[[k]] = undo_cal1(X$f[[k]],T) 
+      X[[k]] = undo_cal1(X[[k]],T) 
     }
   }
   else{
@@ -82,6 +82,7 @@ undo_cal1 <- function(X,T){
   else{
     X$history = paste(X$history, ",undo_cal", sep = " ")
   }
+  return(X)
 }
 
 

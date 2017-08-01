@@ -1,11 +1,10 @@
-#' Compute heading, field intensity, and inclination angle 
+#' Heading from accelerometer and magnetometer data
 #' 
 #' This function is used to compute the heading, field intensity, and the inclination angle by gimballing the magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #' 
-#' Possible input combinations: m2h(M,A) if A and M are lists or matrices, m2h(M,A,fc = fc) if A and M are lists, m2h(M,A,sampling_rate,fc) if A and M are matrices.
 #' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
 #' @param A A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
-#' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required.
+#' @param sampling_rate (optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If \code{A} and \code{M} are sensor data lists, then sampling_rate is obtained from them.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @return A list with 3 elements:
 #' \itemize{
@@ -18,9 +17,9 @@
 #' @note The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
 #' @seealso \code{\link{a2pr}}
 #' @export
-#' @example list(h = h, v = v, incl = incl) <- m2h(M = matrix(c(22, -24, 14), nrow = 1), 
-#'                                                 A = matrix(c(-0.3, 0.52, 0.8), nrow = 1), fc = NULL)
-#' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.
+#' @example \dontrun{m2h_out <- m2h(M = matrix(c(22, -24, 14), nrow = 1), 
+#'                         A = matrix(c(-0.3, 0.52, 0.8), nrow = 1))
+#' #Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.}
 
 m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
   if (is.list(M) & is.list(A)) {
@@ -30,17 +29,13 @@ m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
     if (A$sampling_rate != M$sampling_rate) {
       stop("A and M must be at the same sampling rate")
     }
-  } else {
-    if (is.null(fc) | is.null(sampling_rate)) {
-    stop("Need to specify sampling_rate and fc if calling m2h with matrix inputs")
-      }
-    }
-  }
+  } 
+
   if (nrow(M) * ncol(M) == 3) {
-    M <- t(M)
+    M <- matrix(M,nrow=1)
   }
   if (nrow(A) * ncol(A) == 3) {
-    A <- t(A)
+    A <- matrix(A, nrow=1)
   }
   if (nrow(A) != nrow(M)) {
     stop("A and M must have the same number of rows/n")

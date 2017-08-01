@@ -18,6 +18,7 @@ A list with 2 elements:
 \itemize{
 \item{\strong{K: }} A vector of cues (in samples) to zero-crossings in x.
 \item{\strong{s: }} A vector containing the sign of each zero-crossing (1 = positive-going, -1 = negative-going). s is the same size as K. If no zero-crossings are found, K and s will be empty
+\item{\strong{KK: }} The zero crossings of the vertical velocity vector
 }
 }
 \description{
