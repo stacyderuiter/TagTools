@@ -11,7 +11,7 @@
 #'  \item{\strong{pc: }} A list containing the pressure offset and temperature correction coefficients. It has fields: pc$tref which is the temperature compensation polynomial. This is used within the function to correct pressure as follows: p + stats::polyval(pc$tcomp, t - pc$tref).
 #' }
 #' @note This function makes a number of assumptions about the depth/altitude data and about the behaviour of animals: First, the depth data should have few incorrect outlier (negative) values that fall well beyond the surface. These can be reduced using median_filter.m before calling fix_depth. Second, the animal is assumed to be near the surface at least 2% of the time. If the animal is less frequently at the surface, you may need to change the value of PRCTSURF near the start of the function. Third, potential surfacings are detected by looking for zero-crossings inthe vertical speed and this requires defining a threshold in vertical speed that must be crossed by each zero crossing. The value used is 0.05 m/s but this may be too high for animals that move very slowly near the surface. In which case, change MAXSPEED near the start of the function.
-#' @example load_nc('mn12_186a_raw')
+#' @example data <- load_nc('mn12_186a_raw')
 #'          list <- fix_pressure(P,T,10)
 #'          PP <- list$p
 #'          plott(P,PP)
@@ -23,7 +23,7 @@ fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {
   ASYMM <- 0.2 #maximum assymmetry between positive and negative residuals
   TREF <- 20 #standard temperature reference to use
   PRCTSURF <- 2 #minimum percent of time animal is near surface
-  pc <- C()
+  pc <- c()
   if (missing(t)) {
     stop("inputs for p and t are required")
   }
@@ -46,8 +46,8 @@ fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {
     if (nargs() < 3) {
       stop("Sampling rate is a required input when p and t are not sensor structures")
     }
-    pp <- t(p)
-    tt <- t(t)
+    pp <- p
+    tt <- t
     if (length(p) != length(t)) {
       stop("p and t must have the same length")
     }
@@ -77,10 +77,10 @@ fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {
   pp <- pp[k]
   tt <- tt[k]
   v <- v[k]
-  list <- zero_crossings(v, MAXSPEED) #find zero crossings of vertical velocity
-  K <- list$K
-  s <- list$s
-  KK <- list$KK
+  zc <- zero_crossings(v, MAXSPEED) #find zero crossings of vertical velocity
+  K <- zc$K
+  s <- zc$s
+  KK <- zc$KK
   KK <- KK[(s > 0), ]   #pick just the positive zero crossings
   #these are when the animal goes from descending to ascending if flying
   #or from ascending to descending is swimming
@@ -104,8 +104,8 @@ fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {
   #relatively small proportion of non-surface samples by this point,
   #certainly less than 50%. If this is not true, then the previous data
   #selection must be improved.
-  for (k in 1:10) {  #put an upper limit on the number of iterations
-    x <- c(ts^2, ts, matrix(1, length(ps), 1))
+  for (j in 1:10) {  #put an upper limit on the number of iterations
+    x <- cbind(ts^2, ts, matrix(1, length(ps), 1))
     y <- ps
     summ <- summary(lm(y~x))
     stats <- (1 - pf(summ$fstatistic[1], summ$fstatistic[2], summ$fstatistic[3]))
@@ -142,7 +142,7 @@ fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {
   } else {
     p$cal_poly <- pc$poly
   }
-  if (("history" %in% names(p) == TRUE), | is.null(p$history)) {
+  if (("history" %in% names(p) == TRUE) | is.null(p$history)) {
     p$history <- "fix_depth"
   } else {
     p$history <- c(p$history, "fix_depth")
