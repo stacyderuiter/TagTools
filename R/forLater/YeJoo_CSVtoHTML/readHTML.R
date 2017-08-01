@@ -123,11 +123,11 @@ readHTML <- function(masterHTML, csvfilename){
       }
     }
   }
-  clearindex = grep("<script>", newHTML)
-  prev <- newHTML[1:clearindex]
-  leftover <- newHTML[clearindex+1: length(newHTML)]
-  clear_string <- "window.localStorage.clear()"
-  newHTML <- c(prev, clear_string,leftover)
+ # clearindex = grep("<script>", htmlFile)
+ #prev <- newHTML[1:clearindex]
+  #leftover <- newHTML[clearindex+1:length(newHTML)]
+  #clear_string <- "window.localStorage.clear()"
+  #newHTML <- c(prev, clear_string,leftover)
   fileConn<-file("dynamic_tagmetadata.html")
   writeLines(newHTML, fileConn)
   close(fileConn)
@@ -135,7 +135,7 @@ readHTML <- function(masterHTML, csvfilename){
 
 
 parseCSV<-function(csvfilename){
-  ret_frame <- readr::read_csv(csvfilename)grep(",",testset3$params[2])
+  ret_frame <- readr::read_csv(csvfilename)
   deploy_date_index <- grep("dephist.deploy.datetime.start", ret_frame$field)
   deploy_date_id0 <- paste(ret_frame[deploy_date_index, 1],'0', sep = '')
   deploy_date_id1 <- paste(ret_frame[deploy_date_index, 1],'1', sep = '')
