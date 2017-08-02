@@ -80,14 +80,13 @@ rough_cal_3d <- function(X,fstr){
   if("cal_cross"  %in% names(X)){
     x <- x %*% X$cal_cross
   }
-  X$data = x
   if(!("history" %in% names(X)) || length(X$history) == 0 || is.null(X$history)){
     X$history = 'rough_cal_3d'
   }
   else{
     X$history = paste(X$history, ',rough_cal_3d')
   }
-  return(list(X= X, G= G))
+  return(list(X = X, G= G))
 }
 
 

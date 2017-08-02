@@ -39,11 +39,11 @@ fix_offset_3d <- function(X) {
   ones <- matrix(1, 3, 1)
   G$poly <- cbind(ones, H[1:3])
   x <- x + pracma::repmat(t(H[1:3]), nrow(x), 1)
-  if (is.list(X)) {
+  if (!is.list(X)) {
     X <- x
     return(list(X = X, G = G))
   }
-  X <- list()
+
   X$data <- x
   #check if a map or cross-term have been applied to X - if so, these need to
   #be removed from G.poly - the polynomial is always in the sensor frame. This
