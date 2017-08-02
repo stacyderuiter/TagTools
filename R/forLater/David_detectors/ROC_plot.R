@@ -1,24 +1,25 @@
-ROC_plot <- function(data, sampling_rate, FUN, bktime, indices, events, tpevents) {
+ROC_plot <- function(data, sampling_rate, FUN, bktime, indices, events) {
+  tpevents <- ((indices/sampling_rate)/bktime)
   sr <- sampling_rate
-  detections1 <- detect_peaks(data, sr, FUN, thresh = .05, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections2 <- detect_peaks(data, sr, FUN, thresh = .1, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections3 <- detect_peaks(data, sr, FUN, thresh = .15, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections4 <- detect_peaks(data, sr, FUN, thresh = .2, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections5 <- detect_peaks(data, sr, FUN, thresh = .25, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections6 <- detect_peaks(data, sr, FUN, thresh = .3, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections7 <- detect_peaks(data, sr, FUN, thresh = .35, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections8 <- detect_peaks(data, sr, FUN, thresh = .4, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections9 <- detect_peaks(data, sr, FUN, thresh = .45, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections10 <- detect_peaks(data, sr, FUN, thresh = .5, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections11 <- detect_peaks(data, sr, FUN, thresh = .55, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections12 <- detect_peaks(data, sr, FUN, thresh = .6, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections13 <- detect_peaks(data, sr, FUN, thresh = .65, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections14 <- detect_peaks(data, sr, FUN, thresh = .7, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections15 <- detect_peaks(data, sr, FUN, thresh = .75, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections16 <- detect_peaks(data, sr, FUN, thresh = .8, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections17 <- detect_peaks(data, sr, FUN, thresh = .85, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections18 <- detect_peaks(data, sr, FUN, thresh = .9, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
-  detections19 <- detect_peaks(data, sr, FUN, thresh = .95, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections1 <- detect(data, sr, FUN, thresh = .05, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections2 <- detect(data, sr, FUN, thresh = .1, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections3 <- detect(data, sr, FUN, thresh = .15, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections4 <- detect(data, sr, FUN, thresh = .2, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections5 <- detect(data, sr, FUN, thresh = .25, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections6 <- detect(data, sr, FUN, thresh = .3, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections7 <- detect(data, sr, FUN, thresh = .35, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections8 <- detect(data, sr, FUN, thresh = .4, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections9 <- detect(data, sr, FUN, thresh = .45, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections10 <- detect(data, sr, FUN, thresh = .5, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections11 <- detect(data, sr, FUN, thresh = .55, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections12 <- detect(data, sr, FUN, thresh = .6, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections13 <- detect(data, sr, FUN, thresh = .65, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections14 <- detect(data, sr, FUN, thresh = .7, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections15 <- detect(data, sr, FUN, thresh = .75, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections16 <- detect(data, sr, FUN, thresh = .8, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections17 <- detect(data, sr, FUN, thresh = .85, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections18 <- detect(data, sr, FUN, thresh = .9, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+  detections19 <- detect(data, sr, FUN, thresh = .95, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
   hr1 <- acc_test(detections1, events, sampling_rate, tpevents)$hits_rate
   far1 <- acc_test(detections1, events, sampling_rate, tpevents)$false_alarm_rate
   hr2 <- acc_test(detections2, events, sampling_rate, tpevents)$hits_rate
@@ -57,10 +58,11 @@ ROC_plot <- function(data, sampling_rate, FUN, bktime, indices, events, tpevents
   far18 <- acc_test(detections18, events, sampling_rate, tpevents)$false_alarm_rate
   hr19 <- acc_test(detections19, events, sampling_rate, tpevents)$hits_rate
   far19 <- acc_test(detections19, events, sampling_rate, tpevents)$false_alarm_rate
-  x <- c(far1,far2,far3,far4,far5,far6,far7,far8,far9,far10,far11,far12,far13,far14,far15,far16,far17,far18,far19)
-  y <- c(hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr15,hr16,hr17,hr18,hr19)
-  xy <- cbind(x,y)
+  False_Positive_Rate <- c(far1,far2,far3,far4,far5,far6,far7,far8,far9,far10,far11,far12,far13,far14,far15,far16,far17,far18,far19)
+  True_Positive_Rate <- c(hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr15,hr16,hr17,hr18,hr19)
+  xy <- cbind(False_Positive_Rate,True_Positive_Rate)
   xy <- xy[order(xy[, 1]), ]
   xy <- rbind(c(0,0), xy, c(1,1))
-  plot(xy[,1],xy[,2], type = "l", xlim = c(0,1), ylim = c(0,1), xlab = "FP Rate", ylab = "TP Rate")
+  require(ggplot2)
+  ggplot((data.frame(xy)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + geom_smooth(se = FALSE, span = 0.6)
 }
