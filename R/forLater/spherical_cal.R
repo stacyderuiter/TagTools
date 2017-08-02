@@ -72,28 +72,28 @@ spherical_cal <- function(X,n,method){
   # remove any rows in X with NaNs
   
   X <- na.omit(X)
-  nv1 <- 3 ;		# number of variables for offset
-  nv2 <- 5 ;		# number of variables for gain and offset
-  nv3 <- 8 ;		# number of variables for gain, offset and cross
+  nv1 <- 3 		# number of variables for offset
+  nv2 <- 5 		# number of variables for gain and offset
+  nv3 <- 8 		# number of variables for gain, offset and cross
   
   
   # start by estimating offsets using linear least squares. This ensures
   # that the iterative search starts fairly close to a solution.
   bsq <- rowSums(X^2)
-  XX <- c(2*X, matrix(1,nrow(X),1))
-  R <- t(XX)*XX 
-  P<- sum(pracma::repmat(bsq,1,4)*XX)
-  H <- -solve(R)*t(P)
+  XX <- cbind(2*X, matrix(1,nrow(X),1))
+  R <- t(XX)%*%as.matrix(XX) 
+  P<- colSums(pracma::repmat(as.matrix(bsq),1,4)*XX)
+  H <- -solve(R)%*% as.matrix(P)
   offs <- H[1:3] 
   X <- X + pracma::repmat(t(offs),nrow(X),1) 
   # now try up to three calibration scenarios using simplex search
   C <- matrix(0,nv3,3)
-  C[1:nv1,1] <- stats::optim(matrix(0,nv1,1), ccost( C[1:nv1,1],X), method = "Nelder-Mead") # offset only cal
+  C[1:nv1,1] <- stats::optim( matrix(0,nv1,1), (function(c) ccost(as.matrix(c),X)), method = "Nelder-Mead")[[1]] # offset only cal
   if(identical(method,'gain') | identical(method,'cross')){
-    C[1:nv2,2] <- optim(C[1:nv2,1],ccost(C[1:nv2,2],X), method = "Nelder-Mead") ;	# offset and gain cal
+    C[1:nv2,2] <- stats::optim( C[1:nv2,1], (function(c) ccost(as.matrix(c),X))) 	# offset and gain cal
   }
   if(identical(method,'cross')){
-    C[,3] <- optim(C[,2], ccost(C[,3],X), method = "Nelder-Mead") ;		# offset, gain and cross cal
+    C[,3] <- optim((function(c) ccost(as.matrix(c),X)), C[,2]) 		# offset, gain and cross cal
   }
   k <- which.min(ccost(C,X))   		# pick the best performer
   C <- C[,k] 
@@ -117,18 +117,27 @@ spherical_cal <- function(X,n,method){
 }
 
 ccost <- function(C,X){
-  for(k in 1:ncol(C)){
-    n <- sqrt(rowSums(appcal(X,C[,k])$Y^2)) ;
-    p[k] <- sd(n)/mean(n) ;
-  }
+#  if(is.vector(C) && !is.list(C)){
+  #  for(k in 1:length(C)){
+ #     n <- sqrt(rowSums(appcal(X,C[k])$Y^2)) ;
+  #    p[k] <- sd(n)/mean(n) ;
+  #  }
+ # }
+  #else{
+ # C <- as.matrix(C)
+    for(k in 1:ncol(C)){
+      n <- sqrt(rowSums(appcal(X,C[,k])$Y^2)) ;
+      p[k] <- sd(n)/mean(n) ;
+    }
+  #}
   return(p)
 }
 
 appcal<- function(X,C){
   # C is a vector of up to 8 parameters
   # Only the first of these may be provided - the remainder are 0.
-  C[length(C)+1:8] = 0 ;
-  C <- rbind(C[1:length(C)-5],0,C[length(C)+(-4:0)])		# add the col1 fixed gain of 0
+  C[length(C)+1:8] <- 0 
+  C <- rbind(C[1:(length(C)-5)],0,C[length(C)+(-4:0)])		# add the col1 fixed gain of 0
   C <- as.matrix(C,nrow = 3)
   #	At this point:
   #	C(:,1) are the offsets for each column of X

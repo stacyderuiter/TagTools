@@ -48,7 +48,7 @@ rough_cal_3d <- function(X,fstr){
     
   }
   else{
-    x = X ;
+    x = X 
   }
   if(ncol(x)!=3){
     stop("rough_cal_3d: input data must be from a 3-axis sensor")
@@ -57,18 +57,20 @@ rough_cal_3d <- function(X,fstr){
   lims <- matrix(c(quantile(bwA[,1],c(0.1, 100-0.1)/100), quantile(bwA[,2],c(0.1, 100-0.1)/100), quantile(bwA[,3],c(0.1, 100-0.1)/100) ), nrow = 2)
   g <- 2*fstr/diff(lims)
   offs <- -mean(lims)*g
-  G$poly <- c(t(g), t(offs))
+  G <- list()
+  G$poly <- cbind(t(g), t(offs))
   x <- x * pracma::repmat(g,nrow(x),1) + pracma::repmat(offs,nrow(x),1) 
   xCList = fix_offset_3d(x)# fine-tune the offsets
-  x <- xCList$x
-  C <- xCList$C
+  x <- xCList$X
+  C <- xCList$G
   G$poly[,2] <- G$poly[,2]+C$poly[,2]
-  scf <- fstr/apply(norm2(x),2,function(x) mean(na.omit(x)))
-  G$poly <- G$poly %*% scf
-  x <- x %*% scf
+  scf <- fstr/mean(na.omit(norm2(x)))
+  G$poly <- G$poly * scf
+  x$data <- x$data * scf
   if(!is.list(X)){
     X <- x
   }
+  
   X$cal_poly = G$poly
   
   # redo any matrix operations on x after applying scale and offset changes
@@ -78,14 +80,13 @@ rough_cal_3d <- function(X,fstr){
   if("cal_cross"  %in% names(X)){
     x <- x %*% X$cal_cross
   }
-  X$data = x
-  if(!("history" %in% names(X)) | length(X$history) == 0 | X$history == NULL){
+  if(!("history" %in% names(X)) || length(X$history) == 0 || is.null(X$history)){
     X$history = 'rough_cal_3d'
   }
   else{
     X$history = paste(X$history, ',rough_cal_3d')
   }
-  return(list(R= R, G= G))
+  return(list(X = X, G= G))
 }
 
 

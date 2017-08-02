@@ -47,45 +47,45 @@ Ethics in our example
     - What sound did whales receive?
     - Do dive behavior, body movement or foraging behavior indicate response?
 
-DTAG3 Sensors (50-200 Hz)
+DTAG3 chosen for SOCAL CEEs
 ========================================================
 ![d3 sensors](images/d3-sensors.png)
 
-DTAG3 Sensors (50-200 Hz)
+DTAG3 chosen for SOCAL CEEs
 ========================================================
 ![d3 sensors](images/d3-sensors2.png)
 
-DTAG3 Sensors (50-200 Hz)
+DTAG3 chosen for SOCAL CEEs
 ========================================================
 ![d3 sensors](images/d3-sensors3.png)
 
-DTAG3 Sensors (50-200 Hz)
+DTAG3 chosen for SOCAL CEEs
 ========================================================
 ![d3 sensors](images/d3-sensors4.png)
 
-Ethics of tagging 2
-========================================================
- - Do you need and have a permit?
-     - NOAA permits to approach, photograph and tag in SOCAL
- - Do you have IACUC and peer approval?
-     - IACUC proposals and many public presentations, consults
-     
-Ethics of tagging 3
-========================================================
- - How will you minimize risk to animals and personnel?
-     - Field protocols, sound source shut-down, data recovery
-<div align='center'>
-![channel islands](images/channel-islands.jpg)
-<font size=4> 
-<br>(photo from https://www.national-park.com/welcome-to-channel-islands-national-park/)
-</font> 
-</div>
+<!-- Ethics of tagging 2 -->
+<!-- ======================================================== -->
+<!--  - Do you need and have a permit? -->
+<!--      - NOAA permits to approach, photograph and tag in SOCAL -->
+<!--  - Do you have IACUC and peer approval? -->
+<!--      - IACUC proposals and many public presentations, consults -->
 
-Ethics of tagging 4
-========================================================
-- How many animals will you need to tag to answer the question? (TWO?)
-- How will you measure responses to tagging (during or after field work)?
-- Can you collect and integrate all of the ancillary data needed?
+<!-- Ethics of tagging 3 -->
+<!-- ======================================================== -->
+<!--  - How will you minimize risk to animals and personnel? -->
+<!--      - Field protocols, sound source shut-down, data recovery -->
+<!-- <div align='center'> -->
+<!-- ![channel islands](images/channel-islands.jpg) -->
+<!-- <font size=4>  -->
+<!-- <br>(photo from https://www.national-park.com/welcome-to-channel-islands-national-park/) -->
+<!-- </font>  -->
+<!-- </div> -->
+
+<!-- Ethics of tagging 4 -->
+<!-- ======================================================== -->
+<!-- - How many animals will you need to tag to answer the question? (TWO?) -->
+<!-- - How will you measure responses to tagging (during or after field work)? -->
+<!-- - Can you collect and integrate all of the ancillary data needed? -->
 
 Ancillary data
 ========================================================
@@ -104,20 +104,21 @@ Ancillary data
 - Collaboration with others in the study area, data sharing
 - **Integrating data with different time scales, varying accuracy**
 
- Ethics and Data-Sharing
+Data-Sharing
 ========================================================
 - How will you analyse the data to address your question? 
 - Who else can use the data? 
 - When and how will you share the data?
-- Does the value of the science merit the abuse?
-<div align='center'>
-![channel islands](images/narwhal.jpg)
-<font size=4> 
-<br>(photo from [Dietz et al. 2007, doi.org/10.1186/1472-6785-7-14](https://doi.org/10.1186/1472-6785-7-14))
-</font> 
-</div>
-Note: maybe move this to the very end (earn your coffee examples) and include here the "running example" -- cost (in many senses) per data point?
-Types of tag
+<!-- - Does the value of the science merit the abuse? -->
+<!-- <div align='center'> -->
+<!-- ![channel islands](images/narwhal.jpg) -->
+<!-- <font size=4>  -->
+<!-- <br>(photo from [Dietz et al. 2007, doi.org/10.1186/1472-6785-7-14](https://doi.org/10.1186/1472-6785-7-14)) -->
+<!-- </font>  -->
+<!-- </div> -->
+<!-- Note: maybe move this to the very end (earn your coffee examples) and include here the "running example" -- cost (in many senses) per data point? -->
+
+Types of tags
 ========================================================
 - Short-term (day) to Long-term (year) 
 - Attachment: suction cups, bolts, straps, glue...
@@ -135,26 +136,68 @@ How do you choose a tag type?
 ========================================================
 - What question are you trying to answer? 
 - Is your tag appropriate? 
-- **You (may have chosen)...**
+- **We've chosen... and you (may have chosen)...**
 
-This workshop: Hi-res movement tags
+High resolution movement tags - WHAT?
 ========================================================
 - Typically include:
     - Sensors sampled multiple times per second
     - Accelerometers to measure body posture and sudden movements or changes in speed
     - Magnetometers to measure direction of travel
-    - Pressure sensors to measure dive depth in aquatic or marine animals
+    - Pressure/altitude sensors to measure dive depth in aquatic/marine species or flight altitude in birds
 
-Hi-Res Movement Tag Examples
+Hi-Res movement tag examples
 ========================================================
-    list of tags with links/photos here
-This workshop: Hi-res movement tags
+left: 65%
+- [Greeneridge Acousonde movement/acoustic tags](http://www.acousonde.com/)
+- [CATS movement and camera/movement tags](http://www.cats.is/)
+- [DTAG movement/acoustic tags](http://soundtags.st-andrews.ac.uk/people/mark-johnson/)
+- [Little Leonardo tags](http://l-leo.com/eng/data-logger)
+- [Loggerhead Instruments Opentags](http://loggerhead.com/collections/all/products/opentag-datalogger)
+- [Wildlife Computers Daily Diary tags](http://wildlifecomputers.com/products/daily_diary)
+
+***
+
+![cats eagle](images/cats-eagle.jpg)
+<div align=center>
+<font size=3>
+(Image from http://www.cats.is) 
+</font>
+</div>
+
+High resolution movement tags - WHY?
 ========================================================
-- May include:
-    - Speed sensor
-    - Gyroscopes (to measure turning rate)
-    - Sound sensors
-    - Video recorders
+- Challenges
+    - "Big" datasets
+    - Varying sensor sampling rate, accuracy, synchronization
+    - Interdisciplinary: Engineering, Biology, Physics, Math/Stat...
+
+High resolution movement tags - WHY?
+========================================================
+- Motivation for tool kit and workshop
+    - Make tools freely and widely accessible
+    - Provide better documentation
+    - Build connections across tagging community
+    - Work toward standardization across tag types, species, ...
+    - Provide on-ramp for new users and idea sharing for experts
+    
+Wait, no point-and-click automation?
+========================================================
+- Tag data are full of surprises!
+- Creativity is essential to make the most of your data
+- Goal is empowering researchers to explore, not automation of all data processing
+
+Data analysis can be dangerous!
+========================================================
+left: 19%
+![caution](images/proceed-with-caution.jpg)
+***
+Understanding **what sensors really measure** and **how to analyze them** are key.
+
+![shiomi-fig](images/shiomi2010.png)
+<font size=5>
+(Figure from Shiomi et al. 2010, doi: 10.3354/ab00239)
+</font>
 
 Working with tag data
 ========================================================
@@ -211,9 +254,10 @@ testset1 <- load_nc('C:\data\testset1.nc')
 testset1 = load_nc('C:\data\testset1.nc') ;
 ```
 
-Calibrate data
+Tag data work flow
 ========================================================
-Still working on this - will be a VERY brief description of what/why, e.g. raw to scientific units, tag to whale frame. Details left for next lecture.
+![tag work flow](images/tag-workflow.png)
+- Stay tuned for details in upcoming lectures!
 
 Attach metadata
 ========================================================
@@ -221,9 +265,36 @@ Metadata has at least 2 sources:
 - Gleaned automatically from tag data files
 - User-provided 
 
-Saving tag metadata to csv (text file)
+Tag metadata csv format (text file)
 ========================================================
-Still working on this one - will include metadata gleaning example (I hope) plus screen shots of Ye Joo's metadata entry tool. Will try to use the "running example"
+- Animaltags.org has documentation of *what* tag metadata includes
+- [http://animaltags.org/doku.php?id=tagwiki:tools:formats](http://animaltags.org/doku.php?id=tagwiki:tools:formats)
+
+![animaltags-metadata](images/animaltags-metadata.png)
+
+Saving tag metadata to csv
+========================================================
+- Some metadata is automatically gleaned and stored in a csv when you use the tag tools to load raw data
+- An interface is provided to add user-generated metadata to this machine-generated file.
+- If the machine-generated file is 'auto.csv', in R or matlab:
+
+
+```r
+metadata_editor('tagmetadata.html', 'auto.csv')
+```
+
+Saving tag metadata to csv (2)
+========================================================
+- Code from last slide will open a fillable form.
+![meta-form](images/meta-form.png)
+- Some fields are always auto-gleaned and don't appear on the form for users to fill in.
+- If you use the form without a machine-generated csv input, these fields will all contain missing values in the resulting csv.
+
+Archiving data + metadata to netCDF
+========================================================
+**There's currently no "standard" format for tag data;**
+
+**Raw datasets from most tags are not archive-ready.**
 
 Archiving data + metadata to netCDF
 ========================================================
@@ -232,7 +303,12 @@ Archiving data + metadata to netCDF
 - Is flexible, accomodates data and metadata fields
 - Allows many user-defined fields
 - Supported by well-defined standards and conventions
+- May serve as a standad format for journals that require data publication
 - *"supports a view of data as a collection of self-describing, portable objects that can be accessed through a simple interface"* (-[NetCDF website](http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_introduction.html))
+
+Exporting data + metadata to archives
+========================================================
+![movebank](images/movebank.png)
 
 Exporting data + metadata to archives
 ========================================================
@@ -302,21 +378,28 @@ Tag tool kit installation in Octave
         
 Tag tool kit installation in Octave
 ========================================================
-To install the tag tools package (assuming the Matlab/Octave zip file is stored in F:\\tagtools\\matlab), run:
-
-
-```r
-pkg install tagtools0.0.0.tar.gz
-```
-
-Then to load it:
-
+- Save the matlab/octave tagtools directory to a convenient location on your computer
+- Add that tagtools directory to Octave's path (change the path to match your computer):
 
 ```r
-pkg load tagtools
+path_tagtools = genpath('C:\tagtools\')
+addpath(path_tagtools)
+savepath
 ```
 
-Dependencies
+<!-- To install the tag tools package (assuming the Matlab/Octave zip file is stored in F:\\tagtools\\matlab), run: -->
+
+<!-- ```{r, echo=TRUE, eval=FALSE} -->
+<!-- pkg install tagtools0.0.0.tar.gz -->
+<!-- ``` -->
+
+<!-- Then to load it: -->
+
+<!-- ```{r, echo=TRUE, eval=FALSE} -->
+<!-- pkg load tagtools -->
+<!-- ``` -->
+
+Octave dependencies
 ========================================================
 In Octave, you also need to manually [install and load](https://www.gnu.org/software/octave/doc/interpreter/Installing-and-Removing-Packages.html) the packages:
 
@@ -333,6 +416,11 @@ pkg install netcdf
 pkg load netcdf
 ```
 
+Octave tips and tricks
+========================================================
+- You can customize Octave's start-up routine (autoload packages).
+- See [http://www.animaltags.org/doku.php?id=tagwiki:help:octave:autoload](http://www.animaltags.org/doku.php?id=tagwiki:help:octave:autoload) for details.
+
 
 And when it all goes wrong?
 ========================================================
@@ -348,11 +436,6 @@ in R:
 
 ```r
 ?plott
-```
-
-```
-No documentation for 'plott' in specified packages and libraries:
-you could try '??plott'
 ```
 
 Project directory structure - Best practices
