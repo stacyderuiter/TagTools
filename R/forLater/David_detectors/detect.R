@@ -1,8 +1,8 @@
 #' Detect peaks in signal vector data
 #' 
-#' This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum jerk, threshold level, and blanking time.
+#' This function detects peaks in data that exceed a specfied threshold and returns each peak's start time, end time, maximum peak value, and time of the maximum peak.
 #' @param data A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.
-#' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. njerk). If left blank, the data input will be immediately passed through the peak detector.
+#' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. njerk). If left blank, the data input will be immediatly passed through the peak detector.
 #' @param sr The sampling rate in Hz of the date. This is the same as fs in other tagtools functions. This is used to calculate the bktime in the case that the input for bktime is missing.
 #' @param thresh The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
 #' @param bktime The specified length of time between signal values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default value is set as the .85 quantile of the vector of time differences for signal values above the specified threshold.
@@ -11,11 +11,8 @@
 #' @export
 #' @return A list containing vectors for the start times, end times, peak times, peak maxima, thresh, and bktime. All times are presented as the sampling value. 
 #' @note As specified above under the description for the input of plot_peaks, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot_peaks is specified as true or if the input is left missing/empty.
-#' @example 
-#' BW <- beaked_whale
-#' detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = NULL, fs = BW$A$sampling_rate)
 
-detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
+detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
   if (missing(data) | missing(sr)) {
     stop("inputs for data and sr are both required")
   }
@@ -80,12 +77,12 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   
   if (plot_peaks == TRUE) {
     #create a plot which allows for the thresh and bktime to be manipulated
-    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal", xlab = "Time (1/sampling_rate)")
+    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)))
     print("GRAPH HELP: For changing only the thresh level, click once within the plot and then click finish or push escape or push escape to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then click finish or push escape to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply click finish or push escape.")
     x <- peaks$peak_time
     y <- peaks$peak_max
     graphics::par(new = TRUE)
-    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal", xlab = "Time (1/sampling_rate)")
+    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75)
     graphics::abline(a = thresh, b = 0, col = "red", lty=2)
     pts <- graphics::locator(n = 3)
     if (length(pts$x) == 3) {
@@ -105,14 +102,13 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
         }
       }
     }
-  } else {
-    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal", xlab = "Time (1/sampling_rate)")
+    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)))
     x <- peaks$peak_time
     y <- peaks$peak_max
     graphics::par(new = TRUE)
-    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal", xlab = "Time (1/sampling_rate)")
+    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75)
     graphics::abline(a = thresh, b = 0, col = "red", lty=2)
+  } else {
+    return(peaks)
   }
-  
-  return(peaks)
 }

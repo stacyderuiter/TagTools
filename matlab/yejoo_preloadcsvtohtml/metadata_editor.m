@@ -1,6 +1,6 @@
 function metadata_editor(masterHTML, csvfilename)
 
-    [id2, req_fields2, fields2] = parseCSV2(csvfilename);
+    [id2, req_fields2, fields2] = parseCSV_fields(csvfilename);
     htmlID = fopen(masterHTML);
     s = textscan(htmlID,'%s','Delimiter','\n');
     s = s{1};
@@ -174,7 +174,7 @@ function [id, ret_field] = parseCSV(csvfilename)
     ret_field = ret_field(2:end);
     fclose(fid);
 end
-function [id2, req_field2, ret_field2] = parseCSV2(csvfilename)
+function [id2, req_field2, ret_field2] = parseCSV_fields(csvfilename)
     ret_field2 = {};
     id2 = {};
     req_field2 = {};
