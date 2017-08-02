@@ -171,4 +171,7 @@ end
 
 xlab = sprintf('Time (%s)',L{divk}) ;
 xlabel(ax(end),xlab) ;
-linkaxes(ax,'x')
+if (numel (ax) > 1)==1
+  linkaxes(ax,'x')
+end
+
