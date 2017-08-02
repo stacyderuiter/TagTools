@@ -315,8 +315,11 @@ Dependencies
 ========================================================
 In Octave, you also need to manually [install and load](https://www.gnu.org/software/octave/doc/interpreter/Installing-and-Removing-Packages.html) the packages:
 
+- control
 - netcdf
 - signal
+- io (for reading DTAG files)
+- and possibly: statistics, mapping, ncarray, lssa,ltfat, database. 
 
 If you are online, you can simply run (for example):
 ```{r, echo=TRUE, eval=FALSE}

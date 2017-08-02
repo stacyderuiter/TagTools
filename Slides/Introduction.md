@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 Introduction
 ========================================================
 author: Stacy DeRuiter 
@@ -203,7 +198,7 @@ Read in data
     - Raw data from several tag types 
     - archival format netCDF files (<-- our focus)
 - NetCDF files (.nc) must be stored locally before reading.
-- Assume we have a file stored at C:\\data\\testset1.nc
+- Assume we have a file stored at C:\data\testset1.nc
 - R:    
 
 ```r
@@ -325,8 +320,11 @@ Dependencies
 ========================================================
 In Octave, you also need to manually [install and load](https://www.gnu.org/software/octave/doc/interpreter/Installing-and-Removing-Packages.html) the packages:
 
+- control
 - netcdf
 - signal
+- io (for reading DTAG files)
+- and possibly: statistics, mapping, ncarray, lssa,ltfat, database. 
 
 If you are online, you can simply run (for example):
 
