@@ -12,7 +12,7 @@
 #'  \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. If X is a sensor list, the sampling times are stored in the list.
 #' }
 #' @example 
-#'          data <- load_nc('testset3.nc')
+#'          data <- beaked_whale
 #'          d <- find_dives(data$P,300)
 #'          P2 <- crop_to(data$P, tcues = c(d$start[2], d$end[2]))	#crop to 2nd dive
 #'          Xdata <- list(datatest = P2$X)
