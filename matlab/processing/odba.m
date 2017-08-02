@@ -1,8 +1,13 @@
-function    e = odba(A,fs,fh,method)
+function    e = odba(A,fs,fh)
 
-%      e = odba(A,fs,fh)
-%		 or
-%		 e = odba(A,n,method)
+%       e = odba(A,fh)              % A is a sensor structure
+%		  or
+%       e = odba(A,n,method)        % A is a sensor structure
+%		  or
+%       e = odba(A,fs,fh)           % A is a matrix
+%		  or
+%		  e = odba(A,n,method)        % A is a matrix
+%
 %       Compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006.
 %       ODBA is the norm of the high-pass-filtered acceleration. Several methods
 %		  for computing ODBA are in use which differ by which norm and which filter
@@ -10,19 +15,22 @@ function    e = odba(A,fs,fh,method)
 %		  average) filter are used. The moving average is subtracted from the input
 %		  accelerations to implement a high-pass filter. The 2-norm may be preferable 
 %		  if the tag orientation is unknown or may change and this is termed VeDBA. 
-%		  A tapered symmetric FIR  filter gives more efficient high-pass filtering 
+%		  A tapered symmetric FIR filter gives more efficient high-pass filtering 
 %		  compared to the rectangular window method and avoids lobes in the response.
 %
 %		  Inputs:
-%       A is a nx3 acceleration matrix with columns [ax ay az]. Acceleration can 
-%		   be in any consistent unit, e.g., g or m/s^2. A can be in any frame but the
-%		   result depends on the method used to compute ODBA. The default method and
-%			VeDBA method are rotation independent and so give the same result irrespective 
-%		   of the frame of A. The 1-norm method has a more complex dependency on frame.
-%       fs is the sampling rate in Hz of the acceleration signals.
+%       A is a sensor structure or a 3 column acceleration matrix with columns 
+%        [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
+%        A can be in any frame but the result depends on the method used to compute 
+%        ODBA. The default method and VeDBA method are rotation independent and so 
+%        give the same result irrespective of the frame of A. The 1-norm method has 
+%        a more complex dependency on frame.
+%       fs is the sampling rate in Hz of the acceleration signals. This is only
+%        required if A is a matrix and if FIR filtering is used (i.e., if you are also
+%        giving a fh argument).
 %       fh is the high-pass filter cut-off frequency in Hz. This should be chosen
-%		   to be about half of the stroking rate for the animal (e.g., using dsa.m).
-%			fs and fh are only needed if using the default (FIR filtering) method.
+%		   to be about half of the stroking rate for the animal (e.g., using dsf.m).
+%			fh is only needed if using the default (FIR filtering) method.
 %		  n is the rectangular window (moving average) length in samples. This is only
 %		   needed if using the classic ODBA and VeDBA forms.
 %		  method is a string containing either 'wilson' or 'vedba'. If the third argument
@@ -45,11 +53,22 @@ function    e = odba(A,fs,fh,method)
 %       Last modified: 5 May 2017
 
 e = [] ;
-if nargin<3,
+if nargin<2,
 	help odba
 	return
 end
-	
+
+if isstruct(A),
+   if nargin==2,
+      fh = fs ;
+   end
+   [A,fs]=sens2var(A,'regular') ;
+   if isempty(A), return, end
+elsif nargin<3,
+   help odba
+   return
+end
+
 if ischar(fh),				% 'wilson' or 'vedba' method is selected
 	n = 2*floor(fs/2)+1 ; 	% make sure n is odd
 	nz = floor(n/2) ;

@@ -1,6 +1,6 @@
-#' Reconstruct a track from pitch, heading and depth data, given a stating position
+#' Reconstruct a 3D track 
 #' 
-#' This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
+#' Reconstruct a track from pitch, heading and depth data, given a stating position. This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 #' 
 #' @param z A vector with depth over time (in meters, an observation)
 #' @param phi A vector with pitch over time (in Radians, assumed as a known covariate)

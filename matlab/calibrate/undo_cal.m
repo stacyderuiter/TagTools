@@ -63,7 +63,7 @@ if ~isempty(T) && isfield(X,'cal_tcomp') && size(T,1)==size(X.data,1),
 	else
 		tref = X.cal_tref ;
    end
-   X.data = X.data - (T-tref)*X.tcomp ;
+   X.data = X.data - (T-tref)*C.tcomp ;
 	X.cal_tcomp = zeros(1,size(X,2)) ;
 end
 

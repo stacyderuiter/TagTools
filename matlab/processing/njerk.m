@@ -1,15 +1,21 @@
 function    j = njerk(A,fs)
 
-%    j = njerk(A,fs)
+%     j = njerk(A)            % A is a sensor structure
+%     or
+%     j = njerk(A,fs)         % A is a matrix
+%
 %     Compute the norm-jerk from triaxial acceleration data. The norm-jerk
 %		is ||dA/dt||, where ||x|| is the 2-norm of x, i.e., the square-root of the 
 %		sum of the squares of each axis.
+%
 %		Inputs:
-%     A is a nx3 acceleration matrix with columns [ax ay az]. Acceleration can 
-%		 be in any consistent unit, e.g., g or m/s^2. A can be in any frame as the
-%		 norm-jerk is rotation independent. A must have at least 2 rows (i.e., n>=2).
+%     A is a sensor structure or a 3 column acceleration matrix with columns 
+%      [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
+%      A can be in any frame as the norm-jerk is rotation independent. A must 
+%      have at least 2 rows (i.e., n>=2) and be regularly sampled.
 %     fs is the sampling rate in Hz of the acceleration signals. This is used to
-%		 estimate the differential by a first-order difference.
+%		 estimate the differential by a first-order difference. fs is only required
+%      if A is not a sensor structure.
 %
 %	   Result:
 %		j is a column vector with the same number of rows as in A. If the unit of A 
@@ -25,5 +31,18 @@ function    j = njerk(A,fs)
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
 %    Last modified: 15 aug 2012
+
+if nargin<1,
+   help njerk
+   return
+end
+
+if isstruct(A),
+   [A,fs]=sens2var(A,'regular') ;
+   if isempty(A), return, end
+elseif nargin<2,
+   help njerk
+   return
+end
 
 j = [fs*sqrt(sum(diff(A).^2,2));0] ;

@@ -52,7 +52,7 @@ function    [ax,h]=plott(varargin)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 22 July 2017
+%     Last modified: 02 August 2017 by RJS
 
 ax=[]; h=[];
 if nargin<1,		% must have at least one input argument
@@ -171,7 +171,11 @@ end
 
 xlab = sprintf('Time (%s)',L{divk}) ;
 xlabel(ax(end),xlab) ;
-if (numel (ax) > 1)==1
+
+if (numel (ax) > 1)==1 %RJS updated 2017-08-02
   linkaxes(ax,'x')
 end
 
+if nargout<1 %RJS updated 2017-08-02
+   clear ax
+end 

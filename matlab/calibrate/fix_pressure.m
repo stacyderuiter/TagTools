@@ -20,8 +20,8 @@ function    [p,pc] = fix_pressure(p,t,fs)
 %		maxp is the maximum depth or altitude reading in the pressure data
 %		 for which the animal could actually be at the surface. This is a
 %		 rough measurement of the potential error in the pressure data. The
-%		 unit is meters. Start with a small value, e.g., 2 m and re-run
-%		 fix_pressure with a larger value if there are still obvious temperature-related
+%		 unit is meters. Start with a small value, e.g., 2 m and re-run fix_depth
+%		 with a larger value if there are still obvious temperature-related
 %		 errors in the resulting depth/altitude profile.
 %
 %     Results:
@@ -52,8 +52,8 @@ function    [p,pc] = fix_pressure(p,t,fs)
 %       the function.
 %
 %		Example:
-%		 load_nc('mn12_186a_raw')
-%		 [PP,pc] = fix_pressure(P,T,10);
+%		 loadnc('mn12_186a_raw')
+%		 [PP,pc] = fix_depth(P,T,10);
 %		 plott(P,PP)
 %		 % lower plot shows the compensated pressure which is closer to 0 when
 %		 % the animal is at the surface
