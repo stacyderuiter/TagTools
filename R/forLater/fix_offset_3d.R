@@ -29,20 +29,21 @@ fix_offset_3d <- function(X) {
   k <- complete.cases(x)
   bsq <- rowSums(x[k,]^2)
   mb <- sqrt(mean(bsq))
-  XX <- c((2 * x[k,]), pracma::repmat(mb, length(k), 1))
+  XX <- cbind((2 * x[k,]), pracma::repmat(mb, length(k), 1))
   R <- t(XX) %*% XX
   if (kappa(R, exact = TRUE) > 1e3) {
     stop("condition too poor to get reliable solution")
   }
-  P <- sum(pracma::repmat(bsq, 1, 4) * XX)
-  H <- -solve(R)%*%t(P)
+  P <- colSums(pracma::repmat(as.matrix(bsq), 1, 4) * XX)
+  H <- -solve(R)%*%as.matrix(P)
   ones <- matrix(1, 3, 1)
-  G$poly <- c(ones, H[1:3])
+  G$poly <- cbind(ones, H[1:3])
   x <- x + pracma::repmat(t(H[1:3]), nrow(x), 1)
   if (is.list(X)) {
     X <- x
     return(list(X = X, G = G))
   }
+  X <- list()
   X$data <- x
   #check if a map or cross-term have been applied to X - if so, these need to
   #be removed from G.poly - the polynomial is always in the sensor frame. This
