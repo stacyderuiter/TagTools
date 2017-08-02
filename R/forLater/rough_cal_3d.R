@@ -66,9 +66,10 @@ rough_cal_3d <- function(X,fstr){
   G$poly[,2] <- G$poly[,2]+C$poly[,2]
   scf <- fstr/mean(na.omit(norm2(x)))
   G$poly <- G$poly * scf
-  x$data <- x$data * scf
+  x <- x * scf
   if(!is.list(X)){
     X <- x
+    return(list(X = X, G = G))
   }
   
   X$cal_poly = G$poly
@@ -80,6 +81,7 @@ rough_cal_3d <- function(X,fstr){
   if("cal_cross"  %in% names(X)){
     x <- x %*% X$cal_cross
   }
+  X$data <- x
   if(!("history" %in% names(X)) || length(X$history) == 0 || is.null(X$history)){
     X$history = 'rough_cal_3d'
   }
