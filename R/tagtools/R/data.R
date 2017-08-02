@@ -21,4 +21,4 @@
 #'   \item{P}{sensor list containing a pressure (depth) vector sampled at 5 Hz}
 #'   \list{POS}{sensor list containing a position matrix with columns [sampling time, latitude, longitude]}
 #' }
-"beaked_whale"
+"harbor_seal"
