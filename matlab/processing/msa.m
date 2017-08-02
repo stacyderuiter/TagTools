@@ -1,7 +1,9 @@
 function    m = msa(A,ref)
 
-%     m = msa(A)				% A is a sensor structure
-%     m = msa(A,ref)			% A is a matrix
+%      m = msa(A)             % A is a sensor structure
+%      or
+%      m = msa(A,ref)			% A is a matrix
+%
 %      Compute the Minimum Specific Acceleration (MSA). This is the
 %      absolute value of the norm of the acceleration minus 1 g, i.e.,
 %		 the amount that the acceleration differs from the gravity value. 
@@ -30,15 +32,26 @@ function    m = msa(A,ref)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 5 May 2017
 
+m = [] ;
+if nargin<1,
+   help msa
+   return
+end	
+
 if nargin<2,
 	ref = 9.81 ;
 end
 
 if isstruct(A),
-	if isfield(A.meta,'conv'),
-		ref = ref*A.meta.conv ;
+	A = str2var(A) ;
+   if isempty(A),
+      return
+   end
+	if nargin==1 && isfield(A,'unit'),
+      if strncmpi(A.unit,'g',1),
+         ref = 1 ;
+		end
 	end
-	A = A.data ;
 end	
 
 % catch the case of a single acceleration vector

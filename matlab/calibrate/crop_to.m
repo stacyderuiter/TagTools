@@ -1,10 +1,10 @@
 function		[X,T] = crop_to(X,fs,tcues)
 
-%		X = crop_to(X,tcues)				% X is a sensor structure
+%		Y = crop_to(X,tcues)				% X is a sensor structure
 %		or
-%		X = crop_to(X,fs,tcues)			% X is a regularly sampled vector or matrix
+%		Y = crop_to(X,fs,tcues)			% X is a regularly sampled vector or matrix
 %		or
-%		[X,T] = crop_to(X,T,tcues)		% X is an irregularly sampled vector or matrix
+%		[Y,T] = crop_to(X,T,tcues)		% X is an irregularly sampled vector or matrix
 %
 %		Reduce the time span of data by cropping out any data that falls before and
 %		after two time cues.
@@ -20,7 +20,7 @@ function		[X,T] = crop_to(X,fs,tcues)
 %		 in seconds of the data segment to keep, i.e., tcues = [start_time, end_time].
 %
 %     Results:
-%     X is a sensor structure, vector or matrix containing the cropped data segment.
+%     Y is a sensor structure, vector or matrix containing the cropped data segment.
 %		 If the input is a sensor structure, the output will also be. The output has
 %		 the same units, frame and sampling characteristics as the input.
 %     T is a vector of sampling times for Y. This is only returned if X is irregularly
@@ -28,7 +28,7 @@ function		[X,T] = crop_to(X,fs,tcues)
 %		 times are stored in the structure.
 %
 %		Example:
-%		 load_nc('testset3')
+%		 loadnc('testset3')
 %		 d = find_dives(P,300) ;
 %		 P2 = crop_to(P,[d.start(2) d.end(2)]);	% crop to 2nd dive
 %		 plott(P2)

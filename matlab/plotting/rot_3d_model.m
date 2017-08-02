@@ -4,7 +4,7 @@ function		rot_3d_model(F,prh,speed)
 %		Rotate a 3d model in a gimbal frame for visualizing animal orientation.
 %
 %		Input:
-%		F is a structure containing plot handles from a previous call to plot_3dmodel.
+%		F is a structure containing plot handles from a previous call to plot_3d_model.
 %     prh is a vector or matrix of pitch, roll and heading angles in radians, 
 %		 prh = [pitch,roll,heading]. Each row of prh defines a separate orientation and 
 %		 these are played in sequence. For a single orientation, prh should be a 3-element
@@ -24,6 +24,11 @@ function		rot_3d_model(F,prh,speed)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 10 May 2017
 
+if nargin<2,
+	help rot_3d_model
+	return
+end
+	
 if nargin<3,
 	t = 0.05 ;
 else

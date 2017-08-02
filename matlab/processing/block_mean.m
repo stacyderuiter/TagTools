@@ -19,7 +19,7 @@ function    [Y,t] = block_mean(X,n,nov)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 10 May 2017
 
-if narg<2,
+if nargin<2,
 	help block_mean
 	return
 end
