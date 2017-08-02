@@ -44,12 +44,6 @@ Setting a Threshold
     - Many false positive and true positive detections
 
 
-Setting a Threshold
-========================================================
-
-
-
-
 Optimal Threshold
 ========================================================
 
@@ -107,7 +101,7 @@ ROC Curves
 
 - The more area under the curve, the better the performance of the detector
 <div align='center'>
-<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=500, height=550>
+<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=450, height=450>
 <font size=4> 
 <br>(photo from https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png)
 </font>
@@ -129,7 +123,6 @@ Detecting Lunges from Jerk
 ========================================================
 
 ![Owen et al. 2016](images/Owen2016.png)
-***
 ![Simon et al. 2012](images/Simon2012.png)
 
 
@@ -257,6 +250,34 @@ Generating ROC Curve
 Rerun detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.4 , bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
 
+
+
+Overall Performance of detect_peaks
+========================================================
+
+Using default values:
+
+
+```
+List of 5
+ $ count_hits        : num 80
+ $ count_false_alarms: num 18
+ $ count_misses      : num 10
+ $ hits_rate         : num 0.889
+ $ false_alarm_rate  : num 0.0424
+```
+***
+Using optimal values:
+
+
+```
+List of 5
+ $ count_hits        : num 60
+ $ count_false_alarms: num 10
+ $ count_misses      : num 30
+ $ hits_rate         : num 0.667
+ $ false_alarm_rate  : num 0.0235
+```

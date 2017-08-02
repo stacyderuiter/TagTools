@@ -16,6 +16,7 @@ source('~/TagTools/R/tagtools/R/njerk.R')
 source('~/TagTools/R/tagtools/R/detect_peaks.R')
 source('~/TagTools/R/tagtools/R/crop_to.R')
 source('~/TagTools/R/tagtools/R/plott.R')
+source('~/TagTools/R/tagtools/R/draw_axis.R')
 library(readr)
 bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
@@ -133,7 +134,7 @@ ROC Curves
 
 - The more area under the curve, the better the performance of the detector
 <div align='center'>
-<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=500, height=550>
+<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=450, height=450>
 <font size=4> 
 <br>(photo from https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png)
 </font>
@@ -155,7 +156,6 @@ Detecting Lunges from Jerk
 ========================================================
 
 ![Owen et al. 2016](images/Owen2016.png)
-***
 ![Simon et al. 2012](images/Simon2012.png)
 
 
@@ -219,7 +219,7 @@ Running detect_peaks
 detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
 ```
 
-```{r, echo=FALSE, fig.align="center", fig.width=7, fig.height=7}
+```{r, echo=FALSE, fig.align="center", fig.width=7, fig.height=6}
 graphics::plot(cropped_jerk, type = "l", col = "blue", xlim = c(0, length(cropped_jerk)), ylim = c(0, max(cropped_jerk)), ylab = "Jerk", xlab = "Time (1/sampling_rate)")
 x <- detections$peak_time
 y <- detections$peak_max
@@ -290,9 +290,34 @@ ROC_plot(cropped_Aw, 5, njerk, 30, 63734.75, events)
 Rerun detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.4 , bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
 ```{r, include=FALSE}
-detections_optimal <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.4, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
+detections_optimal <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
 str(detections_optimal)
+```
+
+
+Overall Performance of detect_peaks
+========================================================
+
+Using default values:
+```{r, include=FALSE}
+indices <- 63734.75
+sampling_rate <- 5
+bktime <- 30
+tpevents <- ((indices/sampling_rate)/bktime)
+detections_default <- detect_peaks(cropped_Aw, 5, njerk, plot_peaks = FALSE, sampling_rate = 5)
+acc1 <- acc_test(detections_default$peak_time, events, 5, tpevents)
+```
+```{r, echo=FALSE}
+str(acc1)
+```
+***
+Using optimal values:
+```{r, include=FALSE}
+acc2 <- acc_test(detections_optimal$peak_time, events, 5, tpevents)
+```
+```{r, echo=FALSE}
+str(acc2)
 ```
