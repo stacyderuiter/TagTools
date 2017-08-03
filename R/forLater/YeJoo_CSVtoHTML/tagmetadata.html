@@ -35,7 +35,7 @@ function myTrim(x) {
 				arr = parseCSV(e.target.result);
 				var i;
 				for(i = 0; i < arr.length; i++){
-					if(i > 1){
+					if(i > 0){
 						csv_fields[i] = arr[i][0];
 						req_field[i] = arr[i][1];
 						other_field[i] = arr[i][2];
