@@ -1,22 +1,22 @@
-#' Reconstruct a 3D track 
+#' Reconstruct a track from pitch, heading and depth data, given a stating position
 #' 
-#' Reconstruct a track from pitch, heading and depth data, given a stating position. This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
+#' This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 #' 
 #' @param z A vector with depth over time (in meters, an observation)
 #' @param phi A vector with pitch over time (in Radians, assumed as a known covariate)
 #' @param psi A vector with heading over time (in Radians, assumed as a known covariate)
 #' @param sf A scalar defining the sampling rate (in Hz)
-#' @param r=0.001 Observation error
-#' @param q1p=0.02 speed state error
-#' @param q2p=0.08 depth state error
-#' @param q3p=1.6e-05 x and y state error
-#' @param tagonx Easting of starting position
-#' @param tagony Northing of starting position
-#' @param enforce=T If TRUE, then speed and depth are kept strictly positive
-#' @param x Direct observations of Easting
-#' @param y Direct observations of Northing
+#' @param r Observation error, default is 0.001
+#' @param q1p speed state error, default is 0.02 
+#' @param q2p depth state error, default is 0.08
+#' @param q3p x and y state error, default is 1.6e-05 
+#' @param tagonx Easting of starting position (in meters, so requires projected data)
+#' @param tagony Northing of starting position (in meters, so requires projected data)
+#' @param enforce If TRUE (the default), then speed and depth are kept strictly positive
+#' @param x Direct observations of Easting (in meters, so requires projected data)
+#' @param y Direct observations of Northing (in meters, so requires projected data)
 #' @seealso \code{\link{m2h},\link{a2pr}}
-#' @returns A list with many elements:
+#' @returns A list with 10 elements:
 #' \itemize{
 #'  \item{\strong{p: }} the smoothed speeds
 #'  \item{\strong{fit.ks: }} the fitted speeds
@@ -31,6 +31,7 @@
 #' }
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A positive roll angle is a clockwise rotation around the x-axis. A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
+#' @note This function output can be quite sensitive to the inputs used, namely those that define the relative weight given to the existing data, in particular regarding (x,y)=(lat,long); increasing q3p, the (x,y) state variance, will increase the weight given to independent observations of (x,y), say from GPS readings 
 #' @export
 #' @examples 
 #' \dontrun{
