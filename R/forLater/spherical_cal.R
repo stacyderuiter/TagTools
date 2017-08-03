@@ -42,46 +42,39 @@ spherical_cal <- function(X, n, method) {
   X <- X + pracma::repmat(t(offs), nrow(X), 1) 
   # now try up to three calibration scenarios using simplex search
   C <- matrix(0, nv3, 3)
-  C[1:nv1, 1] <- stats::optim(matrix(0, nv1, 1), (function(c) ccost(as.matrix(c), X)), method = "Nelder-Mead")[[1]] # offset only cal
+  C[1:nv1, 1] <- stats::optim(matrix(0, nv1, 1), (function(c) ccost(as.matrix(c), X)), method = "Nelder-Mead")$par # offset only cal
   if (identical(method,'gain') | identical(method,'cross')) {
     C[1:nv2, 2] <- stats::optim(C[1:nv2,1], (function(c) ccost(as.matrix(c), X))) 	# offset and gain cal
   }
   if (identical(method,'cross')) {
-    C[, 3] <- optim((function(c) ccost(as.matrix(c), X)), C[, 2]) 		# offset, gain and cross cal
+    C[, 3] <- optim(C[, 2], (function(c) ccost(as.matrix(c), X))) 		# offset, gain and cross cal
   }
   k <- which.min(ccost(C, X))   		# pick the best performer
-  C <- C[, k] 
+  C <- as.matrix(C[, k])
   listYC <- appcal(X, C) # apply the calibration
   Y <- listYC$Y
+  C <- listYC$C
   nn <- norm2(Y) 
-  print(sprintf('Residual: %2.1f', 100 * sd(nn) / mean(nn))) 
+  print(sprintf('Residual: %2.1f ', 100 * sd(nn) / mean(nn))) 
   R <- t(Y) %*% Y 
-  print(sprintf('Axial balance: %2.1f', 100 / rcond(R))) 
+  print(sprintf('Axial balance: %2.1f', 100 / pracma::cond(R))) 
   if (length(n) != 0) {
     sf <- n / mean(nn) 
-    Y <- Y %*% sf 
+    Y <- Y *  sf 
   } else {
     sf <- 1
   }
-  G$poly <- c((1 + C[, ncol(C) - 1]) %*% sf, (offs + C[, 1]) %*% sf)
+  G$poly <- cbind((1 + C[, 2]) * sf, ((offs*(1+C[,2])) + C[, 1]) * sf)
   G$cross <- 0.5 * rbind(c(2, C[1, ncol(C)], C[3, ncol(C)]), c(C[1, ncol(C)], 2, C[2, ncol(C)]), c(C[3, ncol(C)], C[2, ncol(C)], 2))
   return(list(Y = Y, G = G))
 }
 
 ccost <- function(C,X){
-#  if(is.vector(C) && !is.list(C)){
-  #  for(k in 1:length(C)){
- #     n <- sqrt(rowSums(appcal(X,C[k])$Y^2)) ;
-  #    p[k] <- sd(n)/mean(n) ;
-  #  }
- # }
-  #else{
- # C <- as.matrix(C)
-    for(k in 1:ncol(C)){
-      n <- sqrt(rowSums(appcal(X,C[,k])$Y^2)) ;
-      p[k] <- sd(n)/mean(n) ;
-    }
-  #}
+
+  for(k in 1:ncol(C)){
+      n <- sqrt(rowSums(appcal(X,C[,k])$Y^2)) 
+      p <- sd(n)/mean(n)
+  }
   return(p)
 }
 
