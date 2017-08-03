@@ -115,7 +115,7 @@ Setting the Blanking Time
 <div align='center'>
 <img src="http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.jpg" width=800, height=400>
 <font size=4> 
-<br>(photo from http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.jpg)
+<br>(photo from http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.html)
 </font>
 </div>
 
@@ -136,7 +136,7 @@ ROC Curves
 <div align='center'>
 <img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=450, height=450>
 <font size=4> 
-<br>(photo from https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png)
+<br>(photo from https://openi.nlm.nih.gov/detailedresult.php?img=PMC3861891_CG-14-397_F10&req=4)
 </font>
 </div>
 
@@ -147,9 +147,27 @@ Example: Detecting Lunge Feeding Events
 <div align='center'>
 <img src="http://www.norbertwu.com/nwp/subjects/bluewhales_web/originals/5659.JPG" width=750, height=600>
 <font size=4> 
-<br>(photo from http://www.norbertwu.com/nwp/subjects/bluewhales_web/originals/5659.JPG)
+<br>(photo from http://www.norbertwu.com/nwp/subjects/bluewhales_web/gallery-02.html)
 </font>
 </div>
+
+
+What whale is this?
+========================================================
+
+![SOCAL BRS](images/SOCALBRS-logo.PNG)
+<div align='center'>
+<img src="http://sea-inc.net/wp-content/gallery/socal14/2014-slide-03.jpg" width=400, height=350>
+<font size=4> 
+<br>(photos from http://sea-inc.net/socal-brs/)
+</font>
+</div>
+***
+Data is from the whale bw11_210a which was tagged on 29 July 2011
+![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
+***
+![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+![Goldbogen et al. 2013](images/Goldbogen2013.PNG)
 
 
 Detecting Lunges from Jerk
@@ -254,15 +272,20 @@ str(detections)
 
 Comparing to Known Lunges
 ========================================================
-Known Events
+
+- green points = known lunging events
+- red points = detected lunging events
+
 ```{r, echo=FALSE, message=FALSE}
-events <- matrix(read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes, ncol=1)
-head(events)
-```
-***
-Detected Events
-```{r, echo=FALSE}
-head(detections$peak_time)
+events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
+klunge <- (((events / 5) / 60) / 60)
+dettimes <- (((detections$peak_time / 5) / 60) / 60)
+depthevents <- cropped_depth[events]
+depthdetections <- cropped_depth[detections$peak_time]
+Dive_Profile <- list(Dive_Profile = cropped_depth)
+plott(Dive_Profile, 5, r = TRUE)
+points(x = klunge, y = depthevents, col = "green", pch = 19, cex = 1.4)
+points(x = dettimes, y = depthdetections, col = "red", pch = 19, cex = 1.4)
 ```
 
 
@@ -301,23 +324,23 @@ str(detections_optimal)
 Overall Performance of detect_peaks
 ========================================================
 
-Using default values:
-```{r, include=FALSE}
+- green = default threshold and blanking time
+- orange = optimal threshold and blanking time
+- navy = optimal blanking time and threshold that returns maximum true positive count
+
+```{r, echo=FALSE, fig.align="center"}
 indices <- 63734.75
 sampling_rate <- 5
 bktime <- 30
 tpevents <- ((indices/sampling_rate)/bktime)
-detections_default <- detect_peaks(cropped_Aw, 5, njerk, plot_peaks = FALSE, sampling_rate = 5)
+detections_default <- detect(cropped_Aw, 5, njerk, plot_peaks = FALSE, sampling_rate = 5)
+detections_many <- detect(cropped_Aw, 5, njerk, thresh = .65, bktime = 30, plot_peaks = FALSE, sampling_rate = 5)
 acc1 <- acc_test(detections_default$peak_time, events, 5, tpevents)
-```
-```{r, echo=FALSE}
-str(acc1)
-```
-***
-Using optimal values:
-```{r, include=FALSE}
 acc2 <- acc_test(detections_optimal$peak_time, events, 5, tpevents)
-```
-```{r, echo=FALSE}
-str(acc2)
+acc3 <- acc_test(detections_many$peak_time, events, 5, tpevents)
+perform <- matrix(c(80, 60, 87, 18, 10, 32, 10, 30, 3),ncol=3, nrow=3, byrow=FALSE)
+rownames(perform) <- c("Defaults","Optimal","Many Detections")
+colnames(perform) <- c("True Positives","False Positives","Misses")
+perform <- as.table(perform)
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("green","orange","navy"))
 ```
