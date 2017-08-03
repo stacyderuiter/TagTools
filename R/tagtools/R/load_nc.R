@@ -9,6 +9,9 @@
 #' 
 
  load_nc <- function(file, which_vars=NULL){
+   if (!grepl('.nc', file)){
+     file <- paste(file, '.nc', sep='')
+   }
    file_conn <- ncdf4::nc_open(file)
    #get variable names present in this file
    vars <- names(file_conn$var)
