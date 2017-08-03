@@ -42,12 +42,12 @@ spherical_cal <- function(X, n, method) {
   X <- X + pracma::repmat(t(offs), nrow(X), 1) 
   # now try up to three calibration scenarios using simplex search
   C <- matrix(0, nv3, 3)
-  C[1:nv1, 1] <- stats::optim(matrix(0, nv1, 1), (function(c) ccost(as.matrix(c), X)), method = "Nelder-Mead")$par # offset only cal
+  C[1:nv1, 1] <- stats::optim(matrix(0, nv1, 1), (function(c) ccost(as.matrix(c), X)))$par # offset only cal
   if (identical(method,'gain') | identical(method,'cross')) {
     C[1:nv2, 2] <- stats::optim(C[1:nv2,1], (function(c) ccost(as.matrix(c), X))) 	# offset and gain cal
   }
   if (identical(method,'cross')) {
-    C[, 3] <- optim(C[, 2], (function(c) ccost(as.matrix(c), X))) 		# offset, gain and cross cal
+    C[, 3] <- stats::optim(C[, 2], (function(c) ccost(as.matrix(c), X))) 		# offset, gain and cross cal
   }
   k <- which.min(ccost(C, X))   		# pick the best performer
   C <- as.matrix(C[, k])
@@ -82,14 +82,14 @@ appcal<- function(X,C){
   # C is a vector of up to 8 parameters
   # Only the first of these may be provided - the remainder are 0.
   C[length(C)+1:8] <- 0 
-  C <- rbind(C[1:(length(C)-5)],0,C[length(C)+(-4:0)])		# add the col1 fixed gain of 0
-  C <- as.matrix(C,nrow = 3)
+  C <- c(C[1:3],0,C[4:8]) # add the col1 fixed gain of 0
+  C <- matrix(C,nrow = 3)
   #	At this point:
   #	C(:,1) are the offsets for each column of X
   #	C(:,2) are the gain adjustments for each column of X (column 1 is always 0)
   #	C(:,3) are the cross terms
-  Y <- X%*%diag(1+C[,ncol(C)-1])+pracma::repmat(t(C[,1]),nrow(X),1) ;
-  xcm <- 0.5*rbind(c(2, C[1,ncol(C)], C[3,ncol(C)]),c(C[1,ncol(C)], 2, C[2,ncol(C)]),c(C[3,ncol(C)], C[2,ncol(C)], 2))
+  Y <- X%*%diag(1+C[,2])+pracma::repmat(t(C[,1]),nrow(X),1) ;
+  xcm <- 0.5*rbind(c(2, C[1,3], C[3,3]),c(C[1,3], 2, C[2,3]),c(C[3,3], C[2,3], 2))
   Y <- Y %*% xcm ;
   return(list(Y= Y,C= C))  
 }
