@@ -9,7 +9,10 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 ```{r, include = FALSE}
-library(tagtools)
+source('~/TagTools/R/tagtools/R/plott.R')
+source('~/TagTools/R/tagtools/R/njerk.R')
+source('~/TagTools/R/tagtools/R/detect_peaks.R')
+source('~/TagTools/R/tagtools/R/draw_axis.R')
 ```
 
 Introduction
@@ -43,7 +46,7 @@ Case Study
 ###Detecting lunge feeding events of a blue whale from triaxial acceleration data
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this case study, I will be providing an example on how to use the detect_peaks function in order to detect the times of lunge feedings events of a blue whale. Previous studies have shown the effectiveness of using the norm jerk of triaxial acceleration to detect the presence of lunge feeding events in tag data (Simon et al. 2012; Owen et al. 2016). Thankfully, the tagtools package has the function njerk which can be used to convert our acceleration matrix into the norm jerk signal vector.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the blue whale data from the tagtools package and generate my acceleration matrix (within the whale frame). The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the data to be used in this case study. All of the following data was obtain by members of the SOCAL BRM project. This particular blue whale was tagged with a DTAG2, which gathered multisensor data including, but not limited to, triaxial accelerometer and pressure (depth) data. This particular data set has been used in a variety of publications (DeRuiter et al. 2017; Goldbogen et al. 2013; Goldbogen et al. 2015). For the time being, we will load the acceleration matrix (within the whale frame) from the blue whale data set. The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
 ```{r, results = "hide", message=FALSE}
 library(readr)
 bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
@@ -54,7 +57,7 @@ Next, I will generate the norm jerk signal using the function njerk. A plot is s
 ```{r, fig.width=7, fig.height=5}
 jerk <- njerk(A = Aw, sampling_rate = sampling_rate)
 X <- list(jerk = jerk)
-plott(X, sampling_rate, line_colors = "blue") 
+plott(X, 5, line_colors = "blue") 
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you can see, what used to be an acceleration matrix has now been converted into a signal vector the same length as Aw with all positive values. From this plot, you can already begin to get an idea of where some of the lunge feeding events might be if you notice the occasional peaks in the signal. However, The peaks to the right of the 60000 time value begin to look unlike any of the other data, and it is likely that these seemingly outlier peaks will skew our results. Therefore, the next step in detecting the event of a lunge feeding behavior is to gather the rest of the data necessary to use the detect_peaks function and remove the outlier peaks from our signal. In order to run the detect_peaks function, we must have have the variable "sr", which is the sampling rate of our "data" input. If you are thinking to yourself, "Isn't that the same as 'sampling_rate', which we already gathered?" You are correct. However, due to the nature of the function, the sampling rate must be labeled as something other than "sampling_rate".
