@@ -44,10 +44,10 @@ spherical_cal <- function(X, n, method) {
   C <- matrix(0, nv3, 3)
   C[1:nv1, 1] <- stats::optim(matrix(0, nv1, 1), (function(c) ccost(as.matrix(c), X)))$par # offset only cal
   if (identical(method,'gain') | identical(method,'cross')) {
-    C[1:nv2, 2] <- stats::optim(C[1:nv2,1], (function(c) ccost(as.matrix(c), X))) 	# offset and gain cal
+    C[1:nv2, 2] <- stats::optim(C[1:nv2,1], (function(c) ccost(as.matrix(c), X)))$par 	# offset and gain cal
   }
   if (identical(method,'cross')) {
-    C[, 3] <- stats::optim(C[, 2], (function(c) ccost(as.matrix(c), X))) 		# offset, gain and cross cal
+    C[, 3] <- stats::optim(C[, 2], (function(c) ccost(as.matrix(c), X)))$par 		# offset, gain and cross cal
   }
   k <- which.min(ccost(C, X))   		# pick the best performer
   C <- as.matrix(C[, k])
@@ -65,7 +65,7 @@ spherical_cal <- function(X, n, method) {
     sf <- 1
   }
   G$poly <- cbind((1 + C[, 2]) * sf, ((offs*(1+C[,2])) + C[, 1]) * sf)
-  G$cross <- 0.5 * rbind(c(2, C[1, ncol(C)], C[3, ncol(C)]), c(C[1, ncol(C)], 2, C[2, ncol(C)]), c(C[3, ncol(C)], C[2, ncol(C)], 2))
+  G$cross <- 0.5 * rbind(c(2, C[1, 3], C[3, 3]), c(C[1, 3], 2, C[2, 3]), c(C[3, 3], C[2, 3], 2))
   return(list(Y = Y, G = G))
 }
 
