@@ -22,7 +22,9 @@ bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 jerk <- njerk(Aw, sampling_rate)
-graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "Time" , ylab = "Signal Power")
+graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "", ylab = "")
+mtext("Signal Power", side=2, line=2.5, cex=1.5)
+mtext("Time", side=1, line=2.5, cex=1.5)
 ```
 
 
@@ -43,8 +45,15 @@ Detection Threshold
     - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
-    
+```{r, echo=FALSE, fig.align="center", fig.height=6, fig.width=7}
+dnew <- jerk[1:60000]
+dn <- list(Signal_Power = dnew)
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
+thresh1 <- quantile(dnew, c(.99))
+graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
+```
 
+    
 Setting a Threshold
 ========================================================
 
@@ -66,8 +75,8 @@ Optimal Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=7}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue")
-thresh1 <- quantile(dnew, c(.99))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
+thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -85,8 +94,8 @@ Optimal Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=6, fig.height=6}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue")
-thresh1 <- quantile(dnew, c(.99))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
+thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -101,7 +110,7 @@ Blanking Time
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=7}
 djerk <- jerk[640:740]
 dj <- list(Signal_Power = djerk)
-plott(dj, 5, line_colors = "blue")
+plott(dj, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
 graphics::abline(a = .4, b = 0, col = "red", lty=2)
 ```
 
@@ -155,19 +164,17 @@ Example: Detecting Lunge Feeding Events
 What whale is this?
 ========================================================
 
-![SOCAL BRS](images/SOCALBRS-logo.PNG)
-<div align='center'>
-<img src="http://sea-inc.net/wp-content/gallery/socal14/2014-slide-03.jpg" width=400, height=350>
-<font size=4> 
-<br>(photos from http://sea-inc.net/socal-brs/)
-</font>
-</div>
-***
 Data is from the whale bw11_210a which was tagged on 29 July 2011
-![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
-***
-![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
+![SOCAL BRS](images/SOCALBRS-logo.PNG)
+<font size=3>
+<br>(photo from http://sea-inc.net/socal-brs/)
+</font>
 ![Goldbogen et al. 2013](images/Goldbogen2013.PNG)
+***
+![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
+![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
 
 
 Detecting Lunges from Jerk
@@ -205,7 +212,7 @@ Tag On vs. Tag Off
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = jerk, Dive_Profile = bw11_210a_tagdata$depth, Acceleration = Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
 ```
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
@@ -224,7 +231,7 @@ cropped_depth <- crop_to(bw11_210a_tagdata$depth, 5, tcues = c(0, 12787.04))$X
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = cropped_jerk, Dive_Profile = cropped_depth, Acceleration = cropped_Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
 ```
 
 
@@ -238,11 +245,13 @@ detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, t
 ```
 
 ```{r, echo=FALSE, fig.align="center", fig.width=7, fig.height=6}
-graphics::plot(cropped_jerk, type = "l", col = "blue", xlim = c(0, length(cropped_jerk)), ylim = c(0, max(cropped_jerk)), ylab = "Jerk", xlab = "Time (1/sampling_rate)")
+graphics::plot(cropped_jerk, type = "l", col = "blue", xlim = c(0, length(cropped_jerk)), ylim = c(0, max(cropped_jerk)), ylab = "", xlab = "")
 x <- detections$peak_time
 y <- detections$peak_max
 graphics::par(new = TRUE)
-graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(cropped_jerk)), ylim = c(0, max(cropped_jerk)), cex = .75, ylab = "Jerk", xlab = "Time (1/sampling_rate)")
+graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(cropped_jerk)), ylim = c(0, max(cropped_jerk)), cex = .75, ylab = "", xlab = "")
+mtext("Jerk", side=2, line=2.5, cex=1.5)
+mtext("Time (1/sampling_rate)", side=1, line=2.5, cex=1.5)
 thresh <- quantile(cropped_jerk, c(.99))
 graphics::abline(a = thresh, b = 0, col = "red", lty=2)
 ```
@@ -260,13 +269,10 @@ Using the Interactive Plot
 - Click the following coordinates [x , y]:
     - [30000 , 0.75]
 - Click Finish
-    
+
+***  
 ```{r, echo=FALSE, fi.align="center", fig.width=8, fig.height=6}
 detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.75, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
-```
-***
-```{r, echo=FALSE}
-str(detections)
 ```
 
 
@@ -276,14 +282,15 @@ Comparing to Known Lunges
 - green points = known lunging events
 - red points = detected lunging events
 
-```{r, echo=FALSE, message=FALSE}
+***
+```{r, echo=FALSE, message=FALSE, fig.height=8, fig.width=8}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
 klunge <- (((events / 5) / 60) / 60)
 dettimes <- (((detections$peak_time / 5) / 60) / 60)
 depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[detections$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
-plott(Dive_Profile, 5, r = TRUE)
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
 points(x = klunge, y = depthevents, col = "green", pch = 19, cex = 1.4)
 points(x = dettimes, y = depthdetections, col = "red", pch = 19, cex = 1.4)
 ```
@@ -328,7 +335,7 @@ Overall Performance of detect_peaks
 - orange = optimal threshold and blanking time
 - navy = optimal blanking time and threshold that returns maximum true positive count
 
-```{r, echo=FALSE, fig.align="center"}
+```{r, echo=FALSE, fig.align="center", fig.height=7}
 indices <- 63734.75
 sampling_rate <- 5
 bktime <- 30

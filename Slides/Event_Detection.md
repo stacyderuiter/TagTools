@@ -31,8 +31,9 @@ Detection Threshold
     - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
-    
+<img src="Event_Detection-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
 
+    
 Setting a Threshold
 ========================================================
 
@@ -51,7 +52,7 @@ Optimal Threshold
 - Low rate of false positive detections
 - As few missed detections as possible
 
-<img src="Event_Detection-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 
 Optimal Threshold
@@ -62,7 +63,7 @@ Optimal Threshold
 - As few missed detections as possible
 - ROC curves
 
-<img src="Event_Detection-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
 Blanking Time
 ========================================================
@@ -70,7 +71,7 @@ Blanking Time
 - What is a blanking time?
     - Amount of time within which all values exceeding the threshold level constitute the same signal
     
-<img src="Event_Detection-figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 
 Setting the Blanking Time
@@ -122,19 +123,17 @@ Example: Detecting Lunge Feeding Events
 What whale is this?
 ========================================================
 
-![SOCAL BRS](images/SOCALBRS-logo.PNG)
-<div align='center'>
-<img src="http://sea-inc.net/wp-content/gallery/socal14/2014-slide-03.jpg" width=400, height=350>
-<font size=4> 
-<br>(photos from http://sea-inc.net/socal-brs/)
-</font>
-</div>
-***
 Data is from the whale bw11_210a which was tagged on 29 July 2011
-![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
-***
-![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
+![SOCAL BRS](images/SOCALBRS-logo.PNG)
+<font size=3>
+<br>(photo from http://sea-inc.net/socal-brs/)
+</font>
 ![Goldbogen et al. 2013](images/Goldbogen2013.PNG)
+***
+![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
+![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
 
 
 Detecting Lunges from Jerk
@@ -170,7 +169,7 @@ Blanking Time for Detecting Lunges
 Tag On vs. Tag Off
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
 
@@ -182,7 +181,7 @@ Crop Data
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 
 Running detect_peaks
@@ -192,7 +191,7 @@ Running detect_peaks
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
 
 Using the Interactive Plot
@@ -207,19 +206,9 @@ Using the Interactive Plot
 - Click the following coordinates [x , y]:
     - [30000 , 0.75]
 - Click Finish
-    
-![plot of chunk unnamed-chunk-10](Event_Detection-figure/unnamed-chunk-10-1.png)
-***
 
-```
-List of 6
- $ start_time: num [1:110] 326 690 1124 1187 1491 ...
- $ end_time  : num [1:110] 326 690 1124 1190 1494 ...
- $ peak_time : num [1:110, 1] 327 691 1125 1191 1493 ...
- $ peak_max  : num [1:110, 1] 0.871 1.149 0.806 0.931 1.259 ...
- $ thresh    : num 0.75
- $ bktime    : num 30
-```
+***  
+![plot of chunk unnamed-chunk-11](Event_Detection-figure/unnamed-chunk-11-1.png)
 
 
 Comparing to Known Lunges
@@ -228,6 +217,7 @@ Comparing to Known Lunges
 - green points = known lunging events
 - red points = detected lunging events
 
+***
 ![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
 
 
