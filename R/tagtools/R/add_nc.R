@@ -62,19 +62,20 @@ add_nc <-function(file,X,vname=substitute(X)){
       ncv <- ncdf4::ncvar_def(name=vname, 
                               units='',#X$meta_unit,
                               dim=list(),
-                              missval=NA)
+                              missval=NULL)
     }else{ #if there is some data
       dims <- list()
       dimnames <- c('samples', 'axes', '3rd dim', '4th dim')
       for (d in 1:length(dim(X$data))){
         dims[[d]] <- ncdf4::ncdim_def(name=dimnames[d], 
-                                    units='number', 
-                                    vals=c(1:dim(X$data)[d]))
+                                    units='', 
+                                    vals=c(1:dim(X$data)[d]),
+                                    create_dimvar=FALSE)
       }
       ncv <- ncdf4::ncvar_def(name=vname, 
                               units='',
                               dim=dims,
-                              missval=NA,
+                              missval=NULL,
                               longname='')
       if (!file.exists(file)){
         # if the file doesn't exist create it 

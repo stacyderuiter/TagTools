@@ -130,8 +130,8 @@ function metadata_editor(masterHTML, csvfilename)
         end
     end
     
-    clear_index = find(contains(s, "<script>"));
-    newS = [newS(1:clear_index); {"window.localStorage.clear()"}; newS(clear_index+1:end) ];
+    %clear_index = find(contains(s, "<script>"));
+    %newS = [newS(1:clear_index); {"window.localStorage.clear()"}; newS(clear_index+1:end) ];
 
     % Write cell A into txt
     new_html_id = fopen('dynamic_tagmetadata.html', 'w');
