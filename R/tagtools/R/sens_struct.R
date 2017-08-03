@@ -22,7 +22,8 @@ sens_struct <- function(data,fs=NULL,T=NULL, depid, type,
                         unit=NULL, frame=NULL, name=NULL,
                         start_offset=0, start_offset_units='second'){
 
-  sens_names <- utils::read.csv(system.file('sensor_names.csv',stringsAsFactors=FALSE))
+  sens_names <- utils::read.csv(system.file('extdata', 'sensor_names.csv', package='tagtools'),
+                                stringsAsFactors=FALSE)
   #during development (package not installed)
   #sens_names <- read.csv('R/tagtools/inst/extdata/sensor_names.csv', stringsAsFactors=FALSE)
   if (missing(data) | missing(type) | missing(depid)){
