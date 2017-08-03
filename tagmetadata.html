@@ -151,7 +151,7 @@ function validateForm() {
 			else{
 				index = findIndexbyField(userinput[i], a);
 				if (document.getElementById(userinput[i]).type == "text" &&
-					document.getElementById(userinput[i]).value == ""&& a[index][1] == 1) {
+					document.getElementById(userinput[i]).value == null && a[index][1] == 1) {
 					window.alert(document.getElementById(userinput[i]).name + " must be filled out!");
 				}
 				else{

@@ -1,4 +1,12 @@
-metadata_editor <- function(masterHTML, csvfilename){
+#' Edits a html file from given csv.
+#' 
+#' Takes data from csv, and edits a default or given html to fill in data from the csv. HTML must be tagmetadata.html or variations, csv should only contain metadata of tag.
+#' @param masterHTML default masterHTML is located in the package, or can be changed according to user input. 
+#' @param csvfilename file name of csv to be used for editing the HTML
+#' @return A "dynamic tagmetdata.html" which is the masterHTML with changes from csv
+#' @export
+
+metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.html", package='tagtools'), csvfilename){
  
   csvFile <- parseCSV(csvfilename)
   htmlFile <- scan(file = masterHTML, what = character(0), sep = "\n", quote = "")
@@ -123,11 +131,6 @@ metadata_editor <- function(masterHTML, csvfilename){
       }
     }
   }
- # clearindex = grep("<script>", htmlFile)
- #prev <- newHTML[1:clearindex]
-  #leftover <- newHTML[clearindex+1:length(newHTML)]
-  #clear_string <- "window.localStorage.clear()"
-  #newHTML <- c(prev, clear_string,leftover)
   fileConn<-file("dynamic_tagmetadata.html")
   writeLines(newHTML, fileConn)
   close(fileConn)
