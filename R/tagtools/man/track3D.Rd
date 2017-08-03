@@ -16,24 +16,6 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 
 \item{sf}{A scalar defining the sampling rate (in Hz)}
 
-\item{r}{0.001 Observation error}
-
-\item{q1p}{0.02 speed state error}
-
-\item{q2p}{0.08 depth state error}
-
-\item{q3p}{1.6e-05 x and y state error}
-
-\item{tagonx}{Easting of starting position}
-
-\item{tagony}{Northing of starting position}
-
-\item{enforce}{T If TRUE, then speed and depth are kept strictly positive}
-
-\item{x}{Direct observations of Easting}
-
-\item{y}{Direct observations of Northing}
-
 \item{r}{Observation error, default is 0.001}
 
 \item{q1p}{speed state error, default is 0.02}
@@ -46,7 +28,7 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 
 \item{tagony}{Northing of starting position (in meters, so requires projected data)}
 
-\item{enforce}{If TRUE (the default), then speed and depth are kept strictly positive}
+\item{enforce}{=T If TRUE, then speed and depth are kept strictly positive}
 
 \item{x}{Direct observations of Easting (in meters, so requires projected data)}
 
