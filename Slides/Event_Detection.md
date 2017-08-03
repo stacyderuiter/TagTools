@@ -31,15 +31,6 @@ Detection Threshold
     - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
-
-```r
-dnew <- jerk[1:60000]
-dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue")
-thresh1 <- quantile(dnew, c(.99))
-graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
-```
-
 <img src="Event_Detection-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
 
     
@@ -226,6 +217,7 @@ Comparing to Known Lunges
 - green points = known lunging events
 - red points = detected lunging events
 
+***
 ![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
 
 
