@@ -82,7 +82,7 @@ Setting the Blanking Time
 <div align='center'>
 <img src="http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.jpg" width=800, height=400>
 <font size=4> 
-<br>(photo from http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.jpg)
+<br>(photo from http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.html)
 </font>
 </div>
 
@@ -103,7 +103,7 @@ ROC Curves
 <div align='center'>
 <img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=450, height=450>
 <font size=4> 
-<br>(photo from https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png)
+<br>(photo from https://openi.nlm.nih.gov/detailedresult.php?img=PMC3861891_CG-14-397_F10&req=4)
 </font>
 </div>
 
@@ -114,9 +114,27 @@ Example: Detecting Lunge Feeding Events
 <div align='center'>
 <img src="http://www.norbertwu.com/nwp/subjects/bluewhales_web/originals/5659.JPG" width=750, height=600>
 <font size=4> 
-<br>(photo from http://www.norbertwu.com/nwp/subjects/bluewhales_web/originals/5659.JPG)
+<br>(photo from http://www.norbertwu.com/nwp/subjects/bluewhales_web/gallery-02.html)
 </font>
 </div>
+
+
+What whale is this?
+========================================================
+
+![SOCAL BRS](images/SOCALBRS-logo.PNG)
+<div align='center'>
+<img src="http://sea-inc.net/wp-content/gallery/socal14/2014-slide-03.jpg" width=400, height=350>
+<font size=4> 
+<br>(photos from http://sea-inc.net/socal-brs/)
+</font>
+</div>
+***
+Data is from the whale bw11_210a which was tagged on 29 July 2011
+![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
+***
+![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+![Goldbogen et al. 2013](images/Goldbogen2013.PNG)
 
 
 Detecting Lunges from Jerk
@@ -206,29 +224,11 @@ List of 6
 
 Comparing to Known Lunges
 ========================================================
-Known Events
 
-```
-     [,1]
-[1,]  340
-[2,]  700
-[3,] 1195
-[4,] 1505
-[5,] 1910
-[6,] 3980
-```
-***
-Detected Events
+- green points = known lunging events
+- red points = detected lunging events
 
-```
-     [,1]
-[1,]  327
-[2,]  691
-[3,] 1125
-[4,] 1191
-[5,] 1493
-[6,] 1900
-```
+![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
 
 
 ROC Curve
@@ -244,7 +244,7 @@ ROC Curve
 Generating ROC Curve
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
 
 
 Rerun detect_peaks
@@ -258,26 +258,8 @@ Rerun detect_peaks
 Overall Performance of detect_peaks
 ========================================================
 
-Using default values:
+- green = default threshold and blanking time
+- orange = optimal threshold and blanking time
+- navy = optimal blanking time and threshold that returns maximum true positive count
 
-
-```
-List of 5
- $ count_hits        : num 80
- $ count_false_alarms: num 18
- $ count_misses      : num 10
- $ hits_rate         : num 0.889
- $ false_alarm_rate  : num 0.0424
-```
-***
-Using optimal values:
-
-
-```
-List of 5
- $ count_hits        : num 60
- $ count_false_alarms: num 10
- $ count_misses      : num 30
- $ hits_rate         : num 0.667
- $ false_alarm_rate  : num 0.0235
-```
+<img src="Event_Detection-figure/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
