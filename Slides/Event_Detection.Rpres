@@ -43,8 +43,15 @@ Detection Threshold
     - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
-    
+```{r, fig.align="center", fig.height=6, fig.width=7}
+dnew <- jerk[1:60000]
+dn <- list(Signal_Power = dnew)
+plott(dn, 5, line_colors = "blue")
+thresh1 <- quantile(dnew, c(.99))
+graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
+```
 
+    
 Setting a Threshold
 ========================================================
 
@@ -67,7 +74,7 @@ Optimal Threshold
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
 plott(dn, 5, line_colors = "blue")
-thresh1 <- quantile(dnew, c(.99))
+thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -86,7 +93,7 @@ Optimal Threshold
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
 plott(dn, 5, line_colors = "blue")
-thresh1 <- quantile(dnew, c(.99))
+thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -155,19 +162,17 @@ Example: Detecting Lunge Feeding Events
 What whale is this?
 ========================================================
 
-![SOCAL BRS](images/SOCALBRS-logo.PNG)
-<div align='center'>
-<img src="http://sea-inc.net/wp-content/gallery/socal14/2014-slide-03.jpg" width=400, height=350>
-<font size=4> 
-<br>(photos from http://sea-inc.net/socal-brs/)
-</font>
-</div>
-***
 Data is from the whale bw11_210a which was tagged on 29 July 2011
-![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
-***
-![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
+![SOCAL BRS](images/SOCALBRS-logo.PNG)
+<font size=3>
+<br>(photo from http://sea-inc.net/socal-brs/)
+</font>
 ![Goldbogen et al. 2013](images/Goldbogen2013.PNG)
+***
+![DeRuiter et al. 2017](images/DeRuiter2017.PNG)
+![Goldbogen et al. 2015](images/Goldbogen2015.PNG)
+
 
 
 Detecting Lunges from Jerk
@@ -260,13 +265,10 @@ Using the Interactive Plot
 - Click the following coordinates [x , y]:
     - [30000 , 0.75]
 - Click Finish
-    
+
+***  
 ```{r, echo=FALSE, fi.align="center", fig.width=8, fig.height=6}
 detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.75, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
-```
-***
-```{r, echo=FALSE}
-str(detections)
 ```
 
 
