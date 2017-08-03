@@ -1,9 +1,16 @@
-function    s = stripquotes(s)
-%
-%     s = stripquotes(s)
+function    s = strip_quotes(s)
+
+%     s = strip_quotes(s)
 %     Remove bracketing double quotes from string or
 %     cell array containing strings.
 %
+%     Valid: Matlab, Octave
+%     markjohnson@st-andrews.ac.uk
+%     last modified: 12 July 2017
+
+if nargin<1,
+   help strip_quotes
+end
 
 if nargin<2,
    nowhite = 0 ;

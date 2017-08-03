@@ -79,7 +79,7 @@ end
 
 info.sensors_list = sl(2:end) ;
 ncfile = [depid '_raw'] ;
-savenc(ncfile,info) ;
+save_nc(ncfile,info) ;
 
 for k=1:length(Sens),
 	if SS(k),
@@ -117,5 +117,5 @@ if ~isempty(k),
 		S.unit_name = 'counts' ;
 		S.unit_label = 'counts' ;
 	end
-	addnc([depid '_raw'],S) ;
+	add_nc([depid '_raw'],S) ;
 end

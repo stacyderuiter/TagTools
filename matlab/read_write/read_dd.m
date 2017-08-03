@@ -53,7 +53,7 @@ info.dephist_device_datetime_start=datestr(V(1,1));
 T = V(:,1)-V(1,1);
 FS = diff(find(diff(T)>0,2)) ;		% inferred sampling rate in Hertz
 ncfile = [depid '_raw'] ;
-savenc(ncfile,info) ;
+save_nc(ncfile,info) ;
 save_sens_struct3(V,depid,HDR,FS,fname,'Acc','acc') ;
 save_sens_struct3(V,depid,HDR,FS,fname,'Mag','mag') ;
 save_sens_struct1(V,depid,HDR,FS,fname,'Temp','Ext_t') ;
@@ -79,7 +79,7 @@ if ~isempty(k),
 	S = sens_struct(X(:,k)*scf,FS,depid,type) ;
 	S.history = 'read_dd' ;
 	S.files = fname ;
-	addnc([depid '_raw'],S) ;
+	add_nc([depid '_raw'],S) ;
 end
 
 
@@ -94,7 +94,7 @@ if ~isempty(k),
 	S = sens_struct(X(:,k),FS,depid,type) ;
 	S.history = 'read_dd' ;
 	S.files = fname ;
-	addnc([depid '_raw'],S) ;
+	add_nc([depid '_raw'],S) ;
 end
 
 	

@@ -71,12 +71,12 @@ end
 % read remainder of the file into a cell of strings
 S = {} ;
 while 1,
-   if ~isempty(rr) & lk>rr, break, end
+   if ~isempty(rr) && lk>rr, break, end
    ss = fgetl(f) ;
    lk = lk+1 ;
-   if isempty(ss) | ss<0, break, end
+   if isempty(ss) || ss<0, break, end
    x = parseline(ss,delim) ;
-   if isempty(S) & nfields==0,
+   if isempty(S) && nfields==0,
       nfields = length(x) ;
    end
    if length(x)==nfields,

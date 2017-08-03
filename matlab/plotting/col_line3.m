@@ -29,6 +29,11 @@ function    h = col_line3(x,y,z,c)
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 8 June 2017
 
+if nargin<4,
+	help col_line3
+	return
+end
+	
 M = [size(x) size(y) size(z) size(c)] ;
 if any(M)==1,
    x = x(:) ;

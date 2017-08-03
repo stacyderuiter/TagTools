@@ -17,7 +17,7 @@ function      n = julian_day(y,m,d)
 %		 	Returns the Julian day number for each year, month, day.
 %
 %		 Example:
-%			julian_day(2016,10,12)	    % returns 286
+%			julian_day(2016,10,12)	% returns 286
 %			julian_day(2016,286)		% returns [2016,10,12]
 %
 %      Valid: Matlab, Octave
@@ -54,6 +54,6 @@ switch nargin,
 		t = datenum(horzcat(y(:),m(:),d(:))) ;
 		n = floor(t-datenum([y(:) repmat([1 1 0 0 0],length(y),1)]))+1 ;
 	otherwise
-		help julian_day
+		help julianday
 		return
 end

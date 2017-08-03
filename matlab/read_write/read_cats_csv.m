@@ -103,9 +103,10 @@ while 1,
       kc = find(L==',') ;
       L(kc) = 32 ;
 		dt = char(L(1:kc(2)-1)') ;
-		ke = find(dt=='.',1,'last') ;
-      D{kk} = dt(1:ke-1) ;
-		DF{kk} = dt(ke:end) ;
+		ke = find(dt=='.') ;      % Updated to allow compatibility with Octave datenum
+		dt(ke(1:end-1)) = '-' ;
+      D{kk} = dt(1:ke(end)-1) ;
+		DF{kk} = dt(ke(end):end) ;
       xx = sscanf(char(L(kc(2)+1:end)'),'%f') ;
       if length(xx)>nf,
          fprintf('Too many fields in line: %d vs %d\n',length(xx),nf) ;
@@ -114,7 +115,7 @@ while 1,
       x(kk,1:length(xx)) = xx' ;
    end
 	df = str2double(DF) ;
-   dn = datenum(D,'dd.mm.yyyy HH:MM:SS')+df/3600/24 ;
+   dn = datenum(D,'dd-mm-yyyy HH:MM:SS')+df/3600/24 ; % Updated to allow compatibility with Octave datenum
    X(end+(1:size(x,1)),1:size(x,2)) = x ;
    DN(end+(1:length(dn))) = dn ;
 

@@ -26,7 +26,7 @@ function    X = load_nc(fname)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     last modified: 12 July 2017
+%     last modified: 02 August  2017 by RJS
 
 X = [] ;
 if nargin<1,
@@ -64,7 +64,7 @@ for k=1:length(F),
 	fn = F{k} ;
  	if fn(1)=='_', continue, end		% skip place-holder variable
 	X.(fn).data = ncread(fname,fn);
-	if (T.Variables(k).Size==1) & (X.(fn).data(1) == T.Variables(k).FillValue),
+	if (T.Variables(k).Size(1)==1) && (X.(fn).data(1) == T.Variables(k).FillValue), %RJS updated 2017-08-02
 		X.(fn).data = [] ;
 	end
 	

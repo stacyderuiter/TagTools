@@ -40,12 +40,15 @@ end
 if ~isempty(datapath) && ~ismember(datapath(end),'\/'),
 	datapath(end+1) = '/' ;
 end
-	
-files = dir([datapath '*.txt']);    % Source (raw) binary file
 
-if isempty(files),
-   fprintf(' No files found in %s\n',datapath) ;
-   return
+datapath(find('\\'))='/';
+files = dir([datapath '*.txt']);    % Source (raw) binary file
+if isempty(files)
+   files = dir([datapath '\*.TXT']); 
+   if isempty(files),
+	  fprintf(' No files found in %s\n',datapath) ;
+      return
+   end
 end
 
 X = cell(length(files),1) ; CH = cell(length(files),1) ; 
@@ -92,11 +95,11 @@ info.dephist_device_datetime_start=datestr(min(stt));
 toffs=24*3600*(stt-min(stt)) ;
 
 ncfile = [depid '_raw'] ;
-savenc(ncfile,info) ;
+save_nc(ncfile,info) ;
 save_sens_struct3(X,depid,CH,FS,toffs,files,'Acceleration','acc') ;
 save_sens_struct3(X,depid,CH,FS,toffs,files,'Compass','mag') ;
 save_sens_struct1(X,depid,CH,FS,toffs,files,'Depth','pr') ;
-save_sens_struct1(X,depid,CH,FS,toffs,files,'Temperature','Int_t') ;
+save_sens_struct1(X,depid,CH,FS,toffs,files,'Temperature','temp') ;
 save_sens_struct1(X,depid,CH,FS,toffs,files,'Propeller','sp') ;
 return
 
@@ -120,7 +123,7 @@ if ~isempty(k),
 	S.start_offset = min(toffs(k)) ;
 	fn = strcat([files(k).name ',']) ;
 	S.files = fn(1:end-1) ;
-	addnc([depid '_raw'],S) ;
+	add_nc([depid '_raw'],S) ;
 end
 
 
@@ -135,13 +138,15 @@ if ~isempty(k),
 	ax = strvcat(CH{k}) ;
 	S = sens_struct([X{k}],FS(k),depid,type) ;
 	S.history = 'read_ll3m' ;
-	S.unit = '1' ;
-	S.unit_name = 'counts' ;
-	S.unit_label = 'counts' ;
+	if ~ismember(type,{'pr','temp'}), % pressure is in metres, temperature in degs C
+		S.unit = '1' ;                 % other data are in counts
+		S.unit_name = 'counts' ;
+		S.unit_label = 'counts' ;
+	end
 	S.start_offset = toffs(k) ;
 	fn = strcat([files(k).name ',']) ;
 	S.files = fn(1:end-1) ;
-	addnc([depid '_raw'],S) ;
+	add_nc([depid '_raw'],S) ;
 end
 
 	

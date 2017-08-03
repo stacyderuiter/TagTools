@@ -16,8 +16,7 @@ function    image_irreg(x,y,R)
 %
 %
 %		Example:
-%		 loadnc('testdata1');
-%		 plot_t(P,'r',A,M)				% plot depth, acceleration and magnetometer
+%		 TBD
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

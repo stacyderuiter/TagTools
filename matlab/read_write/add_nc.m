@@ -11,7 +11,7 @@ function		add_nc(fname,X)
 %		X is a sensor or metadata structure. Only these kind of variables can be saved
 %		 in a NetCDF file because the supporting information in these structures is
 %		 needed to describe the contents of the file. For non-archive and non-portable
-%		 storage of variables, consider using the usual 'save' function in Matlab and Octabe.
+%		 storage of variables, consider using the usual 'save' function in Matlab and Octave.
 %
 %		Example:
 %		 add_nc('dog17_124a',A)
@@ -26,7 +26,7 @@ if nargin<2,
 end
 	
 if ~isstruct(X),
-	fprintf('add_nc can only save sensor or metadata structures\n') ;
+	fprintf('addnc can only save sensor or metadata structures\n') ;
 	return
 end
 	
