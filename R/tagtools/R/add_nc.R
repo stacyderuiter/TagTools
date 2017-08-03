@@ -64,8 +64,13 @@ add_nc <-function(file,X,vname=substitute(X)){
                               dim=list(),
                               missval=NULL)
     }else{ #if there is some data
+      if (is.null(dim(X$data))){
+        #if data is a vector make it a column matrix
+        X$data <- matrix(X$data, nrow=length(X$data))
+      }
       dims <- list()
       dimnames <- c('samples', 'axes', '3rd dim', '4th dim')
+      dimnames <- paste(vname, dimnames)
       for (d in 1:length(dim(X$data))){
         dims[[d]] <- ncdf4::ncdim_def(name=dimnames[d], 
                                     units='', 
