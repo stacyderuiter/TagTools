@@ -6,7 +6,7 @@
 
 
 var req_field = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0];
-
+var uploadBool = false;
 var csv_fields = ["depid", "dtype.source", "dtype.datetime.made", "dtype.nfiles", "dtype.format", "device.serial","device.make", "device.type", "device.model", "device.url", "sensors.firm", "sensors.soft","sensors.list", "animal.id", "animal.species.common", "animal.species.science", "animal.dbase.url","dephist.device.tzone", "dephist.device.regset", "dephist.device.datetime.start","dephist.deploy.locality",	"dephist.deploy.location.lat", "dephist.deploy.location.lon", "dephist.deploy.datetime.start", "dephist.deploy.method","project.name", "project.datetime.start", "project.datetime.end", "provider.name","provider.details","provider.email","provider.license", "provider.cite", "provider.doi", "udm.export"];
 var other_field = ["NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"];	
 function findIndexbyField(str, array){ 
@@ -35,9 +35,11 @@ function myTrim(x) {
 				arr = parseCSV(e.target.result);
 				var i;
 				for(i = 0; i < arr.length; i++){
-					csv_fields[i] = arr[i][0];
-					req_field[i] = arr[i][1];
-					other_field[i] = arr[i][2];
+					if(i > 1){
+						csv_fields[i] = arr[i][0];
+						req_field[i] = arr[i][1];
+						other_field[i] = arr[i][2];
+					}
 					if(arr[i][0] == "dephist.device.datetime.start" || arr[i][0] == "dephist.deploy.datetime.start"){
 
 						var temp_entry_time = arr[i][2];
@@ -60,7 +62,7 @@ function myTrim(x) {
 						}
 					}
 				}
-				
+				uploadBool = true;
 				
 			}
 			reader.readAsText(csvFileUpload.files[0]);
@@ -202,6 +204,11 @@ function loadValue(){
 		document.getElementById("tagdata_form").reset();
 		var i;
 		for(i = 0; i < a.length; i++){
+			if(i > 0){
+				csv_fields[i] = a[i][0];
+				req_field[i] = a[i][1];
+				other_field[i] = a[i][2];
+			}
 			if(a[i][0] == "dephist.device.datetime.start" || a[i][0] == "dephist.deploy.datetime.start"){
 				var temp_entry = a[i][2];
 				var split_entry = temp_entry.split(" ");
@@ -225,6 +232,7 @@ function loadValue(){
 				}
 			}
 		}
+		uploadBool = true;
 	}
 	catch(err){
 		window.alert("Error from load is : " + err);
@@ -234,7 +242,7 @@ function loadValue(){
 function saveValues(){
 	if(validateForm()){
 		var a = [];
-		if(localStorage.getItem('storeData') != null && localStorage.getItem('storeData') != ""){
+		if(uploadBool && localStorage.getItem('storeData') != null && localStorage.getItem('storeData') != ""){
 			a = parseCSV(localStorage.getItem('storeData'));
 		}
 		else{
@@ -254,7 +262,12 @@ function saveValues(){
 			else{
 				if(document.getElementById(a[i][0]) == null || typeof(document.getElementById(a[i][0])) == 'undefined'){
 					record += a[i][0] + "," + a[i][1] + ",";
-					record += a[i][2] + "\n" ;
+					if(a[i][2].indexOf('"') > -1){
+						record += a[i][2] + "\n" ;
+					}
+					else{
+						record += comma_or_not(a[i][2]) + "\n" ;
+					}
 				}
 				else{
 					if(a[i][0] =="dephist.device.tzone"){
