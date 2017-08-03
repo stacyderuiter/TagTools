@@ -2,7 +2,7 @@
 % Please edit documentation in R/track3D.R
 \name{track3D}
 \alias{track3D}
-\title{Reconstruct a 3D track}
+\title{Reconstruct a track from pitch, heading and depth data, given a stating position}
 \usage{
 track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
   q3p = 1.6e-05, tagonx, tagony, enforce = T, x, y)
@@ -33,14 +33,34 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 \item{x}{Direct observations of Easting}
 
 \item{y}{Direct observations of Northing}
+
+\item{r}{Observation error, default is 0.001}
+
+\item{q1p}{speed state error, default is 0.02}
+
+\item{q2p}{depth state error, default is 0.08}
+
+\item{q3p}{x and y state error, default is 1.6e-05}
+
+\item{tagonx}{Easting of starting position (in meters, so requires projected data)}
+
+\item{tagony}{Northing of starting position (in meters, so requires projected data)}
+
+\item{enforce}{If TRUE (the default), then speed and depth are kept strictly positive}
+
+\item{x}{Direct observations of Easting (in meters, so requires projected data)}
+
+\item{y}{Direct observations of Northing (in meters, so requires projected data)}
 }
 \description{
-Reconstruct a track from pitch, heading and depth data, given a stating position. This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
+This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 }
 \note{
 Output sampling rate is the same as the input sampling rate.
 
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A positive roll angle is a clockwise rotation around the x-axis. A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
+
+This function output can be quite sensitive to the inputs used, namely those that define the relative weight given to the existing data, in particular regarding (x,y)=(lat,long); increasing q3p, the (x,y) state variance, will increase the weight given to independent observations of (x,y), say from GPS readings
 }
 \examples{
 \dontrun{
