@@ -131,11 +131,6 @@ metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.htm
       }
     }
   }
- # clearindex = grep("<script>", htmlFile)
- #prev <- newHTML[1:clearindex]
-  #leftover <- newHTML[clearindex+1:length(newHTML)]
-  #clear_string <- "window.localStorage.clear()"
-  #newHTML <- c(prev, clear_string,leftover)
   fileConn<-file("dynamic_tagmetadata.html")
   writeLines(newHTML, fileConn)
   close(fileConn)
