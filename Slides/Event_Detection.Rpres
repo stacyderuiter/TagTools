@@ -64,6 +64,17 @@ Setting a Threshold
 - Thresholds that are too low:
     - Many false positive and true positive detections
 
+***
+```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=7}
+dnew <- jerk[1:60000]
+dn <- list(Signal_Power = dnew)
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=1.5))
+thresh1 <- quantile(dnew, c(.999))
+thresh2 <- quantile(dnew, c(.70))
+graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
+graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
+```
+
 
 Optimal Threshold
 ========================================================
@@ -322,9 +333,11 @@ Rerun detect_peaks
 
 ```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
-```{r, include=FALSE}
+- Optimal threshold?
+
+***
+```{r, echo=FALSE}
 detections_optimal <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
-str(detections_optimal)
 ```
 
 

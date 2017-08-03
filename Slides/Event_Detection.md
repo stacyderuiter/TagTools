@@ -44,6 +44,9 @@ Setting a Threshold
 - Thresholds that are too low:
     - Many false positive and true positive detections
 
+***
+<img src="Event_Detection-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+
 
 Optimal Threshold
 ========================================================
@@ -52,7 +55,7 @@ Optimal Threshold
 - Low rate of false positive detections
 - As few missed detections as possible
 
-<img src="Event_Detection-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
 
 Optimal Threshold
@@ -63,7 +66,7 @@ Optimal Threshold
 - As few missed detections as possible
 - ROC curves
 
-<img src="Event_Detection-figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 Blanking Time
 ========================================================
@@ -71,7 +74,7 @@ Blanking Time
 - What is a blanking time?
     - Amount of time within which all values exceeding the threshold level constitute the same signal
     
-<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 
 Setting the Blanking Time
@@ -169,7 +172,7 @@ Blanking Time for Detecting Lunges
 Tag On vs. Tag Off
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
 
@@ -181,7 +184,7 @@ Crop Data
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
 
 
 Running detect_peaks
@@ -191,7 +194,7 @@ Running detect_peaks
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
 
 
 Using the Interactive Plot
@@ -208,7 +211,7 @@ Using the Interactive Plot
 - Click Finish
 
 ***  
-![plot of chunk unnamed-chunk-11](Event_Detection-figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
 
 
 Comparing to Known Lunges
@@ -218,7 +221,7 @@ Comparing to Known Lunges
 - red points = detected lunging events
 
 ***
-![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-13](Event_Detection-figure/unnamed-chunk-13-1.png)
 
 
 ROC Curve
@@ -234,7 +237,7 @@ ROC Curve
 Generating ROC Curve
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
 
 
 Rerun detect_peaks
@@ -242,7 +245,10 @@ Rerun detect_peaks
 
 ```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
+- Optimal threshold?
 
+***
+![plot of chunk unnamed-chunk-15](Event_Detection-figure/unnamed-chunk-15-1.png)
 
 
 Overall Performance of detect_peaks
@@ -252,4 +258,4 @@ Overall Performance of detect_peaks
 - orange = optimal threshold and blanking time
 - navy = optimal blanking time and threshold that returns maximum true positive count
 
-<img src="Event_Detection-figure/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
