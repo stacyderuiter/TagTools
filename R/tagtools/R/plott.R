@@ -57,8 +57,13 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       if (length(fsx) < length(X)){
         fsx <- rep(fsx, length.out=length(X))
       }# end of recycling fsx to length(X)
-      fs[s] <- fsx[s] 
-      n_obs <- min(nrow(X[[s]]$data), length(X[[s]]$data))
+      fs[s] <- fsx[s]
+      if ('data' %in% names(X[[s]])){
+        #if X[[s]] is a sensor data structure
+        n_obs <- min(nrow(X[[s]]$data), length(X[[s]]$data))
+      }else{
+        n_obs <- min(nrow(X[[s]]), length(X[[s]]))
+      }
     }else{# end of "if fsx is given"
       if (length(X[[s]]$sampling_rate)<1){
         stop('If X does not contain sensor data lists (with sampling_rate entry), then fsx must be provided.')
