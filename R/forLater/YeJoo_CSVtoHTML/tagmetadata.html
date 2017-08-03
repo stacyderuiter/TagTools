@@ -35,9 +35,11 @@ function myTrim(x) {
 				arr = parseCSV(e.target.result);
 				var i;
 				for(i = 0; i < arr.length; i++){
-					csv_fields[i] = arr[i][0];
-					req_field[i] = arr[i][1];
-					other_field[i] = arr[i][2];
+					if(i > 1){
+						csv_fields[i] = arr[i][0];
+						req_field[i] = arr[i][1];
+						other_field[i] = arr[i][2];
+					}
 					if(arr[i][0] == "dephist.device.datetime.start" || arr[i][0] == "dephist.deploy.datetime.start"){
 
 						var temp_entry_time = arr[i][2];
@@ -202,6 +204,11 @@ function loadValue(){
 		document.getElementById("tagdata_form").reset();
 		var i;
 		for(i = 0; i < a.length; i++){
+			if(i > 0){
+				csv_fields[i] = a[i][0];
+				req_field[i] = a[i][1];
+				other_field[i] = a[i][2];
+			}
 			if(a[i][0] == "dephist.device.datetime.start" || a[i][0] == "dephist.deploy.datetime.start"){
 				var temp_entry = a[i][2];
 				var split_entry = temp_entry.split(" ");
@@ -225,6 +232,7 @@ function loadValue(){
 				}
 			}
 		}
+		uploadBool = true;
 	}
 	catch(err){
 		window.alert("Error from load is : " + err);
