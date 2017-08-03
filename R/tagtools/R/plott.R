@@ -48,7 +48,6 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
     X <- X[names(X) != 'info']
   }
   
-  
   times <- list()
   fs <- numeric(length=length(X))
   for (s in 1:length(X)){
@@ -59,7 +58,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
         fsx <- rep(fsx, length.out=length(X))
       }# end of recycling fsx to length(X)
       fs[s] <- fsx[s] 
-      n_obs <- min(nrow(X[[s]]), length(X[[s]]))
+      n_obs <- min(nrow(X[[s]]$data), length(X[[s]]$data))
     }else{# end of "if fsx is given"
       if (length(X[[s]]$sampling_rate)<1){
         stop('If X does not contain sensor data lists (with sampling_rate entry), then fsx must be provided.')
