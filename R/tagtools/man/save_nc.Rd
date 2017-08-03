@@ -17,7 +17,7 @@ storage of variables, consider using \code{\link{save}} or various functions to 
 \item{...}{Additional sensor or metadata lists, if user has not bundled them all into a list already but is providing individual structures.}
 }
 \description{
-This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
+This function saves a tag dataset to a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
 }
 \details{
 Warning: this will overwrite any previous NetCDF file with the same name. The file is assumed to be in the current working directory unless \code{file} includes file path information.

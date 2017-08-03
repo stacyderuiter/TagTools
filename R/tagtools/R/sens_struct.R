@@ -14,7 +14,7 @@
 #' @param start_offset (optional) offset in start time for this sensor relative to start of tag recording. Defaults to 0.
 #' @param start_offset_units (optional) units of start_offset. default is 'second'.
 #' @return A sensor list with field \code{data} containing the data and with metadata fields pre-populated from the sensor_names.csv file. Change these manually as needed (or specify the relevant inputs to \code{sens_struct}) to the correct values.
-#' 
+#' @export
 #' @example 
 #' \dontrun{A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
 
@@ -60,6 +60,11 @@ if (sum(k)==0){
    warning(w_msg)
    X$name <- type
 	 X$type <- type
+	 if (!missing(unit)){X$unit <- unit}
+	 if (!missing(frame)){X$frame <- frame}
+	 if (!missing(name)){X$name <- name}
+	 if (!missing(start_offset)){X$start_offset <- start_offset}
+	 if (!missing(start_offset_units)){X$start_offset_units <- start_offset_units}
 	 return(X)
 }
 
