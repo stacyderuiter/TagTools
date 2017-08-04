@@ -3,6 +3,7 @@ Event Detection
 author: David Sweeney 
 date: 8 August 2017
 autosize: true
+incremental: true
 
 
 Event Detection Theory
