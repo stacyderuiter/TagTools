@@ -60,7 +60,7 @@ Setting a Threshold
     - Many missed detections
     - Not many false positive and true positive detections
 
-```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=6}
+```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=5}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
 plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
@@ -272,8 +272,7 @@ Comparing to Known Lunges
 - red points = known lunging events
 - navy points = detected lunging events
 
-***
-```{r, echo=FALSE, message=FALSE, fig.height=10, fig.width=10}
+```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
 klunge <- (((events / 5) / 60) / 60)
 dettimes <- (((detections$peak_time / 5) / 60) / 60)
@@ -327,7 +326,7 @@ Overall Performance of detect_peaks
 - cyan = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
-```{r, echo=FALSE, fig.align="center", fig.height=8}
+```{r, echo=FALSE, fig.align="center", fig.height=10}
 indices <- 63734.75
 sampling_rate <- 5
 bktime <- 30
@@ -341,7 +340,7 @@ perform <- matrix(c(80,60,87,18,10,32,10,30,3),ncol=3, nrow=3, byrow=FALSE)
 rownames(perform) <- c("gray", "orange", "cyan")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)
-graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "cyan"))
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "cyan"), cex.axis = 1.5, cex.lab = 1.5)
 ```
 
 
@@ -361,8 +360,7 @@ Comparing to Known Lunges
 - red points = known lunging events
 - blue points = detected lunging events from all default parameters
 
-***
-```{r, echo=FALSE, message=FALSE, fig.height=9, fig.width=9}
+```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
 klunge <- (((events / 5) / 60) / 60)
 dettimes <- (((detect_all_default$peak_time / 5) / 60) / 60)
@@ -384,7 +382,7 @@ Overall Performance of detect_peaks
 - cyan = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
-```{r, echo=FALSE, fig.align="center", fig.height=9, fig.width=9}
+```{r, echo=FALSE, fig.align="center", fig.height=10}
 indices <- 63734.75
 sampling_rate <- 5
 bktime <- 30
@@ -399,5 +397,5 @@ perform <- matrix(c(80,80,60,87,18,18,10,32,10,10,30,3),ncol=3, nrow=4, byrow=FA
 rownames(perform) <- c("blue", "gray", "orange", "cyan")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)
-graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("blue", "gray", "orange", "cyan"), ylim = c(0,100))
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("blue", "gray", "orange", "cyan"), ylim = c(0,100), cex.axis = 1.5, cex.lab = 1.5)
 ```

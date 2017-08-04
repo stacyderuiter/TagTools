@@ -213,8 +213,7 @@ Comparing to Known Lunges
 - red points = known lunging events
 - navy points = detected lunging events
 
-***
-![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
+<img src="Event_Detection-figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
 
 
 ROC Curve
@@ -268,8 +267,7 @@ Comparing to Known Lunges
 - red points = known lunging events
 - blue points = detected lunging events from all default parameters
 
-***
-![plot of chunk unnamed-chunk-17](Event_Detection-figure/unnamed-chunk-17-1.png)
+<img src="Event_Detection-figure/unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" style="display: block; margin: auto;" />
 
 
 Overall Performance of detect_peaks
