@@ -64,5 +64,5 @@ ROC_plot <- function(data, sampling_rate, FUN, bktime, indices, events) {
   xy <- xy[order(xy[, 1]), ]
   xy <- rbind(c(0,0), xy, c(1,1))
   require(ggplot2)
-  ggplot((data.frame(xy)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + geom_smooth(se = FALSE, span = 0.6)
+  ggplot((data.frame(xy)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=15), axis.title=element_text(size=20,face="bold")) + geom_smooth(se = FALSE, span = 0.6)
 }

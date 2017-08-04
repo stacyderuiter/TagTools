@@ -18,7 +18,7 @@ Noise vs. Signal
 ========================================================
 
 - What is noise?
-    - Irrelevant and undesired signal stimuli
+    - Irrelevant and undesired stimuli
 - What is an event?
     - Informative and unique signal stimuli characteristic of a behavioral event
 - Event detection is impossible without noise
@@ -41,19 +41,15 @@ Setting a Threshold
 - Thresholds that are too high:
     - Many missed detections
     - Not many false positive and true positive detections
-- Thresholds that are too low:
-    - Many false positive and true positive detections
 
-***
 <img src="Event_Detection-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 
-Optimal Threshold
+Setting a Threshold
 ========================================================
 
-- High rate of true positive detections
-- Low rate of false positive detections
-- As few missed detections as possible
+- Thresholds that are too low:
+    - Many false positive and true positive detections
 
 <img src="Event_Detection-figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
@@ -64,9 +60,7 @@ Optimal Threshold
 - High rate of true positive detections
 - Low rate of false positive detections
 - As few missed detections as possible
-- ROC curves
-
-<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+- ROC curves...
 
 Blanking Time
 ========================================================
@@ -74,7 +68,7 @@ Blanking Time
 - What is a blanking time?
     - Amount of time within which all values exceeding the threshold level constitute the same signal
     
-<img src="Event_Detection-figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 
 Setting the Blanking Time
@@ -84,9 +78,9 @@ Setting the Blanking Time
 - What is the necessary time required between successive behavior events?
 
 <div align='center'>
-<img src="http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.jpg" width=800, height=400>
+<img src="http://extrememarine.org.uk/wp-content/uploads/2016/12/sperm-whale-echolocation.jpg" width=800, height=400>
 <font size=4> 
-<br>(photo from http://www2.hawaii.edu/~zinner/101/students/YvetteEcholocation/echolocation.html)
+<br>(photo from http://extrememarine.org.uk/2016/12/sperm-whales-a-deep-sea-odyssey/)
 </font>
 </div>
 
@@ -105,7 +99,7 @@ ROC Curves
 
 - The more area under the curve, the better the performance of the detector
 <div align='center'>
-<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=450, height=450>
+<img src="https://openi.nlm.nih.gov/imgs/512/261/3861891/PMC3861891_CG-14-397_F10.png" width=500, height=500>
 <font size=4> 
 <br>(photo from https://openi.nlm.nih.gov/detailedresult.php?img=PMC3861891_CG-14-397_F10&req=4)
 </font>
@@ -172,7 +166,7 @@ Blanking Time for Detecting Lunges
 Tag On vs. Tag Off
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
 
@@ -184,7 +178,7 @@ Crop Data
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 
 Running detect_peaks
@@ -194,7 +188,7 @@ Running detect_peaks
 
 
 
-<img src="Event_Detection-figure/unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+<img src="Event_Detection-figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
 
 Using the Interactive Plot
@@ -210,34 +204,35 @@ Using the Interactive Plot
     - [30000 , 0.75]
 - Click Finish
 
-***  
-![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-11](Event_Detection-figure/unnamed-chunk-11-1.png)
 
 
 Comparing to Known Lunges
 ========================================================
 
-- green points = known lunging events
-- red points = detected lunging events
+- red points = known lunging events
+- navy points = detected lunging events
 
 ***
-![plot of chunk unnamed-chunk-13](Event_Detection-figure/unnamed-chunk-13-1.png)
+![plot of chunk unnamed-chunk-12](Event_Detection-figure/unnamed-chunk-12-1.png)
 
 
 ROC Curve
 ========================================================
 
 - Determine the false positive rate and the true positive rate of detections
-    - false positive rate = (# false positive detections / # total possible events)
-        - # total possible events = ((# of samples / sampling_rate) / blanking time)
-    - true positive rate = (# true positive detections / # known events)
-        - # of known events is determined manually
+    - false positive rate = (number false positive detections / number total possible events)
+        - number of total possible events = ((number of samples / sampling_rate) / blanking time)
+    - true positive rate = (number true positive detections / number known events)
+        - number of known events is determined manually
 
 
 Generating ROC Curve
 ========================================================
 
-<img src="Event_Detection-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
+Optimal threshold?
+
+<img src="Event_Detection-figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
 
 
 Rerun detect_peaks
@@ -245,17 +240,45 @@ Rerun detect_peaks
 
 ```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = 0.95, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
-- Optimal threshold?
-
-***
-![plot of chunk unnamed-chunk-15](Event_Detection-figure/unnamed-chunk-15-1.png)
+<img src="Event_Detection-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
 
 
 Overall Performance of detect_peaks
 ========================================================
 
-- green = default threshold and blanking time
-- orange = optimal threshold and blanking time
-- navy = optimal blanking time and threshold that returns maximum true positive count
+- gray = default threshold and behavior-specific blanking time
+- orange = optimal threshold and behavior-specific blanking time
+- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+
+***
+<img src="Event_Detection-figure/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+
+
+Default Threshold and Default Blanking Time
+========================================================
+
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = FALSE, sampling_rate = sampling_rate)```
 
 <img src="Event_Detection-figure/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
+
+
+Comparing to Known Lunges
+========================================================
+
+- red points = known lunging events
+- blue points = detected lunging events from all default parameters
+
+***
+![plot of chunk unnamed-chunk-17](Event_Detection-figure/unnamed-chunk-17-1.png)
+
+
+Overall Performance of detect_peaks
+========================================================
+
+- blue = default threshold and default blanking time
+- gray = default threshold and behavior-specific blanking time
+- orange = optimal threshold and behavior-specific blanking time
+- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+
+***
+<img src="Event_Detection-figure/unnamed-chunk-18-1.png" title="plot of chunk unnamed-chunk-18" alt="plot of chunk unnamed-chunk-18" style="display: block; margin: auto;" />

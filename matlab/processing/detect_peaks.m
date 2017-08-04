@@ -16,12 +16,12 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
-%       default level is the 0.99 quantile.
+%       default level is the 99 percentile.
 %   bktime = The specified length of time between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       .85 quantile of the vector of time differences for signal values 
+%       .8 percentile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
@@ -56,7 +56,7 @@ end
 
 %determine default threshold
 if nargin < 4 || isempty(thresh)
-    thresh = quantile(dnew, 0.99);
+    thresh = prctile(dnew, 99);
 end
 
 if nargin < 6 || isempty(plot_peaks)
@@ -77,7 +77,7 @@ pk = d(pt,:);
 %determine default blanking time
 if nargin < 5 || isempty(bktime)
     dpk = diff(pk(:,1));
-    bktime = quantile(dpk, .85);
+    bktime = prctile(dpk, 80);
 end
 
 %determine start and end times for each peak
