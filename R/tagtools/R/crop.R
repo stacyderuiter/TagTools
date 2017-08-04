@@ -18,7 +18,7 @@
 #'          #plot shows the cropped section
 #' @export
 
-crop <- function(X, sampling_rate = NULL) {
+crop <- function(X, sampling_rate) {
   if (missing(X)) {
     stop("X is a required input")
   }
@@ -32,7 +32,7 @@ crop <- function(X, sampling_rate = NULL) {
       x <- matrix(x, ncol = 1)
     }
   } else {
-    if (is.null(sampling_rate)) {
+    if (missing(sampling_rate)) {
       stop("inputs for X and sampling_rate are required")
     }
     x <- X

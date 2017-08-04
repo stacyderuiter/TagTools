@@ -10,7 +10,7 @@ function		[X,varargout] = crop_all(tcues,X,varargin)
 %     Inputs:
 %		tcues is a two-element vector containing the start and end time cue
 %		 in seconds of the data segment to keep, i.e., tcues = [start_time, end_time].
-%     X is a sensor structure or a set of sensor structures (e.g., from loadnc).
+%     X is a sensor structure or a set of sensor structures (e.g., from load_nc).
 %		Y,... are additional sensor structures.
 %
 %     Results:
@@ -19,7 +19,7 @@ function		[X,varargout] = crop_all(tcues,X,varargin)
 %     Y,... are additional sensor structures as required to match the input.
 %
 %		Example:
-%		 X=loadnc('testset3')
+%		 X=load_nc('testset3')
 %		 d = find_dives(X.P,300) ;
 %		 X = crop_all([d.start(2) d.end(2)],X);	% crop all data to 2nd dive
 %		 plott(X.P,X.A)

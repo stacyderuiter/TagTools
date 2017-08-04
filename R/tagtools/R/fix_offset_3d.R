@@ -9,10 +9,7 @@
 #' }
 #' @note This function is only usable for field sensors. It will not work for gyroscope data.
 #' @export
-#' @example BW <- beaked_whale
-#'          fixed_A <- fix_offset_3d(BW$A$data)
-#'          plotA <- list(fixed_A = A)
-#'          plott(plotA, BW$A$sampling_rate)
+#' @example Will come soon!
 
 fix_offset_3d <- function(X) {
   poly1 <- matrix(1, 3, 1)
