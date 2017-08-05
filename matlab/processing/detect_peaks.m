@@ -21,7 +21,7 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       .8 percentile of the vector of time differences for signal values 
+%       80 percentile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 

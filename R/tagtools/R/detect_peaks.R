@@ -80,12 +80,12 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   
   if (plot_peaks == TRUE) {
     #create a plot which allows for the thresh and bktime to be manipulated
-    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal Power", xlab = "Time (1/sampling_rate)", cex.axis = 1.5, cex.lab = 1.5)
+    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal Power", xlab = "Time (1/sampling_rate)")
     print("GRAPH HELP: For changing only the thresh level, click once within the plot and then click finish or push escape or push escape to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then click finish or push escape to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply click finish or push escape.")
     x <- peaks$peak_time
     y <- peaks$peak_max
     graphics::par(new = TRUE)
-    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal Power", xlab = "Time (1/sampling_rate)", cex.axis = 1.5, cex.lab = 1.5)
+    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal Power", xlab = "Time (1/sampling_rate)")
     graphics::abline(a = thresh, b = 0, col = "red", lty=2)
     pts <- graphics::locator(n = 3)
     if (length(pts$x) == 3) {
@@ -106,11 +106,11 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
       }
     }
   } else {
-    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal Power", xlab = "Time (1/sampling_rate)", cex.axis = 1.5, cex.lab = 1.5)
+    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), ylab = "Signal Power", xlab = "Time (1/sampling_rate)")
     x <- peaks$peak_time
     y <- peaks$peak_max
     graphics::par(new = TRUE)
-    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal Power", xlab = "Time (1/sampling_rate)", cex.axis = 1.5, cex.lab = 1.5)
+    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75, ylab = "Signal Power", xlab = "Time (1/sampling_rate)")
     graphics::abline(a = thresh, b = 0, col = "red", lty=2)
   }
   
