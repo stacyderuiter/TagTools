@@ -14,7 +14,7 @@ Event Detection Theory
     
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=9, fig.height=6.5}
 source('~/TagTools/R/tagtools/R/njerk.R')
-source('~/TagTools/R/tagtools/R/detect_peaks.R')
+source('~/TagTools/R/forlater/David_detectors/detect_peaks.R')
 source('~/TagTools/R/tagtools/R/crop_to.R')
 source('~/TagTools/R/tagtools/R/plott.R')
 source('~/TagTools/R/tagtools/R/draw_axis.R')
