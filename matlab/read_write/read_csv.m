@@ -74,7 +74,7 @@ while 1,
    if ~isempty(rr) && lk>rr, break, end
    ss = fgetl(f) ;
    lk = lk+1 ;
-   if isempty(ss) || ss<0, break, end
+   if isempty(ss) || ss(1)<0, break, end
    x = parseline(ss,delim) ;
    if isempty(S) && nfields==0,
       nfields = length(x) ;

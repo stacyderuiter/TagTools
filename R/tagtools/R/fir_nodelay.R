@@ -5,6 +5,7 @@
 #' @param n The length of symmetric FIR filter to use in units of input samples (i.e., samples of x). The length should be at least 4/fc. A longer filter gives a steeper cut-off.
 #' @param fc The filter cut-off frequency relative to sampling_rate/2=1. If a single number is given, the filter is a low-pass or high-pass. If fc is a vector with two numbers, the filter is a bandpass filter with lower and upper cut-off frequencies given by fc(1) and fc(2). For a bandpass filter, n should be at least 4/fc(1) or 4/diff(fc) whichever is larger.
 #' @param qual An optional qualifier determining if the filter is: "low" for low-pass (the default value if fc has a single number), or "high" for high-pass. Default is "low".
+#' @export
 #' @return A list with elements:
 #' \itemize{
 #'  \item{y} The filtered signal with the same size as x.

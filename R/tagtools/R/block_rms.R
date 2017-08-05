@@ -1,3 +1,4 @@
+
 #' Compute RMS of sample blocks
 #' 
 #' This function is used to compute the RMS (root-mean-square) of successive blocks of samples.

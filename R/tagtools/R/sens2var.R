@@ -15,7 +15,7 @@
 #'    \item{\code{t: }} {Times (in seconds) of irregularly sampled data. The time reference (i.e., the 0 time) is with respect to the start time of the data in the sensor structure. NULL unless \code{Sx} had irregular sampling and \code{Sx} is a tag sensor data list.
 #'    \item{\code{sampling: }} {NULL unless input \code{regular} is TRUE. 'regular' if sampling of \code{Sx} was regular, 'irregular' if it was irregular.}
 #'  }
-#'  
+#'  @export
 #'  @examples
 #'  \dontrun{# regularly sampled data
 #'  s2vout = sens2var(Sx)     

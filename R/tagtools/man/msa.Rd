@@ -29,3 +29,6 @@ sampleMatrix = matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7),
 msa(A=sampleMatrix, ref=1)  
 #Results: c(0.122497, 0.019804, 0.24499)
 }
+\seealso{
+\code{\link{odba}}, \code{\link{njerk}}
+}

@@ -8,7 +8,7 @@ find_dives(p, mindepth, sampling_rate = NULL, surface = NULL,
   findall = NULL)
 }
 \arguments{
-\item{p}{A depth or altitude time series (vector) in meters.}
+\item{p}{A depth or altitude time series (a sensor data list or  a vector) in meters.}
 
 \item{mindepth}{The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.}
 
@@ -19,7 +19,7 @@ find_dives(p, mindepth, sampling_rate = NULL, surface = NULL,
 \item{findall}{(optional) When 1 forces the algorithm to include incomplete dives at the start and end of the record. Default is 0 which only recognizes complete dives.}
 }
 \value{
-T is a list with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
+T is a data frame with one row for each dive/flight found. The columns of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude).
 }
 \description{
 This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.

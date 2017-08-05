@@ -6,6 +6,8 @@
 #' @param z A vector or matrix of points on the third axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
 #' @param ... Additional inputs for rgl::plot3d()
+#' @export
+#' @seealso \code{\link{col_line}}, \code{\link{cline}}
 #' @note x, y, z and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 
 col_line3 <- function(x, y, z, c, ...) {

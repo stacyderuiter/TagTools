@@ -43,7 +43,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   if (length(offset) < length(X)){
     offset <- rep(offset, length.out=length(X))
   }
-  if (sum(grepl('animaltag', class(X)))){
+  if ('animaltag' %in% class(X)){
     info <- X$info
     X <- X[names(X) != 'info']
   }

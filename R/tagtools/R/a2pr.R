@@ -6,6 +6,7 @@
 #' @param sampling_rate (optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If A is a sensor data list, sampling_rate is obtained from its metadata (A$sampling_rate).
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A before computing pitch and roll. The filter cut-off frequency is in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @seealso \code{\link{m2h}}
+#' @export
 #' @return A list with 2 elements:
 #' \itemize{
 #'  \item{\strong{p: }} The pitch estimate in radians

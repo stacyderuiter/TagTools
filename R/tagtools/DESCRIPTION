@@ -19,6 +19,7 @@ Description: High-resolution movement-sensor tags typically include acceleromete
     -Statistical Analysis (e.g., track reconstruction, Mahalanobis distance analysis, state-switching models).
 Depends: R (>= 3.3.2)
 Imports:
+    CircStats,
     graphics,
     lubridate,
     matlab,

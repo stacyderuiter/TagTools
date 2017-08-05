@@ -64,14 +64,11 @@ if isstruct(M) && isstruct(A),
 		fc = fs ;
 	else
 		fc = [] ;
-	end
+   end
 	
-	% check that A and M are compatible - they need the same sampling rate and time offset
-	if A.sampling_rate ~= M.sampling_rate,
-		fprintf('body_axes: A and M must be at the same sampling rate\n') ;
-		return
-	end
-	
+   [A,M,fs] = sens2var(A,M,'regular') ;
+	if isempty(A),	return, end
+   
 	toffs = [0,0] ;
 	if isfield(A,'start_offset'),
 		toffs(1) = A.start_offset ;
@@ -82,11 +79,7 @@ if isstruct(M) && isstruct(A),
 	if toffs(1)~=toffs(2),
 		fprintf('body_axes: A and M must have the same start offset time\n') ;
 		return
-	end
-	
-	fs = M.sampling_rate ;
-	M = M.data ;
-	A = A.data ;
+   end
 else
 	if isstruct(M) || isstruct(A),
 		fprintf('body_axes: A and M must both be structures or matrices, not one of each\n') ;
@@ -138,7 +131,7 @@ w = zeros(3,3,size(A,1)) ;
 w(1,:,:) = Mh' ;
 w(2,:,:) = N' ;
 w(3,:,:) = A' ;
-W.x = squeeze(w(:,1,:)) ;
-W.y = squeeze(w(:,2,:)) ;
-W.z = squeeze(w(:,3,:)) ;
+W.x = squeeze(w(:,1,:))' ;
+W.y = squeeze(w(:,2,:))' ;
+W.z = squeeze(w(:,3,:))' ;
 W.sampling_rate = fs ;

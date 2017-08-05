@@ -6,17 +6,25 @@ function      V = rotate_vecs(V,Q)
 %     frame to the first. 
 %
 %     Inputs:
-%     V is a 3-element vector or a 3-column matrix of vector measurements
-%		 for example V could be from an accelerometer or magnetometer.
-%		Q is the rotation matrix. If Q is a single 3x3 matrix, the same
-%		 rotation is appled to all vectors in V. If Q is a 3x3xn matrix where
-%		 n is the number of rows in V, a different transformation given by Q(:,:,k)
-%		 is applied to each row of V.
+%     V is a sensor structure, matrix or vector containing measurements
+%		 from a triaxial sensor, e.g., an accelerometer, magnetometer or gyroscope.
+%		 If V is a matrix it should have 3 columns. If V is a single measurement,
+%		 it will be a 1x3 or 3x1 vector.
+%		Q is a rotation matrix specifying how V is to be rotated. If Q is a 
+%		 single 3x3 matrix, the same rotation is applied to all vectors in V. 
+%		 If Q is a 3x3xn matrix where n is the number of rows of data in V, a 
+%		 different transformation given by Q(:,:,k) is applied to each row of V.
+%		 Use euler2rotmat to generate a rotation matrix from euler angles.
 %
 %     Returns:
-%     V is the rotated vector or matrix with the same size as the input V.
+%     V is the rotated data with the same size and sampling rate as the input V.
+%		 If the input was a sensor structure, the output will also be. 
 %
-%		Frame: This function makes no assumptions about frame.
+%		Frame: This function assumes that the axes of V are consistent with the
+%		 axes assumed in generating the rotation matrix, i.e., forward-right-up. 
+%		 This function changes the frame of V by rotating it into a new frame. For
+%		 example if V is in the tag frame and Q is the rotation matrix relating tag
+%		 and animal frame, then the output will be in the animal frame.
 %
 %		Example:
 %		 Q = euler2rotmat(pi/180*[25 -60 33]);
@@ -25,21 +33,42 @@ function      V = rotate_vecs(V,Q)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 10 May 2017
+%     Last modified: 4 August 2017
 
 if nargin<2,
    help rotate_vecs ;
    return
 end
 
-if size(V,2)==1,
-	V = V' ;
+if isstruct(V),
+	v = sens2var(V) ;
+	if isempty(v), return, end
+else
+	v = V ;
+end
+	
+if size(v,2)==1,
+	v = v' ;
 end
 	
 if size(Q,3)==1,
-	V = V*Q' ;
+	v = v*Q' ;
 else
-   for k=1:size(V,1),
-      V(k,:) = V(k,:)*Q(:,:,k)' ;
+   for k=1:size(v,1),
+      v(k,:) = v(k,:)*Q(:,:,k)' ;
    end
 end
+
+if ~isstruct(V),
+	V = v ;
+	return
+end
+	
+V.data = v ;
+if ~isfield(V,'history') || isempty(V.history),
+	V.history = 'rotate_vecs' ;
+else
+	V.history = [V.history ',' 'rotate_vecs'] ;
+	end
+end
+

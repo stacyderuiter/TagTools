@@ -31,3 +31,6 @@ Recursive sampling rate decimator. This function can be run iteratively over a l
 The first time decz is called, use the following format: y = decz(x,df). The subsequent calls to decz for contiguous input data are: decz(x,Z). The final call when there is no more input data is: decz(x = NULL, Z = Z). Each output y in the above contains a segment of the decimated signal and so these need to be concatenated. 
 Decimation is performed in the same way as for \code{\link{decdc}}. The group delay of the filter is removed. For large decimation factors (e.g., df much greater than 50), it is better to perform several nested decimations with lower factors.
 }
+\seealso{
+\code{\link{decdc}}
+}
