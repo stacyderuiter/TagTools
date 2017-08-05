@@ -10,7 +10,7 @@ Event Detection Theory
 ========================================================
 
 - What is event detection?
-    - The process of discerning between noise and a signal (behavioral event)
+    - The process of discerning between noise and behavioral event
     
 <img src="Event_Detection-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
@@ -29,7 +29,7 @@ Detection Threshold
 ========================================================
 
 - What is a threshold?
-    - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
+    - A ratio of event signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
 <img src="Event_Detection-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
@@ -224,7 +224,6 @@ ROC Curve
     - false positive rate = (number false positive detections / number total possible events)
         - number of total possible events = ((number of samples / sampling_rate) / blanking time)
     - true positive rate = (number true positive detections / number known events)
-        - number of known events is determined manually
 
 
 Generating ROC Curve
