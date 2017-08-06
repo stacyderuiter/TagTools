@@ -109,6 +109,7 @@ Data-Sharing
 - How will you analyse the data to address your question? 
 - Who else can use the data? 
 - When and how will you share the data?
+- What is "raw" data and is it what you should share?
 <!-- - Does the value of the science merit the abuse? -->
 <!-- <div align='center'> -->
 <!-- ![channel islands](images/narwhal.jpg) -->
@@ -235,6 +236,37 @@ Learn and contribute at
 
 **It's a wiki - join us!**
 
+A key difference between Matlab/Octave and R
+========================================================
+- In Matlab/Octave, input arguments to functions are not named
+- User must enter arguments in a set order, and software interprets accordingly depending on how many inputs there were
+- If you want to leave out one input and specify a later one, you may have to enter "[]" for the earlier input
+
+A key difference between Matlab/Octave and R
+========================================================
+- In R, the user *can* enter un-named input arguments; if so they must be in the "expected" order (just like in Matlab/Octave)
+- In R, the safe/flexible option is to name inputs to a function. If inputs are named, the order they are specified in doesn't matter.
+  - Imagine you want to plot **p** as a function of **t**. You could use:
+      - plot(t,p)
+      - plot(x=t, y=p)
+      - plot(y=p, x=t)
+      
+ Consequences for tag tools
+========================================================
+- Some Matlab/Octave tag tools use specific input arguments differently depending on how many inputs are provided (and what kind of objects they are).
+- Example: plott.m (Matlab/Octave) can have from one to many inputs. The second one is interpreted as:
+    - a sampling rate (fsx), 
+    - an indicator for whether to reverse the y-axis scale (r), or
+    - a second sensor data input
+    - ...depending on how many total inputs there are.
+
+ Consequences for tag tools
+========================================================
+- plott.R has 11 different named inputs
+    - only one of the 11 is absolutely required
+    - user decides which inputs to supply and uses names
+    - ex.: plott(X, r=TRUE, interactive=TRUE)
+      
 Read in data
 ========================================================
 - Tag tools can read in:
@@ -458,11 +490,30 @@ Begin analysis?
 
 Exercises to earn your coffee
 ========================================================
-**What is wrong (or right) with this picture?**
-[coming soon]
-- Show screen shots of projects
-- metadata file creation by "Homer"
-- tags on animals (ethics, tag type, benefits...)
-- errors you will see in R/matlab/octave
+(just a few!)
+
+What is wrong (or right) here?
+========================================================
+![forgot to set path](images/forgot-set-path.png)
+
+What is wrong (or right) here?
+========================================================
+![forgot to load package](images/forgot-load-package.png)
+
+What is wrong (or right) here?
+========================================================
+![forgot to set wd](images/forgot-set-dir.png)
+
+
+What is wrong (or right) here?
+========================================================
+- Can you argue both ways?
+<div align='center'>
+![narwhal](images/narwhal.jpg)
+<font size=4>
+<br>(photo from [Dietz et al. 2007, doi.org/10.1186/1472-6785-7-14](https://doi.org/10.1186/1472-6785-7-14))
+</font>
+</div>
+
 
 

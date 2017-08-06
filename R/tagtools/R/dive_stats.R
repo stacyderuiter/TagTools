@@ -67,9 +67,11 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
     }
     X <- as.matrix(X$data, ncol=1)
   }else{
+    if (!is.null(X)){
     X <- as.matrix(X, ncol=1)
     if (nrow(X) != nrow(P)){
       stop('P and X must be sampled at the same rate.')
+    }
     }
   }
   

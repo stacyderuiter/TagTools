@@ -139,8 +139,9 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
         y_data <- data_i[,1]
       }
     graphics::plot(x=times[[i]], y=y_data, ylab=panel_labels[i],
-           xaxt="n", xlim=x_lim, type='l', ylim=y_lim,
-           col=line_colors[1])
+           xaxt="n", #xlim=x_lim,
+           type='l', ylim=y_lim,
+           col=line_colors[1], xlab='', ...)
       draw_axis(side=1, x=times[[i]], 
                 date_time=sum(grepl('POSIX', class(times[[i]]))),
                 last_panel=(i == length(X)))
@@ -151,7 +152,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       }
     }}
   }
-  graphics::mtext(x_lab, side=1, line=2)
+  graphics::mtext(x_lab, side=1, line=2, cex=par(no.readonly=TRUE)$cex)
   
 if (interactive){
   zoom::zm()
