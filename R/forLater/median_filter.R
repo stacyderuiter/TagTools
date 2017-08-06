@@ -50,7 +50,7 @@ median_filter <- function(X, n, noend) {
   if (is.list(X)) {
     X$data <- Y
     h <- sprintf("median_filter(%d)", n)
-    if ("history" %in% names(X) == FALSE | is.null(X$history)) {
+    if (("history" %in% names(X) == FALSE) | is.null(X$history)) {
       X$history <- h
     } else {
       X$history <- c(X$history, ",", h)
