@@ -23,7 +23,7 @@ bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 jerk <- njerk(Aw, sampling_rate)
-graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "Time", ylab = "Signal Power", cex.axis = 1.5, cex.lab = 1.5)
+graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "Time", ylab = "Signal Power", cex = 1.5)
 ```
 
 
@@ -47,7 +47,7 @@ Detection Threshold
 ```{r, echo=FALSE, fig.align="center", fig.height=5, fig.width=8}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 thresh1 <- quantile(dnew, c(.99))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 ```
@@ -64,7 +64,7 @@ Setting a Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=5}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
@@ -80,7 +80,7 @@ Setting a Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=7}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -93,7 +93,7 @@ Optimal Threshold
 - High rate of true positive detections
 - Low rate of false positive detections
 - As few missed detections as possible
-- ROC curves...
+- Receiver Operating Characteristic (ROC) curve ...
 
 Blanking Time
 ========================================================
@@ -104,7 +104,7 @@ Blanking Time
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=7}
 djerk <- jerk[640:740]
 dj <- list(Signal_Power = djerk)
-plott(dj, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(dj, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 graphics::abline(a = .4, b = 0, col = "red", lty=2)
 ```
 
@@ -126,10 +126,10 @@ Setting the Blanking Time
 ROC Curves
 ========================================================
 
-- Receiver Operating Characteristic (ROC) curve
-- Two main Purposes:
+- Three main Purposes:
     - Assess overall performance of event detector
     - Help set the optimal threshold level
+    - Compare performance of different detectors on the same data
     
 
 ROC Curves
@@ -144,7 +144,7 @@ ROC Curves
 </div>
 
 
-Example: Detecting Lunge Feeding Events
+Case Study: Detecting Lunge Feeding Events
 ========================================================
 
 <div align='center'>
@@ -183,7 +183,7 @@ Determine Necessary Inputs for detect_peaks
 
 ```detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)```
 
-```detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...)```
+```detect_peaks(data, sr, FUN = NULL, thresh, bktime, plot_peaks = TRUE, ...)```
 - data = acceleration matrix in whale frame (Aw)
 - sr = sampling rate of acceleration matrix
 - FUN = njerk
@@ -206,7 +206,7 @@ Tag On vs. Tag Off
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = jerk, Dive_Profile = bw11_210a_tagdata$depth, Acceleration = Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 ```
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
@@ -225,7 +225,7 @@ cropped_depth <- crop_to(bw11_210a_tagdata$depth, 5, tcues = c(0, 12787.04))$X
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = cropped_jerk, Dive_Profile = cropped_depth, Acceleration = cropped_Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
 ```
 
 
@@ -270,8 +270,8 @@ detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, t
 Comparing to Known Lunges
 ========================================================
 
-- red points = known lunging events
-- gold points = detected lunging events
+- red dots = known lunging events
+- gold crosses = detected lunging events
 
 ```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
@@ -280,9 +280,9 @@ dettimes <- (((detections$peak_time / 5) / 60) / 60)
 depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[detections$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
-plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
-points(x = klunge, y = depthevents, col = "red", pch = 19, cex = 1.4)
-points(x = dettimes, y = depthdetections, col = "gold", pch = 19, cex = 1.4)
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
+points(x = klunge, y = depthevents, col = "red", cex = 1.4, pch = 16)
+points(x = dettimes, y = depthdetections, col = "gold", cex = 1.4, pch = "+:")
 ```
 
 
@@ -291,7 +291,7 @@ ROC Curve
 
 - Determine the false positive rate and the true positive rate of detections
     - false positive rate = (number false positive detections / number total possible events)
-        - number of total possible events = ((number of samples / sampling_rate) / blanking time)
+        - number of total possible events = ((recording time / sampling_rate) / blanking time)
     - true positive rate = (number true positive detections / number known events)
 
 
@@ -323,7 +323,7 @@ Overall Performance of detect_peaks
 
 - gray = default threshold and behavior-specific blanking time
 - orange = optimal threshold and behavior-specific blanking time
-- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+- blue = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
 ```{r, echo=FALSE, fig.align="center", fig.height=10}
@@ -337,10 +337,10 @@ acc1 <- acc_test(detections_default$peak_time, events, 5, tpevents)
 acc2 <- acc_test(detections_optimal$peak_time, events, 5, tpevents)
 acc3 <- acc_test(detections_many$peak_time, events, 5, tpevents)
 perform <- matrix(c(80,60,87,18,10,32,10,30,3),ncol=3, nrow=3, byrow=FALSE)
-rownames(perform) <- c("gray", "orange", "cyan")
+rownames(perform) <- c("gray", "orange", "blue")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)
-graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "cyan"), cex.axis = 1.5, cex.lab = 1.5)
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "blue"), cex.axis = 1.5, cex.lab = 1.5)
 ```
 
 
@@ -358,7 +358,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- blue points = detected lunging events from all default parameters
+- cyan crosses = detected lunging events from all default parameters
 
 ```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
@@ -367,19 +367,19 @@ dettimes <- (((detect_all_default$peak_time / 5) / 60) / 60)
 depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[detect_all_default$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
-plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
-points(x = klunge, y = depthevents, col = "red", pch = 19, cex = 1.4)
-points(x = dettimes, y = depthdetections, col = "blue", pch = 19, cex = 1.4)
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1.7))
+points(x = klunge, y = depthevents, col = "red", cex = 1.4, pch = 16)
+points(x = dettimes, y = depthdetections, col = "cyan", cex = 1.4, pch = "+:")
 ```
 
 
 Overall Performance of detect_peaks
 ========================================================
 
-- blue = default threshold and default blanking time
+- cyan = default threshold and default blanking time
 - gray = default threshold and behavior-specific blanking time
 - orange = optimal threshold and behavior-specific blanking time
-- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+- blue = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
 ```{r, echo=FALSE, fig.align="center", fig.height=10}
@@ -393,9 +393,9 @@ acc <- acc_test(detect_all_default$peak_time, events, 5, tpevents)
 acc1 <- acc_test(detections_default$peak_time, events, 5, tpevents)
 acc2 <- acc_test(detections_optimal$peak_time, events, 5, tpevents)
 acc3 <- acc_test(detections_many$peak_time, events, 5, tpevents)
-perform <- matrix(c(92,80,60,87,37,18,10,32,-2,10,30,3),ncol=3, nrow=4, byrow=FALSE)
-rownames(perform) <- c("blue", "gray", "orange", "cyan")
+perform <- matrix(c(90,80,60,87,37,18,10,32,0,10,30,3),ncol=3, nrow=4, byrow=FALSE)
+rownames(perform) <- c("cyan", "gray", "orange", "blue")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)
-graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("blue", "gray", "orange", "cyan"), ylim = c(0,100), cex.axis = 1.5, cex.lab = 1.5)
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("cyan", "gray", "orange", "blue"), ylim = c(0,100), cex.axis = 1.5, cex.lab = 1.5)
 ```

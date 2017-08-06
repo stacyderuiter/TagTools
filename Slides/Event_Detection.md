@@ -61,7 +61,7 @@ Optimal Threshold
 - High rate of true positive detections
 - Low rate of false positive detections
 - As few missed detections as possible
-- ROC curves...
+- Receiver Operating Characteristic (ROC) curve ...
 
 Blanking Time
 ========================================================
@@ -89,10 +89,10 @@ Setting the Blanking Time
 ROC Curves
 ========================================================
 
-- Receiver Operating Characteristic (ROC) curve
-- Two main Purposes:
+- Three main Purposes:
     - Assess overall performance of event detector
     - Help set the optimal threshold level
+    - Compare performance of different detectors on the same data
     
 
 ROC Curves
@@ -107,7 +107,7 @@ ROC Curves
 </div>
 
 
-Example: Detecting Lunge Feeding Events
+Case Study: Detecting Lunge Feeding Events
 ========================================================
 
 <div align='center'>
@@ -146,7 +146,7 @@ Determine Necessary Inputs for detect_peaks
 
 ```detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)```
 
-```detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...)```
+```detect_peaks(data, sr, FUN = NULL, thresh, bktime, plot_peaks = TRUE, ...)```
 - data = acceleration matrix in whale frame (Aw)
 - sr = sampling rate of acceleration matrix
 - FUN = njerk
@@ -211,8 +211,8 @@ Using the Interactive Plot
 Comparing to Known Lunges
 ========================================================
 
-- red points = known lunging events
-- gold points = detected lunging events
+- red dots = known lunging events
+- gold crosses = detected lunging events
 
 <img src="Event_Detection-figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
 
@@ -222,7 +222,7 @@ ROC Curve
 
 - Determine the false positive rate and the true positive rate of detections
     - false positive rate = (number false positive detections / number total possible events)
-        - number of total possible events = ((number of samples / sampling_rate) / blanking time)
+        - number of total possible events = ((recording time / sampling_rate) / blanking time)
     - true positive rate = (number true positive detections / number known events)
 
 
@@ -247,7 +247,7 @@ Overall Performance of detect_peaks
 
 - gray = default threshold and behavior-specific blanking time
 - orange = optimal threshold and behavior-specific blanking time
-- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+- blue = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
 <img src="Event_Detection-figure/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
@@ -265,7 +265,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- blue points = detected lunging events from all default parameters
+- cyan crosses = detected lunging events from all default parameters
 
 <img src="Event_Detection-figure/unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" style="display: block; margin: auto;" />
 
@@ -273,10 +273,10 @@ Comparing to Known Lunges
 Overall Performance of detect_peaks
 ========================================================
 
-- blue = default threshold and default blanking time
+- cyan = default threshold and default blanking time
 - gray = default threshold and behavior-specific blanking time
 - orange = optimal threshold and behavior-specific blanking time
-- cyan = maximum true positive threshold (.65) and behavior-specific blanking time
+- blue = maximum true positive threshold (.65) and behavior-specific blanking time
 
 ***
 <img src="Event_Detection-figure/unnamed-chunk-18-1.png" title="plot of chunk unnamed-chunk-18" alt="plot of chunk unnamed-chunk-18" style="display: block; margin: auto;" />
