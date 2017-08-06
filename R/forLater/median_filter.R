@@ -55,7 +55,7 @@ median_filter <- function(X, n, noend) {
     } else {
       X$history <- c(X$history, ",", h)
     }
-    Y <- X
+    Y <- X   ##########################ALSO NEED INPUT FOR NOEND IN THE HEADING...... FORGOT TO SAY ON PHONE
   }
   return(Y)
 }
