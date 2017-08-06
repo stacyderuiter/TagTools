@@ -1,12 +1,12 @@
 #' Find time cues for dives
 #' 
 #' This function is used to find the time cues for the start and end of either dives in a depth record or flights in an altitude record.
-#' @param p A depth or altitude time series (vector) in meters.
+#' @param p A depth or altitude time series (a sensor data list or  a vector) in meters.
 #' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second).
 #' @param mindepth The threshold in meters at which to recognize a dive or flight. Dives shallow or flights lower than mindepth will be ignored.
 #' @param surface (optional) The threshold in meters at which the animal is presumed to have reached the surface. Default value is 1. A smaller value can be used if the dive/altitude data are very accurate and you need to detect shallow dives/flights.
 #' @param findall (optional) When 1 forces the algorithm to include incomplete dives at the start and end of the record. Default is 0 which only recognizes complete dives.
-#' @return T is a list with size equal to the number of dives/flights found. The fields of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). If there are n dives/flights beyond mindepth in p, then T will be a structure containing n-element vectors.
+#' @return T is a data frame with one row for each dive/flight found. The columns of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude). 
 #' @export
 #' @example 
 #' BW <- beaked_whale
@@ -100,10 +100,7 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
   t2 <- dmax
   t <- cbind(t1, t2)
   t <- matrix(t[stats::complete.cases(t)], byrow = FALSE, ncol = 4)
-  T.start <- t[, 1]
-  T.end <- t[, 2]
-  T.max <- t[, 3]
-  T.tmax <- t[, 4]
-  T <- list(start = T.start, end = T.end, max = T.max, tmax = T.tmax)
+  T <- data.frame(start = t[,1], end = t[,2],
+                  max = t[,3], tmax = t[,4])
   return(T)
 }

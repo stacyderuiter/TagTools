@@ -1,8 +1,12 @@
 calibration
+ apply_cal
+ check_AM
  crop
  crop_all
  crop_to
+ fix_3d
  fix_offset_3d
+ fix_offset_pressure
  fix_pressure
  rough_cal_3d
  spherical_cal
@@ -33,6 +37,7 @@ processing
  decdc
  decz
  depth_rate
+ detect_peaks
  dsf
  euler2rotmat
  extract
@@ -62,28 +67,25 @@ processing
 
 sound
  get_audio
+ make_specgram
  spec2tol
  spectrum_level
  wavseq_read
 
 tagiofuns
- addnc
+ add_nc
  change_fnames
  csv2struct
- get_d3_cuetab
- loadnc
+ load_nc
  read_cats
  read_cats_csv
  read_csv
- read_d3
- read_d3_swv
- read_d3_xml
  read_dd
- read_dd_txt
  read_ll3m
- savenc
- sens2var
+ read_tdr10dd_csv
+ save_nc
  sens_struct
+ sens2var
  strip_quotes
 
 testdata

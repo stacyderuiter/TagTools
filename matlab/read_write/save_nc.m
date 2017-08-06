@@ -40,7 +40,7 @@ if exist(fname,'file'),
 end
 	
 if ~isstruct(X),
-	fprintf('save_nc can only save sensor or metadata structures\n') ;
+	fprintf('savenc can only save sensor or metadata structures\n') ;
 	return
 end
 	

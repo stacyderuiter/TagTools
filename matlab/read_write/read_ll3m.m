@@ -41,7 +41,9 @@ if ~isempty(datapath) && ~ismember(datapath(end),'\/'),
 	datapath(end+1) = '/' ;
 end
 
-datapath(find('\\'))='/';
+%datapath(find('\\'))='/'     % doesn't work in Matlab and anyway is odd
+%syntax
+
 files = dir([datapath '*.txt']);    % Source (raw) binary file
 if isempty(files)
    files = dir([datapath '\*.TXT']); 

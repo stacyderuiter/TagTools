@@ -73,7 +73,7 @@ if isstruct(A),
    else
       fc = [] ;
    end
-	[A,fs] = str2var(A) ;
+	[A,fs] = sens2var(A) ;
    if isempty(A),
       return
    end

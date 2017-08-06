@@ -8,6 +8,7 @@
 #' @return A column vector of MSA with the same number of rows as A. m has the same units as A.
 #' @note  See Simon et al. (2012) Journal of Experimental Biology, 215:3786-3798.
 #' @export
+#' @seealso \code{\link{odba}}, \code{\link{njerk}}
 #' @examples 
 #' sampleMatrix = matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7),
 #'                       byrow = TRUE, nrow = 3, ncol = 3)

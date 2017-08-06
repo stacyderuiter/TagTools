@@ -66,19 +66,15 @@ if nargin<3,
    return
 end
 
-if isstruct(M) && isstruct(A),
+if isstruct(A),
 	if nargin>3,
 		fc = fs ;
 	else
 		fc = [] ;
-	end
-	fs = M.fs ;
-	M = M.data ;
-	A = A.data ;
-	if A.fs ~= M.fs,
-		fprintf('ptrack: A and M must be at the same sampling rate\n') ;
-		return
-	end
+   end
+	[A,M,fs] = sens2var(A,M,'regular') ;
+	if isempty(A),	return, end
+
 else
 	if nargin<4,
 		help ptrack
@@ -93,14 +89,11 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
-nf = 4*fs/fc ;
-A = fir_nodelay(A,nf,fc/(fs/2)) ;
-M = fir_nodelay(M,nf,fc/(fs/2)) ;
-W = bodyaxes(A,M) ;
-X = squeeze(W(:,1,:))' ;
-T = cumsum((s/fs).*X) ;
+W = body_axes(A,M,fs,fc) ;
+T = cumsum((s/fs).*(W.x)) ;
 
 if nargout>=2,
-   pe = -cumsum((s/fs).*sin(pitch)) ;
+	p = a2pr(A,fs,fc);
+   pe = -cumsum((s/fs).*sin(p)) ;
 end
 

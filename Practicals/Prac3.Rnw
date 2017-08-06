@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{epsf}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{hyperref}
+%\usepackage{C:\Program Files\R\R-2.15.0\share\texmf\tex\latex\Sweave}
+\usepackage{natbib}
+\usepackage{morefloats}
+\usepackage{enumitem}
+
+\begin{document}
+
+\begin{center}
+{\Large Software Tools for High-Resolution Movement Tags\\
+Practical 3}
+
+\bigskip
+
+{\large 9 August 2017}
+\bigskip
+%\rule{\linewidth}{1mm}
+\rule[0cm]{12.7cm}{0.1cm} \vspace{-0.5cm} \tableofcontents
+%\rule{\linewidth}{0.5mm}
+%\rule[raise-height]{width}{height}
+\rule[0cm]{12.7cm}{0.05cm} \vspace{-0.5cm}
+\begin{center}
+\rule[0cm]{7cm}{0.05cm}
+\end{center}
+
+\bigskip
+\end{center}
+
+<<setup, echo=FALSE, results="hide", message=FALSE, warning=FALSE, error=FALSE>>=
+#set knitr (report generation) options
+knitr::opts_chunk$set(fig.path='figs/real-mdist-', echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE, error=FALSE,fig.pos="htb", fig.width=6, fig.height=7, dev=c("png","pdf", "jpeg"), dpi=150, fig.env="figure")
+#set R options (page width, significant figures for date-times)
+options(width=70, digits.secs=3)
+library(tagtools)
+@
+
+\section{Introduction}
+The exercises in this practical will help you explore:
+\begin{itemize}
+  \item event detection
+  \item numerical summaries of events
+  \item visualising events
+  \item statistical analysis of tag data
+  \item inferring behavioural states from tag data
+\end{itemize}
+
+The practical contains more exercises than you are likely to be able to complete in the time available, but each section is designed to be relatively stand-alone, so please feel free to pick and choose the topics that are most interesting to you.
+
+Data are provided for each example, but please feel free to try to incorporate your own data as time and ambition allow!
+
+\section{Summarising Dives}
+\subsection{Exploring a ready-made dataset}
+Consider a dataset on 272 dives by 15 Cuvier's beaked whales. The data were collected using DTAGs, and published along with \cite{DeRuiter2013a}. The data are available from \url{http://dx.doi.org/10.5061/dryad.n77k3}, but we will load a slightly cleaned-up version of the dataset with more manageable variable names.  
+\begin{enumerate}
+\item If you want practice tidying up the variable names yourself, fetch the original text file from the Dryad repository and get to work.
+\item Read in the clean data from the file \texttt{zc\_dives.csv} on your memory stick, or from the url \url{http://www.calvin.edu/~sld33/data/zc\_dives.csv}.  The main dataset has one column of whale IDs which are strings rather than numeric values. If you would prefer not to deal with these in Matlab/Octave, there is a version of the file called zc\_dives\_numeric.csv that omits that column.
+
+<<dive_data_in_R>>=
+zc_dives <- read.csv(file='http://www.calvin.edu/~sld33/data/zc_dives.csv')
+@
+
+<<dive_data_in_matlab, echo=TRUE, eval=FALSE>>=
+zc_dives = csvread('zc_dives_numeric.csv',1);
+@
+
+\item Create a simple box plot of the whole dataset (one boxplot per column, since each column of the dataset is one dive summary metric).
+
+<<simple_boxplot, fig.width=6.5, fig.height=2.5>>=
+boxplot(zc_dives)
+@
+\begin{enumerate}
+\item What do you notice about the data?
+\item How could the visualization be improved (so you can better see patterns in all the variables)? Think creatively and check out the help for the boxplot function for more ideas...
+\end{enumerate}
+
+\end{enumerate}%end exploring dive summaries
+
+
+\bibliographystyle{plainnat} 
+\addcontentsline{toc}{section}{References} \bibliography{library} 
+
+\end{document}

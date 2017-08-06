@@ -16,7 +16,7 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
 
 \item{thresh}{The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile}
 
-\item{bktime}{The specified length of time between signal values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default value is set as the .85 quantile of the vector of time differences for signal values above the specified threshold.}
+\item{bktime}{The specified length of time between signal values detected above the threshold value that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty, the default value is set as the .8 quantile of the vector of time differences for signal values above the specified threshold.}
 
 \item{plot_peaks}{A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated. Look to the console for help on how to use the plot upon running of this function.}
 

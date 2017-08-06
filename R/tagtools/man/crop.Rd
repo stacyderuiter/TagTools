@@ -4,7 +4,7 @@
 \alias{crop}
 \title{Interactive data cropping tool.}
 \usage{
-crop(X, sampling_rate = NULL)
+crop(X, sampling_rate)
 }
 \arguments{
 \item{X}{A sensor list, vector or matrix. X can be regularly or irregularly sampled data in any frame and unit.}
