@@ -14,7 +14,7 @@
 #' }
 #' @return If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
 #' @export
-#' @example x <- c(1:10)
+#' @examples x <- c(1:10)
 #'          n <- 3
 #'          p <- 2
 #'          opt <- c(2,1)

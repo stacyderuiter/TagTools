@@ -24,3 +24,8 @@ Output sampling rate is the same as the input sampling rate.
 
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. This function will only return the animal's cardinal axes if the tag was attached so that the sensor axes aligned with the animal's axes OR if the tag A and M measurements are rotated to account for the orientation of the tag on the animal. Otherwise, the axes returned by this function will be the cardinal axes of the tag, not the animal.
 }
+\examples{
+samplematrix1 <- matrix(c(7,2,3,6,4,9), byrow = TRUE, ncol = 3)
+         samplematrix2 <- matrix(c(6,5,3,4,8,9), byrow = TRUE, ncol = 3)
+         W <- body_axes(A = samplematrix1, M = samplematrix2, fc = NULL)
+}

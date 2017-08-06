@@ -24,3 +24,10 @@ This function is used to estimate scale factors and offsets for measurements fro
 \note{
 This function requires a lot of data as it is looking for extreme values in each axis. A minimum data size of 1000 samples should be used. This function is only usable for field sensors. It will not work for gyroscope data.
 }
+\examples{
+\dontrun{ BW <- beaked_whale
+         rcal <- rough_cal_3d(BW$M$data, fstr = 38.2) #fstr matches records for field strength in El Hierro when the tag was used
+         cal <- list(rcal = rcal$X)
+         plott(cal, BW$sampling_rate)
+         }
+}

@@ -9,7 +9,7 @@
 #' }
 #' @note This function is only usable for field sensors. It will not work for gyroscope data.
 #' @export
-#' @example Will come soon!
+#' @examples #Will come soon!
 
 fix_offset_3d <- function(X) {
   poly1 <- matrix(1, 3, 1)

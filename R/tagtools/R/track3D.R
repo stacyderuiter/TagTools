@@ -16,7 +16,7 @@
 #' @param x Direct observations of Easting (in meters, so requires projected data)
 #' @param y Direct observations of Northing (in meters, so requires projected data)
 #' @seealso \code{\link{m2h},\link{a2pr}}
-#' @returns A list with 10 elements:
+#' @return A list with 10 elements:
 #' \itemize{
 #'  \item{\strong{p: }} the smoothed speeds
 #'  \item{\strong{fit.ks: }} the fitted speeds

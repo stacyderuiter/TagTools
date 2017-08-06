@@ -28,3 +28,7 @@ This function is used to extract multiple sub-samples of data from a vector or m
 \note{
 Output sampling rate is the same as the input sampling rate.
 }
+\examples{
+BW <- beaked_whale
+list <- extract_cues(x = BW$A$data, sampling_rate = BW$A$sampling_rate, cues = 6, len = 11)
+}

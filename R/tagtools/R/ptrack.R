@@ -14,9 +14,11 @@
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.
 #' @note CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be affected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
 #' @export
-#' @example 
+#' @examples
+#' \dontrun{ 
 #' BW <- beaked_whale
 #' list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, include_pe = TRUE)
+#' }
 
 
 ptrack <- function(A, M, s, sampling_rate, fc = NULL, include_pe = NULL) {

@@ -22,3 +22,9 @@ This function breaks signal X into two or more frequency bands such that the sum
 \details{
 Possible input combinations: comp_filt(X,sampling_rate,fc) if X is a vector or matrix, comp_filt(X,fc = fc) if X is a list
 }
+\examples{
+BW <- beaked_whale
+Xf <- comp_filt(X = BW$A$data, sampling_rate = BW$A$sampling_rate, fc = .8)
+xf <- list(Xf1 = Xf[[1]], Xf2 = Xf[[2]])
+plott(xf, BW$A$sampling_rate)
+}

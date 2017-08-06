@@ -31,6 +31,26 @@ Recursive sampling rate decimator. This function can be run iteratively over a l
 The first time decz is called, use the following format: y = decz(x,df). The subsequent calls to decz for contiguous input data are: decz(x,Z). The final call when there is no more input data is: decz(x = NULL, Z = Z). Each output y in the above contains a segment of the decimated signal and so these need to be concatenated. 
 Decimation is performed in the same way as for \code{\link{decdc}}. The group delay of the filter is removed. For large decimation factors (e.g., df much greater than 50), it is better to perform several nested decimations with lower factors.
 }
+\examples{
+# Decimate beaked whale acceleration data from testset1 by a factor of 10
+# in 3 chunks
+\dontrun{
+bw <- load_nc('data/testset1.nc')
+a_rows <- nrow(bw$A$data)
+a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
+a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)
+df <- 10
+Z <- NULL
+y <- NULL
+for (k in 1:nrow(a_ind)){
+  decz_out <- decz(x=bw$A$data[c(a_ind[k,1]:a_ind[k,2]), ],
+                     df=df, Z=Z)
+  df <- NULL
+  Z <- decz_out$Z 
+  y <- rbind(y,decz_out$y)
+}
+}
+}
 \seealso{
 \code{\link{decdc}}
 }

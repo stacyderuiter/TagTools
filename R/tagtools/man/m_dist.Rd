@@ -36,3 +36,8 @@ Data frame containing results: D$t is times in seconds since start of dataset, a
 \description{
 This function is used to calculate the Mahalanobis distance for a multivariate time series.
 }
+\examples{
+\dontrun{BW <- beaked_whale
+dframe <- m_dist(BW$A$data, BW$A$sampling_rate)
+}
+}

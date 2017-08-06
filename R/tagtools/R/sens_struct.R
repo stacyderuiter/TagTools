@@ -15,8 +15,10 @@
 #' @param start_offset_units (optional) units of start_offset. default is 'second'.
 #' @return A sensor list with field \code{data} containing the data and with metadata fields pre-populated from the sensor_names.csv file. Change these manually as needed (or specify the relevant inputs to \code{sens_struct}) to the correct values.
 #' @export
-#' @example 
-#' \dontrun{A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
+#' @examples 
+#' \dontrun{
+#' #example will only work if data matrix Aw is in your workspace.
+#' #A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
 
 sens_struct <- function(data,fs=NULL,T=NULL, depid, type, 
                         unit=NULL, frame=NULL, name=NULL,

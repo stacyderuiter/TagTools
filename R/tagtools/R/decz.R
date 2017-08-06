@@ -16,7 +16,7 @@
 #'   \item{\strong{y: }} The decimated signal vector or matrix. It has the same number of columns as x but has, on average, 1/df of the rows.
 #'   \item{\strong{Z: }} The state list (for internal tracking of filter internal values). Contains elements df (the decimation factor), nf (used to compute the filter length), frbw (the bandwidth of the filter relative to the new Nyquist frequency), h (the FIR filter coefficients), n (the filter length), z (padded signal used for filtering), and ov ("overflow" samples to be passed to future iterations). 
 #' }
-#' @example 
+#' @examples 
 #' # Decimate beaked whale acceleration data from testset1 by a factor of 10
 #' # in 3 chunks
 #' \dontrun{

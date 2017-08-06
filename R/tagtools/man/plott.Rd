@@ -45,3 +45,10 @@ If the input data X is an \code{animaltag} object, then all sensor variables in 
 \note{
 This is a flexible plotting tool which can be used to display and explore sensor data with different sampling rates on a uniform time grid.
 }
+\examples{
+\dontrun{
+HS <- harbor_seal
+list <- list(depth = HS$P$data, A = HS$A$data)
+plott(list, HS$P$sampling_rate, r = c(TRUE, FALSE))
+}
+}

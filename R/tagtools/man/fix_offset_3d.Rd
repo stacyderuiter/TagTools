@@ -22,3 +22,6 @@ This function is used to estimate the offset in each axis of a triaxial field me
 \note{
 This function is only usable for field sensors. It will not work for gyroscope data.
 }
+\examples{
+#Will come soon!
+}

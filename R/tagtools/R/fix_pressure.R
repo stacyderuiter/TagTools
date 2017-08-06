@@ -11,7 +11,7 @@
 #'  \item{\strong{pc: }} A list containing the pressure offset and temperature correction coefficients. It has fields: pc$tref which is the temperature compensation polynomial. This is used within the function to correct pressure as follows: p + stats::polyval(pc$tcomp, t - pc$tref).
 #' }
 #' @note This function makes a number of assumptions about the depth/altitude data and about the behaviour of animals: First, the depth data should have few incorrect outlier (negative) values that fall well beyond the surface. These can be reduced using median_filter.m before calling fix_depth. Second, the animal is assumed to be near the surface at least 2% of the time. If the animal is less frequently at the surface, you may need to change the value of PRCTSURF near the start of the function. Third, potential surfacings are detected by looking for zero-crossings inthe vertical speed and this requires defining a threshold in vertical speed that must be crossed by each zero crossing. The value used is 0.05 m/s but this may be too high for animals that move very slowly near the surface. In which case, change MAXSPEED near the start of the function.
-#' @example Example Coming Soon!
+#' @examples #Example Coming Soon!
 #' @export
 
 fix_pressure <- function(p, t, sampling_rate, maxp = NULL) {

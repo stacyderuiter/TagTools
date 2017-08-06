@@ -24,6 +24,13 @@ Add one tag sensor or metadata variable to a NetCDF archive file.If the archive 
 it is created. The file is assumed to be in the current working directory 
 unless a pathname is added to the beginning of fname.
 }
+\examples{
+ \dontrun{
+ add_nc('dog17_124a',A)
+ # generates a file dog17_124a.nc (if it does not already exist) and adds a variable A.
+ }
+ @export
+}
 \seealso{
 \code{\link{save_nc}}, \code{\link{load_nc}}
 }

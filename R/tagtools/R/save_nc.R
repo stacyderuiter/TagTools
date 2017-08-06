@@ -9,13 +9,13 @@
 #'		 needed to describe the contents of the file. For non-archive and non-portable
 #'		 storage of variables, consider using \code{\link{save}} or various functions to write data to text files. 
 #' @param ... Additional sensor or metadata lists, if user has not bundled them all into a list already but is providing individual structures.
-#' @example
-#' @export
+#' @examples
 #' \dontrun{save_nc('dog17_124a',A,M,P,info)
 #' #or equivalently:
 #' save_nc('dog17_124a',X=list(A,M,P,info))
 #' #generates a file dog17_124a.nc and adds variables A, M and P, and a metadata structure.
 #' }
+#' @export
 
 save_nc <- function(file, X, ...){
   # append .nc suffix to file name if needed

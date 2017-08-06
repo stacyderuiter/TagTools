@@ -30,3 +30,11 @@ If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" d
 \description{
 This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
 }
+\examples{
+x <- c(1:10)
+         n <- 3
+         p <- 2
+         opt <- c(2,1)
+         list1 <- buffer(x, n, p, opt)
+         list2 <- buffer(x, n, p, nodelay = TRUE)
+}

@@ -6,7 +6,7 @@
 #' @return g given in units of m/s^2
 #' @note Source: http://solid_earth.ou.edu/notes/potential/igf.htm
 #' @export
-#' @example acc_wgs84(50)
+#' @examples acc_wgs84(50)
 #'          #Returns: 9.8107 m/s^2
 
 acc_wgs84 <- function(latitude) {

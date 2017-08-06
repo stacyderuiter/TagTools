@@ -12,7 +12,7 @@
 #' added automatically. If the file is not located in the current working directory, then \code{file} must include the correct relative or absolute path.
 #' @return a metadata list populated from \code{fname} (one list element per row in the file). All list elements are stored as \code{"character"} class objects (even if the field contains a number, a date, etc) - no attempt is made to determine the most appropriate class for each item.
 #' @export
-#' @example \dontrun{
+#' @examples \dontrun{
 #' S <- csv2struct('testset1')
 #' }
 #'

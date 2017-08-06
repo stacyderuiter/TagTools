@@ -8,9 +8,10 @@
 #' @return A matrix containing a sub-sample of x. X has the same number of columns as x. The length of the sub-sample will be round(sampling_rate*(tend-tstart)) samples.
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note If either tst or ted are beyond the length of x, non-existing samples will be replaced with NaN in X.
-#' @export
+#' @examples
 #' BW <- beaked_whale
 #' extract(x = BW$A$data, sampling_rate = BW$A$sampling_rate, tst = 3, ted = 100)
+#' @export
 
 extract <- function(x, sampling_rate, tst, ted) {
   if (missing(ted)) {

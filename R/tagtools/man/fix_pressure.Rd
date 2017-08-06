@@ -28,3 +28,6 @@ This function is used to correct a depth or altitude profile for offsets caused 
 \note{
 This function makes a number of assumptions about the depth/altitude data and about the behaviour of animals: First, the depth data should have few incorrect outlier (negative) values that fall well beyond the surface. These can be reduced using median_filter.m before calling fix_depth. Second, the animal is assumed to be near the surface at least 2% of the time. If the animal is less frequently at the surface, you may need to change the value of PRCTSURF near the start of the function. Third, potential surfacings are detected by looking for zero-crossings inthe vertical speed and this requires defining a threshold in vertical speed that must be crossed by each zero crossing. The value used is 0.05 m/s but this may be too high for animals that move very slowly near the surface. In which case, change MAXSPEED near the start of the function.
 }
+\examples{
+#Example Coming Soon!
+}

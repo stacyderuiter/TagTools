@@ -24,3 +24,7 @@ Range of validity: temperature 0 to 35 °C, salinity 0 to 45 parts per thousand,
 
 Source: http://resource.npl.co.uk/acoustics/techguides/soundseawater/content.html#UNESCO
 }
+\examples{
+sound_speed(8, 1000, 34)
+         #Returns: 1497.7 m/s
+}

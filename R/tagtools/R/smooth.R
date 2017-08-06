@@ -5,8 +5,10 @@
 #' @param n The smoothing parameter - use a larger number to smooth more. n must be greater than 1. Signal components above 1/n of the Nyquist frequency are filtered out.
 #' @return The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient. Smooth uses fir_nodelay to perform the filtering and so introduces no delay.
 #' @export
-#' @example x <- sin((2*pi*0.05)%*%t(c(1:100)))+cos((2*pi*0.25)%*%t(c(1:100)))
+#' @examples 
+#' \dontrun{ x <- sin((2*pi*0.05)%*%t(c(1:100)))+cos((2*pi*0.25)%*%t(c(1:100)))
 #'          y <- smooth(x, n = 4)
+#'          }
 
 smooth <- function(x, n) {
     y <- vector(mode = "numeric", length = 0)

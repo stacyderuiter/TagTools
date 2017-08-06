@@ -1,51 +1,51 @@
 #' Computes the nth-order median filter
 #' 
-#' This function computes the nth-order median filter each column of X. The filter output is the median of each consecutive group of n samples. This is useful for removing occasional outliers in data that is otherwise fairly smooth. This makes it appropriate for pressure, temperature and magnetometer data (amongst other sensors) but not so suitable for acceleration which can be highly dynamic. The filter does not introduce delay. The start and end values, i.e., within n samples of the start or end of the input data, are computed with decreasing order median filters unless the function is called as: Y <- median_filter(X,n,1). In this case, start and end values are taken directly from X without short median filters.
+#' This function computes the nth-order median filter each column of X. The filter output is the median of each consecutive group of n samples. This is useful for removing occasional outliers in data that is otherwise fairly smooth. This makes it appropriate for pressure, temperature and magnetometer data (amongst other sensors) but not so suitable for acceleration which can be highly dynamic. The filter does not introduce delay. The start and end values, i.e., within n samples of the start or end of the input data, are computed with decreasing order median filters unless noend=TRUE. If noend=TRUE, start and end values are taken directly from X without short median filters.
 #' @param X A sensor list or a vector or matrix. If there are multiple columns in the data, each column is treated as a separate signal to be filtered.
 #' @param n The filter length. If an even n is given, it is automatically incremented to make it odd. This ensures that the median is well-defined (the median of an even length vector is usually defined as the mean of the middle two points but may differ in different programmes). Note that a short n (e.g., 3 or 5) is usually sufficient and that processing will be very slow if n is large.
-#' @param noend 
+#' @param noend If TRUE (the default), then start and end values are taken directly from X without short median filters.
 #' @return The output of the filter. It has the same size as S and has the same sampling rate and units as X. If X is a sensor list, the return will also be.
-#' @example \dontrun {
+#' @examples 
+#' \dontrun {
 #' v <- matrix(c(1, 3, 4, 4, 20, -10, 5, 6, 6, 7), ncol = 1)
-#' w <- median_filter(v, 3, 1)
+#' w <- median_filter(v, n=3)
 #' #Returns : c(1, 3, 4, 4, 4, 5, 5, 6, 6, 7)
 #' }
 #' @export
 
-median_filter <- function(X, n, noend) {
-  if (missing(n)) {
-    stop("inputs for X and n are required")
-  }
-  is (missing(noend)) {
-    noend <- 1
-  }
+median_filter <- function(X, n, noend=TRUE) {
+
   if (is.list(X)) {
     x <- X$data
-  } else {
+    if (!is.matrix(x)){x <- matrix(x, ncol=1)}
+  }else{
     x <- X
   }
-  if (nrow(x) == 1) {
+  if (is.matrix(x)){
+    if (nrow(x) == 1) {
     x <- t(x)
+    }
   }
+  
   nd2 <- floor(n/2)
   if ((2 * nd2) == n) {
     n <- n + 1
   }
-  Y <- pracma::repmat(NA, nrow(x), ncol(x))
-  if (nargs() == 3 & noend == 1) {
+  Y <- matrix(NA, nrow=nrow(x), ncol=ncol(x))
+  if ( noend ) {
     Y[(1:nd2), ] <- x[(1:nd2), ]
-    Y[(length(Y) + ((-nd2 + 1):0)), ] <- x[(length(x) + ((-nd2 + 1):0)), ]
+    Y[(nrow(Y) + ((-nd2 + 1):0)), ] <- x[(nrow(x) + ((-nd2 + 1):0)), ]
   } else {
     for (k in 1:nd2) {
       Y[k, ] <- median(x[(1:(k + nd2)), ], na.rm = TRUE)
     }
     for (k in 1:nd2) {
-      Y[(length(Y) - nd2 + k), ] <- median(x[(length(x) - 2 * nd2 + k), ], na.rm = TRUE)
+      Y[(nrow(Y) - nd2 + k), ] <- median(x[((nrow(x) - 2) * nd2 + k), ], na.rm = TRUE)
     }
   }
   for (k in 1:ncol(X)) {
     Z <- buffer(x, n, (n-1), nodelay = TRUE)
-    Y[(nd2 + 1):(length(Y) - nd2), k] <- t(median(Z, na.rm = TRUE))
+    Y[(nd2 + 1):(nrow(Y) - nd2), k] <- apply(Z,MARGIN=2,FUN=median, na.rm=TRUE)
   }
   if (is.list(X)) {
     X$data <- Y
@@ -55,7 +55,7 @@ median_filter <- function(X, n, noend) {
     } else {
       X$history <- c(X$history, ",", h)
     }
-    Y <- X   ##########################ALSO NEED INPUT FOR NOEND IN THE HEADING...... FORGOT TO SAY ON PHONE
+    Y <- X   
   }
   return(Y)
 }

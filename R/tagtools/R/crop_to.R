@@ -11,7 +11,7 @@
 #'  \item{\strong{X: }} A sensor list, vector or matrix containing the cropped data segment. If the input is a sensor list, the output will also be. The output has the same units, frame and sampling characteristics as the input.
 #'  \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. If X is a sensor list, the sampling times are stored in the list.
 #' }
-#' @example 
+#' @examples 
 #'          data <- beaked_whale
 #'          d <- find_dives(data$P,300)
 #'          P2 <- crop_to(data$P, tcues = c(d$start[2], d$end[2]))	#crop to 2nd dive

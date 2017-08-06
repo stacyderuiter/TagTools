@@ -7,10 +7,10 @@
 #' @return W The 3x3xn matrix of body axes where n is the number of rows in M and A. W[,1,] are the X or longitudinal (caudo-rostral) axes. W[,2,] are the Y or transverse (left-right) axes. W[,3,] are the Z or ventro-dorsal axes.
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. This function will only return the animal's cardinal axes if the tag was attached so that the sensor axes aligned with the animal's axes OR if the tag A and M measurements are rotated to account for the orientation of the tag on the animal. Otherwise, the axes returned by this function will be the cardinal axes of the tag, not the animal. 
-#' @export
-#' @example samplematrix1 <- matrix(c(7,2,3,6,4,9), byrow = TRUE, ncol = 3)
+#' @examples samplematrix1 <- matrix(c(7,2,3,6,4,9), byrow = TRUE, ncol = 3)
 #'          samplematrix2 <- matrix(c(6,5,3,4,8,9), byrow = TRUE, ncol = 3)
 #'          W <- body_axes(A = samplematrix1, M = samplematrix2, fc = NULL)
+#' @export
 
 body_axes <- function(A, M, fc = NULL) {
     # input checks-----------------------------------------------------------

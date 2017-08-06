@@ -7,7 +7,7 @@
 #' @note Input arguments can be scalars, or a mixture of vectors and scalars as long as each argument is either a vector of length nx1 (with n being the same for all vector arguments) or a scalar.
 #' @note After Kinsler and Frey pp. 159-160
 #' @export
-#' @example absorption(140e3,13,10)
+#' @examples absorption(140e3,13,10)
 #'          #Returns: 0.04354982 dB
 
 absorption <- function(f, T, d) {

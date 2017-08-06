@@ -24,3 +24,13 @@ Output sampling rate is the same as the input sampling rate.
 
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, the magnetic field vector has a positive inclination angle when it points below the horizon. Other frames can be used as long as A and M are in the same frame however the interpretation of incl will differ accordingly.
 }
+\examples{
+\dontrun{
+A <- matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7),
+           byrow = TRUE, nrow = 3, ncol = 3)
+M <- matrix(c(1.3, -0.25, 0.16, 0.78, -0.3, 0.5, 0.5, -0.49, -0.6),
+                      byrow = TRUE, nrow = 3, ncol = 3)
+incl <- inclination(A, M)
+#Results: incl = -0.91595 radians.
+}
+}

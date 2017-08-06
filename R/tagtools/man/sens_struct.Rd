@@ -38,3 +38,8 @@ A sensor list with field \code{data} containing the data and with metadata field
 \description{
 Generate a sensor structure from a sensor data vector or matrix.
 }
+\examples{
+\dontrun{
+#example will only work if data matrix Aw is in your workspace.
+#A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
+}

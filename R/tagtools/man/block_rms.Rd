@@ -28,3 +28,7 @@ Output sampling rate is the same as the input sampling rate so s and v have the 
 
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A descending animal will have a negative pitch angle.
 }
+\examples{
+X <- matrix(c(1:20), byrow = TRUE, nrow = 4)
+block_rms(X, n = 2, nov = NULL)
+}

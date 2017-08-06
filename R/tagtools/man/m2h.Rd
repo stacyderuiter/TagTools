@@ -33,6 +33,11 @@ Frame: This function assumes a [north,east,up] navigation frame and a [forward,r
 
 The heading is computed with respect to the frame of M and is the magnetic heading NOT the true heading. M and A must have the same sampling rate, frame, and number of rows.
 }
+\examples{
+\dontrun{m2h_out <- m2h(M = matrix(c(22, -24, 14), nrow = 1), 
+                        A = matrix(c(-0.3, 0.52, 0.8), nrow = 1))
+#Returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.}
+}
 \seealso{
 \code{\link{a2pr}}
 }

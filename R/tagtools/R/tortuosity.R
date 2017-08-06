@@ -6,10 +6,12 @@
 #' @param intvl The time interval in seconds over which tortuosity is calculated. This should be chosen according to the scale of interest, e.g., the typical length of a foraging bout.
 #' @return The tortuosity index which is between 0 and 1 as described above. t contains a value for each period of intvl seconds.
 #' @note This tortuosity index is fairly insensitive to speed so if T is produced by dead-reckoning (e.g., using ptrack or htrack), the speed estimate is not important. Also the frame of T is not important as long as the two axes (nominally called northing and easting) used to describe the positions are perpendicular.
-#' @example 
+#' @examples 
+#' \dontrun{ 
 #' BW <- beaked_whale
 #' T <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, include_pe = TRUE)$T
 #' t <- tortuosity(T, sampling_rate = BW$A$sampling_rate, intvl = 25)
+#' }
 #' @export
 
 tortuosity <- function(T, sampling_rate, intvl) {

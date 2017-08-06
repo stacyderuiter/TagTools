@@ -34,6 +34,21 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 
 \item{y}{Direct observations of Northing (in meters, so requires projected data)}
 }
+\value{
+A list with 10 elements:
+\itemize{
+ \item{\strong{p: }} the smoothed speeds
+ \item{\strong{fit.ks: }} the fitted speeds
+ \item{\strong{fit.kd: }} the fitted depths
+ \item{\strong{fit.xs: }} the fitted xs
+ \item{\strong{fit.ys: }} the fitted ys
+ \item{\strong{fit.rd: }} the smoothed depths
+ \item{\strong{fit.rx: }} the smoothed xs
+ \item{\strong{fit.ry: }} the smoothed ys
+ \item{\strong{fit.kp: }} the kalman a posteriori state covariance
+ \item{\strong{fit.ksmo: }} the kalman smoother variance
+}
+}
 \description{
 This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 }

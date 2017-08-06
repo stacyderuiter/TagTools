@@ -8,12 +8,12 @@
 #'	@param X The sensor data or metadata list to be saved. a list of tag sensor and/or metadata lists. Alternatively, sensor and metadata lists may be input as multiple separate unnamed inputs. Only these kind of variables can be saved in a NetCDF file because the supporting information in these structures is needed to describe the contents of the file. For non-archive and non-portable storage of variables, consider using \code{\link{save}} or various functions to write data to text files. 
 #'	@param vname The name of the sensor data stream to be saved. Defaults to the name of the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).
 #'	@seealso \code{\link{save_nc}}, \code{\link{load_nc}}	
-#'	@export
-#'  @example
+#'	@examples
 #'  \dontrun{
 #'  add_nc('dog17_124a',A)
 #'  # generates a file dog17_124a.nc (if it does not already exist) and adds a variable A.
 #'  }
+#'  @export
 
 add_nc <-function(file,X,vname=substitute(X)){
   # input checking

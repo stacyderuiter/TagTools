@@ -9,10 +9,10 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 ```{r, include = FALSE}
-source('~/TagTools/R/tagtools/R/plott.R')
-source('~/TagTools/R/tagtools/R/njerk.R')
-source('~/TagTools/R/tagtools/R/detect_peaks.R')
-source('~/TagTools/R/tagtools/R/draw_axis.R')
+#source('~/TagTools/R/tagtools/R/plott.R')
+#source('~/TagTools/R/tagtools/R/njerk.R')
+#source('~/TagTools/R/tagtools/R/detect_peaks.R')
+#source('~/TagTools/R/tagtools/R/draw_axis.R')
 ```
 
 Introduction
@@ -49,12 +49,14 @@ Case Study
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the data to be used in this case study. All of the following data was obtain by members of the SOCAL BRM project. This particular blue whale was tagged with a DTAG2, which gathered multisensor data including, but not limited to, triaxial accelerometer and pressure (depth) data. This particular data set has been used in a variety of publications (DeRuiter et al. 2017; Goldbogen et al. 2013; Goldbogen et al. 2015). For the time being, we will load the acceleration matrix (within the whale frame) from the blue whale data set. The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
 ```{r, results = "hide", message=FALSE}
 library(readr)
-bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
+ #read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
+bw11_210a_tagdata <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210a_tagdata.csv')
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 ```
 Next, I will generate the norm jerk signal using the function njerk. A plot is shown to provide a helpful visualization of the signal.
 ```{r, fig.width=7, fig.height=5}
+library(tagtools)
 jerk <- njerk(A = Aw, sampling_rate = sampling_rate)
 X <- list(jerk = jerk)
 plott(X, 5, line_colors = "blue") 
@@ -102,6 +104,8 @@ tpevents <- (60000 / sampling_rate) / 35
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of known events is also hard to determine as it requires a trained scientist to scroll through the plot of a signal, looking for distinct characteristic in the plot that are known to be related to the desired behavioral event. Lucky for us, this hard work has already been completed and we will name the vector containing the known times of lunges in our data set as "events".
 ```{r}
-events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")
+#events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")
+events <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210aLungeTimes.csv')
+closeAllConnections()
 ```
 

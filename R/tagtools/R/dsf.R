@@ -15,8 +15,8 @@
 #' @note Frame: This function makes no assumption about accelerometer frame. Data in any frame can be used.
 #' @note Data selection: This function works best if the sensor matrix, A, covers an interval in which propulsion is the main activity. This could be a complete dive or an interval of running or flapping flight. The interval length should be at least Nfft/sampling_rate seconds, i.e., 20 s for the default FFT length. 
 #' @export
-#' @example 
-#' SW <- sperm_whale
+#' @examples
+#' #coming soon!
 #' 
 
 dsf <- function(A, sampling_rate, fc = NULL, Nfft = NULL) {

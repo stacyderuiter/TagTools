@@ -26,3 +26,11 @@ This funciton is used to compute the 'Overall Dynamic Body Acceleration' sensu W
 \note{
 If applying the default (FIR filtering) method to calculate odba, use the inputs A, sampling_rate, and fh. When applying the 'vedba' or 'wilson' method, use the inputs A, n, and method.
 }
+\examples{
+\dontrun{
+BW <- beaked_whale
+e <- odba(A = BW$A$data, sampling_rate = BW$A$sampling_rate, fh = 4)
+ba <- list(e = e)
+plott(ba, BW$A$sampling_rate)
+}
+}

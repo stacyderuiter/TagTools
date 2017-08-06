@@ -5,7 +5,9 @@
 #' @param which_vars (Optional) A list of quoted character strings giving the exact names of variables to be read in. Default is to read all variables present in the file. parameters should be read in.
 #' @return An \code{animaltag} object (a list) containing sensor and metadata structures. The item names in X will be the same as the names of the variables in the NetCDF file (plus an "info" one), e.g., if the file contains A and P, output object X will have fields X$A, X$P and X$info (the file metadata).
 #' @export
-#' @example \dontrun{load_nc('testset1.nc')}
+#' @examples 
+#' \dontrun{#Note: must have the file testset1.nc saved in current working directory for this to work
+#' #load_nc('testset1.nc')}
 #' 
 
  load_nc <- function(file, which_vars=NULL){

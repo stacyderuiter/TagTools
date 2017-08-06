@@ -13,9 +13,11 @@
 #' }
 #' @note The spectrum is single-sided and extends to sampling_rate/2. The reference level is 1.0 (i.e., white noise with unit variance will have a spectrum level of 3-10*log10(sampling_rate). The 3dB is because both the negative and positive spectra are added together so that the total power in the signal is the same as the total power in the spectrum.
 #' @export
-#' @example 
+#' @examples
+#' \dontrun{
 #' BW <- beaked_whale
 #' list <- spec_lev(x = BW$P$data, nfft = 4, sampling_rate = BW$P$sampling_rate)
+#' }
 
 spec_lev <- function(x, nfft, sampling_rate, w, nov) {
   if (missing(nfft)) {

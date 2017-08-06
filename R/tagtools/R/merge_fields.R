@@ -5,10 +5,10 @@
 #' @param s2 Arbitrary list e.g., containing metadata or settings.
 #' @return A list containing all of the fields in s1 and s2
 #' @export
-#' @example s1 <- list( a = 1, b = c(2,3,4))
+#' @examples s1 <- list( a = 1, b = c(2,3,4))
 #'          s2 <- list( b = 3, c = 'cat')
 #'		      s <- merge_fields(s1,s2)
-#'		      s = list( a = 1, b = c(2,3,4), c = 'cat')
+#'		      s #yields list( a = 1, b = c(2,3,4), c = 'cat')
 
 merge_fields <- function(s1,s2) {
   if(missing(s1) | missing(s2)){
