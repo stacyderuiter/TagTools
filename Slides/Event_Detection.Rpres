@@ -10,11 +10,11 @@ Event Detection Theory
 ========================================================
 
 - What is event detection?
-    - The process of discerning between noise and a signal (behavioral event)
+    - The process of discerning between noise and a behavioral event
     
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=9, fig.height=6.5}
 source('~/TagTools/R/tagtools/R/njerk.R')
-source('~/TagTools/R/tagtools/R/detect_peaks.R')
+source('~/TagTools/R/forlater/David_detectors/detect_peaks.R')
 source('~/TagTools/R/tagtools/R/crop_to.R')
 source('~/TagTools/R/tagtools/R/plott.R')
 source('~/TagTools/R/tagtools/R/draw_axis.R')
@@ -41,13 +41,13 @@ Detection Threshold
 ========================================================
 
 - What is a threshold?
-    - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
+    - A ratio of event signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
 ```{r, echo=FALSE, fig.align="center", fig.height=5, fig.width=8}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 thresh1 <- quantile(dnew, c(.99))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
 ```
@@ -64,7 +64,7 @@ Setting a Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=5}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh1, b = 0, col = "red", lty=2)
@@ -80,7 +80,7 @@ Setting a Threshold
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=7, fig.height=7}
 dnew <- jerk[1:60000]
 dn <- list(Signal_Power = dnew)
-plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(dn, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 thresh1 <- quantile(dnew, c(.999))
 thresh2 <- quantile(dnew, c(.70))
 graphics::abline(a = thresh2, b = 0, col = "red", lty=2)
@@ -104,7 +104,7 @@ Blanking Time
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=7}
 djerk <- jerk[640:740]
 dj <- list(Signal_Power = djerk)
-plott(dj, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(dj, 5, line_colors = "blue", par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 graphics::abline(a = .4, b = 0, col = "red", lty=2)
 ```
 
@@ -206,7 +206,7 @@ Tag On vs. Tag Off
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = jerk, Dive_Profile = bw11_210a_tagdata$depth, Acceleration = Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 ```
 
 - Tag falls off the animal at about 3.5 hours since tag attachment
@@ -225,14 +225,14 @@ cropped_depth <- crop_to(bw11_210a_tagdata$depth, 5, tcues = c(0, 12787.04))$X
 
 ```{r, echo=FALSE, fig.align="center", fig.width=8, fig.height=8}
 tag <- list(Jerk = cropped_jerk, Dive_Profile = cropped_depth, Acceleration = cropped_Aw)
-plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 ```
 
 
 Running detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
 
 ```{r, include=FALSE}
 detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
@@ -271,7 +271,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- navy points = detected lunging events
+- gold points = detected lunging events
 
 ```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
@@ -280,9 +280,9 @@ dettimes <- (((detections$peak_time / 5) / 60) / 60)
 depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[detections$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
-plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 points(x = klunge, y = depthevents, col = "red", pch = 19, cex = 1.4)
-points(x = dettimes, y = depthdetections, col = "navy", pch = 19, cex = 1.4)
+points(x = dettimes, y = depthdetections, col = "gold", pch = 19, cex = 1.4)
 ```
 
 
@@ -293,7 +293,6 @@ ROC Curve
     - false positive rate = (number false positive detections / number total possible events)
         - number of total possible events = ((number of samples / sampling_rate) / blanking time)
     - true positive rate = (number true positive detections / number known events)
-        - number of known events is determined manually
 
 
 Generating ROC Curve
@@ -368,7 +367,7 @@ dettimes <- (((detect_all_default$peak_time / 5) / 60) / 60)
 depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[detect_all_default$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
-plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.5, cex.lab = 1.5))
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 points(x = klunge, y = depthevents, col = "red", pch = 19, cex = 1.4)
 points(x = dettimes, y = depthdetections, col = "blue", pch = 19, cex = 1.4)
 ```
@@ -394,7 +393,7 @@ acc <- acc_test(detect_all_default$peak_time, events, 5, tpevents)
 acc1 <- acc_test(detections_default$peak_time, events, 5, tpevents)
 acc2 <- acc_test(detections_optimal$peak_time, events, 5, tpevents)
 acc3 <- acc_test(detections_many$peak_time, events, 5, tpevents)
-perform <- matrix(c(80,80,60,87,18,18,10,32,10,10,30,3),ncol=3, nrow=4, byrow=FALSE)
+perform <- matrix(c(92,80,60,87,37,18,10,32,-2,10,30,3),ncol=3, nrow=4, byrow=FALSE)
 rownames(perform) <- c("blue", "gray", "orange", "cyan")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)

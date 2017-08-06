@@ -21,7 +21,7 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       .8 percentile of the vector of time differences for signal values 
+%       80 percentile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
@@ -120,7 +120,16 @@ peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
 if plot_peaks == true
     plot(dnew);
     hold on 
-    disp('GRAPH HELP: For changing only the thresh level, click once within the plot and then push enter to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then push enter to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply push enter.')
+    disp('GRAPH HELP:')
+    disp('For changing only the thresh level, click once within the plot and then push enter')
+    disp(' to specify the y-value at which your new thresh level will be.')
+    disp('For changing just the bktime value, click twice within the plot and then push enter')
+    disp(' to specify the length for which your bktime will be.')
+    disp('To change both the bktime and the thresh, click three times within the plot:')
+    disp(' the first click will change the thresh level,')
+    disp(' the second and third clicks will change the bktime.')
+    disp('To return your results without changing the thresh and bktime from their default')
+    disp(' values, simply push enter.')
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end

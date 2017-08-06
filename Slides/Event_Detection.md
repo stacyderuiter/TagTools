@@ -3,13 +3,14 @@ Event Detection
 author: David Sweeney 
 date: 8 August 2017
 autosize: true
+incremental: true
 
 
 Event Detection Theory
 ========================================================
 
 - What is event detection?
-    - The process of discerning between noise and a signal (behavioral event)
+    - The process of discerning between noise and a behavioral event
     
 <img src="Event_Detection-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
@@ -28,7 +29,7 @@ Detection Threshold
 ========================================================
 
 - What is a threshold?
-    - A ratio of signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
+    - A ratio of event signal power to noise power (_Principles of Underwater Sound for Engineers_ by Robert Urick)
 - A signal that exceeds this ratio constitutes a detected behavior event
 
 <img src="Event_Detection-figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
@@ -184,7 +185,7 @@ Crop Data
 Running detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
 
 
 
@@ -211,7 +212,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- navy points = detected lunging events
+- gold points = detected lunging events
 
 <img src="Event_Detection-figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
 
@@ -223,7 +224,6 @@ ROC Curve
     - false positive rate = (number false positive detections / number total possible events)
         - number of total possible events = ((number of samples / sampling_rate) / blanking time)
     - true positive rate = (number true positive detections / number known events)
-        - number of known events is determined manually
 
 
 Generating ROC Curve
