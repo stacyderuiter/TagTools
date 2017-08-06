@@ -10,7 +10,7 @@ Event Detection Theory
 ========================================================
 
 - What is event detection?
-    - The process of discerning between noise and behavioral event
+    - The process of discerning between noise and a behavioral event
     
 <img src="Event_Detection-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
@@ -185,7 +185,7 @@ Crop Data
 Running detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
 
 
 
@@ -212,7 +212,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- navy points = detected lunging events
+- gold points = detected lunging events
 
 <img src="Event_Detection-figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
 

@@ -10,7 +10,7 @@ Event Detection Theory
 ========================================================
 
 - What is event detection?
-    - The process of discerning between noise and behavioral event
+    - The process of discerning between noise and a behavioral event
     
 ```{r, echo=FALSE, message=FALSE, fig.align="center", fig.width=9, fig.height=6.5}
 source('~/TagTools/R/tagtools/R/njerk.R')
@@ -232,7 +232,7 @@ plott(tag, 5, r = c(FALSE, TRUE, FALSE), par_opts = list(mar=c(1,5,0,0), oma=c(2
 Running detect_peaks
 ========================================================
 
-```detections <- detect_peaks(data = Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
+```detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = TRUE, sampling_rate = sampling_rate)```
 
 ```{r, include=FALSE}
 detections <- detect_peaks(data = cropped_Aw, sr = sampling_rate, FUN = njerk, thresh = NULL, bktime = 30, plot_peaks = FALSE, sampling_rate = sampling_rate)
@@ -271,7 +271,7 @@ Comparing to Known Lunges
 ========================================================
 
 - red points = known lunging events
-- navy points = detected lunging events
+- gold points = detected lunging events
 
 ```{r, echo=FALSE, message=FALSE, fig.height=7, fig.width=9, fig.align="center"}
 events <- read_csv("~/DeRuiter2017/Datasets/bw11_210aLungeTimes.csv")$Ltimes
@@ -282,7 +282,7 @@ depthdetections <- cropped_depth[detections$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
 plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex.axis = 1.7, cex.lab = 1.7))
 points(x = klunge, y = depthevents, col = "red", pch = 19, cex = 1.4)
-points(x = dettimes, y = depthdetections, col = "navy", pch = 19, cex = 1.4)
+points(x = dettimes, y = depthdetections, col = "gold", pch = 19, cex = 1.4)
 ```
 
 
