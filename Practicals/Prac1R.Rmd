@@ -50,7 +50,7 @@ Pressure data (e.g., depth or altitude) are useful for identifying behavioural e
 4.	You will be exploring the data using the following tag tools: load_nc, sens2var, plot, crop, median\_filter, crop\_to, fix\_pressure, find\_dives.
 
 ###1.3  Load the test data set
-Load the test dataset mn12\_186a. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load_nc to load a NetCDF file:
+Load the test dataset mn12\_186a. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load\_nc to load a NetCDF file:
 
 Code below assumes the file is in your working directory. The example below sets the current working directory to work on Stacy's computer, but you will have to change it to match your machine.
 
@@ -66,7 +66,7 @@ You may have to add the path for the file to the file name, e.g., if the file is
 Then you need to enter:
 
 ```{r, eval=FALSE}
-load_nc('/Users/Sebastian/tagtools/testdata/mn12\_186a\_raw')
+MN <- load_nc('/Users/Sebastian/tagtools/testdata/mn12\_186a\_raw')
 ```
 
 You may also need to escape slashes in the path specification (e.g., \\) depending on your platform.
@@ -135,7 +135,7 @@ You can plot p using:
 ```{r, fig.width=6.5, fig.height=3.5}
 plot(c(1:length(p)), p, type='l')
 grid()
-````
+```
 
 Does this plot make sense for a diving animal?  To reverse the direction of the Y-axis, alter it to:
 
@@ -169,9 +169,9 @@ Not all tags have a way to start logging as soon as the tag has been deployed on
 Pc = crop(MN$P)$Y
 ```
 
-This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish. The function returns a new data structure which contains just the selected part of the dive profile. 
+This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish (actually, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete). The function returns a new data structure which contains just the selected part of the dive profile. 
 
-The resulting sensor data list shalso contains fields that document what you just did. They should look like:
+The resulting sensor data list also contains fields that document what you just did. They should look like:
 
 ```{r, echo=FALSE}
 Pc <- crop_to(X=MN$P, tcues=c(1395, 25634))$X

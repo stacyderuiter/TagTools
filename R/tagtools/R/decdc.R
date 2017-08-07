@@ -18,6 +18,8 @@ decdc <- function(x,df) {
   if (is.list(x)){
     X <- x
     x <- X$data
+  }else{
+    X <- NULL
   }
   if (nrow(x) < 2) {
     warning("make sure that you have input your data as a column vector or a matrix")
