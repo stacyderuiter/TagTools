@@ -5,6 +5,27 @@ date: 7 August 2017
 autosize: true
 incremental: true
 
+Housekeeping
+=======================================================
+- Fire Exits
+- Toilet Locations
+- Food and Coffee: always in the Resource Area
+- Mugs for beverages
+    - Please grab one in the morning.
+    - It's yours for the day for all drinks.
+    - At end of day, please wash in kitchen beside Resource Area
+    - This helps us conserve on disposable cups and glasses.
+    
+Social opportunity!
+========================================================
+Please join us tonight around 6pm at St Andrews Brewing on South Street (walk towards town, go through the arch, stop when you see the pub on your left).
+
+![map](images/SABrew-Map.png)
+
+Welcome and Introductions
+========================================================
+
+
 Why tag?
 ========================================================
 - What questions are best answered using tags? 
