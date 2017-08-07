@@ -10,6 +10,7 @@ function track = track3D(z,phi,psi,sf,r,q1p,q2p,q3p,tagonx,tagony,enforce,x,y)
 %   z is a vector with depth over time (in meters, an observation)
 %   phi is a vector with pitch over time (in Radians, assumed as a know
 %       covariate)
+%   psi is a vector with heading in radians
 %   sf is a scalar defining the sampling rate (in Hz)
 %   r is the observation error. The default is 0.001
 %   q1p is the speed state error. The default is 0.02
@@ -153,7 +154,7 @@ for i = 1:n
         H = H2;
         r = r2;
     end
-    K = (Pm*H')./(H*Pm*H'+r);
+    K = (Pm*H')/(H*Pm*H'+r);
     % a posteriori state estimates
     if isnan(x(i))
       shat = shatm + K*(z(i)-H*shatm);
@@ -171,7 +172,7 @@ for i = 1:n
     end
     % a posteriori state cov
     d = [1,1,1,1];
-    P = (diag(d)-K.*H).*Pm ;
+    P = (diag(d)-K*H)*Pm ;
     %store results of iteration
     skal(:,i) = shat;
     Pms(:,:,i) = Pm;
