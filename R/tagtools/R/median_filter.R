@@ -41,7 +41,7 @@ median_filter <- function(X, n, noend=TRUE) {
       Y[(nrow(Y) - nd2 + k), ] <- stats::median(x[((nrow(x) - 2) * nd2 + k), ], na.rm = TRUE)
     }
   }
-  for (k in 1:ncol(X)) {
+  for (k in 1:ncol(x)) {
     Z <- buffer(x, n, (n-1), nodelay = TRUE)
     Y[(nd2 + 1):(nrow(Y) - nd2), k] <- apply(Z,MARGIN=2,FUN=stats::median, na.rm=TRUE)
   }
