@@ -2,7 +2,6 @@
 % Please edit documentation in R/apply_cal.R
 \name{apply_cal}
 \alias{apply_cal}
-<<<<<<< HEAD
 \title{Implement a calibration on tag sensor data}
 \usage{
 apply_cal(X, cal, T = NULL)
@@ -24,28 +23,4 @@ Given an appropriate set of calibration constants and information, this function
 }
 \examples{
 #coming soon!
-=======
-\title{Implement a calibration on sensor data}
-\usage{
-apply_cal(X, cal, T)
-}
-\arguments{
-\item{X}{A sensor list or matrix or vector}
-
-\item{cal}{A calibration list for the data in X. For example, this could come from spherical_cal.}
-
-\item{T}{A sensor list or vector of temperature measurements for use in temperature compensation. If T is not a sensor list, it must be the same size and sampling rate as the data in X. T is only required if there is a tcomp field in the cal structure.}
-}
-\value{
-A sensor list with calibration implemented. Data size and sampling rate is the same as for the input data but units may have changed.
-}
-\description{
-Implement a calibration on sensor data
-}
-\note{
-Cal fields currently supported are : poly, cross, map, tcomp, tref
-}
-\examples{
-\dontrun {#Will come soon!}
->>>>>>> 976dba0985f6bd7507cd6b53806f1f0c0e4a5f1d
 }

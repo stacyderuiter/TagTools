@@ -2,7 +2,6 @@
 % Please edit documentation in R/check_AM.R
 \name{check_AM}
 \alias{check_AM}
-<<<<<<< HEAD
 \title{Compute field intensity of tag acceleration and magnetometer data.}
 \usage{
 check_AM(A, M = NULL, fs = NULL, find_incl = TRUE)
@@ -50,45 +49,5 @@ AMcheck <- check_AM(A=matrix(c(-0.3,0.52,0.8), nrow=1),
                     M=matrix(c(22,-22,14), nrow=1),
                     fs=1)
 #returns AMcheck$fstr = 1.0002, 34.11744 and AMcheck$incl = 0.20181 radians
-=======
-\title{Compute the field intensity and inclination}
-\usage{
-check_AM(A, M, sampling_rate)
-}
-\arguments{
-\item{A}{An accelerometer sensor list or matrix with columns [ax, ay, az]. Acceleration can be in any consistent unit (e.g., g for m/s^2).}
-
-\item{M}{is a magnetometer sensor list or matrix, M <- [mx, my, mz] in any consistent unit (e.g., uT or Gauss).}
-
-\item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second). This is only needed if A and M are not sensor lists and filtering is required.}
-
-\item{X}{can be either A or M data and is used if check_AM is called with only one type of data}
-}
-\value{
-A list with 2 elements:
-\itemize{
- \item{\strong{fstr: }} The estimated field intensity of A and/or M in the same units as A and M. fstr is a vector or a two column matrix. If only one type of data is input, fstr will be a column vector. If both A and M are input, fstr will have two columns with the field strength of A in the 1st column and the field strength of M in the 2nd column. 
- \item{\strong{incl: }} The estimated field inclination angle (i.e., the angle with respect to the horizontal plane) in radians. incl is a column vector. By convention, a field vector pointing below the horizon has a positive inclination angle. This is only returned if the function is called with both A and M data.
-}
-}
-\description{
-This function is used to compute the field intensity of acceleration and magnetometer data, and the inclination angle of the magnetic field. This is useful for checking the quality of a calibration, for detecting drift, and for validating the mapping of the sensor axes to the tag axes.
-}
-\details{
-Possible input combinations: check_AM(X) if X is a sensor list, check_AM(X, sampling_Rate) if X is a matrix, check_AM(A, M) if M and A are sensor lists, check_AM(A, M, sampling_rate) if M and A are matrices.
-}
-\note{
-The sampling rate of fstr and incl is the same as the input sampling rate.
-
-This function automatically low-pass filters the data with a cut-off frequency of 5 Hz if the sampling rate is greater than 10 Hz.
-
-Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame.
-}
-\examples{
-\dontrun {
-sm1 <- matrix(c(11:19), ncol = 3)
-sm2 <- matrix(c(1:9), ncol = 3)
-check_AM(sm2, sm1, sampling_rate = 1)
->>>>>>> 976dba0985f6bd7507cd6b53806f1f0c0e4a5f1d
 }
 }
