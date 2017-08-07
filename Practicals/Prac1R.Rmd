@@ -153,6 +153,17 @@ plott(list(P=MN$P))
 
 (Note there are two t's in this function name: \texttt{plott}). \texttt{plott} is a general purpose data plotter that we will use a lot. For depth data, in Matlab it automatically plots increasing depths going downwards (in R you can set input r to TRUE for panels with depth data). It also automatically converts the horizontal axis to a convenient unit like hours or days instead of seconds, or a date-time if the recording start time is given. In both plott, if input \texttt{interactive} is TRUE, you can zoom in and out of data using keyboard entries.  The first input to \texttt{plott.R} is the data, which must be in the form of a list (of sensor data lists or of matrices/vectors). This is because \texttt{plott} is usually used to make multi-panel plots with multiple data inputs.
 
+##Exercise 1. 
+Calculate the mean duration of dives deeper than 5m
+Our goal with these data is to calculate the mean duration of dives deeper than 5 m. If you can think of a way to do this already, go ahead and try - you can compare your answer to the step-by-step procedure below.
+
+As with all raw depth data, there are some problems with this dive profile. See if you can find evidence for each of these in the plot:
+1.	Incorrect calibration of the sensor
+2.	Occasional outliers
+3.	Coarse depth resolution
+4.	Temperature sensitivity
+
+
 
 ####E1.1 Hints & Tips
 1.	look in \texttt{info} to find what species the data come from - are the depth values reasonable for this species?
