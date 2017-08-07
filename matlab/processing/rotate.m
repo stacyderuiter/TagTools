@@ -49,7 +49,7 @@ end
 
 % Do rotation
 %============================================================================
-event_times = rmmissing(event_times);
+event_times(isnan(event_times)) = [];
 rot_event_times = event_times + rand*max(full_period);
 
 if rot_event_times > max(full_period)
