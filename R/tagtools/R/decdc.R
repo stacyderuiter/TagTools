@@ -15,6 +15,10 @@ decdc <- function(x,df) {
   if (missing(df)) {
     stop("df is a required input")
   }
+  if (is.list(x)){
+    X <- x
+    x <- X$data
+  }
   if (nrow(x) < 2) {
     warning("make sure that you have input your data as a column vector or a matrix")
   }
@@ -40,6 +44,18 @@ decdc <- function(x,df) {
     v <- signal::conv(h,xx)
  #   v <- pracma::conv(h,xx) # results identical and signal is a bit faster? SDR
     y[,k] <- v[dc]
+  }
+  
+  if (is.list(X)){
+    X$data <- Y
+    X$sampling_rate <- X$sampling_rate/df
+    h = sprintf('decdc(%d)',df) 
+    if ('history' %in% names(X) | is.null(X$history)){
+    X$history <- h 
+    }else{
+      X$history = c(X$history, h)
+    }
+    y = X
   }
   return(y)
 }
