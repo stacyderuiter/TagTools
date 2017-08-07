@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #' Implement a calibration on tag sensor data
 #' 
 #' Given an appropriate set of calibration constants and information, this function will apply the calibration procedure to a tag sensor data set. Cal fields currently supported are: poly, cross, map, tcomp, tref
