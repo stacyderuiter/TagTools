@@ -15,7 +15,8 @@
 #' @note The sampling rate of fstr and incl is the same as the input sampling rate.
 #' @note This function automatically low-pass filters the data with a cut-off frequency of 5 Hz if the sampling rate is greater than 10 Hz.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame.
-#' @examples \dontrun {
+#' @examples 
+#' \dontrun {
 #' sm1 <- matrix(c(11:19), ncol = 3)
 #' sm2 <- matrix(c(1:9), ncol = 3)
 #' check_AM(sm2, sm1, sampling_rate = 1)

@@ -5,7 +5,8 @@
 #' @param T A sensor list or vector of temperature measurements for use in temperature compensation. If T is not a sensor list, it must be the same size and sampling rate as the data in X. T is only required if there is a tcomp field in the cal structure.
 #' @return A sensor list with calibration implemented. Data size and sampling rate is the same as for the input data but units may have changed.
 #' @note Cal fields currently supported are : poly, cross, map, tcomp, tref
-#' @examples \dontrun { Will come soon! }
+#' @examples 
+#' \dontrun {#Will come soon!}
 #' @export
 
 apply_cal <- function(X, cal, T) {
