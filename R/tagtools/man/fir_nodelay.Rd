@@ -37,12 +37,16 @@ The input samples used are those from n/2 samples before to n/2 samples after th
 \examples{
 \dontrun{
          #Make a waveform with two harmonics - one at 1/20 and another at 1/4 of the sampling rate.
-         x <- sin(t(2 * pi * 0.05 * (1:100))+t(cos(2 * pi * 0.25 * (1:100))))
+         x <- sin(t(2 * pi * 0.05 * (1:100)) +
+                t(cos(2 * pi * 0.25 * (1:100))))
          Y <- fir_nodelay(x=x, n=30, fc=0.2, qual='low')
          plot(c(1:length(x)),x, type='l', col='grey42',
          xlab='index', ylab='input x and output y')
-         lines(c(1:length(Y$y)),Y$y, lwd=2) 
+         lines(c(1:length(Y$y)),Y$y, lwd=2)
+         #Returns: The input signal has the first and fifth harmonic. 
+         #Applying the low-pass filter removes most of the fifth harmonic
+         # so the output appears as a sinewave except for the first few 
+         #samples which are affected by the filter startup transient.
          }
-Returns: The input signal has the first and fifth harmonic. Applying the low-pass filter removes most of the fifth harmonic so the output appears as a sinewave except for the first few samples which are affected by the filter startup transient.
-         
+
 }

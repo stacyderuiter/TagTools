@@ -152,7 +152,8 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
       }
     }}
   }
-  graphics::mtext(x_lab, side=1, line=2, cex=par(no.readonly=TRUE)$cex)
+  custom_cex <- max(graphics::par(no.readonly=TRUE)$cex, graphics::par(no.readonly=TRUE)$cex.lab)
+  graphics::mtext(x_lab, side=1, line=2, cex=custom_cex)
   
 if (interactive){
   zoom::zm()

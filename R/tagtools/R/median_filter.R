@@ -6,11 +6,9 @@
 #' @param noend If TRUE (the default), then start and end values are taken directly from X without short median filters.
 #' @return The output of the filter. It has the same size as S and has the same sampling rate and units as X. If X is a sensor list, the return will also be.
 #' @examples 
-#' \dontrun {
 #' v <- matrix(c(1, 3, 4, 4, 20, -10, 5, 6, 6, 7), ncol = 1)
 #' w <- median_filter(v, n=3)
 #' #Returns : c(1, 3, 4, 4, 4, 5, 5, 6, 6, 7)
-#' }
 #' @export
 
 median_filter <- function(X, n, noend=TRUE) {
@@ -37,15 +35,15 @@ median_filter <- function(X, n, noend=TRUE) {
     Y[(nrow(Y) + ((-nd2 + 1):0)), ] <- x[(nrow(x) + ((-nd2 + 1):0)), ]
   } else {
     for (k in 1:nd2) {
-      Y[k, ] <- median(x[(1:(k + nd2)), ], na.rm = TRUE)
+      Y[k, ] <- stats::median(x[(1:(k + nd2)), ], na.rm = TRUE)
     }
     for (k in 1:nd2) {
-      Y[(nrow(Y) - nd2 + k), ] <- median(x[((nrow(x) - 2) * nd2 + k), ], na.rm = TRUE)
+      Y[(nrow(Y) - nd2 + k), ] <- stats::median(x[((nrow(x) - 2) * nd2 + k), ], na.rm = TRUE)
     }
   }
   for (k in 1:ncol(X)) {
     Z <- buffer(x, n, (n-1), nodelay = TRUE)
-    Y[(nd2 + 1):(nrow(Y) - nd2), k] <- apply(Z,MARGIN=2,FUN=median, na.rm=TRUE)
+    Y[(nd2 + 1):(nrow(Y) - nd2), k] <- apply(Z,MARGIN=2,FUN=stats::median, na.rm=TRUE)
   }
   if (is.list(X)) {
     X$data <- Y

@@ -26,7 +26,8 @@ unless a pathname is added to the beginning of fname.
 }
 \examples{
  \dontrun{
- add_nc('dog17_124a',A)
+ #if A is in workspace,
+ #add_nc('dog17_124a',A)
  # generates a file dog17_124a.nc (if it does not already exist) and adds a variable A.
  }
  @export

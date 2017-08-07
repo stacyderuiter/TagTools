@@ -25,7 +25,9 @@ This tortuosity index is fairly insensitive to speed so if T is produced by dead
 \examples{
 \dontrun{ 
 BW <- beaked_whale
-T <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, include_pe = TRUE)$T
+T <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
+sampling_rate = BW$A$sampling_rate, 
+fc = NULL, include_pe = TRUE)$T
 t <- tortuosity(T, sampling_rate = BW$A$sampling_rate, intvl = 25)
 }
 }

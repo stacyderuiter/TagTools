@@ -4,7 +4,7 @@
 #' 
 #' The function reports the residual and the axial balance of the data. A low residual e.g., <5% indicates that the data can be calibrated well and there is not much noise. The axial balance indicates whether the movement in X is suitable for data-driven calibration. If the movement covers all directions fairly equally, the axial balance will be high. A balance <20% may lead to unreliable calibration. For bench calibrations, a high axial balance is achieved by rotating the sensor through the full 3-dimensions. Sampling rate and frame of Y are the same as the input data so Y has the same size as X. The units of Y are the same as the units used for n. If n is not specified, the units of Y are the same as for the input data. It is a good idea to low-pass filter and/or remove outliers from the sensor data before using this function to reduce errors from specific acceleration and sensor noise. 
 #' @param X The segment of triaxial sensor data to calibrate. It must be a 3-column matrix. X can come from any triaxial field sensor and can be in any unit and any frame.
-#' @param n The target firld magnitute e.g., 9.81 for accelerometer data using m/s^2 as the unit.
+#' @param n The target field magnitude e.g., 9.81 for accelerometer data using m/s^2 as the unit.
 #' @param method An optional string selecting the type of calibration. The default is to calibrate for offset and scaling only. Other options are: 'gain' adjust gain of axes 2 and 3 relative to 1, or 'cross' adjust gain and remove cross-axis correlations
 #' @return A list with 2 elements:
 #' \itemize{
@@ -13,18 +13,9 @@
 #' }
 #' @note This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large. For this reason it is most suitable for bench calibrations rather than field data. This function is only usable for field sensors. It will not work for gyroscope data.
 
-spherical_cal <- function(X, n, method) {
+spherical_cal <- function(X, n=NULL, method=NULL) {
   G <- c()
   Y <- c()
-  if (missing(X)) {
-    stop("X is required for sphreical cal!")
-  }
-  if (missing(n)) {
-    n <- c()
-  }
-  if (missing(method)) {
-    method <- c()
-  }
   # remove any rows in X with NaNs
   X <- na.omit(X)
   nv1 <- 3 		# number of variables for offset
