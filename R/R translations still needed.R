@@ -21,5 +21,4 @@ wavseq_read
 
 
 Matlab needed:
-  rotate
   rotation_test
