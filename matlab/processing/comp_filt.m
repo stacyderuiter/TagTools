@@ -2,13 +2,13 @@ function    Xf = comp_filt(X,fs,fc)
 
 %    Xf=comp_filt(X,fs,fc)		% X is a vector or matrix
 %	  or
-%    Xf=comp_filt(X,fc)			% X is a signal structure
-%    Complimentary filtering of a signal. This breaks signal X into two or more
+%    Xf=comp_filt(X,fc)			% X is a sensor structure
+%    Complementary filtering of a signal. This breaks signal X into two or more
 %	  frequency bands such that the sum of the signals in the separate bands is equal
 %	  to the original signal.
 %
 %	  Inputs:
-%    X is a sensor vector or matrix (i.e., with a signal in each column), or a sensor
+%    X is a vector or matrix (i.e., with a signal in each column), or a sensor
 %		structure.
 %    fs is the sampling rate of the sensor data in Hz (samples per second). fs is only
 %		needed if X is not a sensor structure.
@@ -41,8 +41,8 @@ end
 
 if isstruct(X),
 	fc = fs ;
-	fs = X.fs ;
-	X = X.data ;
+	[X,fs] = sens2var(X,'regular') ;
+	if isempty(X), return, end
 else
 	if nargin<3,
 		help compfilt

@@ -14,16 +14,12 @@
 #' xf <- list(Xf1 = Xf[[1]], Xf2 = Xf[[2]])
 #' plott(xf, BW$A$sampling_rate)
 
-comp_filt <- function(X, sampling_rate, fc) {
-  if (missing(sampling_rate)) {
-    stop("At least two inputs are required")
-  }
+comp_filt <- function(X, sampling_rate=NULL, fc) {
   if (is.list(X)) {
-    fc <- sampling_rate ;
     sampling_rate <- X$sampling_rate ;
     X <- X$data ;
   } else {
-    if (missing(fc)) {
+    if (missing(fc) | is.null(sampling_rate)) {
       stop("inputs X, sampling_rate, and fc are all required if X is not a list")
     }
   }
