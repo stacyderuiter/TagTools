@@ -1,4 +1,4 @@
-function result = rotation_test(event_times, exp_period, full_period, n_rot, ts_fun, skip_sort, conf_level, return_rot_stats, varargin)
+function result = rotation_test(event_times, full_period, exp_period, n_rot, ts_fun, skip_sort, conf_level, return_rot_stats, varargin)
 % Carry out a rotation randomization test
 %
 % Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
@@ -59,7 +59,7 @@ function result = rotation_test(event_times, exp_period, full_period, n_rot, ts_
 %   in particular regarding (x,y)=(lat,long); increasing q3p, the (x,y) state variance, will increase the weight given to independent observations of (x,y), say from GPS readings.
 %
 % Example:
-%   r <- rotation_test((2000*rand(500,1)), [100,200], [],[],'mean', [], [], TRUE)
+%   r <- rotation_test((2000*rand(500,1)), [100,200], [],[],'mean', [], [], true)
 
 
 % Input checking
@@ -118,14 +118,22 @@ end
 e_data = get_e_data(event_times, exp_period);
 % compute test statistic for observed dataset
 func = str2func(char(ts_fun));
-data_ts = func(e_data, varargin{1:end});
-
+if ~isempty(varargin)
+    data_ts = func(e_data, varargin{1:end});
+else
+    data_ts = func(e_data);
+end
+    
 %find TS for n_rot rotations
 rot_stats = zeros(1,n_rot);
 for b = 1:n_rot
     rot_events = rotate(event_times, full_period);
     rot_e_dat = get_e_data(rot_events,exp_period) ;
-    rot_stats(b) = func(rot_e_dat, varargin{1:end});
+    if ~isempty(varargin)
+        rot_stats(b) = func(rot_e_dat, varargin{1:end});
+    else
+        rot_stats(b) = func(rot_e_dat);
+    end
 end
 
 %fill results data.frame
@@ -150,17 +158,14 @@ end
 % Carry out rotation test
 %==================================================================
 %get event times from experimental time period
-    function e_data = get_e_data(event_times, exp_period)
-        e_data = event_times(event_times >= exp_period.st & event_times <= exp_period.et);
-        if length(exp_period.st) > 1  %if multiple experimental periods,
-          for p = 2:length(exp_period.st) %loop over experimental periods.
-            e_data = [e_data, event_times(event_times >= exp_period.st(p) & event_times <= exp_period.et(p))];
-          end
-        end
-        if isempty(e_data),
-            e_data = 0;
-        end
+function e_data = get_e_data(event_times, exp_period)
+    e_data = event_times(event_times >= exp_period.st & event_times <= exp_period.et);
+    if length(exp_period.st) > 1  %if multiple experimental periods,
+      for p = 2:length(exp_period.st) %loop over experimental periods.
+        e_data = [e_data, event_times(event_times >= exp_period.st(p) & event_times <= exp_period.et(p))];
+      end
     end
+end
 %====================================================================
 
 end
