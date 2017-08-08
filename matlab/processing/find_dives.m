@@ -87,7 +87,7 @@ end
 
 searchlen = 20 ;        % how far to look in seconds to find actual surfacing
 dpthresh = 0.25 ;       % vertical velocity threshold for surfacing
-dp_lp = 0.5 ;           % low-pass filter frequency for vertical velocity
+dp_lp = 0.25 ;           % low-pass filter frequency for vertical velocity
 
 % find threshold crossings and surface times
 tth = find(diff(p>mindepth)>0) ;
@@ -123,7 +123,11 @@ toff = toff(1:k) ;
 
 % filter vertical velocity to find actual surfacing moments
 n = round(4*fs/dp_lp) ;
-dp = fir_nodelay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
+if fs>=1,
+   dp = fir_nodelay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
+else
+   dp = [0;diff(p)]*fs ;
+end
 
 % for each ton, look back to find last time animal was at the surface
 % for each toff, look forward to find next time animal is at the surface

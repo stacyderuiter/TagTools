@@ -3,7 +3,7 @@
 #' This function can be used to estimate the dominant stroke frequency from triaxial accelerometer data [ax,ay,az].
 #' 
 #' Animals tend to produce propulsive movements with a narrow frequency range. These movements cause cyclical changes in posture and/or specific acceleration, both of which are measured by an animal-attached accelerometer. Thus sections of accelerometer data that largely contain propulsion should show a spectral peak in one or more axes at the dominant stroke frequency.
-#' @param A An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
+#' @param A A sensor data list or an nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. 
 #' @param sampling_rate The sampling rate of the sensor data in Hz (samples per second).
 #' @param fc (optional) The cut-off frequency in Hz of a low-pass filter to apply to A before computing the spectra. This prevents high frequency transients e.g., in foraging, from dominating the spectra. The filter  length is 6*sampling_rate/fc. If fc is not specified, it defaults to 2.5 Hz. If fc>sampling_rate/2, the filtering operation is skipped.
 #' @param Nfft (optional) The FFT length and therefore the frequency resolution. The default value is the power of two closest to 20*sampling_rate, i.e., an analysis block length of about 20 s and a frequency resolution of about 0.05 Hz. A shorter FFT may be required if movement behaviour is very variable. A longer FFT may work well if propulsion is continuous and stereotyped.
@@ -19,7 +19,16 @@
 #' #coming soon!
 #' 
 
-dsf <- function(A, sampling_rate, fc = NULL, Nfft = NULL) {
+dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
+  if (is.list(A)){
+    AA <- A
+    sampling_rate <- AA$sampling_rate
+    A <- AA$data
+  }else{
+    if (missing(sampling_rate) | is.null(sampling_rate)){
+      stop('sampling_rate is a required input is A is a matrix')
+  }
+  }
   #default low-pass filter at 2.5 Hz
   if (is.null(fc)) {
     fc <- 2.5

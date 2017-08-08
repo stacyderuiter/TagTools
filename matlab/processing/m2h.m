@@ -87,9 +87,9 @@ else
 		fprintf('m2h: A and M must both be structures or matrices, not one of each\n') ;
 		return
 	end
-	if nargin==2,
+	if nargin==3,
 		fc = [] ;
-	elseif nargin==3,
+	elseif nargin==2,
 	   fprintf('Error: Need to specify fs and fc if calling m2h with matrix inputs\n') ;
 	   return
 	end
