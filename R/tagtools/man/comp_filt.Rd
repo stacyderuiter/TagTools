@@ -4,7 +4,7 @@
 \alias{comp_filt}
 \title{Complimentary filtering of a signal.}
 \usage{
-comp_filt(X, sampling_rate, fc)
+comp_filt(X, sampling_rate = NULL, fc)
 }
 \arguments{
 \item{X}{A sensor vector or matrix (i.e., with a signal in each column) or sensor list (e.g., from readtag.R).}
