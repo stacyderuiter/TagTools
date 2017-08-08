@@ -16,13 +16,20 @@ function result = rotation_test(event_times, exp_period, full_period, n_rot, ts_
 %       are given in hours of the day and the times in the dataset span 
 %       several days), be sure to specify skip_sort=true.
 %   full_period is a length two vector giving the start and end times of the full period
-%       during which events in event_times might have occurred. If missing, default is range(event_times).
-%   exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end time(s). Note that all data that falls into any experimental period will be concatenated and passed to \code{ts_fun}. If finer control is desired, consider writing your own test using the underlying function \code{rotate}.
-%   n_rot the number of rotations (randomizations) to carry out. Default is \code{n_rot=10000}.
-%   ts_fun is a function to compute the test statistic. Input provided to this function will be the times of events that occur during the "experimental" period.  The default function is \code{length} - in other words, the default test statistis is the number of events that happen during the experimental period.
-%   skip_sort is a Logical statement. Should times be sorted in ascending order? Default is \code{skip_sort=FALSE}.
-%   conf_level is the confidence level to be used for the bootstrap CI calculation, specified as a proportion. (default is \code{conf_level=0.95}, or 95\% confidence.)
-%   return_rot_stats is a Logical statement. Should output include the test statistics computed for each rotation of the data? Default is \code{return_rot_stats=FALSE}.
+%       during which events in event_times might have occurred. If missing, default is [min(event_times), max(event_times)].
+%   exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" 
+%       period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end 
+%       time(s). Note that all data that falls into any experimental period will be concatenated and passed to ts_fun.
+%       If finer control is desired, consider writing your own test using the underlying function rotate.
+%   n_rot the number of rotations (randomizations) to carry out. Default is n_rot=10000.
+%   ts_fun is a function to compute the test statistic. Input provided to this function 
+%       will be the times of events that occur during the "experimental" period.  The default function is length - in other 
+%       words, the default test statistis is the number of events that happen during the experimental period.
+%   skip_sort is a Logical statement. Should times be sorted in ascending order? Default is skip_sort=FALSE.
+%   conf_level is the confidence level to be used for the bootstrap CI calculation, specified as a proportion. 
+%       conf_level=0.95, or 95% confidence.
+%   return_rot_stats is a Logical statement. Should output include the test statistics computed for each rotation 
+%       of the data? Default is return_rot_stats=FALSE.
 %   varargin is additional inputs to be passed to ts_fun
 %
 % Outputs:
@@ -50,6 +57,10 @@ function result = rotation_test(event_times, exp_period, full_period, n_rot, ts_
 %   A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
 % This function output can be quite sensitive to the inputs used, namely those that define the relative weight given to the existing data, 
 %   in particular regarding (x,y)=(lat,long); increasing q3p, the (x,y) state variance, will increase the weight given to independent observations of (x,y), say from GPS readings.
+%
+% Example:
+%   r <- rotation_test((2000*rand(500,1)), [100,200], [],[],'mean', [], [], TRUE)
+
 
 % Input checking
 %============================================================================
@@ -104,20 +115,6 @@ if skip_sort == false
     event_times = sortrows(event_times);
 end
 
-% Carry out rotation test
-%==================================================================
-  
-%get event times from experimental time period
-    function e_data = get_e_data(event_times, exp_period)
-        e_data = event_times(event_times >= exp_period.st & event_times <= exp_period.et);
-        if length(exp_period.st) > 1  %if multiple experimental periods,
-          for p = 2:length(exp_period.st) %loop over experimental periods.
-            e_data = [e_data, event_times(event_times >= exp_period.st(p) & event_times <= exp_period.et(p))];
-          end
-        end
-    end
-%====================================================================
-
 e_data = get_e_data(event_times, exp_period);
 % compute test statistic for observed dataset
 func = str2func(char(ts_fun));
@@ -149,5 +146,21 @@ if return_rot_stats == true
 else
     result = struct('result',result);
 end
+
+% Carry out rotation test
+%==================================================================
+%get event times from experimental time period
+    function e_data = get_e_data(event_times, exp_period)
+        e_data = event_times(event_times >= exp_period.st & event_times <= exp_period.et);
+        if length(exp_period.st) > 1  %if multiple experimental periods,
+          for p = 2:length(exp_period.st) %loop over experimental periods.
+            e_data = [e_data, event_times(event_times >= exp_period.st(p) & event_times <= exp_period.et(p))];
+          end
+        end
+        if isempty(e_data),
+            e_data = 0;
+        end
+    end
+%====================================================================
 
 end
