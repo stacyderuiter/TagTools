@@ -29,7 +29,7 @@ function result = rotation_test(event_times, full_period, exp_period, n_rot, ts_
 %   conf_level is the confidence level to be used for the bootstrap CI calculation, specified as a proportion. 
 %       conf_level=0.95, or 95% confidence.
 %   return_rot_stats is a Logical statement. Should output include the test statistics computed for each rotation 
-%       of the data? Default is return_rot_stats=FALSE.
+%       of the data? Default is return_rot_stats=false.
 %   varargin is additional inputs to be passed to ts_fun
 %
 % Outputs:
