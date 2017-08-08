@@ -191,7 +191,7 @@ for (m in 1:length(mds)){
 How much does mindepth matter?
 =======================================================
 
-```{r, echo=FALSE, fig.width=6, fig.height=3.5}
+```{r, echo=FALSE, fig.width=8, fig.height=4, dpi=300}
 mds <- c(1, 5, 10, 25, 50, 100)
 all_dt <- data.frame()
 par(mfrow=c(2,3))
@@ -238,7 +238,7 @@ Dive stats example
 zc11$P <- crop_to(zc11$P, tcues=c(9850, 66100))$X
 dt <- find_dives(zc11$P, mindepth=25)
 ds <- dive_stats(P=zc11$P, dive_cues=dt[,c('start','end')])
-head(ds,3)
+str(ds)
 ```
 
 Dive stats example with auxiliary data
@@ -247,21 +247,38 @@ Dive stats example with auxiliary data
 zc11$A <- crop_to(zc11$A, tcues=c(9850, 66100))$X
 ds <- dive_stats(P=zc11$P, X=msa(zc11$A),
                  dive_cues=dt[,c('start','end')])
-head(ds,2)
+str(ds)
 ```
 
 
 Plotting the dive stats output
 ==========================================================
-```{r, fig.width=8, fig.height=3.5, dpi=300}
-par(las=1)
+```{r, fig.width=8, fig.height=4.5, dpi=300, fig.show='hide'}
+par(las=1, mar=c(3,7,1,1))
 boxplot(ds, horizontal=TRUE)
 ```
 
 Plotting the dive stats output
 ==========================================================
-```{r, fig.width=8, fig.height=8, dpi=300}
-par(las=1)
+```{r, fig.width=8, fig.height=4.5, dpi=300, echo=FALSE}
+par(las=1, mar=c(3,7,1,1))
+boxplot(ds, horizontal=TRUE)
+```
+
+Plotting the dive stats output
+==========================================================
+```{r, fig.width=8, fig.height=4.5, dpi=300, fig.show='hide'}
+par(las=1, mar=c(3,8,1,1))
+dss <- ds/matrix(apply(ds, 2, FUN=function(x) max(abs(x), na.rm=TRUE)),
+                 nrow=nrow(ds), ncol=ncol(ds), byrow=TRUE)
+boxplot(dss, horizontal=TRUE)
+
+```
+
+Plotting the dive stats output
+==========================================================
+```{r, fig.width=8, fig.height=4.5, dpi=300, echo=FALSE}
+par(las=1, mar=c(3,8,1,1))
 dss <- ds/matrix(apply(ds, 2, FUN=function(x) max(abs(x), na.rm=TRUE)),
                  nrow=nrow(ds), ncol=ncol(ds), byrow=TRUE)
 boxplot(dss, horizontal=TRUE)
@@ -297,12 +314,29 @@ Did _________ Change?
 
 Simple change-point detection
 ========================================================
-```{r}
+```{r, fig.width=8, fig.height=4}
 library(changepoint)
 set.seed(1)
 x=c(rnorm(100,0,1),rnorm(100,10,1))
 plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
-cpt.mean(x, penalty='BIC', method='AMOC')
+```
+
+Simple change-point detection
+========================================================
+```{r}
+C <- cpt.mean(x, penalty='BIC', method='AMOC')
+summary(C)
+```
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
+
+```{r, fig.width=8, fig.height=4}
+library(changepoint)
+set.seed(1)
+x=c(rnorm(100,0,1),rnorm(100,2,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
 ```
 
 Simple change-point detection
@@ -310,13 +344,13 @@ Simple change-point detection
 Maybe that was too easy...
 
 ```{r}
-library(changepoint)
-set.seed(1)
-x=c(rnorm(100,0,1),rnorm(100,2,1))
-plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
 C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=TRUE)
-C1
+summary(C1)
 ```
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
 
 ```{r}
 C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=FALSE)
@@ -327,12 +361,17 @@ C1
 Multiple change points
 ================================================================
 
-```{r}
-x <- c(rnorm(100,0,1),
-       rnorm(100,2,1),
-       rnorm(50,5,1))
+```{r, fig.width=8, fig.height=4}
+x <- c(rnorm(100,0,1), rnorm(100,2,1), rnorm(50,5,1))
 plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
-cpt.mean(x, method='BinSeg')
+```
+
+Multiple change points
+================================================================
+
+```{r}
+C4 <- cpt.mean(x, method='BinSeg')
+summary(C4)
 ```
 
 But that was still too easy...
@@ -361,10 +400,15 @@ Does it work anyway?
 ========================================================
 - What happens if we naively apply simple change point detectors to tag data?
 
-```{r}
+```{r, fig.width=8, fig.height=3.5}
 jk <- njerk(zc11$A)
 plott(X=list(jerk=jk), fsx=zc11$A$sampling_rate)
-cpt.mean(jk, method='BinSeg', penalty='BIC', Q=30)
+```
+
+Change-points detected:
+===========================================================
+```{r}
+summary(cpt.mean(jk, method='BinSeg', penalty='BIC', Q=30))
 ```
 
 Naively trying out the change-point detection
@@ -395,6 +439,9 @@ Are there alternatives?
 (Simple-minded?) Example
 ==================================================================
 ![StimpertBairds](images/stimpert-md.png)
+
+Frustrations remain
+==================================================================
 
 - Set threshold via resampling from baseline period?
 - (But need to retain order of observations, because they are not independent...)

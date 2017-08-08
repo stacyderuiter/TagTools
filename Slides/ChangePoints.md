@@ -255,18 +255,21 @@ Dive stats example
 zc11$P <- crop_to(zc11$P, tcues=c(9850, 66100))$X
 dt <- find_dives(zc11$P, mindepth=25)
 ds <- dive_stats(P=zc11$P, dive_cues=dt[,c('start','end')])
-head(ds,3)
+str(ds)
 ```
 
 ```
-  num       max    dur dest_st dest_et dest_dur to_dur  to_rate from_dur
-1   1  414.5977 6232.6  1068.2  5740.4   4672.2 1068.2 0.327947    492.4
-2   2 1737.0414 4078.0   970.4  2225.8   1255.4  970.4 1.520258   1852.4
-3   3  356.2372 1584.6   286.4   876.8    590.4  286.4 1.054850    708.0
-   from_rate
-1 -0.7137690
-2 -0.7970521
-3 -0.4271361
+'data.frame':	27 obs. of  10 variables:
+ $ num      : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ max      : num  415 1737 356 395 391 ...
+ $ dur      : num  6233 4078 1585 1605 1787 ...
+ $ dest_st  : num  1068 970 286 469 465 ...
+ $ dest_et  : num  5740 2226 877 1081 1087 ...
+ $ dest_dur : num  4672 1255 590 612 623 ...
+ $ to_dur   : num  1068 970 286 469 465 ...
+ $ to_rate  : num  0.328 1.52 1.055 0.716 0.714 ...
+ $ from_dur : num  492 1852 708 525 700 ...
+ $ from_rate: num  -0.714 -0.797 -0.427 -0.64 -0.475 ...
 ```
 
 Dive stats example with auxiliary data
@@ -276,19 +279,29 @@ Dive stats example with auxiliary data
 zc11$A <- crop_to(zc11$A, tcues=c(9850, 66100))$X
 ds <- dive_stats(P=zc11$P, X=msa(zc11$A),
                  dive_cues=dt[,c('start','end')])
-head(ds,2)
+str(ds)
 ```
 
 ```
-  num       max    dur dest_st dest_et dest_dur to_dur  to_rate from_dur
-1   1  414.5977 6232.6  1068.2  5740.4   4672.2 1068.2 0.327947    492.4
-2   2 1737.0414 4078.0   970.4  2225.8   1255.4  970.4 1.520258   1852.4
-   from_rate mean_aux     aux_sd mean_to_aux mean_dest_aux mean_from_aux
-1 -0.7137690 8.799320 0.04190261    8.784934      8.803916      8.786909
-2 -0.7970521 8.801839 0.04079357    8.810718      8.797636      8.800040
-   to_aux_sd dest_aux_sd from_aux_sd
-1 0.06467317  0.03423998  0.03500599
-2 0.02634890  0.04478863  0.04340466
+'data.frame':	27 obs. of  18 variables:
+ $ num          : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ max          : num  415 1737 356 395 391 ...
+ $ dur          : num  6233 4078 1585 1605 1787 ...
+ $ dest_st      : num  1068 970 286 469 465 ...
+ $ dest_et      : num  5740 2226 877 1081 1087 ...
+ $ dest_dur     : num  4672 1255 590 612 623 ...
+ $ to_dur       : num  1068 970 286 469 465 ...
+ $ to_rate      : num  0.328 1.52 1.055 0.716 0.714 ...
+ $ from_dur     : num  492 1852 708 525 700 ...
+ $ from_rate    : num  -0.714 -0.797 -0.427 -0.64 -0.475 ...
+ $ mean_aux     : num  8.8 8.8 8.8 8.8 8.81 ...
+ $ aux_sd       : num  0.0419 0.0408 0.025 0.0232 0.024 ...
+ $ mean_to_aux  : num  8.78 8.81 8.81 8.81 8.81 ...
+ $ mean_dest_aux: num  8.8 8.8 8.81 8.81 8.81 ...
+ $ mean_from_aux: num  8.79 8.8 8.8 8.8 8.8 ...
+ $ to_aux_sd    : num  0.0647 0.0263 0.0326 0.0158 0.021 ...
+ $ dest_aux_sd  : num  0.0342 0.0448 0.0175 0.0231 0.0161 ...
+ $ from_aux_sd  : num  0.035 0.0434 0.0266 0.0256 0.0292 ...
 ```
 
 
@@ -296,23 +309,27 @@ Plotting the dive stats output
 ==========================================================
 
 ```r
-par(las=1)
+par(las=1, mar=c(3,7,1,1))
 boxplot(ds, horizontal=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-12](ChangePoints-figure/unnamed-chunk-12-1.png)
+Plotting the dive stats output
+==========================================================
+![plot of chunk unnamed-chunk-13](ChangePoints-figure/unnamed-chunk-13-1.png)
 
 Plotting the dive stats output
 ==========================================================
 
 ```r
-par(las=1)
+par(las=1, mar=c(3,8,1,1))
 dss <- ds/matrix(apply(ds, 2, FUN=function(x) max(abs(x), na.rm=TRUE)),
                  nrow=nrow(ds), ncol=ncol(ds), byrow=TRUE)
 boxplot(dss, horizontal=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-13](ChangePoints-figure/unnamed-chunk-13-1.png)
+Plotting the dive stats output
+==========================================================
+![plot of chunk unnamed-chunk-15](ChangePoints-figure/unnamed-chunk-15-1.png)
 
  Detecting change-points in tag data
 =======================================================
@@ -352,21 +369,17 @@ x=c(rnorm(100,0,1),rnorm(100,10,1))
 plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
 ```
 
-![plot of chunk unnamed-chunk-14](ChangePoints-figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-16](ChangePoints-figure/unnamed-chunk-16-1.png)
+
+Simple change-point detection
+========================================================
 
 ```r
-cpt.mean(x, penalty='BIC', method='AMOC')
+C <- cpt.mean(x, penalty='BIC', method='AMOC')
+summary(C)
 ```
 
 ```
-Class 'cpt' : Changepoint Object
-       ~~   : S4 class containing 12 slots with names
-              cpttype date version data.set method test.stat pen.type pen.value minseglen cpts ncpts.max param.est 
-
-Created on  : Sun Aug 06 19:47:12 2017 
-
-summary(.)  :
-----------
 Created Using changepoint version 2.2.2 
 Changepoint type      : Change in mean 
 Method of analysis    : AMOC 
@@ -389,22 +402,19 @@ x=c(rnorm(100,0,1),rnorm(100,2,1))
 plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
 ```
 
-![plot of chunk unnamed-chunk-15](ChangePoints-figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-18](ChangePoints-figure/unnamed-chunk-18-1.png)
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
+
 
 ```r
 C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=TRUE)
-C1
+summary(C1)
 ```
 
 ```
-Class 'cpt' : Changepoint Object
-       ~~   : S4 class containing 12 slots with names
-              cpttype date version data.set method test.stat pen.type pen.value minseglen cpts ncpts.max param.est 
-
-Created on  : Sun Aug 06 19:47:12 2017 
-
-summary(.)  :
-----------
 Created Using changepoint version 2.2.2 
 Changepoint type      : Change in mean 
 Method of analysis    : AMOC 
@@ -414,6 +424,10 @@ Minimum Segment Length : 1
 Maximum no. of cpts   : 1 
 Changepoint Locations : 100 
 ```
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
 
 
 ```r
@@ -432,27 +446,22 @@ Multiple change points
 
 
 ```r
-x <- c(rnorm(100,0,1),
-       rnorm(100,2,1),
-       rnorm(50,5,1))
+x <- c(rnorm(100,0,1), rnorm(100,2,1), rnorm(50,5,1))
 plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
 ```
 
-![plot of chunk unnamed-chunk-17](ChangePoints-figure/unnamed-chunk-17-1.png)
+![plot of chunk unnamed-chunk-21](ChangePoints-figure/unnamed-chunk-21-1.png)
+
+Multiple change points
+================================================================
+
 
 ```r
-cpt.mean(x, method='BinSeg')
+C4 <- cpt.mean(x, method='BinSeg')
+summary(C4)
 ```
 
 ```
-Class 'cpt' : Changepoint Object
-       ~~   : S4 class containing 14 slots with names
-              cpts.full pen.value.full data.set cpttype method test.stat pen.type pen.value minseglen cpts ncpts.max param.est date version 
-
-Created on  : Sun Aug 06 19:47:12 2017 
-
-summary(.)  :
-----------
 Created Using changepoint version 2.2.2 
 Changepoint type      : Change in mean 
 Method of analysis    : BinSeg 
@@ -499,8 +508,67 @@ Does it work anyway?
 - What happens if we naively apply simple change point detectors to tag data?
 
 
+```r
+jk <- njerk(zc11$A)
+plott(X=list(jerk=jk), fsx=zc11$A$sampling_rate)
+```
 
+![plot of chunk unnamed-chunk-23](ChangePoints-figure/unnamed-chunk-23-1.png)
+
+Change-points detected:
+===========================================================
+
+```r
+summary(cpt.mean(jk, method='BinSeg', penalty='BIC', Q=30))
+```
 
 ```
-Error in njerk(zc11$A) : could not find function "njerk"
+Created Using changepoint version 2.2.2 
+Changepoint type      : Change in mean 
+Method of analysis    : BinSeg 
+Test Statistic  : Normal 
+Type of penalty       : BIC with value, 25.093 
+Minimum Segment Length : 1 
+Maximum no. of cpts   : 30 
+Number of changepoints: 24 
+Number of segmentations recorded: 30  with between  30  and  1 changepoints.
+ Penalty value ranges from: 21.33069  to  417.4178
 ```
+
+Naively trying out the change-point detection
+===============================================================
+- Is the answer right?
+- Maybe...and no...p-values are almost certainly wrong.
+- If the user has to decide whether it "worked" and adjust settings/assumptions, then why do the procedure?
+
+Devilish dependence on settings
+========================================================
+- depending on how many change points you expect, the results change
+- blanking time between changes changes results
+- black box algorithms with mysterious settings e.g. matlab findchangepts 'MinThreshold'
+
+Are there alternatives?
+========================================================
+- Methods for multivariate, dependent data
+    - [http://www.lancs.ac.uk/~khaleghi/](http://www.lancs.ac.uk/~khaleghi/)
+- Slightly more sophisticated way of doing "broken stick" or mean-based CP: package **segmented** in R
+    - "Fits regression models with segmented relationships between the response and one or more explanatory variables. Break-point estimates are provided."
+- Just apply peak detection to univariate data? 
+    - Data should not be the raw data then, but some summary of "what you think might be changing".
+    
+(Simple-minded?) Example
+==================================================================
+![StimpertBairds](images/stimpert-paper.png)
+
+(Simple-minded?) Example
+==================================================================
+![StimpertBairds](images/stimpert-md.png)
+
+Frustrations remain
+==================================================================
+
+- Set threshold via resampling from baseline period?
+- (But need to retain order of observations, because they are not independent...)
+- Simple rule: maximum observed in baseline?
+- More "conservative": X*max(baseline)?
+- Argh! Let's talk more tomorrow...
