@@ -340,7 +340,7 @@ perform <- matrix(c(80,60,87,18,10,32,10,30,3),ncol=3, nrow=3, byrow=FALSE)
 rownames(perform) <- c("gray", "orange", "blue")
 colnames(perform) <- c("True Positives","False Positives","Misses")
 perform <- as.table(perform)
-graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "blue"), cex.axis = 1.5, cex.lab = 1.5)
+graphics::barplot(perform, beside = TRUE, ylab = "Count", col = c("gray", "orange", "blue"), cex.axis = 1.5, cex.lab = 1.5, ylim = c(0,100))
 ```
 
 
