@@ -15,7 +15,7 @@ Event Detection Theory
 <img src="Event_Detection-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
 
-Noise vs. Signal
+Noise vs. Event
 ========================================================
 
 - What is noise?

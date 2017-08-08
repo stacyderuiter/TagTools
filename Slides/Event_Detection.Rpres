@@ -23,11 +23,11 @@ bw11_210a_tagdata <- read_csv("~/DeRuiter2017/Datasets/bw11_210a_tagdata.csv")
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 jerk <- njerk(Aw, sampling_rate)
-graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "Time", ylab = "Signal Power", cex = 1.5)
+graphics::plot(jerk, type = "l", col = "blue", xlim = c(0, length(jerk)), ylim = c(0, max(jerk)), xlab = "Time", ylab = "Signal Power", cex = 1.7)
 ```
 
 
-Noise vs. Signal
+Noise vs. Event
 ========================================================
 
 - What is noise?

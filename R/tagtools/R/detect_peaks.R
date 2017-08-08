@@ -100,15 +100,15 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     if (length(pts$x) == 3) {
       thresh <- pts$y[1]
       bktime <- max(pts$x[2:3]) - min(pts$x[2:3])
-      peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh, bktime, plot_peaks = FALSE)
+      peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh = thresh, bktime = bktime, plot_peaks = FALSE)
     } else {
       if (length(pts$x) == 1) {
         thresh <- pts$y[1]
-        peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh = thresh, plot_peaks = FALSE)
+        peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh = thresh, bktime = bktime, plot_peaks = FALSE)
       } else {
         if (length(pts$x) == 2) {
           bktime <- max(pts$x) - min(pts$x)
-          peaks <- detect_peaks(dnew, sr, FUN = NULL, bktime = bktime, plot_peaks = FALSE)
+          peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh = thresh, bktime = bktime, plot_peaks = FALSE)
         } else {
           peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh, bktime, plot_peaks = FALSE)
         }

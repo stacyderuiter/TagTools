@@ -142,10 +142,10 @@ if plot_peaks == true
         peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     elseif length(x) == 1
         thresh = y(1);
-        peaks = detect_peaks(dnew, sr, [], thresh, [], false);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     elseif length(x) == 2
         bktime = max(x) - min(x);
-        peaks = detect_peaks(dnew, sr, [], [], bktime, false);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     else
         peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     end
