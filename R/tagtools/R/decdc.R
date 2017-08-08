@@ -49,7 +49,7 @@ decdc <- function(x,df) {
   }
   
   if (is.list(X)){
-    X$data <- Y
+    X$data <- y
     X$sampling_rate <- X$sampling_rate/df
     h = sprintf('decdc(%d)',df) 
     if ('history' %in% names(X) | is.null(X$history)){

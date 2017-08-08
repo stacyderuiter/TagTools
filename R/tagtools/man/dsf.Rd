@@ -4,10 +4,10 @@
 \alias{dsf}
 \title{Estimate the dominant stroke frequency}
 \usage{
-dsf(A, sampling_rate, fc = NULL, Nfft = NULL)
+dsf(A, sampling_rate = NULL, fc = NULL, Nfft = NULL)
 }
 \arguments{
-\item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
+\item{A}{A sensor data list or an nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
 \item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second).}
 
