@@ -43,13 +43,13 @@ check_AM <- function(A,M=NULL,fs=NULL, find_incl=TRUE){
   if (!is.null(M)){
     if (identical(A$sampling_rate, M$sampling_rate) & 
         nrow(A$data) == nrow(M$data)){
+      fs <- A$sampling_rate
       A <- A$data
       M <- M$data
-      fs <- A$sampling_rate
     }
   }else{
-    A <- A$data
     fs <- A$sampling_rate
+    A <- A$data
   }
   if (length(A)==0){
   stop('No data found in input argument A')
@@ -89,8 +89,8 @@ check_AM <- function(A,M=NULL,fs=NULL, find_incl=TRUE){
   if (fs>10){
   nf <- round(4*fs/fc)
   if (nrow(A)>nf){
-  M = fir_nodelay(M,nf,fc/(fs/2)) 
-  A = fir_nodelay(A,nf,fc/(fs/2)) 
+  M = fir_nodelay(M,nf,fc/(fs/2))$y 
+  A = fir_nodelay(A,nf,fc/(fs/2))$y 
   }
   }
   
@@ -106,7 +106,7 @@ check_AM <- function(A,M=NULL,fs=NULL, find_incl=TRUE){
   
   if (find_incl==TRUE & !is.null(M)){
     AMprod <- matrix(apply(A*M,MARGIN=1, FUN=sum), ncol=1)
-  incl <- -Re(asin(AMprod/(fstr[,1]*fstr[,2])))
+    incl <- -Re(asin(AMprod/(fstr[,1]*fstr[,2])))
   return(list(fstr=fstr,incl=incl))
   }else{
     return(fstr)
