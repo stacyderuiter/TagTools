@@ -7,7 +7,7 @@
 njerk(A, sampling_rate)
 }
 \arguments{
-\item{A}{An nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A can be in any frame as the norm-jerk is rotation independent. A must have at least 2 rows (i.e., n>=2).}
+\item{A}{A tag sensor data list or a nx3 acceleration matrix with columns [ax ay az]. Acceleration can be in any consistent unit, e.g., g or m/s^2. A can be in any frame as the norm-jerk is rotation independent. A must have at least 2 rows (i.e., n>=2).}
 
 \item{sampling_rate}{The sampling rate in Hz of the acceleration signals. This is used to estimate the differential by a first-order difference.}
 }
@@ -23,7 +23,6 @@ sampleMatrix = matrix(c(1, 2, 3, 2, 2, 4, 1, -2, 4, 4, 4, 4), byrow = TRUE, nrow
 njerk(A=sampleMatrix, sampling_rate=5)  
 #Results: c(7.0711, 20.6155, 33.541, 0)
 }
- @export
 }
 \seealso{
 \code{\link{msa}}, \code{\link{odba}}
