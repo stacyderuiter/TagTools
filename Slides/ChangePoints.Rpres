@@ -84,18 +84,46 @@ Identifying "excursions"
 ======================================================
 
 ```{r, echo=TRUE, fig.width=10, fig.height=5}
-plott(X=list(zc11$P), r=TRUE)
+plott(X=list(Depth=zc11$P), r=TRUE)
 ```
 
 - (Can you suggest some improvements to the plot?)
 
-Identifying "excursions"
+Identifying "excursions" - Visualization
 ======================================================
 - Zooming in (better in Matlab)
-```{r, echo=TRUE, eval=FALSE}
-plott(X=list(zc11$P), r=TRUE, interactive=TRUE)
+```{r, echo=TRUE, eval=FALSE, fig.width=8, fig.height=3.5}
+plott(X=list(Depth=zc11$P), r=TRUE, 
+      interactive=TRUE,
+      recording_start=
+        zc11$info$dephist_deploy_datetime_start)
 ```
 
+Identifying "excursions" - Visualization
+======================================================
+- Improving the figure with ggplot2
+```{r, echo=TRUE, eval=TRUE}
+library(ggplot2)
+library(plotly)
+tagon <- as.POSIXct(zc11$info$dephist_device_datetime_start,
+                    tz='America/Los_Angeles')
+z <- data.frame(Depth=zc11$P$data, 
+                Time=c(1:length(zc11$P$data))/
+                  zc11$P$sampling_rate + tagon)
+f <- ggplot(z, aes(x=Time, y=Depth)) + 
+  geom_line() + ylim(2000,-25) + 
+  theme_bw(base_size=20)
+```
+
+Plotly visualizations
+=================================================
+
+```{r, fig.width=8, fig.height=3.5}
+f
+#ggplotly(f + theme_bw(base_size=12))
+```
+
+- Another example: <http://shiny.calvin.edu/sld33/birds>
 
 Identifying "excursions"
 ======================================================
@@ -105,7 +133,37 @@ Identifying "excursions"
     - Criterion based on body length or diameter
     - Arbitrary number
     - We're entering the realm of classification!
-- *Should add some refs here*
+
+Insights from 16 years ago
+======================================================
+How can we discriminate surface and deeper dives?
+
+- Hooker & Baird 2001
+- "deeper" = more than twice the sensor resolution
+- subjective, arbitrary declaration 
+  - "Foraging dives were any dives to greater than 150 m..."
+- multivariate statistics, machine learning
+  - cluster analysis
+  - neural networks
+- plot dive frequency vs. depth, duration and look for peaks (Boveng et al. 1996)
+
+3D dive depth, duration, frequency plot
+=======================================================
+![boveng method](images/Boveng.png)
+
+(figure from Hooker & Baird 2001)
+
+Insights from 16 years ago continued
+=======================================================
+- Log survivorship plot
+- Cumulative time vs. dive duration
+
+![methods5-6](images/methods5-6.png)
+
+Objectivity?
+=======================================================
+- Any missing methods/ideas?
+- Can you put these in order of increasing "objectivity"?
 
 Finding dives/flights given a threshold
 =======================================================
@@ -177,6 +235,7 @@ Identifying destination phase
 Dive stats example
 ==========================================================
 ```{r, echo=TRUE}
+zc11$P <- crop_to(zc11$P, tcues=c(9850, 66100))$X
 dt <- find_dives(zc11$P, mindepth=25)
 ds <- dive_stats(P=zc11$P, dive_cues=dt[,c('start','end')])
 head(ds,3)
@@ -185,13 +244,28 @@ head(ds,3)
 Dive stats example with auxiliary data
 ==========================================================
 ```{r}
-dt <- find_dives(zc11$P, mindepth=25)
+zc11$A <- crop_to(zc11$A, tcues=c(9850, 66100))$X
 ds <- dive_stats(P=zc11$P, X=msa(zc11$A),
                  dive_cues=dt[,c('start','end')])
 head(ds,2)
 ```
 
-**NOTE NEED TO REMAKE DATA WITH A IN M/SEC2**
+
+Plotting the dive stats output
+==========================================================
+```{r, fig.width=8, fig.height=3.5, dpi=300}
+par(las=1)
+boxplot(ds, horizontal=TRUE)
+```
+
+Plotting the dive stats output
+==========================================================
+```{r, fig.width=8, fig.height=8, dpi=300}
+par(las=1)
+dss <- ds/matrix(apply(ds, 2, FUN=function(x) max(abs(x), na.rm=TRUE)),
+                 nrow=nrow(ds), ncol=ncol(ds), byrow=TRUE)
+boxplot(dss, horizontal=TRUE)
+```
 
  Detecting change-points in tag data
 =======================================================
@@ -223,25 +297,79 @@ Did _________ Change?
 
 Simple change-point detection
 ========================================================
+```{r}
+library(changepoint)
+set.seed(1)
+x=c(rnorm(100,0,1),rnorm(100,10,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+cpt.mean(x, penalty='BIC', method='AMOC')
+```
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
+
+```{r}
+library(changepoint)
+set.seed(1)
+x=c(rnorm(100,0,1),rnorm(100,2,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=TRUE)
+C1
+```
+
+```{r}
+C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=FALSE)
+C1
+```
+
+
+Multiple change points
+================================================================
+
+```{r}
+x <- c(rnorm(100,0,1),
+       rnorm(100,2,1),
+       rnorm(50,5,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+cpt.mean(x, method='BinSeg')
+```
+
+But that was still too easy...
+===============================================================
 - Univariate case
-- Using means or means and variances - simulated example and R code
-- use R package changepoint
-- do you know if there is a change-point or not?
-- how many change-points are there exactly?
+- In example, only mean changed (not variance), equal variances
+   - (That's relatively easy to relax)
+- Using means (or means and variances)
+- Methods (with quite different results!) for:
+  - AMOC (At Most One Change)
+  - Epidemic change (changes, then goes back)
+  - Multiple change points
+- **Assumption of independence of data points**
 
 Multivariate change-point detection
 ========================================================
-- similar methods as before, but multiple data streams
-- are data means and variances same between streams?
-- are sizes of changes same between streams?
-- are data streams independent of each other (other than cp)?
-- could there be a lag in the change from one time-series to the next?
-- challenge level: multivariate >> univariate; unknown number of change points > known number; dependent data >>>>>>>independent data points
+- Similar methods as before, but multiple data streams
+- Can we assume **equal** means and variances same between streams?
+- Can we assume **same magnitude of change** between streams?
+- Can we assume **data streams independent** (other than cp)?
+- Can we assume **no lag in the change** from one time-series to the next?
+- Do we **know** how many change points there are?
+- The more you answer **NO**, the more the methods available thin out!
 
 Does it work anyway?
 ========================================================
-- what happens if we naively apply simple change point detectors to tag data?
-- is the answer right?
+- What happens if we naively apply simple change point detectors to tag data?
+
+```{r}
+jk <- njerk(zc11$A)
+plott(X=list(jerk=jk), fsx=zc11$A$sampling_rate)
+cpt.mean(jk, method='BinSeg', penalty='BIC', Q=30)
+```
+
+Naively trying out the change-point detection
+===============================================================
+- Is the answer right?
 - Maybe...and no...p-values are almost certainly wrong.
 - If the user has to decide whether it "worked" and adjust settings/assumptions, then why do the procedure?
 
@@ -253,9 +381,23 @@ Devilish dependence on settings
 
 Are there alternatives?
 ========================================================
-- Dina's curvature method?
-- Hope for the future? [http://www.lancs.ac.uk/~khaleghi/](http://www.lancs.ac.uk/~khaleghi/)
-- Just apply peak detection to univariate data? Data should not be the raw data then, but some summary of "what you think might be changing".
-- A very simple resampling approach for univariate data with baseline/comparison periods
-- broken stick models -- segmented package?
+- Methods for multivariate, dependent data
+    - [http://www.lancs.ac.uk/~khaleghi/](http://www.lancs.ac.uk/~khaleghi/)
+- Slightly more sophisticated way of doing "broken stick" or mean-based CP: package **segmented** in R
+    - "Fits regression models with segmented relationships between the response and one or more explanatory variables. Break-point estimates are provided."
+- Just apply peak detection to univariate data? 
+    - Data should not be the raw data then, but some summary of "what you think might be changing".
+    
+(Simple-minded?) Example
+==================================================================
+![StimpertBairds](images/stimpert-paper.png)
 
+(Simple-minded?) Example
+==================================================================
+![StimpertBairds](images/stimpert-md.png)
+
+- Set threshold via resampling from baseline period?
+- (But need to retain order of observations, because they are not independent...)
+- Simple rule: maximum observed in baseline?
+- More "conservative": X*max(baseline)?
+- Argh! Let's talk more tomorrow...

@@ -86,21 +86,56 @@ Identifying "excursions"
 
 
 ```r
-plott(X=list(zc11$P), r=TRUE)
+plott(X=list(Depth=zc11$P), r=TRUE)
 ```
 
 ![plot of chunk unnamed-chunk-2](ChangePoints-figure/unnamed-chunk-2-1.png)
 
 - (Can you suggest some improvements to the plot?)
 
-Identifying "excursions"
+Identifying "excursions" - Visualization
 ======================================================
 - Zooming in (better in Matlab)
 
 ```r
-plott(X=list(zc11$P), r=TRUE, interactive=TRUE)
+plott(X=list(Depth=zc11$P), r=TRUE, 
+      interactive=TRUE,
+      recording_start=
+        zc11$info$dephist_deploy_datetime_start)
 ```
 
+Identifying "excursions" - Visualization
+======================================================
+- Improving the figure with ggplot2
+
+```r
+library(ggplot2)
+library(plotly)
+tagon <- as.POSIXct(zc11$info$dephist_device_datetime_start,
+                    tz='America/Los_Angeles')
+z <- data.frame(Depth=zc11$P$data, 
+                Time=c(1:length(zc11$P$data))/
+                  zc11$P$sampling_rate + tagon)
+f <- ggplot(z, aes(x=Time, y=Depth)) + 
+  geom_line() + ylim(2000,-25) + 
+  theme_bw(base_size=20)
+```
+
+Plotly visualizations
+=================================================
+
+
+```r
+f
+```
+
+![plot of chunk unnamed-chunk-5](ChangePoints-figure/unnamed-chunk-5-1.png)
+
+```r
+#ggplotly(f + theme_bw(base_size=12))
+```
+
+- Another example: <http://shiny.calvin.edu/sld33/birds>
 
 Identifying "excursions"
 ======================================================
@@ -110,7 +145,37 @@ Identifying "excursions"
     - Criterion based on body length or diameter
     - Arbitrary number
     - We're entering the realm of classification!
-- *Should add some refs here*
+
+Insights from 16 years ago
+======================================================
+How can we discriminate surface and deeper dives?
+
+- Hooker & Baird 2001
+- "deeper" = more than twice the sensor resolution
+- subjective, arbitrary declaration 
+  - "Foraging dives were any dives to greater than 150 m..."
+- multivariate statistics, machine learning
+  - cluster analysis
+  - neural networks
+- plot dive frequency vs. depth, duration and look for peaks (Boveng et al. 1996)
+
+3D dive depth, duration, frequency plot
+=======================================================
+![boveng method](images/Boveng.png)
+
+(figure from Hooker & Baird 2001)
+
+Insights from 16 years ago continued
+=======================================================
+- Log survivorship plot
+- Cumulative time vs. dive duration
+
+![methods5-6](images/methods5-6.png)
+
+Objectivity?
+=======================================================
+- Any missing methods/ideas?
+- Can you put these in order of increasing "objectivity"?
 
 Finding dives/flights given a threshold
 =======================================================
@@ -150,7 +215,7 @@ for (m in 1:length(mds)){
 How much does mindepth matter?
 =======================================================
 
-![plot of chunk unnamed-chunk-6](ChangePoints-figure/unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-8](ChangePoints-figure/unnamed-chunk-8-1.png)
 
 Challenges of including "all" dives/flights
 ==========================================================
@@ -170,7 +235,7 @@ deep_dive <- crop_to(zc11$P, tcues=c(15845, 20307))[[1]]
 plott(X=list(depth=deep_dive), r=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-7](ChangePoints-figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-9](ChangePoints-figure/unnamed-chunk-9-1.png)
 
 Identifying destination phase
 ==========================================================
@@ -186,11 +251,256 @@ Identifying destination phase
 Dive stats example
 ==========================================================
 
+```r
+zc11$P <- crop_to(zc11$P, tcues=c(9850, 66100))$X
+dt <- find_dives(zc11$P, mindepth=25)
+ds <- dive_stats(P=zc11$P, dive_cues=dt[,c('start','end')])
+head(ds,3)
+```
+
+```
+  num       max    dur dest_st dest_et dest_dur to_dur  to_rate from_dur
+1   1  414.5977 6232.6  1068.2  5740.4   4672.2 1068.2 0.327947    492.4
+2   2 1737.0414 4078.0   970.4  2225.8   1255.4  970.4 1.520258   1852.4
+3   3  356.2372 1584.6   286.4   876.8    590.4  286.4 1.054850    708.0
+   from_rate
+1 -0.7137690
+2 -0.7970521
+3 -0.4271361
+```
+
+Dive stats example with auxiliary data
+==========================================================
+
+```r
+zc11$A <- crop_to(zc11$A, tcues=c(9850, 66100))$X
+ds <- dive_stats(P=zc11$P, X=msa(zc11$A),
+                 dive_cues=dt[,c('start','end')])
+head(ds,2)
+```
+
+```
+  num       max    dur dest_st dest_et dest_dur to_dur  to_rate from_dur
+1   1  414.5977 6232.6  1068.2  5740.4   4672.2 1068.2 0.327947    492.4
+2   2 1737.0414 4078.0   970.4  2225.8   1255.4  970.4 1.520258   1852.4
+   from_rate mean_aux     aux_sd mean_to_aux mean_dest_aux mean_from_aux
+1 -0.7137690 8.799320 0.04190261    8.784934      8.803916      8.786909
+2 -0.7970521 8.801839 0.04079357    8.810718      8.797636      8.800040
+   to_aux_sd dest_aux_sd from_aux_sd
+1 0.06467317  0.03423998  0.03500599
+2 0.02634890  0.04478863  0.04340466
+```
+
+
+Plotting the dive stats output
+==========================================================
+
+```r
+par(las=1)
+boxplot(ds, horizontal=TRUE)
+```
+
+![plot of chunk unnamed-chunk-12](ChangePoints-figure/unnamed-chunk-12-1.png)
+
+Plotting the dive stats output
+==========================================================
+
+```r
+par(las=1)
+dss <- ds/matrix(apply(ds, 2, FUN=function(x) max(abs(x), na.rm=TRUE)),
+                 nrow=nrow(ds), ncol=ncol(ds), byrow=TRUE)
+boxplot(dss, horizontal=TRUE)
+```
+
+![plot of chunk unnamed-chunk-13](ChangePoints-figure/unnamed-chunk-13-1.png)
+
+ Detecting change-points in tag data
+=======================================================
+- Identifying and characterizing change points
+    - Did experimental treatment "affect behavior"?
+    - When did change occur?
+    - Overlap with Det., Class.
+        - Finding change point = Detection
+        - Characterizing before/after behavior = Classification
+        
+Did _________ Change?
+========================================================
+From our running *Ziphius* example - is there a sonar effect?
+![SOCAL 10 Zc](images/zc10-resp.png)
+
+Did _________ Change?
+========================================================
+- What are the challenges of identifying "behavior change"?
+    - Vagueness about type of change sought
+    - Variability of animal behavior
+    - Conflicing information from different data streams
+    
+Did _________ Change?
+========================================================    
+- Humans extremely skilled at detecting patterns and synthesizing information from multiple visual data sources
+- This job is VERY HARD for a computer -- why?
+    - we need to tell the computer what to expect, and specify exactly what and how things will change when "something changes."
+    - most common change-point detection algorithms rely on conditions that are *not* met by tag data!
+
+Simple change-point detection
+========================================================
+
+```r
+library(changepoint)
+set.seed(1)
+x=c(rnorm(100,0,1),rnorm(100,10,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+```
+
+![plot of chunk unnamed-chunk-14](ChangePoints-figure/unnamed-chunk-14-1.png)
+
+```r
+cpt.mean(x, penalty='BIC', method='AMOC')
+```
+
+```
+Class 'cpt' : Changepoint Object
+       ~~   : S4 class containing 12 slots with names
+              cpttype date version data.set method test.stat pen.type pen.value minseglen cpts ncpts.max param.est 
+
+Created on  : Sun Aug 06 19:47:12 2017 
+
+summary(.)  :
+----------
+Created Using changepoint version 2.2.2 
+Changepoint type      : Change in mean 
+Method of analysis    : AMOC 
+Test Statistic  : Normal 
+Type of penalty       : BIC with value, 10.59663 
+Minimum Segment Length : 1 
+Maximum no. of cpts   : 1 
+Changepoint Locations : 100 
+```
+
+Simple change-point detection
+========================================================
+Maybe that was too easy...
+
+
+```r
+library(changepoint)
+set.seed(1)
+x=c(rnorm(100,0,1),rnorm(100,2,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+```
+
+![plot of chunk unnamed-chunk-15](ChangePoints-figure/unnamed-chunk-15-1.png)
+
+```r
+C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=TRUE)
+C1
+```
+
+```
+Class 'cpt' : Changepoint Object
+       ~~   : S4 class containing 12 slots with names
+              cpttype date version data.set method test.stat pen.type pen.value minseglen cpts ncpts.max param.est 
+
+Created on  : Sun Aug 06 19:47:12 2017 
+
+summary(.)  :
+----------
+Created Using changepoint version 2.2.2 
+Changepoint type      : Change in mean 
+Method of analysis    : AMOC 
+Test Statistic  : Normal 
+Type of penalty       : BIC with value, 10.59663 
+Minimum Segment Length : 1 
+Maximum no. of cpts   : 1 
+Changepoint Locations : 100 
+```
+
+
+```r
+C1 <- cpt.mean(x, penalty='BIC', method='AMOC', class=FALSE)
+C1
+```
+
+```
+        cpt  conf.value 
+100.0000000   0.9064313 
+```
+
+
+Multiple change points
+================================================================
+
+
+```r
+x <- c(rnorm(100,0,1),
+       rnorm(100,2,1),
+       rnorm(50,5,1))
+plot(c(1:length(x)), x, type='l', xlab='Index', ylab='Data')
+```
+
+![plot of chunk unnamed-chunk-17](ChangePoints-figure/unnamed-chunk-17-1.png)
+
+```r
+cpt.mean(x, method='BinSeg')
+```
+
+```
+Class 'cpt' : Changepoint Object
+       ~~   : S4 class containing 14 slots with names
+              cpts.full pen.value.full data.set cpttype method test.stat pen.type pen.value minseglen cpts ncpts.max param.est date version 
+
+Created on  : Sun Aug 06 19:47:12 2017 
+
+summary(.)  :
+----------
+Created Using changepoint version 2.2.2 
+Changepoint type      : Change in mean 
+Method of analysis    : BinSeg 
+Test Statistic  : Normal 
+Type of penalty       : MBIC with value, 16.56438 
+Minimum Segment Length : 1 
+Maximum no. of cpts   : 5 
+Changepoint Locations : 100 200 
+Range of segmentations:
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  200   NA   NA   NA   NA
+[2,]  200  100   NA   NA   NA
+[3,]  200  100  245   NA   NA
+[4,]  200  100  245  202   NA
+[5,]  200  100  245  202    3
+
+ For penalty values: 585.5256 200.4977 7.308779 3.853319 3.375176 
+```
+
+But that was still too easy...
+===============================================================
+- Univariate case
+- In example, only mean changed (not variance), equal variances
+   - (That's relatively easy to relax)
+- Using means (or means and variances)
+- Methods (with quite different results!) for:
+  - AMOC (At Most One Change)
+  - Epidemic change (changes, then goes back)
+  - Multiple change points
+- **Assumption of independence of data points**
+
+Multivariate change-point detection
+========================================================
+- Similar methods as before, but multiple data streams
+- Can we assume **equal** means and variances same between streams?
+- Can we assume **same magnitude of change** between streams?
+- Can we assume **data streams independent** (other than cp)?
+- Can we assume **no lag in the change** from one time-series to the next?
+- Do we **know** how many change points there are?
+- The more you answer **NO**, the more the methods available thin out!
+
+Does it work anyway?
+========================================================
+- What happens if we naively apply simple change point detectors to tag data?
 
 
 
 
 ```
-Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
-  'data' must be of a vector type, was 'NULL'
+Error in njerk(zc11$A) : could not find function "njerk"
 ```

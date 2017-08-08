@@ -43,7 +43,7 @@ if nargin<2,
 end
 
 if isstruct(A),
-	A = str2var(A) ;
+	A = sens2var(A) ;
    if isempty(A),
       return
    end
