@@ -59,7 +59,7 @@ function result = rotation_test(event_times, full_period, exp_period, n_rot, ts_
 %   in particular regarding (x,y)=(lat,long); increasing q3p, the (x,y) state variance, will increase the weight given to independent observations of (x,y), say from GPS readings.
 %
 % Example:
-%   r <- rotation_test((2000*rand(500,1)), [100,200], [],[],'mean', [], [], true)
+%   r <- rotation_test((20*rand(500,1)), [], [10,200], [],'mean', [], [], true)
 
 
 % Input checking
