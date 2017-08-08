@@ -129,7 +129,9 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
     data_i <- X[[i]]
     if (is.list(data_i)) {data_i <- data_i$data} 
     #if data is univariate
+    if (!exists('ylim', mode='numeric')){
     y_lim <- 1.1*range(data_i, na.rm=TRUE)
+    }
     if (r[i]){
       y_lim <- c(y_lim[2], y_lim[1])
     }
