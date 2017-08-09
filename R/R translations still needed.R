@@ -16,9 +16,4 @@ strip_quotes
 (sound)
 get_audio
 spec2tol
-spectrum_level
 wavseq_read
-
-
-Matlab needed:
-  rotation_test
