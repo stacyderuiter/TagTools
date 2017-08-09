@@ -113,7 +113,7 @@ else
    Af = diff(A) ;
 end
 
-[S,f] = spec_lev(Af,Nfft,fs,Nfft,Nfft/2) ;
+[S,f] = spectrum_level(Af,Nfft,fs,Nfft,Nfft/2) ;
 v = sum(10.^(S/10),2) ;      % sum spectral power in the three axes
 [m,n] = max(v) ;
 p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;

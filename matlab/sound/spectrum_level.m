@@ -54,7 +54,7 @@ if nargin<3
 	return
 end
 
-if nargin<4 | isempty(w),
+if nargin<4 || isempty(w),
    w = nfft ;
 end
 

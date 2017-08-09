@@ -16,7 +16,7 @@ function 	ncfile = read_dd(fname,depid)
 %      to this deployment, for example, mn12_186a.
 %  
 % 		Results:
-%     ncfile if the name of the NetCDF file containing the tag data. It will
+%     ncfile is the name of the NetCDF file containing the tag data. It will
 %      be 'depid'_raw.nc (e.g., mn12_186a_raw.nc).
 %
 % 		Example:
@@ -34,7 +34,7 @@ if nargin<1,
     return
 end
 
-[V,HDR] = read_dd_txt(fname) ;
+[V,HDR] = read_tdr10dd_csv(fname) ;
 info.depid=depid;
 info.data_source=fname;
 info.data_nfiles=1;

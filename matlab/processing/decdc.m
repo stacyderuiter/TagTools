@@ -51,7 +51,15 @@ end
 
 if isstruct(x),
 	X = x ;
-	x = sens2var(x,'regular') ;
+	if ~isfield(x,'data'),
+		fprintf('decdc: input must be a proper sensor structure\n') ;
+		return
+	end
+	if ~strcmp(x.sampling,'regular')
+		fprintf('decdc: input must be a regularly sampled sensor structure\n') ;
+		return
+	end
+	x = x.data ;
 end
 
 flen = 12*df ;

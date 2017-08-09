@@ -1,6 +1,6 @@
-function    [t,ti] = rms_track(T,fs,intvl)
+function    t = rms_track(T,fs,intvl)
 
-%    [t,ti] = rms_track(T,fs,intvl)
+%    t = rms_track(T,fs,intvl)
 %    Measure the RMS distance covered by an animal over an interval, i.e.,
 %    the radius of a circle that covers most of the track in that interval.
 %    This is a measure of track tortuousity. This function finds the mean

@@ -11,8 +11,8 @@ function    [V,q] = inv_axis(A)
 %		the least in a movement matrix.
 %
 %		Input:
-%		A is a triaxial sensor measurement axis e.g., from on accelerometer or magnetometer.
-%		 The frame and unit of A do not matter.
+%		A is a sensor structure or matrix containing a triaxial sensor measurement 
+%      e.g., from an accelerometer or magnetometer. The frame and unit of A do not matter.
 %
 %		Returns:		 
 %		V is a 3x1 vector defining the least varying axis in A. V is a direction vector so
@@ -38,9 +38,17 @@ if nargin<1,
 	return
 end
 	
+if isstruct(A),
+   A = sens2var(A) ;
+   if isempty(A), return, end
+end
+
 % energy ratio between plane-of-motion and axis of rotation
 k = find(~any(isnan(A),2)) ;
 QQ = A(k,:)'*A(k,:) ;      % form outer product of movement matrix
 [V,D] = svd(QQ) ;         	% do singular value decomposition 
-V = V(:,3) ;				   % this is the least varying axis (i.e., the one with the smallest SV)
-q = D(3,3)/sqrt(D(1,1)*D(2,2)) ;  % what fraction of movement is in the 'invariant' axis
+D
+D = abs(diag(D)) ;
+[D,I] = sort(D) 
+q = D(1)/sqrt(D(2)*D(3)) ;  % what fraction of movement is in the 'invariant' axis
+V = V(:,I(1)) ;				 % this is the least varying axis (i.e., the one with the smallest SV)
