@@ -15,12 +15,12 @@ function result = rotation_test(event_times, exp_period, full_period, n_rot, ts_
 %       If event_times should not be sorted prior to analysis (for example, if times 
 %       are given in hours of the day and the times in the dataset span 
 %       several days), be sure to specify skip_sort=true.
-%   full_period is a length two vector giving the start and end times of the full period
-%       during which events in event_times might have occurred. If missing, default is [min(event_times), max(event_times)].
 %   exp_period A two-column vector, matrix, or data frame specifying the start and end times of the "experimental" 
 %       period for the test. If a matrix or data frame is provided, one column should be start time(s) and the other end 
 %       time(s). Note that all data that falls into any experimental period will be concatenated and passed to ts_fun.
 %       If finer control is desired, consider writing your own test using the underlying function rotate.
+%   full_period is a length two vector giving the start and end times of the full period
+%       during which events in event_times might have occurred. If missing, default is [min(event_times), max(event_times)].
 %   n_rot the number of rotations (randomizations) to carry out. Default is n_rot=10000.
 %   ts_fun is a function to compute the test statistic. Input provided to this function 
 %       will be the times of events that occur during the "experimental" period.  The default function is length - in other 

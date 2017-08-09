@@ -1,4 +1,9 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Summarising\040Dives}{}% 2
+\BOOKMARK [1][-]{section.2}{Detecting\040and\040Summarising\040Dives}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Exploring\040a\040ready-made\040dataset}{section.2}% 3
-\BOOKMARK [1][-]{Item.5}{References}{}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Finding\040dives\040and\040summarising\040them}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{A\040regression\040model}{}% 5
+\BOOKMARK [1][-]{section.4}{Rotation\040test}{}% 6
+\BOOKMARK [1][-]{section.5}{Mahalanobis\040distance}{}% 7
+\BOOKMARK [1][-]{section.6}{HMM\040for\040inferring\040behavioural\040states\040from\040tag\040data}{}% 8
+\BOOKMARK [1][-]{Item.38}{References}{}% 9

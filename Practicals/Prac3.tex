@@ -86,27 +86,37 @@ Practical 3}
 
 
 \section{Introduction}
-The exercises in this practical will help you explore:
-\begin{itemize}
-  \item event detection
-  \item numerical summaries of events
-  \item visualising events
-  \item statistical analysis of tag data
-  \item inferring behavioural states from tag data
-\end{itemize}
+% The exercises in this practical will help you explore:
+% \begin{itemize}
+%   \item event detection \& summary statistics
+%   \item Regression models
+%   \item Rotation test
+%   \item Mahalnobis distance
+%   \item HMM for inferring behavioural states from tag data
+% \end{itemize}
 
-The practical contains more exercises than you are likely to be able to complete in the time available, but each section is designed to be relatively stand-alone, so please feel free to pick and choose the topics that are most interesting to you.
+The practical (like all the ones before it!) contains more exercises than you are likely to be able to complete in the time available, but each section is designed to be relatively stand-alone, so please feel free to pick and choose the topics that are most interesting to you.
 
-Data are provided for each example, but please feel free to try to incorporate your own data as time and ambition allow!
+Data are provided for each example, but please feel free to try to incorporate your own data as time and ambition allow.
 
-\section{Summarising Dives}
+Many of the statistical analyses are much easier to do in R. This is because packages to do much more sophisticated stats are available, and they are better documented (i.e. you can determine exactly what they are doing with the data and what the output means!).  The tasks that I don't know how to do in Matlab are clearly marked and no Matlab code is given for them (although you are welcome to try to figure out a way!).
+
+\section{Detecting and Summarising Dives}
 \subsection{Exploring a ready-made dataset}
-Consider a dataset on 272 dives by 15 Cuvier's beaked whales. The data were collected using DTAGs, and published along with \cite{DeRuiter2013a}. The data are available from \url{http://dx.doi.org/10.5061/dryad.n77k3}, but we will load a slightly cleaned-up version of the dataset with more manageable variable names.  
+\textbf{OK in both R and Matlab/Octave.}
+
+Consider a dataset on 272 dives by 15 Cuvier's beaked whales. The data were collected using DTAGs, and published along with \cite{DeRuiter2013a}. The data are available from \url{http://dx.doi.org/10.5061/dryad.n77k3}, but we will load a slightly cleaned-up version of the dataset with more manageable variable names. (If you are not sure what any of the variables are measuring or want to check their units, have a look at the file on Dryad.)  
 \begin{enumerate}
 \item If you want practice tidying up the variable names yourself, fetch the original text file from the Dryad repository and get to work.
-\item Read in the clean data from the file \texttt{zc\_dives.csv} on your memory stick, or from the url \url{http://www.calvin.edu/~sld33/data/zc\_dives.csv}.  The main dataset has one column of whale IDs which are strings rather than numeric values. If you would prefer not to deal with these in Matlab/Octave, there is a version of the file called zc\_dives\_numeric.csv that omits that column.
+\item Read in the clean data from the file \texttt{zc\_dives.csv} on animaltags.org, or from the url \url{http://www.calvin.edu/~sld33/data/zc\_dives.csv}.  The main dataset has one column of whale IDs which are strings rather than numeric values. If you would prefer not to deal with these in Matlab/Octave, there is a version of the file called zc\_dives\_numeric.csv that omits that column.
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{zc_dives} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwc{file}\hlstd{=}\hlstr{'http://www.calvin.edu/~sld33/data/zc_dives.csv'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -119,19 +129,362 @@ Consider a dataset on 272 dives by 15 Cuvier's beaked whales. The data were coll
 \item Create a simple box plot of the whole dataset (one boxplot per column, since each column of the dataset is one dive summary metric).
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figs/real-mdist-simple_boxplot-1} 
-
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(zc_dives)}
+\end{alltt}
+\end{kframe}
 \end{knitrout}
+
 \begin{enumerate}
 \item What do you notice about the data?
-\item How could the visualization be improved (so you can better see patterns in all the variables)? Think creatively and check out the help for the boxplot function for more ideas...
+\item How could the visualization be improved (so you can better see patterns in all the variables)? Think creatively and check out the help for the boxplot function for more ideas...What alternatives to box plots might be more informative here?
+
 \end{enumerate}
 
 \end{enumerate}%end exploring dive summaries
 
+\subsection{Finding dives and summarising them}
+\textbf{OK in both R and Matlab/Octave.}
 
-\bibliographystyle{plainnat} 
-\addcontentsline{toc}{section}{References} \bibliography{library} 
+Now consider a dataset from a DTAG attached to a Cuvier's beaked whale, \textit{Ziphius cavirostris}.  Load the data from file \texttt{zc11\_267a.nc}.
+
+
+
+\begin{enumerate}
+\item Make a plot of the dive profile. What do you notice?
+\item You probably want to crop the data before further analysis, because there is a period at the start of the recording when the tag was not yet deployed on the whale.
+\item What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
+\item Use \texttt{find\_dives} to detect all dives deeper than your chosen depth \textit{mindepth} (to run in matlab, just omit the "mindepth="):
+
+In R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dt} \hlkwb{<-} \hlkwd{find_dives}\hlstd{(zc}\hlopt{$}\hlstd{P,} \hlkwc{mindepth}\hlstd{=mindepth)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+In Matlab/Octave:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dt} \hlkwb{=} \hlkwd{find_dives}\hlstd{(P, mindepth);}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Now use \texttt{dive\_stats} to compute summary statistics for all the dives you detected.
+
+In R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ds} \hlkwb{<-} \hlkwd{dive_stats}\hlstd{(zc}\hlopt{$}\hlstd{P,} \hlkwc{dive_cues}\hlstd{=dt[,}\hlkwd{c}\hlstd{(}\hlstr{'start'}\hlstd{,} \hlstr{'end'}\hlstd{),])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+In Matlab/Octave:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ds = \hlkwd{dive_stats}(P, [ds.start, ds.end]);
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Have a look at the dive stats and perhaps make a plot of some or all of them. Do you notice anything interesting?
+
+\item Choose an auxiliary variable (could be anything of interest - pitch, roll, heading, MSA, ODBA, njerk...). Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable.
+
+In R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ds} \hlkwb{<-} \hlkwd{dive_stats}\hlstd{(zc}\hlopt{$}\hlstd{P,} \hlkwc{dive_cues}\hlstd{=dt[,}\hlkwd{c}\hlstd{(}\hlstr{'start'}\hlstd{,} \hlstr{'end'}\hlstd{),],}
+                 \hlkwc{X}\hlstd{=my_aux_var)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+In Matlab/Octave:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ds = \hlkwd{dive_stats}(P, [ds.start, ds.end], my_aux_var);
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Examine and/or plot again.
+
+\end{enumerate}%end find dives/dive stats
+
+\section{A regression model}
+\textbf{R only}
+Let's consider again the beaked whale dive data. The dataset contains data on 272 dives by 15 Cuvier's beaked whales. The data were collected using DTAGs, and published along with \cite{DeRuiter2013a}. The data are available from \url{http://dx.doi.org/10.5061/dryad.n77k3}, but we will load a slightly cleaned-up version of the dataset with more manageable variable names. If you haven't already loaded it, it is available from the file \texttt{zc\_dives.csv} on animaltags.org, or from the url \url{http://www.calvin.edu/~sld33/data/zc\_dives.csv}.
+
+\begin{enumerate}
+  \item Let's try to formulate a model for max\_depth (the maximum depth attained during each dive). Here is a first attempt - feel free to follow along through this example as written, or try other predictor or response variables if you like.
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(max_depth} \hlopt{~} \hlstd{descent_rate} \hlopt{+} \hlstd{fluke_rate} \hlopt{+}
+            \hlstd{odba} \hlopt{+} \hlstd{dive_type,}
+          \hlkwc{data}\hlstd{=zc_dives)}
+\hlkwd{summary}\hlstd{(lm1)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item It would have been a good idea to look at scatter plots of the data for each candidate predictor variable before fitting the model, in order to verify that there isn't a non-linear relationship between the predictor(s) and the response variable.  Do that now - do you see any problems? If so you may want to consider fitting smooth terms instead for those predictors (function gam from package mgcv for example).
+
+For example:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(max_depth}\hlopt{~}\hlstd{descent_rate,} \hlkwc{data}\hlstd{=zc_dives)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Considering the summary output, is anything suprprising? Interesting?
+
+\item Before interpreting the results too intently, we should do some model assessment. Consider some plots of the data and residuals (feel free to add to the suggestions below if you have others you like to see). Do you see any surprises?
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{resid}\hlstd{(lm1)}\hlopt{~}\hlkwd{fitted}\hlstd{(lm1))}
+\hlkwd{hist}\hlstd{(}\hlkwd{resid}\hlstd{(lm1))}
+\hlkwd{acf}\hlstd{(}\hlkwd{resid}\hlstd{(lm1))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item When we plotted the ACF above, it computed ACF values regardless of whale ID. The data includes observations of multiple animals, and while we might expect temporal autocorrelation within an animal, we really wouldn't expect much between animals tagged independently.  It would be better to compute the ACF only \textit{within} whales, respecting the whale IDs. The tag tool kit provides a function to do this:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{block_acf}\hlstd{(}\hlkwd{resid}\hlstd{(lm1),} \hlkwc{blocks} \hlstd{= zc_dives}\hlopt{$}\hlstd{whale_ID,}
+          \hlkwc{max_lag}\hlstd{=}\hlnum{15}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item The next step would be to adjust the model to try to account for any problems found during the model assessment. In the example above, there doesn't seem to be an issue with autocorrelation! Why do you think that is?  However, there is a problem with non-constant error variance.  We might be able to fix it by transforming the response variable:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(max_depth)} \hlopt{~} \hlstd{descent_rate} \hlopt{+} \hlstd{fluke_rate} \hlopt{+}
+            \hlstd{odba} \hlopt{+} \hlstd{dive_type,}
+          \hlkwc{data}\hlstd{=zc_dives)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Examine the summary and diagnostic plots again.  Would you trust the model results now, or make further adjustments?  Which variables do you think should be retained in the best model for this response variable?
+
+\item Now consider a second model for post\_dive\_surf (with predictor(s) of your choice). Fit the new model and do model assessment again. (Be sure to use block\_acf.) In this case, you will see a small but potentially worrisome amount of temporal autocorrelation in the residuals.
+
+\item Try fitting a GEE instead of a linear model to account for this correlation over time. (Adjust the model below to fit your predictor and response variables.) You will have to have the package geeglm installed.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{gee1} \hlkwb{<-} \hlstd{geepack}\hlopt{::}\hlkwd{geeglm}\hlstd{(}\hlkwd{log}\hlstd{(post_dive_surf)} \hlopt{~} \hlstd{max_depth} \hlopt{+}
+                          \hlstd{descent_rate} \hlopt{+} \hlstd{dive_dur,}
+                        \hlkwc{data}\hlstd{=zc_dives,}
+                        \hlkwc{id}\hlstd{=zc_dives}\hlopt{$}\hlstd{whale_ID)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Examine the summary and diagnostic plots again.  How have the p-values and standard errors changed, and why?  How has the ACF plot changed, and why?
+
+\item Consider whether, for these data, you would prefer to fit a GEE or a random effects model to account for the temporal correlation within individuals.  How would you justify your choice?
+\end{enumerate}%end regression
+
+\section{Rotation test}
+\textbf{OK in both R and Matlab/Octave}
+We were very fortunate to obtain a number of test datasets from different sources that we have permission to make publicly available with the tag tool kit. One dataset (obtained from anonymous Scottish contacts) is particularly exciting and possibly unique in the world: a fragment of tag data obtained from a high-resolution movement tag deployed on Nessie, the Loch Ness Monster. Unfortunately several of the tag sensors malfunctioned, but we were able to salvage some dive depth data to be used in this example.  The dataset is called nessie.nc.
+
+\begin{enumerate}
+\item Read in the data and make a plot of the dive profie (because of course you want to see it).
+\item According to some Scottish lore, Nessie surfaces more often in the hour around noon than during the rest of the day (because the glare on the water, and the lure of lunch, make it more difficult for people to spot her then). But does she really?  Use find\_dives to find start times for all her submergences, which we will use as a proxy for breath times. In this case you will want to use a threshold that is as shallow as practicable.
+
+\item Do you think you could just use a regression model for surfacing rate to answer this question? Why or why not?
+
+\item Use a rotation test to test whether the number of surfacings between 11:30 and 12:30.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{th} \hlkwb{=} \hlnum{0.6}\hlstd{;}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+In R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{setwd}\hlstd{(}\hlstr{'C:/Users/Stacy DeRuiter/Dropbox/TagTools/data'}\hlstd{)}
+\hlstd{nessie} \hlkwb{<-} \hlkwd{load_nc}\hlstd{(}\hlstr{'nessie.nc'}\hlstd{)}
+\hlcom{#make time variables}
+\hlstd{t} \hlkwb{<-} \hlkwd{as.POSIXct}\hlstd{(nessie}\hlopt{$}\hlstd{info}\hlopt{$}\hlstd{dephist_device_datetime_start,}
+                \hlkwc{tz}\hlstd{=}\hlstr{'GMT'}\hlstd{)} \hlopt{+}
+  \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(nessie}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{data))}\hlopt{/}\hlstd{nessie}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{sampling_rate}
+\hlcom{#find data times between 11:30 and 12:30}
+\hlstd{s} \hlkwb{<-} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{'2017-01-13 11:30:00'}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{'GMT'}\hlstd{)}
+\hlstd{e} \hlkwb{<-} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{'2017-01-13 12:30:00'}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{'GMT'}\hlstd{)}
+\hlstd{noon} \hlkwb{<-} \hlkwd{range}\hlstd{(}\hlkwd{which}\hlstd{(t} \hlopt{<} \hlstd{e} \hlopt{&} \hlstd{t} \hlopt{>} \hlstd{s))}
+\hlcom{#convert to seconds}
+\hlstd{noon} \hlkwb{<-} \hlstd{noon}\hlopt{/}\hlstd{nessie}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{sampling_rate}
+\hlcom{#find dives}
+\hlstd{dt} \hlkwb{<-} \hlkwd{find_dives}\hlstd{(nessie}\hlopt{$}\hlstd{P,} \hlkwc{mindepth}\hlstd{=th)}
+\hlcom{#do test}
+\hlstd{RTR} \hlkwb{<-} \hlkwd{rotation_test}\hlstd{(}\hlkwc{event_times} \hlstd{= dt}\hlopt{$}\hlstd{start,}
+                     \hlkwc{exp_period}\hlstd{=noon,}
+                     \hlkwc{full_period}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
+      \hlkwd{length}\hlstd{(nessie}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{data)}\hlopt{/}\hlstd{nessie}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{sampling_rate),}
+      \hlkwc{n_rot}\hlstd{=}\hlnum{10000}\hlstd{,} \hlkwc{ts_fun}\hlstd{=length)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+In Matlab:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+nessie = \hlkwd{load_nc}(\hlstr{'nessie.nc'});
+%make time variables
+t = \hlkwd{datenum}(info.dephist_device_datetime_start) + ...
+  [1:\hlkwd{length}(P.data)]./P.sampling_rate/3600/24 ;
+%find data times between 11:30 and 12:30
+s = \hlkwd{datenum}(\hlstr{'2017-01-13 11:30:00'});
+e = \hlkwd{datenum}(\hlstr{'2017-01-13 12:30:00'});
+[st,et] = \hlkwd{bounds}(\hlkwd{find}(t < e & t > s));
+%convert to seconds
+st = st/P.sampling_rate;
+et = et/P.sampling_rate;
+%find dives
+dt = \hlkwd{find_dives}(P, th);
+%do test
+RTR = \hlkwd{rotation_test}(dt.start,[st,et], ...
+                     [0,\hlkwd{length}(P.data)/P.sampling_rate],...
+                    100000, \hlstr{'length'}, [],[],[]);
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item What can you conclude?
+
+\end{enumerate}
+
+\section{Mahalanobis distance}
+\textbf{OK in both R and Matlab/Octave but Matlab code is not provided - use the example in the previous section to translate from R. (Also refer to help for the m\_dist function.)}
+Consider again the dataset zc11\_267a.  
+
+\begin{enumerate}
+\item How might you use Mahalanobis distance to summarise the multivariate tag data into a single data stream?  What input variables might you choose to try to quantify how the whale might have changed its behavior in response to sonar sounds? (If you need more context, you can check out the paper at \url{http://rsbl.royalsocietypublishing.org/content/9/4/20130223}.)
+
+\item Use the tag tool function m\_dist to compute the Mahalanobis distance using your chosen inputs, using the model below as a guide (note that my choices of inputs are kind of ridiculous - do better!). You will have to choose an averaging window length and a between window overlap. You can use the experiment start and end times provided. How would you justify these choices?
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{MDdata} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{jerk}\hlstd{=}\hlkwd{njerk}\hlstd{(zc}\hlopt{$}\hlstd{A),}
+                     \hlkwc{Mx} \hlstd{= zc}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{data)}
+\hlstd{est} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{'2011-09-24 14:45:00'}\hlstd{)} \hlopt{-}
+  \hlkwd{as.POSIXct}\hlstd{(zc}\hlopt{$}\hlstd{info}\hlopt{$}\hlstd{dephist_device_datetime_start))}\hlopt{*}\hlnum{3600}
+
+\hlstd{eet} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{'2011-09-24 15:15:00'}\hlstd{)}\hlopt{-}
+  \hlkwd{as.POSIXct}\hlstd{(zc}\hlopt{$}\hlstd{info}\hlopt{$}\hlstd{dephist_device_datetime_start))}\hlopt{*}\hlnum{3600}
+
+\hlstd{MD} \hlkwb{<-} \hlkwd{m_dist}\hlstd{(}\hlkwc{data}\hlstd{=MDdata,} \hlkwc{sampling_rate}\hlstd{=zc}\hlopt{$}\hlstd{P}\hlopt{$}\hlstd{sampling_rate,}
+             \hlkwc{smoothDur} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{overlap} \hlstd{=} \hlnum{9.5}\hlstd{,}
+             \hlkwc{expStart} \hlstd{= est,} \hlkwc{expEnd} \hlstd{= eet)}
+\hlkwd{plot}\hlstd{(MD}\hlopt{$}\hlstd{t, MD}\hlopt{$}\hlstd{dist,} \hlkwc{type}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item If you included dive depth as an input variable, how did it affect the resulting distance metric? Why do you think that is? Could there be another, better way to include information about dive profile in the Mahalanobis distance metric?
+
+\item Do you think there was a "change" in behavior in response to the sonar exposure?
+
+\item If you wanted to set a threshold for detecting a "change", how would you do it?
+\end{enumerate}
+
+
+\section{HMM for inferring behavioural states from tag data}
+\textbf{R only}
+Let's reconsider the sheep data that you used for yesterday's practical.  Load in the file oa14\_319a.nc, which contains the magnetometer corrections you worked on in Practical 2 already.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{setwd}\hlstd{(}\hlstr{'C:/Users/Stacy DeRuiter/Dropbox/TagTools/data'}\hlstd{)}
+\hlstd{sheep} \hlkwb{<-} \hlkwd{load}\hlstd{(}\hlstr{'oa14_319a.nc'}\hlstd{)}
+\hlstd{behav} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{'H2_split0_behaviors.csv'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{enumerate}
+\item We would like to fit an HMM to try to infer sheep behavior states.  What are 1-3 variables that you think might be informative to help discriminate between activities like walking, running, grazing, etc.?  Compute your variables of choice for the sheep data.
+
+\item We will use the R package momentuHMM to fit a simple HMM to the data (the example shown here uses MSA, but please choose your own set of one or more input data streams).  You should consider summarizing the data over longer time intervals than the sensor data sampling rate or cropping the data for model fitting.
+
+First some preparations:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(momentuHMM)}
+\hlkwd{library}\hlstd{(MASS)} \hlcom{#for fitdistr()}
+\hlstd{Ac} \hlkwb{<-} \hlkwd{crop_to}\hlstd{(sheep}\hlopt{$}\hlstd{A,} \hlkwc{tcues}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{10000}\hlstd{,}\hlnum{15000}\hlstd{))}\hlopt{$}\hlstd{X}
+\hlstd{data} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{MSA}\hlstd{=}\hlkwd{msa}\hlstd{(Ac))}
+\hlstd{data} \hlkwb{<-} \hlkwd{prepData}\hlstd{(data,} \hlkwc{coordNames}\hlstd{=}\hlkwa{NULL}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now fit the model:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{myHMM} \hlkwb{<-} \hlkwd{fitHMM}\hlstd{(data,} \hlkwc{nbStates}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{dist}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{MSA}\hlstd{=}\hlstr{'exp'}\hlstd{),}
+                \hlkwc{Par0} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{MSA}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{rate1}\hlstd{=}\hlnum{1.6}\hlstd{,} \hlkwc{rate2}\hlstd{=}\hlnum{1}\hlstd{)))}
+\hlstd{myHMM}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now "decode" (identify the state that was most likely at each observed time point):
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{states} \hlkwb{<-} \hlkwd{viterbi}\hlstd{(myHMM)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item The model I showed above is hyper-simplistic - a good model for sheep behavior would probably use more than one input data stream (and maybe not MSA), would probably have more than one state, and might not use an exponential distribution for the state-dependent process.  However, it is simple enough to be fitted easily and without any errors! See if you can progressively make the model more realistic and interesting.
+
+\item If you think you may have done a decent job fitting a model to some of the sheep data, see how you did! The results of a behavior classification model fitted by the data owners (Juan Morales and coworkers) are available in the file sheep\_behavior.csv. How do your results compare?
+\end{enumerate}
+
+\bibliographystyle{plainnat}
+\addcontentsline{toc}{section}{References} \bibliography{library}
 
 \end{document}

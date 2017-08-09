@@ -97,11 +97,11 @@ if isstruct(X)
         return
     end
 else
-    if ~isempty(X) && size(X,1)==size(p,1)
-        x = X;
-    else
+    if ~isempty(X) && size(X,1) ~= size(p,1)
        fprintf('P and X must be sampled at the same rate\n');
-        return 
+       return
+    else
+       x = X;
     end
 end
 
@@ -143,26 +143,35 @@ if angular == 1
     to_angle_var = dur;
     dest_angle_var = dur;
     from_angle_var = dur;
+else if angular~=1 && ~isempty(x)
+    mean_aux=dur;
+    aux_sd=dur;
+    mean_to_aux=dur;
+    mean_from_aux=dur;
+    mean_dest_aux=dur;
+    from_aux_sd=dur;
+    to_aux_sd=dur;
+    dest_aux_sd=dur;
 end
 
 for d = 1:size(dive_cues,1) %loop over dives
   z = p((di(d,1):di(d,2))) ;
   maxz(d) = nanmax(z);
-  pt = range(find(z > (prop * max(z))));
+  [S,L] = bounds(find(z > (prop * max(z))));
   dur(d) = dive_cues(d,2) - dive_cues(d,1);
-  dest_st(d) = pt(1)/fs;
-  dest_et(d) = pt(2)/fs;
+  dest_st(d) = S/fs;
+  dest_et(d) = L/fs;
   dest_dur(d) = dest_et(d) - dest_st(d);
-  to_dur(d) = pt(1)/fs;
-  to_rate(d) = (z(pt(1)) - z(1))/to_dur(d);
-  from_dur(d) = (1/fs)*(length(z)-pt(2));
-  from_rate(d) = (z(end) - z(pt(2)))/from_dur(d)
+  to_dur(d) = S/fs;
+  to_rate(d) = (z(S) - z(1))/to_dur(d);
+  from_dur(d) = (1/fs)*(length(z)-L);
+  from_rate(d) = (z(end) - z(L))/from_dur(d);
   if (~isempty(x))
     if angular==1 
         a = x(di(d,1):di(d,2)); 
-        at = a(1:pt(1));
-        af = a(pt(2):length(a));
-        ad = a(pt(1):pt(2));
+        at = a(1:S);
+        af = a(L:length(a));
+        ad = a(S:L);
         mean_angle(d) = circ_mean(a);
         angle_var(d) = circ_var(a);
         mean_to_angle(d) = circ_mean(at);
@@ -174,9 +183,9 @@ for d = 1:size(dive_cues,1) %loop over dives
   else
     %not angular data
     a = X(di(d,1):di(d,2)); 
-    at = a(c(1:pt(1)));
-    af = a(c(pt(2):length(a)));
-    ad = a(c(pt(1):pt(2)));
+    at = a(1:S);
+    af = a(L:end);
+    ad = a(S:L);
     mean_aux(d) = nanmean(a);
     aux_sd(d) = std(a, 'omitnan');
     mean_to_aux(d) = nanmean(at);
@@ -189,9 +198,27 @@ for d = 1:size(dive_cues,1) %loop over dives
   end % end processing X
 end %end loop over dives
   %change output column names if needed
-  if X_name ~= 'angle' && X_name ~= 'aux'
-    names(Y) = gsub(pattern='angle', replacement=X_name, x=names(Y));
-    names(Y) = gsub(pattern='aux', replacement=X_name, x=names(Y));    
+  Y = struct('dur', dur, 'maxz', maxz, 'dest_st', dest_st, 'dest_et', ...
+      dest_et, 'dest_dur', dest_dur, 'from_dur', from_dur, 'from_rate', ...
+      from_rate, 'to_rate', to_rate);
+  if angular ~= 1 && ~isempty(x)
+  Y.(['mean_' X_name]) = mean_aux;
+  Y.(['mean_to_' X_name]) = mean_to_aux;
+  Y.(['mean_dest_' X_name]) = mean_dest_aux;
+  Y.(['mean_from_' X_name]) = mean_from_aux;
+  Y.([X_name '_sd']) = aux_sd;
+  Y.(['to_' X_name '_sd' ]) = to_aux_sd;
+  Y.(['dest_' X_name '_sd']) = dest_aux_sd;
+  Y.(['from_' X_name '_sd']) = from_aux_sd;
+  elseif ~isempty(x)
+      Y.(['mean_' X_name]) = mean_angle;
+  Y.(['mean_to_' X_name]) = mean_to_angle;
+  Y.(['mean_dest_' X_name]) = mean_dest_angle;
+  Y.(['mean_from_' X_name]) = mean_from_angle;
+  Y.([X_name '_var']) = aux_var;
+  Y.(['to_' X_name '_var' ]) = to_aux_var;
+  Y.(['dest_' X_name '_var']) = dest_aux_var;
+  Y.(['from_' X_name '_var']) = from_aux_var;
   end
   return
 end

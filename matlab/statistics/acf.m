@@ -40,8 +40,8 @@ if d(2)==1
   y=y(:) ;
 end
 
-if nargin < 2
-  max_lag = min(10*log10(N), (N-1)) ;
+if nargin < 2 || isempty(max_lag)
+  max_lag = round(min(10*log10(N), (N-1))) ;
 end
 
 [a1, a2] = size(max_lag) ;
