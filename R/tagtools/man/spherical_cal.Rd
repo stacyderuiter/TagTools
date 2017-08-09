@@ -19,13 +19,31 @@ A list with 2 elements:
  \item{\strong{Y: }} The matrix of converted sensor values. These will have the same units as for input argument n. The size of Y is the same as the size of X and it has the same frame and sampling rate.
  \item{\strong{G: }} The calibration structure containing fields: G.poly is a matrix of polynomials. The first column of G.poly is the three scale factors applied to the columns of X. The second column is the offset added to each column of X after scaling. G.cross is a 3x3 matrix of cross-factors. If there are no cross-terms, this is the identity matrix. Off-axis terms correct for cross-axis sensitivity.
 }
+A message will also be printed to the screen presenting
 }
 \description{
 This function is used to deduce the calibration constants for a triaxial field sensor, such as an accelerometer or magnetometer, based on movement data. This can be used to do a 'bench' calibration of a sensor.
 }
 \details{
-The function reports the residual and the axial balance of the data. A low residual e.g., <5% indicates that the data can be calibrated well and there is not much noise. The axial balance indicates whether the movement in X is suitable for data-driven calibration. If the movement covers all directions fairly equally, the axial balance will be high. A balance <20% may lead to unreliable calibration. For bench calibrations, a high axial balance is achieved by rotating the sensor through the full 3-dimensions. Sampling rate and frame of Y are the same as the input data so Y has the same size as X. The units of Y are the same as the units used for n. If n is not specified, the units of Y are the same as for the input data. It is a good idea to low-pass filter and/or remove outliers from the sensor data before using this function to reduce errors from specific acceleration and sensor noise.
+The function reports the residual and the axial balance of the data.
+A low residual e.g., <5\% indicates that the data can be calibrated 
+well and there is not much noise. 
+The axial balance indicates whether the movement in X is 
+suitable for data-driven calibration. If the movement covers all 
+directions fairly equally, the axial balance will be high. 
+A balance <20 \% may lead to unreliable calibration. 
+For bench calibrations, a high axial balance is achieved by 
+rotating the sensor through the full 3-dimensions. 
+Sampling rate and frame of Y are the same as the input data so 
+Y has the same size as X. The units of Y are the same as the units 
+used for n. If n is not specified, the units of Y are the same as 
+for the input data. It is a good idea to low-pass filter and/or 
+remove outliers from the sensor data before using this function 
+to reduce errors from specific acceleration and sensor noise.
 }
 \note{
-This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large. For this reason it is most suitable for bench calibrations rather than field data. This function is only usable for field sensors. It will not work for gyroscope data.
+This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large. 
+For this reason it is most suitable for bench calibrations rather than 
+field data. This function is only usable for field sensors. 
+It will not work for gyroscope data.
 }
