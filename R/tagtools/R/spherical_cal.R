@@ -12,6 +12,7 @@
 #'  \item{\strong{G: }} The calibration structure containing fields: G.poly is a matrix of polynomials. The first column of G.poly is the three scale factors applied to the columns of X. The second column is the offset added to each column of X after scaling. G.cross is a 3x3 matrix of cross-factors. If there are no cross-terms, this is the identity matrix. Off-axis terms correct for cross-axis sensitivity.
 #' }
 #' @note This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large. For this reason it is most suitable for bench calibrations rather than field data. This function is only usable for field sensors. It will not work for gyroscope data.
+#' @export
 
 spherical_cal <- function(X, n=NULL, method=NULL) {
   G <- c()
