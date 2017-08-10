@@ -1,6 +1,6 @@
-#'	Save an item to a NetCDF Add one tag sensor or metadata variable to a NetCDF archive file. file. 
+#'	Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.
 #'		
-#'	Add one tag sensor or metadata variable to a NetCDF archive file.If the archive file does not exist,
+#'	Add one tag sensor or metadata variable to a NetCDF archive file. If the archive file does not exist,
 #'	it is created. The file is assumed to be in the current working directory 
 #'	unless a pathname is added to the beginning of fname. 
 #'	
