@@ -20,10 +20,14 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   }
   count_hits <- 0
   count_false_alarms <- 0
+  e <- events
   for (j in 1:length(detections)) {
-    detplus <- detections[j] <= (events + (5 * sampling_rate))
-    detminus <- detections[j] >= (events - (5 * sampling_rate))
+    detplus <- detections[j] <= (e + (5 * sampling_rate))
+    detminus <- detections[j] >= (e - (5 * sampling_rate))
     det <- which(detplus == detminus)
+    e1 <- e[detections[j] >= (e + (5 * sampling_rate))]
+    e2 <- e[detections[j] <= (e - (5 * sampling_rate))]
+    e <- c(e1, e2)
     if (length(det) == 1) {
       count_hits <- count_hits + 1
     } else {
@@ -37,6 +41,6 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   hits_rate <- count_hits / length(events)
   false_alarm_rate <- count_false_alarms / tpevents
   detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
-                            count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
+                         count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
   return(detections_acc)
 }

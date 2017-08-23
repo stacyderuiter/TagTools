@@ -1,4 +1,4 @@
-function detections_acc = acc_test(detections, events, fs, indices, bktime)
+function detections_acc = acc_test(detections, events, fs, tpevents)
 % Determines the number of true positives, false negatives, and false 
 %   positives automatically detected events from tagtools (i.e. 
 %   detect_peak.m) and known event occurences from manual determination 
@@ -42,15 +42,17 @@ if size(events, 1) < size(events, 2)
     events = events';
 end
 
-tpevents = indices / bktime;
-
 if size(events, 2) > 1
     count_hits = 0;
     count_false_alarms = 0;
+    e = events;
     for j = 1:length(detections)
-        detend = detections(j) <= events(:, 2);
-        detstart = detections(j) >= events(:, 1);
+        detend = detections(j) <= e(:, 2);
+        detstart = detections(j) >= e(:, 1);
         det = detend == detstart;
+        e1 = e(detections(j) >= e(:, 2), :);
+        e2 = e(detections(j) <= e(:, 1), :);
+        e = [e1, e2];
         if sum(det(1:end)) == 1
             count_hits = count_hits + 1;
         elseif sum(det(1:end)) == 0
@@ -65,18 +67,22 @@ end
 if size(events, 2) == 1
     count_hits = 0;
     count_false_alarms = 0;
+    e = events;
     for j = 1:length(detections)
-        detplus = detections(j) <= (events + (5 * fs));
-        detminus = detections(j) >= (events - (5 * fs));
+        detplus = detections(j) <= (e + (5 * fs));
+        detminus = detections(j) >= (e - (5 * fs));
         det = detplus == detminus;
+        e1 = e(detections(j) >= (e + (5 * fs)));
+        e2 = e(detections(j) <= (e - (5 * fs)));
+        e = [e1, e2];
         if sum(det(1:end)) == 1
             count_hits = count_hits + 1;
         elseif sum(det(1:end)) == 0
             count_false_alarms = count_false_alarms + 1;
         end
     end
-    count_misses = size(events, 1) - count_hits;
-    hits_rate = count_hits / size(events, 1);
+    count_misses = length(events) - count_hits;
+    hits_rate = count_hits / length(events);
     false_alarms_rate = count_false_alarms / tpevents;
 end
 
