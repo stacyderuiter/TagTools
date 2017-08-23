@@ -7,9 +7,12 @@ for k = 1:ntests
     if k == 1
         thresh = testint;
     end
-    detections = detect(data, sr, FUN, thresh, bktime, FALSE, sampling_rate).peak_time;
-    True_Positive_Rate = acc_test(detections, events, sampling_rate, tpevents).hits_rate;
-    False_Positive_Rate = acc_test(detectionos, events, sampling_rate, tpevents).false_alarm_rate;
+    detections = detect(data, sr, FUN, thresh, bktime, false, sampling_rate);
+    detections = detections.peak_time;
+    True_Positive_Rate = acc_test(detections, events, sampling_rate, tpevents);
+    True_Positive_Rate = True_Positive_Rate.hits_rate;
+    False_Positive_Rate = acc_test(detections, events, sampling_rate, tpevents);
+    False_Positive_Rate = False_Positive_Rate.false_alarms_rate;
     thresh = thresh + testint;
     if k == 1
         pts = [0,0; True_Positive_Rate, False_Positive_Rate];

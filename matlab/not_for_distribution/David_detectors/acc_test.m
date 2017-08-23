@@ -26,7 +26,7 @@ function detections_acc = acc_test(detections, events, fs, tpevents)
 %       detection of a nonexistant event. The hit rate and false alarm rate
 %       are also included in the structure.
 
-if nargin < 5
+if nargin < 4
     help acc_test
 end
 
@@ -42,7 +42,7 @@ if size(events, 1) < size(events, 2)
     events = events';
 end
 
-if size(events, 2) > 1
+if size(events, 2) == 2
     count_hits = 0;
     count_false_alarms = 0;
     e = events;
@@ -52,7 +52,7 @@ if size(events, 2) > 1
         det = detend == detstart;
         e1 = e(detections(j) >= e(:, 2), :);
         e2 = e(detections(j) <= e(:, 1), :);
-        e = [e1, e2];
+        e = [e1; e2];
         if sum(det(1:end)) == 1
             count_hits = count_hits + 1;
         elseif sum(det(1:end)) == 0
@@ -74,7 +74,7 @@ if size(events, 2) == 1
         det = detplus == detminus;
         e1 = e(detections(j) >= (e + (5 * fs)));
         e2 = e(detections(j) <= (e - (5 * fs)));
-        e = [e1, e2];
+        e = [e1; e2];
         if sum(det(1:end)) == 1
             count_hits = count_hits + 1;
         elseif sum(det(1:end)) == 0
