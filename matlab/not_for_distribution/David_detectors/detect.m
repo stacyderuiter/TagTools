@@ -17,7 +17,7 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
 %       default level is the 0.99 quantile.
-%   bktime = The specified length (seconds) of time between jerk values detected 
+%   bktime = The specified length of time (seconds) between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
@@ -142,14 +142,6 @@ if plot_peaks == true
     else
         peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     end
-elseif plot_peaks == false
-    plot(dnew)
-    hold on 
-    for i = 1:length(start_time)
-        plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
-    end
-    line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
-    hold off
 end
 
 end
