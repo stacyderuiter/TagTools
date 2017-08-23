@@ -105,7 +105,8 @@ for a = 1:size(start_time, 1)
     peak_time(a) = index + start_time(a);
     peak_max(a) = m;
 end
-      
+
+bktime = bktime / sr;
 %create structure of start times, end times, peak times, peak maxima, 
 %   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
