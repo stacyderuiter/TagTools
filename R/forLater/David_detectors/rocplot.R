@@ -17,6 +17,10 @@ rocplot <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, t
   }
   pts <- rbind(pts, c(1,1))
   pts <- pts[order(pts[, 1]), ]
+  True_Positive_Rate <- pts[, 1]
+  False_Positive_Rate <- pts[, 2]
+  rates <- cbind(True_Positive_Rate, False_Positive_Rate)
   require(ggplot2)
-  ggplot((data.frame(pts)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=15), axis.title=element_text(size=20,face="bold")) + geom_smooth(se = FALSE, span = 0.6)
+  ggplot((data.frame(rates)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=15), axis.title=element_text(size=15,face="bold")) + geom_smooth(se = FALSE, span = 0.6)
+  return(rates)
 }
