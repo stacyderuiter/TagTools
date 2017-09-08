@@ -75,7 +75,7 @@ pt = d(:,2) >= thresh;
 pk = d(pt,:);
 
 %is there more than one peak?
-if nrow(pk) == 1
+if size(pk, 1) == 1
     start_time = pk(:, 1);
     end_time = pk(:, 1);
     peak_time = pk(:, 1);
