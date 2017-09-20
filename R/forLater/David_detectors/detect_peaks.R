@@ -35,6 +35,10 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     plot_peaks <- TRUE
   }
   
+  if (thresh > max(dnew)) {
+    stop("Threshold level is greater the the maximum of the signal. No peaks are detected.")
+  }
+  
   #create matrix for data and corresponding sampling number
   d1 <- matrix(c(1:length(dnew)), ncol = 1)
   d2 <- matrix(dnew, ncol = 1)
