@@ -91,28 +91,50 @@ else
         bktime = bktime * sr;
     end
 
-    %determine start and end times for each peak
+    %determine start times for each peak
     dt = diff(pk(:,1));
     pkst = [1; (dt >= bktime)];
     start = pkst == 1;
-    ending = find((pkst == 1)) - 1;
     start_time = pk(start, 1);
-    end_time = [pk(ending(2:end), 1); pk(end, 1)];
-    %if the last peak does not end before the end of recording, the peak is
-    %   removed from analysis
-    if pkst(end) == 0
-        start_time = start_time(1:end - 1);
-        end_time = end_time(1:end - 1);
+    
+    %determine end times for each peak
+    if sum(pkst) == 1
+        if dnew(end) > thresh
+            start_time = [];
+            end_time = [];
+        elseif dnew(end) <= thresh
+            end_time = pk(size(pk, 1), 1);
+        end
     end
-
+    if sum(pkst) > 1
+        if pkst(end) == 0
+            if dnew(end) <= thresh
+                ending = find(pkst == 1) - 1;
+                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+            elseif dnew(end) > thresh
+                ending = find(pkst == 1) - 1;
+                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+                %if the last peak does not end before the end of recording,
+                %the peak is removed from analysis
+                start_time = start_time(1:length(start_time - 1));
+                end_time = end_time(1:length(end_time - 1));
+            end
+        end
+    end
+    
     %determine the time and maximum of each peak
     peak_time = zeros(size(start_time, 1), 1);
     peak_max = zeros(size(start_time, 1), 1);
-    for a = 1:size(start_time, 1)
-        td = dnew(start_time(a):end_time(a));
-        [m, index] = max(td);
-        peak_time(a) = index + start_time(a);
-        peak_max(a) = m;
+    if isempty(start_time) && isempty(end_time)
+        peak_time = [];
+        peak_max = [];
+    else
+        for a = 1:size(start_time, 1)
+            td = dnew(start_time(a):end_time(a));
+            [m, index] = max(td);
+            peak_time(a) = index + start_time(a) - 1;
+            peak_max(a) = m;
+        end
     end
 
     bktime = bktime / sr;

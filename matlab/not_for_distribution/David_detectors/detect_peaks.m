@@ -1,7 +1,7 @@
 function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
-% This function detects peaks in jerk data that exceed a specfied 
+% This function detects peaks in jerk data that exceed a specified 
 %   threshold and returns each peak's start time, end time, maximum jerk
-%   value, and time of the maximum jerk.
+%   value, time of the maximum jerk, threshold level, and blanking time.
 %
 % INPUTS:
 %   data = A vector (of all positive values) or matrix of data to be used 
@@ -11,17 +11,17 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       the bktime in the case that the input for bktime is missing.
 %   FUN = A function to be applied to data before the data is run through 
 %       the peak detector. Only specify the function name (i.e. 'njerk'). 
-%       If left blank, the data input will be immediatly passed through the
-%       peak detector.
+%       If left blank, the data input will be immediately passed through 
+%       the peak detector.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
-%       default level is the 0.99 quantile.
-%   bktime = The specified length (seconds) of time between jerk values detected 
+%       default level is the 99 percentile.
+%   bktime = The specified length of time (seconds) between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       .85 quantile of the vector of time differences for signal values 
+%       80 percentile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
@@ -56,11 +56,15 @@ end
 
 %determine default threshold
 if nargin < 4 || isempty(thresh)
-    thresh = quantile(dnew, 0.99);
+    thresh = prctile(dnew, 99);
 end
 
 if nargin < 6 || isempty(plot_peaks)
     plot_peaks = true;
+end
+
+if thresh > max(dnew)
+    error('Threshold level is greater the the maximum of the signal. No peaks are detected.')
 end
 
 %create matrix for jerk and corresponding sampling number
@@ -91,33 +95,55 @@ else
         bktime = bktime * sr;
     end
 
-    %determine start and end times for each peak
+    %determine start times for each peak
     dt = diff(pk(:,1));
     pkst = [1; (dt >= bktime)];
     start = pkst == 1;
-    ending = find((pkst == 1)) - 1;
     start_time = pk(start, 1);
-    end_time = [pk(ending(2:end), 1); pk(end, 1)];
-    %if the last peak does not end before the end of recording, the peak is
-    %   removed from analysis
-    if pkst(end) == 0
-        start_time = start_time(1:end - 1);
-        end_time = end_time(1:end - 1);
+    
+    %determine end times for each peak
+    if sum(pkst) == 1
+        if dnew(end) > thresh
+            start_time = [];
+            end_time = [];
+        elseif dnew(end) <= thresh
+            end_time = pk(size(pk, 1), 1);
+        end
     end
-
+    if sum(pkst) > 1
+        if pkst(end) == 0
+            if dnew(end) <= thresh
+                ending = find(pkst == 1) - 1;
+                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+            elseif dnew(end) > thresh
+                ending = find(pkst == 1) - 1;
+                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+                %if the last peak does not end before the end of recording,
+                %the peak is removed from analysis
+                start_time = start_time(1:length(start_time - 1));
+                end_time = end_time(1:length(end_time - 1));
+            end
+        end
+    end
+    
     %determine the time and maximum of each peak
     peak_time = zeros(size(start_time, 1), 1);
     peak_max = zeros(size(start_time, 1), 1);
-    for a = 1:size(start_time, 1)
-        td = dnew(start_time(a):end_time(a));
-        [m, index] = max(td);
-        peak_time(a) = index + start_time(a);
-        peak_max(a) = m;
+    if isempty(start_time) && isempty(end_time)
+        peak_time = [];
+        peak_max = [];
+    else
+        for a = 1:size(start_time, 1)
+            td = dnew(start_time(a):end_time(a));
+            [m, index] = max(td);
+            peak_time(a) = index + start_time(a) - 1;
+            peak_max(a) = m;
+        end
     end
 
     bktime = bktime / sr;
 end
-      
+
 %create structure of start times, end times, peak times, peak maxima, 
 %   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
@@ -134,7 +160,16 @@ peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
 if plot_peaks == true
     plot(dnew);
     hold on 
-    disp('GRAPH HELP: For changing only the thresh level, click once within the plot and then push enter to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then push enter to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply push enter.')
+    disp('GRAPH HELP:')
+    disp('For changing only the thresh level, click once within the plot and then push enter')
+    disp(' to specify the y-value at which your new thresh level will be.')
+    disp('For changing just the bktime value, click twice within the plot and then push enter')
+    disp(' to specify the length for which your bktime will be.')
+    disp('To change both the bktime and the thresh, click three times within the plot:')
+    disp(' the first click will change the thresh level,')
+    disp(' the second and third clicks will change the bktime.')
+    disp('To return your results without changing the thresh and bktime from their default')
+    disp(' values, simply push enter.')
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
