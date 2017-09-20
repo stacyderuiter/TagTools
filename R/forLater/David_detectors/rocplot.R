@@ -4,6 +4,10 @@ rocplot <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, t
   for (k in 1:ntests) {
     if (k == 1) {
       thresh <- testint
+    } else {
+      if (k == ntests) {
+        thresh <- max(njerk(data, sampling_rate))
+      }
     }
     detections <- detect(data, sr, FUN, thresh, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
     True_Positive_Rate <- acc_test(detections, events, sampling_rate, tpevents)$hits_rate
