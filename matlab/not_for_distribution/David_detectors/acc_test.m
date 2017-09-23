@@ -30,6 +30,22 @@ if nargin < 4
     help acc_test
 end
 
+if isempty(events)
+    count_hits = 0;
+    count_misses = NaN;
+    hits_rate = 0;
+    false_alarms_rate = 1;
+    count_false_alarms = length(detections);
+    %create structure of count_hits, count_false_alarmss, and count_misses
+    field1 = 'count_hits';  value1 = count_hits;
+    field2 = 'count_false_alarms';  value2 = count_false_alarms;
+    field3 = 'count_misses';  value3 = count_misses;
+    field4 = 'hits_rate'; value4 = hits_rate;
+    field5 = 'false_alarms_rate'; value5 = false_alarms_rate;
+    detections_acc = struct(field1,value1,field2,value2,field3,value3,field4,value4,field5,value5);
+    return
+end
+
 if iscell(events)
     ke = [];
     for i = 1:size(events, 1)

@@ -114,15 +114,18 @@ else
         if pkst(end) == 0
             if dnew(end) <= thresh
                 ending = find(pkst == 1) - 1;
-                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+                end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
             elseif dnew(end) > thresh
                 ending = find(pkst == 1) - 1;
-                end_time = [pk(ending(2:end), 1), pk(size(pk, 1), 1)];
+                end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
                 %if the last peak does not end before the end of recording,
                 %the peak is removed from analysis
                 start_time = start_time(1:length(start_time - 1));
                 end_time = end_time(1:length(end_time - 1));
             end
+        elseif pkst(end) == 1
+            ending = find(pkst == 1) - 1;
+            end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
         end
     end
     

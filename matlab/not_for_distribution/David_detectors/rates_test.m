@@ -1,4 +1,4 @@
-function pts = rocplot(data, sampling_rate, FUN, bktime, indices, events, ntests, testint) 
+function pts = rates_test(data, sampling_rate, FUN, bktime, indices, events, ntests, testint) 
   
 tpevents = ((indices/sampling_rate)/bktime);
 sr = sampling_rate;
@@ -6,6 +6,8 @@ sr = sampling_rate;
 for k = 1:ntests
     if k == 1
         thresh = testint;
+    elseif k == ntests
+        thresh = max(njerk(data, sampling_rate));
     end
     detections = detect(data, sr, FUN, thresh, bktime, false, sampling_rate);
     detections = detections.peak_time;
@@ -20,10 +22,5 @@ for k = 1:ntests
         pts = [pts; True_Positive_Rate, False_Positive_Rate];
     end
 end
+
 pts = [pts; 1,1];
-pts = sortrows(pts);
-scatter(pts(:,1), pts(:,2))
-hold on
-plot(polyval(polyfit(pts(:,1), pts(:,2), 1), pts(:,1)))
-hold off
-end
