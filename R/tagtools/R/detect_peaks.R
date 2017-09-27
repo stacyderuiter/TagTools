@@ -35,6 +35,10 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     plot_peaks <- TRUE
   }
   
+  if (thresh > max(dnew)) {
+    stop("Threshold level is greater the the maximum of the signal. No peaks are detected.")
+  }
+  
   #create matrix for data and corresponding sampling number
   d1 <- matrix(c(1:length(dnew)), ncol = 1)
   d2 <- matrix(dnew, ncol = 1)
@@ -51,39 +55,70 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     peak_time <- pk[1]
     peak_max <- pk[2]
     thresh <- thresh
-    bktime <- bktime
+    bktime <- as.numeric(bktime)
   } else {
     #set default blanking time
     if (is.null(bktime)) {
       dpk <- diff(pk[, 1])
       bktime <- stats::quantile(dpk, c(.8))
     } else {
-      bktime <- bktime * sr
+      bktime <- as.numeric(bktime * sr)
     }
     
-    #determine start and end times for each peak
+    #determine start times for each peak
     dt <- diff(pk[, 1])
     pkst <- c(1, (dt >= bktime))
-    start <- pkst == 1
-    ending <- which((pkst == 1)) - 1
-    start_time <- pk[start, 1]
-    end_time <- c(pk[ending[2:length(ending)], 1], pk[length(pk)])
-    #if the last peak does not end before the end of recording, the peak is removed from analysis
-    if (pkst[length(pkst)] == 0) {
-      start_time <- start_time[1:length(start_time - 1)]
-      end_time <- end_time[1:length(end_time - 1)]
+    start_time <- pk[(pkst == 1), 1]
+    
+    #determine the end times for each peak
+    if (sum(pkst) == 1) {
+      if (dnew[length(dnew)] > thresh) {
+        start_time <- c()
+        end_time <- c()
+      } else {
+        if (dnew[length(dnew)] <= thresh) {
+          end_time <- pk[nrow(pk), 1]
+        }
+      }
+    }
+    if (sum(pkst) > 1) {
+      if (pkst[length(pkst)] == 0) {
+        if (dnew[length(dnew)] <= thresh) {
+          ending <- which(pkst == 1) - 1
+          end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+        } else {
+          if (dnew[length(dnew)] > thresh) {
+            ending <- which(pkst == 1) - 1
+            end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+            #if the last peak does not end before the end of recording, the peak is removed from analysis
+            start_time <- start_time[1:length(start_time - 1)]
+            end_time <- end_time[1:length(end_time - 1)]
+          }
+        } 
+      } else {
+        if (pkst[length(pkst)] == 1) {
+          ending <- which(pkst == 1) - 1
+          end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+        }
+      }
     }
     
     #determine the time and maximum of each peak
     peak_time <- matrix(0, length(start_time), 1)
     peak_max <- matrix(0, length(start_time), 1)
-    for (a in 1:length(start_time)) {
-      td = dnew[start_time[a]:end_time[a]]
-      m <- max(td)
-      mindex <- which.max(td)
-      peak_time[a] <- mindex + start_time[a]
-      peak_max[a] <- m
-    }
+    if (is.null(start_time) & is.null(end_time)) {
+      peak_time <- c()
+      peak_max <- c()
+    } else {
+      for (a in 1:length(start_time)) {
+        td = dnew[start_time[a]:end_time[a]]
+        m <- max(td)
+        mindex <- which.max(td)
+        peak_time[a] <- mindex + start_time[a] - 1
+        peak_max[a] <- m
+      }
+    }  
+    
     bktime <- bktime / sr
   }
   
