@@ -1,4 +1,4 @@
-rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, testint = NULL, depth = NULL, depthm = NULL) {
+rates_detect <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, testint = NULL, depth = NULL, depthm = NULL) {
   dnew <- FUN(data, sampling_rate)
   if (!is.null(depth)) {
     deep <- which(depth < depthm)
