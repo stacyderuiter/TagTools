@@ -13,30 +13,35 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   if (nargs() < 4) {
     stop("inputs for all arguments are required")
   }
-  count_hits <- 0
-  count_false_alarms <- 0
-  e <- events
-  for (j in 1:length(detections)) {
-    detplus <- detections[j] <= (e + (5 * sampling_rate))
-    detminus <- detections[j] >= (e - (5 * sampling_rate))
-    det <- which(detplus == detminus)
-    e1 <- e[detections[j] >= (e + (5 * sampling_rate))]
-    e2 <- e[detections[j] <= (e - (5 * sampling_rate))]
-    e <- c(e1, e2)
-    if (length(det) == 1) {
-      count_hits <- count_hits + 1
-    } else {
-      if (length(det) == 0) {
-        count_false_alarms <- count_false_alarms + 1
+  if (is.character(events)) {
+    detections_acc <- list(count_hits = 0, count_false_alarms = length(detections),
+                           count_misses = NA, hits_rate = 0, false_alarm_rate = 1)
+  } else {
+    count_hits <- 0
+    count_false_alarms <- 0
+    e <- as.numeric(events)
+    for (j in 1:length(detections)) {
+      detplus <- detections[j] <= (e + (5 * sampling_rate))
+      detminus <- detections[j] >= (e - (5 * sampling_rate))
+      det <- which(detplus == detminus)
+      e1 <- e[detections[j] >= (e + (5 * sampling_rate))]
+      e2 <- e[detections[j] <= (e - (5 * sampling_rate))]
+      e <- c(e1, e2)
+      if (length(det) == 1) {
+        count_hits <- count_hits + 1
+      } else {
+        if (length(det) == 0) {
+          count_false_alarms <- count_false_alarms + 1
+        }
       }
     }
+    count_misses <- length(events) - count_hits
+    #calculate the hit rate and false alarm rate
+    hits_rate <- count_hits / length(events)
+    false_alarm_rate <- count_false_alarms / tpevents
+    detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
+                           count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
   }
-  count_misses <- length(events) - count_hits
-  #calculate the hit rate and false alarm rate
-  hits_rate <- count_hits / length(events)
-  false_alarm_rate <- count_false_alarms / tpevents
-  detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
-                         count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
   return(detections_acc)
 }
 ```
@@ -54,11 +59,15 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
   }
   #set default threshold level
   if (is.null(thresh) == TRUE) {
-    thresh <- stats::quantile(dnew, c(0.99), type = 9)
+    thresh <- stats::quantile(dnew, c(0.99))
   }
   
   if (is.null(plot_peaks) == TRUE) {
     plot_peaks <- TRUE
+  }
+  
+  if (thresh > max(dnew)) {
+    stop("Threshold level is greater the the maximum of the signal. No peaks are detected.")
   }
   
   #create matrix for data and corresponding sampling number
@@ -70,45 +79,77 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
   pt <- d[, 2] >= thresh
   pk <- d[pt, ]
   
+  #is there more than one peak?
   if (length(pk) == 2) {
     start_time <- pk[1]
     end_time <- pk[1]
     peak_time <- pk[1]
     peak_max <- pk[2]
     thresh <- thresh
-    bktime <- bktime
+    bktime <- as.numeric(bktime)
   } else {
     #set default blanking time
     if (is.null(bktime)) {
       dpk <- diff(pk[, 1])
       bktime <- stats::quantile(dpk, c(.8))
     } else {
-      bktime <- bktime * sr
+      bktime <- as.numeric(bktime * sr)
     }
     
-    #determine start and end times for each peak
+    #determine start times for each peak
     dt <- diff(pk[, 1])
     pkst <- c(1, (dt >= bktime))
-    start <- pkst == 1
-    ending <- which((pkst == 1)) - 1
-    start_time <- pk[start, 1]
-    end_time <- c(pk[ending[2:length(ending)], 1], pk[length(pk)])
-    #if the last peak does not end before the end of recording, the peak is removed from analysis
-    if (pkst[length(pkst)] == 0) {
-      start_time <- start_time[1:length(start_time - 1)]
-      end_time <- end_time[1:length(end_time - 1)]
+    start_time <- pk[(pkst == 1), 1]
+    
+    #determine the end times for each peak
+    if (sum(pkst) == 1) {
+      if (dnew[length(dnew)] > thresh) {
+        start_time <- c()
+        end_time <- c()
+      } else {
+        if (dnew[length(dnew)] <= thresh) {
+          end_time <- pk[nrow(pk), 1]
+        }
+      }
+    }
+    if (sum(pkst) > 1) {
+      if (pkst[length(pkst)] == 0) {
+        if (dnew[length(dnew)] <= thresh) {
+          ending <- which(pkst == 1) - 1
+          end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+        } else {
+          if (dnew[length(dnew)] > thresh) {
+            ending <- which(pkst == 1) - 1
+            end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+            #if the last peak does not end before the end of recording, the peak is removed from analysis
+            start_time <- start_time[1:length(start_time - 1)]
+            end_time <- end_time[1:length(end_time - 1)]
+          }
+        } 
+      } else {
+        if (pkst[length(pkst)] == 1) {
+          ending <- which(pkst == 1) - 1
+          end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
+        }
+      }
     }
     
     #determine the time and maximum of each peak
     peak_time <- matrix(0, length(start_time), 1)
     peak_max <- matrix(0, length(start_time), 1)
-    for (a in 1:length(start_time)) {
-      td = dnew[start_time[a]:end_time[a]]
-      m <- max(td)
-      mindex <- which.max(td)
-      peak_time[a] <- mindex + start_time[a]
-      peak_max[a] <- m
-    }
+    if (is.null(start_time) & is.null(end_time)) {
+      peak_time <- c()
+      peak_max <- c()
+    } else {
+      for (a in 1:length(start_time)) {
+        td = dnew[start_time[a]:end_time[a]]
+        m <- max(td)
+        mindex <- which.max(td)
+        peak_time[a] <- mindex + start_time[a] - 1
+        peak_max[a] <- m
+      }
+    }  
+    
     bktime <- bktime / sr
   }
   
@@ -152,17 +193,30 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
   } else {
     return(peaks)
   }
+  return(peaks)
 }
 ```
 ```{r, echo=FALSE}
-rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, testint) {
+rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, testint = NULL, depth = NULL, depthm = NULL) {
+  dnew <- FUN(data, sampling_rate)
+  if (!is.null(depth)) {
+    deep <- which(depth < depthm)
+    dnew[deep] <- 0
+  }
+  if (is.null(testint)) {
+    testint <- max(dnew)/ntests
+  }
   tpevents <- ((indices/sampling_rate)/bktime)
   sr <- sampling_rate
   for (k in 1:ntests) {
     if (k == 1) {
       thresh <- testint
+    } else {
+      if (k == ntests) {
+        thresh <- max(dnew)
+      }
     }
-    detections <- detect(data, sr, FUN, thresh, bktime, plot_peaks = FALSE, sampling_rate=sampling_rate)$peak_time
+    detections <- detect(data=dnew, sr=sr, FUN=NULL, thresh = thresh, bktime = bktime, plot_peaks = FALSE)$peak_time
     True_Positive_Rate <- acc_test(detections, events, sampling_rate, tpevents)$hits_rate
     False_Positive_Rate <- acc_test(detections, events, sampling_rate, tpevents)$false_alarm_rate
     thresh <- thresh + testint
@@ -173,11 +227,9 @@ rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests
     }
   }
   pts <- rbind(pts, c(1,1))
-  pts <- cbind(pts, c(NA, seq(from=.05, to=1.75, by=.05), NA))
   True_Positive_Rate <- pts[, 1]
   False_Positive_Rate <- pts[, 2]
-  Threshold <- pts[, 3]
-  rates <- cbind(True_Positive_Rate, False_Positive_Rate, Threshold)
+  rates <- cbind(True_Positive_Rate, False_Positive_Rate)
   return(rates)
 }
 ```
@@ -185,11 +237,11 @@ rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests
 
 Introduction
 ---
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Scientists have long struggled to study animal behavior without imposing stress upon the animal being observed (Brown et al. 2013; Schneirla 1950). Scientists have also found it difficult to visually observe animals in environments and during times periods that are relatively inaccessible humans (Allen et al. 2016). Out of these two concerns arose the scientific field of biotelemetry (Kooyman 2003).  Since the first use of tagging devices on animals in 1963, the field of biotelemtery has evolved into a discipline that allows for the detailed behavioral studying of animals ranging in size from chipmunks to blue whales (Hammond et al. 2016; Acevedo-Gutiérrez et al. 2002; Kooyman 2003).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Scientists have long struggled to study animal behavior without imposing stress upon the animal being observed (Brown et al. 2013; Schneirla 1950). Scientists have also found it difficult to visually observe animals in environments and during time periods that are relatively inaccessible to humans (Allen et al. 2016). Out of these two concerns arose the scientific field of biotelemetry (Kooyman 2003).  Since the first use of tagging devices on animals in 1963, the field of biotelemtery has evolved into a discipline that allows for the detailed behavioral studying of animals ranging in size from chipmunks to blue whales (Hammond et al. 2016; Acevedo-Gutiérrez et al. 2002; Kooyman 2003).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The field of marine biologging has become one of the most prominent fields of biotelemetry. A variety of unique tagging systems (i.e. DTAGs, Acousonde tags, etc.) have been developed by researchers around the world to gain non-invasive access to the unique lives of marine creatures (Johnson and Tyack 2003; Burgess et al. 1998). From the data obtained from these tags, scientists are able to determine the exact moment in time when an animal exhibited a certain behavior (Johson et al. 2009; Goldbogen et al. 2006; Goldbogen et al. 2008; Miller et al. 2004). However, due to the often high sampling rate of multisensor tags and the long duration of data recording, the process of determining the time of a given behavior can be quite laborious and time consuming.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Marine biologging has become one of the most prominent fields of biotelemetry. A variety of unique tagging systems (i.e. DTAGs, Acousonde tags, etc.) have been developed by researchers around the world to gain non-invasive access to the unique lives of marine creatures (Johnson and Tyack 2003; Burgess et al. 1998). From the data obtained from these tags, scientists are able to determine the exact moment in time when an animal exhibited a certain behavior (Johson et al. 2009; Goldbogen et al. 2006; Goldbogen et al. 2008; Miller et al. 2004). However, due to the often high sampling rate of multisensor tags and the long duration of data recording, the process of determining the time of a given behavior can be quite laborious and time consuming.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In a quest to make data analysis more efficient, scientists have begun to develope software functions, which automatically detect animal behaviors from multisensor data (Owen et al. 2016; Allen et al. 2016; Doniol-Valcroze et al. 2011; Kokubun et al. 2011; Cox et al. 2017; Ware et al. 2011; Viviant et al. 2010). These functions scan through data searching for signal characteristics, which are known to be indicators of unique animal behaviors. Despite he conceptual simplicity of these behavior detectors, the creation and application of these functions is full of difficulties and imperfections. First of all, despite the careful design of these functions, none of them possess 100% accuracy in detecting the desired behavior. They all struggle with false detections and missed detections. Also, these functions do not allow for the detection of a wide range of behaviors. Instead, they are used with data from a specific type of animal and look for a specific type of behavior. Finally, these detectors require the user to input a certain data type into the function, which may only be accessed through a certain software program. This can cause difficulties for researchers who wish to use a function for a similar purpose but do not possess the necessary data type/format or software.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In a quest to make data analysis more efficient, scientists have begun to develop software functions, which automatically detect animal behaviors from multisensor data (Owen et al. 2016; Allen et al. 2016; Doniol-Valcroze et al. 2011; Kokubun et al. 2011; Cox et al. 2017; Ware et al. 2011; Viviant et al. 2010). These functions scan through data searching for signal characteristics, which are known to be indicators of unique animal behaviors. Despite the conceptual simplicity of these behavior detectors, the creation and application of these functions is full of difficulties and imperfections. First of all, despite the careful design of these functions, none of them possess 100% accuracy in detecting the desired behavior. They all struggle with false detections and missed detections. Also, these functions do not allow for the detection of a wide range of behaviors. Instead, they are used with data from a specific type of animal and look for a specific type of behavior. Finally, these detectors require the user to input a certain data type into the function, which may only be accessed through a certain software program. This can cause difficulties for researchers who wish to use a function for a similar purpose but do not possess the necessary data type/format or software.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In light of these logistical difficulties, we have developed a function, usable in three widely used software programs (R (R Core Team 2017), Matlab (MathWorks, Natick, MA, USA), and Octave (Eaton et al. 2016)), which is generalizable to a wide variety of data types/formats, animals, and behaviors. The function, called detect_peaks, is a part of the tagtools package in R.
 
@@ -199,28 +251,29 @@ Function Design
 ```
 detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL,...)
 ```
-I will <b>not</b> be explaining exactly what each input does in this vignette (for this, see the help file within the package). Instead, I am going to describe what the user needs to understand before using this function and the thought process behind each significant step in the function script. Later on, in the section titled "Case Study", I will walk through specific examples in which the function may be used.
+I will <b>not</b> be explaining exactly what each input does in this vignette (for this, see the help file within the package). Instead, I am going to describe what the user needs to understand before using this function and the thought process behind each significant step in the function's script. Later on, in the section titled "Case Study", I will walk through a specific example in which the function may be used.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In order to make the best use of this function, it is helpful to understand a few things regarding the design of this function. First of all, as the name of the function suggests, this function determines the time of an animal behavior by going through large data sets and locating large spikes/peaks in the data signal. A peak is determined to represent a behavior event if it surpasses a predetermined threshold. Robert Urick, in his book <i>Principles of Underwater Sound for Engineers</i>, describes a threshold as being something which, "when it is exceeded, the decision '[behavior event] present' will be made" (Urick 1967). In this function, the default threshold level (input "thresh") is set to be the 0.99 quantile of the signal. However, this threshold level will not be appropriate for all circumstances. There may be cases in which this threshold level will result in many false positive detections (peak detected without a present behavior) detections or not enough true positive (peak detected with a present behavior). Typically, if the thrshold is too high, the number of missed detections will be high and only the strongest peaks representing behavior events will be detected. If the threshold is too low, the number of true positive detections will be high, but so will the number of false positives (Urick 1967). Therefore, we allow the user to change the threshold level if they desire a level other than the default (more information about determining the best threshold level can be found in the case studies below).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In order to make the best use of this function, it is helpful to understand a few things regarding its design. As the name of the function suggests, this function determines the time of an animal behavior by going through large data sets and locating large spikes/peaks in a data signal. A peak is determined to represent a behavior event if it surpasses a predetermined threshold. Robert Urick, in his book <i>Principles of Underwater Sound for Engineers</i>, describes a threshold as being something which, "when it is exceeded, the decision '[behavior event] present' will be made" (Urick 1967). In this function, the default threshold level (input "thresh") is set to be the 0.99 quantile of the signal. However, this threshold level will not be appropriate for all circumstances. There may be cases in which this threshold level will result in many false positive detections (peak detected without a present behavior) or insufficient true positive detections (peak detected with a present behavior). Typically, if the thrshold is too high, the number of missed detections will be high and only the strongest peaks representing behavior events will be detected. If the threshold is too low, the number of true positive detections will be high, but so will the number of false positives (Urick 1967). Therefore, we allow the user to change the threshold level if they desire a level other than the default (more information about determining the best threshold level can be found in the case study below).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Once the peaks in the signal have been detected, the blanking time (input "bktime") is used to determine the start and end times of each peak as well as the time at which the peak reached a maximum level in the signal. The default value for the blanking time is set as the 0.85 quantile of the vector containing the time differences for the signal values that lie above the specified threshold. The first job of the blanking time is to determine if adjacent peaks represent one of multiple behavior events. The blanking time is an amount of time within which all detected peaks are determined to represent one large, unified behavior event. All detected peaks separated by a length of time larger than the blanking time are considered distinct behavior events. At this point, start times (point at which the peak first exceeds the threshold), end times (point at which the peak finally receeds beneath the threshold value), peak times (point at which the peak reaches a maximum signal strength), and peak maximum (maximum value of the detected peak in the same units as the signal) are determined and returned to the user.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Once the peaks in the signal have been detected, the blanking time (input "bktime") is used to determine the start and end times of each peak as well as the time at which the peak reached a maximum level in the signal. The blanking time is an amount of time within which all detected peaks are determined to represent one large, unified behavior event. The default value for the blanking time is set as the 0.85 quantile of a vector containing the time differences between consecutive signal values that surpass the specified threshold. The first job of the blanking time is to determine if adjacent peaks represent one or multiple behavior events. All detected peaks separated by a length of time larger than the blanking time are considered distinct behavior events. After this is done, start times (point at which the peak first exceeds the threshold), end times (point at which the peak finally receeds beneath the threshold value), peak times (point at which the peak reaches a maximum signal strength), and peak maximum (maximum value of the detected peak in the same units as the signal) are determined and returned to the user.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; After the function has finished running, the signal being studied is plotted (assuming the input for "plot_peaks" is TRUE) with each determined peak labeled by a marker. At this point, the user is able to examine the quality of the function's performace at detecting true positive events. If the user determines that he/she wishes for the threshold level or the blanking time to be altered, the user is able to click on the graph to change these values. For example, if the user wants to change only the threshold level, he/she can click once within the plot at the given threshold level desired and click "Finish". This will rerun the function and return new peak detections and a new plot. If the user only wants to change the blanking time, he/she must click twice within the plot and then click "Finish". The distance between each click is determines the new blanking time and the function is rerun. If the user wants to change both the threshold and the blanking time, the user must click three times. The first click is to change the threshold and the second two clicks are to alter the blanking time. After clicking three times, the function is rerun. For the occassion when the user is satisfied with the threshold and blanking times used in the first run of the function, the user must simply click the "Finish" button located just above the plot, and peak detections will be returned to the user. Along with the peak detections, the user will also always receive the threshold level and blanking time used in the analysis.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; After the function has finished running, the signal being studied is plotted (assuming the input for "plot_peaks" is TRUE) with each determined peak labeled by a marker. At this point, the user is able to examine the quality of the function's performace at detecting true positive events. If the user determines that he/she wishes for the threshold level or the blanking time to be altered, the user is able to click on the graph to change these values. For example, if the user wants to change only the threshold level, he/she can click once within the plot at the given threshold level desired and click "Finish". This will rerun the function and return new peak detections and a new plot. If the user only wants to change the blanking time, he/she must click twice within the plot and then click "Finish". The distance between each click determines the new blanking time and the function is rerun. If the user wants to change both the threshold and the blanking time, the user must click three times. The first click is to change the threshold and the second two clicks are to alter the blanking time. After clicking three times, the function is rerun. For the occassion when the user is satisfied with the threshold and blanking times used in the first run of the function, the user must simply click the "Finish" button located just above the plot, and peak detections will be returned to the user. Along with the peak detections, the user will also always receive the threshold level and blanking time used in the analysis.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The final, and perhaps most crucial thing to understand before using this function, is that the input for "data" can be either a signal vector or a matrix of data. If the data is a signal vector, which the user wishes to have peaks detected from, nothing should be given for the input "FUN". However, if the data given to the input is a matrix, an input for "FUN" must be given as the peak detector is not able to detect peaks from matrix data. The input for "FUN" is any other function which the user wishes to use in manipulating the matrix into a signal vector (which then passes through the peak detection process as descibed above). Examples of functions to pass to "FUN" from the tagtools package are njerk, odba, etc., but the function does not have to be from within this package. I will provide examples of how this function works for both vector and matrix inputs in the case studies below.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The final, and perhaps most crucial thing to understand before using this function, is that the input for "data" can be either a signal vector or a matrix of data. If the data is a signal vector, from which the user wishes to have peaks detected, it must contain all positive values and the input "FUN" should be left empty/null. However, if the data given to the input is a matrix, an input for "FUN" must be given because peak detector is not able to detect peaks from matrix data. The input for "FUN" is any other function which the user wishes to use in manipulating the matrix into a signal vector of all positive values (which then passes through the peak detection process as descibed above). Examples of functions to pass to the input "FUN" from the tagtools package include njerk, odba, and msa, but the function does not have to be from within this package. I will provide examples of how this function works for both vector and matrix inputs in the case study below.
 
 Case Study
 ---
 ###Detecting lunge feeding events of a blue whale from triaxial acceleration data
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this case study, I will be providing an example on how to use the detect_peaks function in order to detect the times of lunge feedings events of a blue whale. Previous studies have shown the effectiveness of using the norm jerk of triaxial acceleration to detect the presence of lunge feeding events in tag data (Simon et al. 2012; Owen et al. 2016). Thankfully, the tagtools package has the function njerk which can be used to convert our acceleration matrix into the norm jerk signal vector.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the data to be used in this case study. All of the following data was obtain by members of the SOCAL BRM project. This particular blue whale was tagged with a DTAG2, which gathered multisensor data including, but not limited to, triaxial accelerometer and pressure (depth) data. This particular data set has been used in a variety of publications (DeRuiter et al. 2017; Goldbogen et al. 2013; Goldbogen et al. 2015). For the time being, we will load the acceleration matrix (within the whale frame) from the blue whale data set. The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is to run the njerk function.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the data to be used in this case study. All of the following data was obtain by members of the SOCAL BRM project. This particular blue whale was tagged with a DTAG2, which gathered multisensor data including, but not limited to, triaxial accelerometer and pressure (depth) data. This particular data set has been used in a variety of publications (DeRuiter et al. 2017; Goldbogen et al. 2013; Goldbogen et al. 2015). For the time being, we will load the acceleration matrix from the blue whale data set. The acceleration matrix will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data. The sampling_rate will be used in the creation of the norm jerk signal.
 ```{r, results = "hide", message=FALSE, warning=FALSE}
 library(readr)
 bw11_210a_tagdata <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210a_tagdata.csv')
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 ```
+
 Next, I will generate the norm jerk signal using the function njerk. A plot is shown to provide a helpful visualization of the signal.
 ```{r, fig.width=7, fig.height=5, message=FALSE}
 library(tagtools)
@@ -229,11 +282,12 @@ X <- list(jerk = jerk)
 plott(X, 5, line_colors = "blue") 
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you can see, what used to be an acceleration matrix has now been converted into a signal vector the same length as Aw with all positive values. From this plot, you can already begin to get an idea of where some of the lunge feeding events might be if you notice the occasional peaks in the signal. However, The peaks to the right of the 60000 time value begin to look unlike any of the other data, and it is likely that these seemingly outlier peaks will skew our results. Therefore, the next step in detecting the event of a lunge feeding behavior is to gather the rest of the data necessary to use the detect_peaks function and remove the outlier peaks from our signal. In order to run the detect_peaks function, we must have have the variable "sr", which is the sampling rate of our "data" input. If you are thinking to yourself, "Isn't that the same as 'sampling_rate', which we already gathered?" You are correct. However, due to the nature of the function, the sampling rate must be labeled as something other than "sampling_rate".
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you can see, what used to be an acceleration matrix has now been converted into a signal vector the same length as Aw with all positive values. From this plot, you can already begin to get an idea of where some of the lunge feeding events might be if you notice the occasional peaks in the signal. However, The peaks to the right of the 63000 time value begin to look unlike any of the other data (this is because the tag has fallen off the whale at around this time), and it is likely that these outlier peaks will skew our results. Therefore, the next step in detecting the lunge feeding behavior events is to gather the rest of the data necessary to use the detect_peaks function and remove the outlier peaks from our signal. In order to run the detect_peaks function, we must have have the variable "sr", which is the sampling rate of our "data" input. If you are thinking to yourself, "Isn't that the same as 'sampling_rate', which we already gathered?" You are correct. However, due to the nature of the function, the sampling rate to be used in the detect_peaks function must be labeled as something other than "sampling_rate".
 ```{r, results='hide'}
 sr <- bw11_210a_tagdata$fs[1]  
 jerk <- jerk[1:63000]
 ```
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At this point, we are almost ready to apply our norm jerk signal to the detect_peaks function. One thing to consider first, however, is whether we want to set a specified threshold and/or blanking time value or if we are okay simply using the default values for each of these inputs. In this instance, let's assume that we don't know what the perfect threshold value or blanking time should be, so we will use the default settings (for now).
 ```{r, message = FALSE, eval = FALSE}
 detect_peaks(data = jerk, sr = sr, FUN = NULL,
@@ -253,7 +307,7 @@ detect_peaks(data = Aw[1:63000, ], sr = sr, FUN = "njerk",
                 thresh = NULL, bktime = NULL, plot_peaks = TRUE, sampling_rate = sampling_rate)
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now, looking at the generated plot we can see the same signal as before, but now the plot has markers identifying all of the peaks that were detected. At this time, you can decide if you wish to change the level of the threshold or blanking time, consequentally rerunning the function. If you wish to accept the peak detections displayed, you can end the function and obtain the output list of detection times and levels. In order to fully walk through the capabilities of this function, let's imagine that you wish to change both the threshold and the blanking time values to see how the output might change. To do this yourself, you would click within the plot, but given that I cannot do that, I will list the coordinates [x, y] as if I had clicked in three different locations on the plot: [19873, 0.874], [20000, 1.258], [19950, 0.736]. Based off of these three coordinates, the threshold value when the function is rerun will be 0.874, and the blanking time will be 50. Below is the new plot and a summary of our results. I have included the new code to provide a helpful visual, but using this functioon on your own, it is not necessary to retype the function after changing your threshold and/or blanking time from the interactive plot.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now, looking at the generated plot we can see the same signal as before, but now the plot has markers identifying all of the peaks that were detected. At this time, you can decide if you wish to change the level of the threshold or blanking time, consequentally rerunning the function. If you wish to accept the peak detections displayed, you can end the function and obtain the output list of detection times and levels. In order to fully walk through the capabilities of this function, let's imagine that you wish to change both the threshold and the blanking time values to see how the output might change. To do this yourself, you would click within the plot, but given that I cannot do that, I will list the coordinates [x, y] as if I had clicked in three different locations (in the order shown) on the plot: [19873, 0.874], [20000, 1.258], [19950, 0.736]. Based off of these three coordinates, the threshold value when the function is rerun will be 0.874, and the blanking time will be 50. Below is the new plot and a summary of our results. I have included the new code to provide a helpful visual, but when using this function on your own, it is not necessary to retype the function after changing your threshold and/or blanking time from the interactive plot.
 ```{r, eval = FALSE}
 peaks <- detect_peaks(data = jerk, sr = sr, FUN = NULL, 
                           thresh = 0.874, bktime = 50, plot_peaks = TRUE)
@@ -266,18 +320,18 @@ str(peaks)
 ```
 
 ####ROC Curves and Detection Optimization
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receiver operating characteristic (ROC) curves are a type of plot that are used in order to enhance the overall performance of automated event detection functions by determining an optimal threshold level. These plots generated by determining the true positive rate and the false positive rate of an event detection function (in this case detect_peaks) at a specified threshold level. A single point on the plot specifies the true positive rate and false positive rate at one specified threshold level. Therefore, in order to generate a full ROC curve, event detection must be performed at a variety of different thresholds. The rate of true positive detections is calulated by dividing the number of true positive detections by the number of actual events. The rate of false positive detections is calculated by dividing the number of false positive detections by the total number of possible events within the time of tag recording. Determining the number of total possible events can be very difficult, unfortunately, because in a biological system, the value is dependent on a long list of determining factors. For example, the number of times a whale can lunge feed within a given amount of time is dependent on the availability of its food source, the energy it possesses to swim through currents, the time required to filter water through its baleen after engulfing prey, etc. In a paper written by Jeremy Goldbogen of Stanford University, fin whales were determined to be able to lunge feed every 44.5 ± 19.1 seconds (Goldbogen et al. 2006). Therefore, since blue whales are of similar size to fin whales, averaging only a few meters longer, let's say (for the sake of this case study) that blue whales are able to lunge feed after a minimum of 30 seconds since the previous feeding event. Using this number, we can determine the total possible number of lunge feeding events by dividing the total number of samples in our data by the sampling_rate, and then dividing this number by 30. By doing this, we get 420 total possible lunge feeding events (tpevents) by our blue whale.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receiver operating characteristic (ROC) curves are a type of plot that are used in order to enhance the overall performance of automated event detection functions by determining an optimal threshold level. These plots are generated by determining the true positive rate and the false positive rate of an event detection function (in this case detect_peaks) at a specified threshold level. A single point on the plot specifies the true positive rate and false positive rate at one specified threshold level. Therefore, in order to generate a full ROC curve, event detections must be performed at a variety of different thresholds. The rate of true positive detections is calulated by dividing the number of true positive detections by the number of actual events. The rate of false positive detections is calculated by dividing the number of false positive detections by the total number of possible events within the time of tag recording. Determining the number of total possible events can be very difficult, unfortunately, because in a biological system, the value is dependent upon a long list of determining factors. For example, the number of times a whale can lunge feed within a given amount of time is dependent upon the availability of its food source, the energy required to swim through currents, the time required to filter water through its baleen after engulfing prey, etc. In a paper written by Jeremy Goldbogen of Stanford University, fin whales were determined to be able to lunge feed every 44.5 ± 19.1 seconds (Goldbogen et al. 2006). Therefore, since blue whales are of similar size to fin whales, averaging only a few meters longer, let's say that blue whales are able to lunge feed after a minimum of 30 seconds since the previous feeding event. Using this number, we can determine the total possible number of lunge feeding events by dividing the total number of samples in our data by the sampling_rate, and then dividing this number by 30. By doing this, we get 420 total possible lunge feeding events (tpevents) by our blue whale.
 ```{r}
 tpevents <- (63000 / sampling_rate) / 30
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of known events is also hard to determine as it requires a trained scientist to scroll through a signal, looking for distinct characteristic in the plot that are known to be related to the desired behavioral event. Lucky for us, this hard work has already been completed by members of the SOCAL BRS project. We will name the vector containing the known times of lunges in our data set as "events". Now, because the event times are in units of seconds, we must first multiply our vector by the sampling rate in order to have the units be in samples.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of known events is also hard to determine as it requires a trained scientist to manually scroll through a signal, looking for distinct characteristics in the plot that are known to be related to the desired behavioral event. Lucky for us, this hard work has already been completed by members of the SOCAL BRS project. We will name the vector containing the known times of lunges in our data set as "events". Now, because the event times determined by the members of SOCAL BRS are in units of seconds, we must first multiply our vector by the sampling rate in order to have the units be in samples.
 ```{r, message=FALSE, results="hide"}
 events <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210aLungeTimes.csv')
 events <- events$Ltimes * sampling_rate
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Let's now begin to make our ROC curve. We will run the detect_peaks function using a blanking time of 30 seconds and thresholds ranging from .05 to the 1.75 (the max of our jerk signal). We will then determine the rate of false positive and true positive detections at each threshold level using our known lunge times. Using these rates, we will be able to plot the ROC curve. Shown below are the true positive and false positive rates and the corresponding ROC plot.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Let's now begin to make our ROC curve. We will run the detect_peaks function using a blanking time of 30 seconds and thresholds ranging from .05 to the 1.75 (roughly the max of our jerk signal). We will then determine the rate of false positive and true positive detections at each threshold level using our known lunge times. Using these rates, we will be able to plot the ROC curve. Shown below are the true positive and false positive rates and the corresponding ROC plot.
 ```{r, echo=FALSE, message=FALSE, fig.width=7, fig.height=5}
 rates <- rates_test(data = Aw[1:63000, ], sampling_rate = 5, FUN = njerk, bktime = 30, indices = 63000, events = events, ntests = (1.75 / 0.05), testint = 0.05)
 library(ggplot2)
@@ -285,15 +339,29 @@ ggplot((data.frame(rates)), aes(x = False_Positive_Rate, y = True_Positive_Rate)
 head(rates, 37)
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Looking at our ROC plot above, we see that the overall event detection using the detect_peaks function was quite successful. There is a large amount of area under the curve, representing a high performing event detector. Now, the next step we are going to do is determine the optimal threshold level based off our true and false positives rates shown above. A generally accepted definition for the "optimal" threshold level is that which has the highest rate of true positive to false positive detections. However, for the interest of this case study, let us assume that we wish to find the threshold level at which we obtained a maximum number of true positive detections. From looking at our detection rates above, we see that this occured at thresholds between 0.20 and 0.65. Becauses we have multiple thresholds at which a maximum true positive rate was achieved, we are going to find which of these thresholds posseses the highest rate of true positive to false positive detections, and we will then use this as our "optimal" threshold.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Looking at our ROC plot above, we see that the overall event detection using the detect_peaks function was quite successful. There is a large amount of area under the curve, representing a high performing event detector. Now, the next step we are going to do is determine the optimal threshold level based off our true and false positive rates shown above. A generally accepted definition for the "optimal" threshold level is that which has the highest ratio of true positive to false positive detections. However, for the interest of this case study, let us assume that we wish to find the threshold level at which we obtained a maximum number of true positive detections. From looking at our detection rates above, we see that this occured at thresholds between 0.20 and 0.65. Becauses we have multiple thresholds at which a maximum true positive rate was achieved, we are going to find which of these thresholds posseses the highest ratio of true positive to false positive detections, and we will then use this as our "optimal" threshold.
 ```{r}
 rates[5:14, 1] / rates[5:14, 2]
 ```
 
-We see that the last value above possesses the highest ratio. This value represents the ratio for the threshold of 0.65. The final step is optimizing the overall performance of an event detection method is to utilize our "optimal" threshold and use it to run our detect_peaks function one last time.
+We see that the last value above possesses the highest ratio. This value represents the ratio for the threshold of 0.65. The final step in optimizing event detection method is to utilize our "optimal" threshold and use it to run our detect_peaks function one final time.
 ```{r, fig.width=7, fig.height=5}
 peaks <- detect_peaks(data = Aw[1:63000, ], sr = 5, FUN = njerk, thresh = 0.65, bktime = 30, plot_peaks = FALSE, sampling_rate = 5)
 str(peaks)
 ```
+```{r, fig.width=7, fig.height=5}
+depth <- bw11_210a_tagdata$depth
+cropped_depth <- depth[1:63000]
+klunge <- (((events / 5) / 60) / 60)
+dettimes <- (((peaks$peak_time / 5) / 60) / 60)
+depthevents <- cropped_depth[events]
+depthdetections <- cropped_depth[peaks$peak_time]
+Dive_Profile <- list(Dive_Profile = cropped_depth)
+plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1))
+points(x = klunge, y = depthevents, col = "red", cex = 1.4, pch = 16)
+points(x = dettimes, y = depthdetections, col = "gold", cex = 1.4, pch = "+:")
+```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The resulting data shows the lunge feeding events detected by the detect_peaks function while using an "optimal" threshold and blanking time. As you have seen, this method does not return perfect results. This is due to a variety of reasons, one of which is the intended generalizability of the function to allow for the detection of any peak from a signal of data with values greater than or equal to zero given a few parameters. I have shown you a very specific application of this tool to determine the times of lunge feeding events from multisensor data, but their are seemingly infinite possible applications for this function.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The resulting data shows the lunge feeding events detected by the detect_peaks function while using an "optimal" threshold and blanking time. I have included a plot of the dive profile of the blue whale with the lunges detected by the detect_peaks function marked in gold and the known lunge times marked in red. One brief note about the dive profile plot shown above is that gold and red markings which overlap slightly but which are not directly overlayed still represent a correctly detected lunge feeding event. This is because the exact time at which the lunge was determined to have occured is slightly different between the detect_peaks function and the manual detections performed by the SOCAL BRS researchers.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As you have seen, the detect_peaks function does not return perfect results. This is due to a variety of reasons, one of which is the intended generalizability of the function to allow for the detection of any peak from a signal of data with values greater than or equal to zero given a few parameters. I have shown you a very specific application of this tool to determine the times of lunge feeding events from multisensor data, but there are seemingly infinite possible applications for this function.
