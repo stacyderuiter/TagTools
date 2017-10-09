@@ -1,7 +1,7 @@
-function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
-% This function detects peaks in jerk data that exceed a specified 
+function peaks = detect(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
+% This function detects peaks in jerk data that exceed a specfied 
 %   threshold and returns each peak's start time, end time, maximum jerk
-%   value, time of the maximum jerk, threshold level, and blanking time.
+%   value, and time of the maximum jerk.
 %
 % INPUTS:
 %   data = A vector (of all positive values) or matrix of data to be used 
@@ -11,17 +11,17 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       the bktime in the case that the input for bktime is missing.
 %   FUN = A function to be applied to data before the data is run through 
 %       the peak detector. Only specify the function name (i.e. 'njerk'). 
-%       If left blank, the data input will be immediately passed through 
-%       the peak detector.
+%       If left blank, the data input will be immediatly passed through the
+%       peak detector.
 %   thresh = The threshold level above which peaks in the jerk signal are
 %       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
-%       default level is the 99 percentile.
+%       default level is the 0.99 quantile.
 %   bktime = The specified length of time (seconds) between jerk values detected 
 %       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       80 percentile of the vector of time differences for signal values 
+%       .85 quantile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
@@ -146,7 +146,7 @@ else
 
     bktime = bktime / sr;
 end
-
+      
 %create structure of start times, end times, peak times, peak maxima, 
 %   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
@@ -163,16 +163,7 @@ peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
 if plot_peaks == true
     plot(dnew);
     hold on 
-    disp('GRAPH HELP:')
-    disp('For changing only the thresh level, click once within the plot and then push enter')
-    disp(' to specify the y-value at which your new thresh level will be.')
-    disp('For changing just the bktime value, click twice within the plot and then push enter')
-    disp(' to specify the length for which your bktime will be.')
-    disp('To change both the bktime and the thresh, click three times within the plot:')
-    disp(' the first click will change the thresh level,')
-    disp(' the second and third clicks will change the bktime.')
-    disp('To return your results without changing the thresh and bktime from their default')
-    disp(' values, simply push enter.')
+    disp('GRAPH HELP: For changing only the thresh level, click once within the plot and then push enter to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then push enter to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply push enter.')
     for i = 1:length(start_time)
         plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
     end
@@ -192,14 +183,6 @@ if plot_peaks == true
     else
         peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     end
-elseif plot_peaks == false
-    plot(dnew)
-    hold on 
-    for i = 1:length(start_time)
-        plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
-    end
-    line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
-    hold off
 end
 
 end

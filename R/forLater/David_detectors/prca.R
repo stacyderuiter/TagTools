@@ -18,7 +18,7 @@ prca <- function(A, fs, thresV) {
   }
   
   #calculate the change in magA over one second of time
-  var <- buffer_nodelay(magA, fs, 0)
+  var <- buffer(magA, fs, 0, nodelay = TRUE)
   varS_col <- matrix(0,(nrow(var) - 1), ncol(var))
   varS <- matrix(0, 1, ncol(var))
   for (j in 1:ncol(var)) {

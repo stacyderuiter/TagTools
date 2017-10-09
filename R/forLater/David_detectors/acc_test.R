@@ -18,25 +18,34 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
   if (nargs() < 4) {
     stop("inputs for all arguments are required")
   }
-  count_hits <- 0
-  count_false_alarms <- 0
-  for (j in 1:length(detections)) {
-    detplus <- detections[j] <= (events + (5 * sampling_rate))
-    detminus <- detections[j] >= (events - (5 * sampling_rate))
-    det <- which(detplus == detminus)
-    if (length(det) == 1) {
-      count_hits <- count_hits + 1
-    } else {
-      if (length(det) == 0) {
-        count_false_alarms <- count_false_alarms + 1
+  if (is.character(events)) {
+    detections_acc <- list(count_hits = 0, count_false_alarms = length(detections),
+                           count_misses = NA, hits_rate = 0, false_alarm_rate = 1)
+  } else {
+    count_hits <- 0
+    count_false_alarms <- 0
+    e <- as.numeric(events)
+    for (j in 1:length(detections)) {
+      detplus <- detections[j] <= (e + (5 * sampling_rate))
+      detminus <- detections[j] >= (e - (5 * sampling_rate))
+      det <- which(detplus == detminus)
+      e1 <- e[detections[j] >= (e + (5 * sampling_rate))]
+      e2 <- e[detections[j] <= (e - (5 * sampling_rate))]
+      e <- c(e1, e2)
+      if (length(det) == 1) {
+        count_hits <- count_hits + 1
+      } else {
+        if (length(det) == 0) {
+          count_false_alarms <- count_false_alarms + 1
+        }
       }
     }
+    count_misses <- length(events) - count_hits
+    #calculate the hit rate and false alarm rate
+    hits_rate <- count_hits / length(events)
+    false_alarm_rate <- count_false_alarms / tpevents
+    detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
+                           count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
   }
-  count_misses <- length(events) - count_hits
-  #calculate the hit rate and false alarm rate
-  hits_rate <- count_hits / length(events)
-  false_alarm_rate <- count_false_alarms / tpevents
-  detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
-                            count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
   return(detections_acc)
 }

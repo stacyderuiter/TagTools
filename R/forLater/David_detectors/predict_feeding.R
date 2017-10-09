@@ -11,7 +11,7 @@ predict_feeding <- function(s, fs) {
   }
   
   #chunk s vector into sections the size of fs (one second)
-  speedsec <- buffer_nodelay(s, fs, 0)
+  speedsec <- buffer(s, fs, 0, nodelay = TRUE)
   ssec <- matrix(0, ncol(speedsec), 1)
   for (h in 1:ncol(speedsec)) {
     ssec[h] <- mean(speedsec[, h])
