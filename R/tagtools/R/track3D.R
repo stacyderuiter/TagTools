@@ -1,4 +1,4 @@
-#' Reconstruct a track from pitch, heading and depth data, given a stating position
+#' Reconstruct a track from pitch, heading and depth data, given a starting position
 #' 
 #' This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 #' 
@@ -6,17 +6,17 @@
 #' @param phi A vector with pitch over time (in Radians, assumed as a known covariate)
 #' @param psi A vector with heading over time (in Radians, assumed as a known covariate)
 #' @param sf A scalar defining the sampling rate (in Hz)
-#' @param r Observation error, default is 0.001
-#' @param q1p speed state error, default is 0.02 
-#' @param q2p depth state error, default is 0.08
-#' @param q3p x and y state error, default is 1.6e-05 
+#' @param r Observation error
+#' @param q1p speed state error
+#' @param q2p depth state error
+#' @param q3p x and y state error
 #' @param tagonx Easting of starting position (in meters, so requires projected data)
 #' @param tagony Northing of starting position (in meters, so requires projected data)
-#' @param enforce =T If TRUE, then speed and depth are kept strictly positive
+#' @param enforce=T If TRUE, then speed and depth are kept strictly positive
 #' @param x Direct observations of Easting (in meters, so requires projected data)
 #' @param y Direct observations of Northing (in meters, so requires projected data)
 #' @seealso \code{\link{m2h},\link{a2pr}}
-#' @return A list with 10 elements:
+#' @returns A list with 10 elements:
 #' \itemize{
 #'  \item{\strong{p: }} the smoothed speeds
 #'  \item{\strong{fit.ks: }} the fitted speeds
@@ -37,15 +37,11 @@
 #' \dontrun{
 #' p <- a2pr(A=beaked_whale$A$data) 
 #'h <- m2h(M=beaked_whale$M$data,A=beaked_whale$A$data) 
-#' track=track3D(z=beaked_whale$P$data,phi=p$p,psi=h$h,
-#'                 sf=beaked_whale$A$sampling_rate,r=0.001,q1p=0.02,
-#'                 q2p=0.08,q3p=1.6e-05,tagonx=1000,
-#'                 tagony=1000,enforce=T,x=NA,y=NA)
+#' track=track3D(z=beaked_whale$P$data,phi=p$p,psi=h$h,sf=beaked_whale$A$sampling_rate,r=0.001,q1p=0.02,q2p=0.08,q3p=1.6e-05,tagonx=1000,tagony=1000,enforce=T,x=NA,y=NA)
 #' par(mfrow=c(2,1),mar=c(4,4,0.5,0.5))
 #' plot(-beaked_whale$P$data,pch=".",ylab="Depth (m)",xlab="Time")
 #' plot(track$fit.rx,track$fit.ry,xlab="X",ylab="Y",pch=".")
-#' points(track$fit.rx[c(1,length(track$fit.rx))],
-#'                 track$fit.ry[c(1,length(track$fit.rx))],pch=21,bg=5:6)
+#' points(track$fit.rx[c(1,length(track$fit.rx))],track$fit.ry[c(1,length(track$fit.rx))],pch=21,bg=5:6)
 #' legend("bottomright",cex=0.7,legend=c("Start","End"),col=c(5,6),pt.bg=c(5,6),pch=c(21,21))
 #' 
 #' 
