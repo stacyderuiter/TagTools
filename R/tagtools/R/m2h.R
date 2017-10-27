@@ -2,8 +2,8 @@
 #' 
 #' This function is used to compute the heading, field intensity, and the inclination angle by gimballing the magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #' 
-#' @param M A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
-#' @param A A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
+#' @param M A sensor data structure or matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
+#' @param A A sensor data structure or matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param sampling_rate (optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If \code{A} and \code{M} are sensor data lists, then sampling_rate is obtained from them.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
 #' @return A list with 3 elements:
@@ -23,12 +23,12 @@
 
 m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
   if (is.list(M) & is.list(A)) {
-    sampling_rate <- M$sampling_rate
-    M <- M$data
-    A <- A$data
     if (A$sampling_rate != M$sampling_rate) {
       stop("A and M must be at the same sampling rate")
     }
+    sampling_rate <- M$sampling_rate
+    M <- M$data
+    A <- A$data
   } 
 
   if (nrow(M) * ncol(M) == 3) {

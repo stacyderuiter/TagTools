@@ -29,6 +29,7 @@ comp_filt <- function(X, sampling_rate=NULL, fc) {
     Xf[[k]] <- fir_nodelay(X, nf[k], fc[k] / (sampling_rate / 2))$y 
     X <- X - Xf[[k]]
   }
-  Xf[[k + 1]] <- X 
+  Xf[[k + 1]] <- X
+  names(Xf) <- c('lowpass', 'highpass')
   return(Xf);
 }
