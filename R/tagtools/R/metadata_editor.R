@@ -3,7 +3,7 @@
 #' Takes data from csv, and edits a default or given html to fill in data from the csv. HTML must be tagmetadata.html or variations, csv should only contain metadata of tag.
 #' @param masterHTML default masterHTML is located in the package, or can be changed according to user input. 
 #' @param csvfilename file name of csv to be used for editing the HTML
-#' @return A "dynamic tagmetdata.html" which is the masterHTML with changes from csv
+#' @return A "dynamic tagmetadata.html" which is the masterHTML with changes from csv. This file is written to the current working directory, and also opened for editing by the user.
 #' @export
 
 metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.html", package='tagtools'), csvfilename){
@@ -134,6 +134,8 @@ metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.htm
   fileConn<-file("dynamic_tagmetadata.html")
   writeLines(newHTML, fileConn)
   close(fileConn)
+  
+  openHTML("dynamic_tagmetadata.html")
 }
 
 
@@ -162,7 +164,11 @@ parseCSV<-function(csvfilename){
   ret_frame <- ret_frame[-device_date_index,]
   ret_frame <- rbind(ret_frame[1:(device_date_index-1),],device_date_row0, ret_frame[-(1:(device_date_index-1)),])
   ret_frame <- rbind(ret_frame[1:device_date_index,],device_date_row1, ret_frame[-(1:device_date_index),])
+ 
   
+   
   return(list(id=ret_frame$field, req = ret_frame$required, field=ret_frame$params))
-} 
+}
+
+openHTML <- function(x) browseURL(paste0('file://', file.path(getwd(), x)))
 
