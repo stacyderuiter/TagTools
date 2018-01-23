@@ -12,7 +12,7 @@
 
 <meta name="author" content="David Sweeney" />
 
-<meta name="date" content="2017-11-16" />
+<meta name="date" content="2017-12-07" />
 
 <title>Detectors</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Detectors</h1>
 <h4 class="author"><em>David Sweeney</em></h4>
-<h4 class="date"><em>2017-11-16</em></h4>
+<h4 class="date"><em>2017-12-07</em></h4>
 
 
 
@@ -78,7 +78,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Introduction</h2>
 <p>      Scientists have long struggled to study animal behavior while minimizing the amount of imposed stress upon the animal being observed (Brown et al., 2013; Schneirla, 1950). Difficulty also arises while attempting to observe animals in environments and during time periods that are relatively inaccessible to humans (Allen et al., 2016). Out of these two concerns arose the scientific field of biotelemetry (Kooyman, 2003). Since the first use of tagging devices on animals in 1963, the field of biotelemtery has evolved into a discipline that allows for the detailed behavioral studying of animals ranging in size from chipmunks to blue whales (Hammond et al., 2016; Acevedo-Gutiérrez et al., 2002; Kooyman, 2003).</p>
 <p>      Marine biologging has become one of the most prominent fields of biotelemetry. A variety of unique tagging systems (i.e. DTAGs (Johnson and Tyack, 2003), Acousonde tags (Burgess et al., 1998), etc.) have been developed by researchers around the world to try to gain non-invasive access into the unique lives of marine creatures. From the data obtained by these tags, scientists are able to determine the exact moment in time when an animal exhibited a certain behavior (Johson et al., 2009; Goldbogen et al., 2006; Goldbogen et al., 2008; Miller et al., 2004). However, due to the often high sampling rate of multisensor tags and the long duration of data recording, the process of determining the time of every instance of a given behavior can be quite laborious and time consuming.</p>
-<p>      In a quest to make data analysis more efficient, scientists have begun to develope software functions, which automatically detect animal behaviors from multisensor data (Owen et al., 2016; Allen et al., 2016; Doniol-Valcroze et al., 2011; Kokubun et al., 2011; Cox et al., 2017; Ware et al., 2011; Viviant et al., 2010). These functions scan through data searching for signal characteristics, which are known to be indicators of unique animal behaviors. While many of these methods have very specific data format requirements, more flexible methods that can easily be applied to data from many species and tag types would facilitate inter-study and inter-specific comparisons and meta-analysis of a variety of different animal behaviors.</p>
+<p>      In a quest to make data analysis more efficient, scientists have begun to develop software functions, which automatically detect animal behaviors from multisensor data (Owen et al., 2016; Allen et al., 2016; Doniol-Valcroze et al., 2011; Kokubun et al., 2011; Cox et al., 2017; Ware et al., 2011; Viviant et al., 2010). These functions scan through data searching for signal characteristics, which are known to be indicators of unique animal behaviors. While many of these methods have very specific data format requirements, more flexible methods that can easily be applied to data from many species and tag types would facilitate inter-study and inter-specific comparisons and meta-analysis of a variety of different animal behaviors.</p>
 <p>      In light of this, we have developed a function, usable in three widely used software programs (R (R Core Team 2017), Matlab (MathWorks, Natick, MA, USA), and Octave (Eaton et al., 2016)), which is generalizable to a wide variety of data types/formats, animals, and behaviors. The function, called detect_peaks, is a part of the tagtools package in R.</p>
 </div>
 <div id="function-design" class="section level2">
