@@ -1,6 +1,6 @@
 #' Reconstruct a track from pitch, heading and depth data, given a starting position
 #' 
-#' This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
+#' The track3D function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 #' 
 #' @param z A vector with depth over time (in meters, an observation)
 #' @param phi A vector with pitch over time (in Radians, assumed as a known covariate)
@@ -73,9 +73,14 @@ track3D=function(z,phi,psi,sf,r=0.001,q1p=0.02,q2p=0.08,q3p=1.6e-05,tagonx,tagon
   n=length(z)
   #defining some required quantities
   #note currently these are constants
-  #measument error in depth
+  #measurement error in depth when there's no x,y observations
   r1 = r
-  r2= matrix(c(0.001,0,0,0,5,0,0,0,5),3,3,byrow=T)
+  #  measurement error in depth, x and y (for when there's no x,y observations)
+  #  r2= matrix(c(0.001,0,0,0,5,0,0,0,5),3,3,byrow=T)
+  #  the line above was hardwiring r when there were observations in x,y
+  #  even if one changed the argument r, this line below does not
+  #  hardwire the value of 0.001 for depth observation error
+  r2= matrix(c(r,0,0,0,5,0,0,0,5),3,3,byrow=T)
   #state error in speed
   q1 = (q1p/sf)^2
   #state error in depth

@@ -2,9 +2,9 @@
 % Please edit documentation in R/add_nc.R
 \name{add_nc}
 \alias{add_nc}
-\title{Save an item to a NetCDF Add one tag sensor or metadata variable to a NetCDF archive file. file. 
+\title{Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.
 	
-Add one tag sensor or metadata variable to a NetCDF archive file.If the archive file does not exist,
+Add one tag sensor or metadata variable to a NetCDF archive file. If the archive file does not exist,
 it is created. The file is assumed to be in the current working directory 
 unless a pathname is added to the beginning of fname.}
 \usage{
@@ -18,9 +18,9 @@ add_nc(file, X, vname = substitute(X))
 \item{vname}{The name of the sensor data stream to be saved. Defaults to the name of the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).}
 }
 \description{
-Save an item to a NetCDF Add one tag sensor or metadata variable to a NetCDF archive file. file. 
+Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.
 	
-Add one tag sensor or metadata variable to a NetCDF archive file.If the archive file does not exist,
+Add one tag sensor or metadata variable to a NetCDF archive file. If the archive file does not exist,
 it is created. The file is assumed to be in the current working directory 
 unless a pathname is added to the beginning of fname.
 }

@@ -7,9 +7,9 @@
 m2h(M, A, sampling_rate = NULL, fc = NULL)
 }
 \arguments{
-\item{M}{A matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
+\item{M}{A sensor data structure or matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
 
-\item{A}{A matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
+\item{A}{A sensor data structure or matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 
 \item{sampling_rate}{(optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If \code{A} and \code{M} are sensor data lists, then sampling_rate is obtained from them.}
 

@@ -13,7 +13,7 @@ metadata_editor(masterHTML = system.file("extdata", "tagmetadata.html",
 \item{csvfilename}{file name of csv to be used for editing the HTML}
 }
 \value{
-A "dynamic tagmetdata.html" which is the masterHTML with changes from csv
+A "dynamic tagmetadata.html" which is the masterHTML with changes from csv. This file is written to the current working directory, and also opened for editing by the user.
 }
 \description{
 Takes data from csv, and edits a default or given html to fill in data from the csv. HTML must be tagmetadata.html or variations, csv should only contain metadata of tag.

@@ -7,7 +7,7 @@
 decdc(x, df)
 }
 \arguments{
-\item{x}{A vector or matrix containing the signal(s) to be decimated. If x is a matrix, each column is decimated separately.}
+\item{x}{A data structure, vector or matrix containing the signal(s) to be decimated. If x is a matrix, each column is decimated separately.}
 
 \item{df}{The decimation factor. The output sampling rate is the input sampling rate divided by df. df must be an integer greater than 1.}
 }
@@ -21,7 +21,7 @@ This function is used to reduce the sampling rate of a time series by an integer
 Decimation is performed by first low-pass filtering x and then keeping 1 sample out of every df. A symmetric FIR filter with length 12*df and cutoff frequency 0.4*fs/df is used. The group delay of the filter is removed. For large decimation factors (e.g., df>>50), it is better to perform several decimations with lower factors. For example to decimate by 120, use: decdc(decdc(x,10),12).
 }
 \examples{
-s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1) 
-y <- decdc(x = s, df = 4)   
+s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1)
+y <- decdc(x = s, df = 4)
 #Returns: 0.0023
 }
