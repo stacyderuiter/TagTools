@@ -53,7 +53,7 @@ function    [p,pc] = fix_pressure(p,t,fs)
 %
 %		Example:
 %		 loadnc('mn12_186a_raw')
-%		 [PP,pc] = fix_pressure(P,T,10);
+%		 [PP,pc] = fix_depth(P,T,10);
 %		 plott(P,PP)
 %		 % lower plot shows the compensated pressure which is closer to 0 when
 %		 % the animal is at the surface

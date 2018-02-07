@@ -28,7 +28,7 @@ function    [Y,T,tcues] = crop(X,fs)
 %		 in seconds of the data segment kept, i.e., tcues = [start_time, end_time].
 %
 %		Example:
-%		 load_nc('testset3')
+%		 loadnc('testset3')
 %		 Pc = crop(P);		% interactively select a section of data
 %		 plott(Pc)
 %		 % plot shows the cropped section
@@ -104,7 +104,6 @@ while 1,
    end
 end
 
-hold off
 if isstruct(X),
 	Y = crop_to(X,tcues) ;
 	T = tcues ;
