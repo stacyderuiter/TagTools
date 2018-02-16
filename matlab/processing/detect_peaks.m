@@ -218,7 +218,7 @@ end
 
 %--------------------------------------------------------------------------
 function peaks = detect_peaks2(data, sr, thresh, bktime)
-
+dnew=data;
 if thresh > max(dnew)
     start_time = NaN;
     end_time = NaN;
