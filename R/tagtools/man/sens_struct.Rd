@@ -19,7 +19,7 @@ sens_struct(data, fs = NULL, T = NULL, depid, type, unit = NULL,
 
 \item{type}{is a string containing the first few letters of the sensor type,
 e.g., acc for acceleration. These will be matched to the list of
-sensor names in the sensor_names.csv file. If more than one sensor 
+sensor names in the sensor_names.csv file. If more than one sensor
 matches type, a warning will be given. type can be in upper or lower case.}
 
 \item{unit}{(optional) units in which data are sampled. Default determined by matching \code{type} with defaults in sensor_names.csv}
