@@ -106,7 +106,7 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
   if (sum(grepl('POSIX', class(times[[1]])))){
     x_lab <- 'Time'
   }else{
-    t_ix <- match(1, max(x_lim) < brk$secs)
+    t_ix <- min(length(brk$secs), match(1, max(x_lim) < brk$secs), na.rm=TRUE)
     for (i in 1:length(X)){
       times[[i]] <- times[[i]]/as.numeric(brk[t_ix, 'div'])
     }
