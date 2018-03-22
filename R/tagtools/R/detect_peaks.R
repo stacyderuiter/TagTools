@@ -1,6 +1,6 @@
 #' Detect peaks in signal vector data
 #' 
-#' This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum signal value, threshold level, and blanking time.
+#' This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum peak value, threshold level, and blanking time.
 #' @param data A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.
 #' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. njerk). If left blank, the data input will be immediately passed through the peak detector.
 #' @param sr The sampling rate in Hz of the date. This is the same as fs in other tagtools functions. This is used to calculate the bktime in the case that the input for bktime is missing.
