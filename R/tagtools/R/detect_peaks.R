@@ -1,11 +1,11 @@
 #' Detect peaks in signal vector data
 #' 
-#' This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum jerk, threshold level, and blanking time.
+#' This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum signal value, threshold level, and blanking time.
 #' @param data A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.
 #' @param FUN A function to be applied to data before the data is run through the peak detector. Only specify the function name (i.e. njerk). If left blank, the data input will be immediately passed through the peak detector.
 #' @param sr The sampling rate in Hz of the date. This is the same as fs in other tagtools functions. This is used to calculate the bktime in the case that the input for bktime is missing.
 #' @param thresh The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile 
-#' @param bktime The specified length of time (seconds) between jerk values detected above the threshold value (from the moment the first peak recedes below the threshold level to the moment the second peak surpasses the threshold level) that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty the default value for the blanking time is set as the .80 quantile of the vector of time differences for signal values above the specified threshold.
+#' @param bktime The specified length of time (seconds) between signal values detected above the threshold value (from the moment the first peak recedes below the threshold level to the moment the second peak surpasses the threshold level) that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty the default value for the blanking time is set as the .80 quantile of the vector of time differences for signal values above the specified threshold.
 #' @param plot_peaks A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated. Look to the console for help on how to use the plot upon running of this function.
 #' @param ... Additional inputs to be passed to FUN
 #' @export
