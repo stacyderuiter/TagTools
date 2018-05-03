@@ -1,0 +1,138 @@
+---
+title: "dolphin figures"
+author: "DAS"
+date: ""
+output: 
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+```{r, setup, include=FALSE}
+require(mosaic)
+require(lattice)
+require(graphics)
+require(ggplot2)
+require(ggformula)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+trellis.par.set(theme=theme.mosaic()) # change default color scheme for lattice
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+knitr::opts_chunk$set(fig.path='figures_gg/', dev=c('pdf', 'png'), dpi=300)
+
+load('bwgg.RData')
+```
+
+##Grampus Figures
+averages rates for all dolphins with all data
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+rTP_all <- cbind(gg_data$rates_all$rates11.216a[,1], gg_data$rates_all$rates11.265a[,1], gg_data$rates_all$rates11.269a[,1], gg_data$rates_all$rates11.272a[,1], gg_data$rates_all$rates11.272a[,1], gg_data$rates_all$rates13.190a[,1], gg_data$rates_all$rates13.204b[,1], gg_data$rates_all$rates13.255a[,1], gg_data$rates_all$rates13.261a[,1], gg_data$rates_all$rates13.262a[,1], gg_data$rates_all$rates13.262b[,1], gg_data$rates_all$rates13.266b[,1], gg_data$rates_all$rates14.253a[,1])
+rFP_all <- cbind(gg_data$rates_all$rates11.216a[,2], gg_data$rates_all$rates11.265a[,2], gg_data$rates_all$rates11.269a[,2], gg_data$rates_all$rates11.272a[,2], gg_data$rates_all$rates11.272a[,2], gg_data$rates_all$rates13.190a[,2], gg_data$rates_all$rates13.204b[,2], gg_data$rates_all$rates13.255a[,2], gg_data$rates_all$rates13.261a[,2], gg_data$rates_all$rates13.262a[,2], gg_data$rates_all$rates13.262b[,2], gg_data$rates_all$rates13.266b[,2], gg_data$rates_all$rates14.253a[,2])
+True_Positive_Rate <- apply(rTP_all, 1, mean)
+False_Positive_Rate <- apply(rFP_all, 1, mean)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+averaged rates for all dolphins with data above 10m removed
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+rTP <- cbind(gg_data$rates_deep$rates11.216a[,1], gg_data$rates_deep$rates11.265a[,1], gg_data$rates_deep$rates11.269a[,1], gg_data$rates_deep$rates11.272a[,1], gg_data$rates_deep$rates11.272a[,1], gg_data$rates_deep$rates13.190a[,1], gg_data$rates_deep$rates13.204b[,1], gg_data$rates_deep$rates13.255a[,1], gg_data$rates_deep$rates13.261a[,1], gg_data$rates_deep$rates13.262a[,1], gg_data$rates_deep$rates13.262b[,1], gg_data$rates_deep$rates13.266b[,1], gg_data$rates_deep$rates14.253a[,1])
+rFP <- cbind(gg_data$rates_deep$rates11.216a[,2], gg_data$rates_deep$rates11.265a[,2], gg_data$rates_deep$rates11.269a[,2], gg_data$rates_deep$rates11.272a[,2], gg_data$rates_deep$rates11.272a[,2], gg_data$rates_deep$rates13.190a[,2], gg_data$rates_deep$rates13.204b[,2], gg_data$rates_deep$rates13.255a[,2], gg_data$rates_deep$rates13.261a[,2], gg_data$rates_deep$rates13.262a[,2], gg_data$rates_deep$rates13.262b[,2], gg_data$rates_deep$rates13.266b[,2], gg_data$rates_deep$rates14.253a[,2])
+True_Positive_Rate <- apply(rTP, 1, mean)
+False_Positive_Rate <- apply(rFP, 1, mean)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+median rates for all dolphins with all data
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+True_Positive_Rate <- apply(rTP_all, 1, median)
+False_Positive_Rate <- apply(rFP_all, 1, median)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+median rates for all dolphins with data above 10m removed
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+True_Positive_Rate <- apply(rTP, 1, median)
+False_Positive_Rate <- apply(rFP, 1, median)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+averages rates for dolphins that have known buzzes with all data
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+rTP_all <- cbind( gg_data$rates_all$rates11.265a[,1], gg_data$rates_all$rates11.272a[,1], gg_data$rates_all$rates13.190a[,1], gg_data$rates_all$rates13.204b[,1], gg_data$rates_all$rates13.261a[,1], gg_data$rates_all$rates13.262a[,1], gg_data$rates_all$rates13.262b[,1], gg_data$rates_all$rates13.266b[,1])
+rFP_all <- cbind( gg_data$rates_all$rates11.265a[,2], gg_data$rates_all$rates11.272a[,2], gg_data$rates_all$rates13.190a[,2], gg_data$rates_all$rates13.204b[,2], gg_data$rates_all$rates13.261a[,2], gg_data$rates_all$rates13.262a[,2], gg_data$rates_all$rates13.262b[,2], gg_data$rates_all$rates13.266b[,2])
+True_Positive_Rate <- apply(rTP_all, 1, mean)
+False_Positive_Rate <- apply(rFP_all, 1, mean)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+averaged rates for dolphins that have known buzzes with data above 10m removed
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+rTP <- cbind( gg_data$rates_deep$rates11.265a[,1], gg_data$rates_deep$rates11.272a[,1], gg_data$rates_deep$rates13.190a[,1], gg_data$rates_deep$rates13.204b[,1], gg_data$rates_deep$rates13.261a[,1], gg_data$rates_deep$rates13.262a[,1], gg_data$rates_deep$rates13.262b[,1], gg_data$rates_deep$rates13.266b[,1])
+rFP <- cbind( gg_data$rates_deep$rates11.265a[,2], gg_data$rates_deep$rates11.272a[,2], gg_data$rates_deep$rates13.190a[,2], gg_data$rates_deep$rates13.204b[,2], gg_data$rates_deep$rates13.261a[,2], gg_data$rates_deep$rates13.262a[,2], gg_data$rates_deep$rates13.262b[,2], gg_data$rates_deep$rates13.266b[,2])
+True_Positive_Rate <- apply(rTP, 1, mean)
+False_Positive_Rate <- apply(rFP, 1, mean)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+median rates for dolphins that have known buzzes with all data
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+True_Positive_Rate <- apply(rTP_all, 1, median)
+False_Positive_Rate <- apply(rFP_all, 1, median)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+median rates for dolphins that have known buzzes with data above 10m removed
+```{r, echo=FALSE, fig.align='center'}
+bktime <- 2
+ntests <- 100
+True_Positive_Rate <- apply(rTP, 1, median)
+False_Positive_Rate <- apply(rFP, 1, median)
+avgr <- cbind(True_Positive_Rate, False_Positive_Rate)
+ggplot((data.frame(avgr[2:101,])), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+```
+
+Plots of individual whales in numerical order.
+```{r, eval=TRUE, message=FALSE}
+require(ggformula)
+for (k in c(1:(length(gg_data$rates_all)))) {
+  FP <- gg_data$rates_all[[k]][2:101,2]
+  TP <- gg_data$rates_all[[k]][2:101,1]
+  r <- cbind(TP, FP)
+  ggplot((data.frame(r)), aes(x = FP, y = TP)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=13), axis.title=element_text(size=15,face="bold")) + labs(x = "False Positive Rate", y = "True Positive Rate") + xlim(0,1) + ylim(0,1)
+}
+```
+
+```{r, echo=FALSE, fig.align='center', message=FALSE, comment=FALSE, warning=FALSE, fi.height=5, fig.width=7}
+for (j in c(1:length(gg_data$fs))) {
+  bwplott(gg_data$A[[j]],gg_data$fs[[j]],gg_data$p[[j]],gg_data$buzz[[j]],gg_table$`Optimal Threshold`[j],2,n=2)
+}
+```
