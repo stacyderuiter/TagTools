@@ -48,7 +48,7 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
     }
     warning("Threshold level is greater the the maximum of the signal. No peaks are detected.")
   } else {
-    #create matrix for data and corresponding sampling number
+    #create matrix for time-series and corresponding sampling number
     d1 <- matrix(c(1:length(dnew)), ncol = 1)
     d2 <- matrix(dnew, ncol = 1)
     d <- cbind(d1, d2)
@@ -146,7 +146,7 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
         thresh <- thresh
         warning("Threshold level is greater the the maximum of the signal. No peaks are detected.")
       } else {
-        #create matrix for data and corresponding sampling number
+        #create matrix for time-series and corresponding sampling number
         d1 <- matrix(c(1:length(dnew)), ncol = 1)
         d2 <- matrix(dnew, ncol = 1)
         d <- cbind(d1, d2)
