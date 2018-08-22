@@ -78,7 +78,7 @@ if thresh > max(dnew)
     end
     warning('Threshold level is greater the the maximum of the signal. No peaks are detected.')
 else
-    %create matrix for jerk and corresponding sampling number
+    %create matrix for time-series and corresponding sampling number
     if size(dnew, 1) == 1
         d = [(1:length(dnew)); dnew]';
     else
@@ -227,7 +227,7 @@ if thresh > max(dnew)
     thresh = thresh;
     warning('Threshold level is greater the the maximum of the signal. No peaks are detected.')
 else
-    %create matrix for jerk and corresponding sampling number
+    %create matrix for time-series and corresponding sampling number
     if size(dnew, 1) == 1
         d = [(1:length(dnew)); dnew]';
     else
