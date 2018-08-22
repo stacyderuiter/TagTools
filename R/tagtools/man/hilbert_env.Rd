@@ -6,25 +6,27 @@
 \usage{
 hilbert_env(X, N = 1024)
 }
+\arguments{
+\item{X}{a vector or matrix of signals. If X is a matrix, each column is treated as a separate signal.
+The signals must be regularly sampled for the result to be correctly interpretable as the envelope.}
+
+\item{N}{(optional) specifies the transform length used. The default value is 1024 and this may be fine for most situations.}
+}
+\value{
+E, the envelope of X. E is the same size as X: it has the same number of columns and the same number of samples per signal. It has the same units as
+X but being an envelope, all values are >=0.
+}
 \description{
-Compute the envelope of the signal matrix X using the Hilbert transform.
- 	To avoid long transforms, this function uses the overlap and add method.
- 	
- @param X a vector or matrix of signals. If X is a matrix, each column is treated as a separate signal.  	
- The signals must be regularly sampled for the result to be correctly interpretable as the envelope.
- @param N (optional) specifies the transform length used. The default value is 1024 and this may be fine for most situations.
- 
- @result E, the envelope of X. E is the same size as X: it has the same number of columns and the same number of samples per signal. It has the same units as
- X but being an envelope, all values are >=0.
- @examples 
- \dontrun{
- s <- matrix(sin(0.1*c(1:10000)), ncol=1)*
-       matrix(sin(0.001*c(1:10000)), ncol=1)
- E <- hilbert_env(s)
- #E contains 3 positive half cycles of a sine wave that trace 
- #the upper limit of signal s.
- plot(c(1:length(s)), s, col='grey34')
- lines(c(1:length(E)), E, col='black')
- }
- @export
+Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.
+}
+\examples{
+\dontrun{
+s <- matrix(sin(0.1*c(1:10000)), ncol=1)*
+     matrix(sin(0.001*c(1:10000)), ncol=1)
+E <- hilbert_env(s)
+#E contains 3 positive half cycles of a sine wave that trace 
+#the upper limit of signal s.
+plot(c(1:length(s)), s, col='grey34')
+lines(c(1:length(E)), E, col='black')
+}
 }

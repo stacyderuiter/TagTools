@@ -28,11 +28,11 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 
 \item{tagony}{Northing of starting position (in meters, so requires projected data)}
 
+\item{enforce}{If TRUE (the default), then speed and depth are kept strictly positive}
+
 \item{x}{Direct observations of Easting (in meters, so requires projected data)}
 
 \item{y}{Direct observations of Northing (in meters, so requires projected data)}
-
-\item{enforce=T}{If TRUE, then speed and depth are kept strictly positive}
 }
 \description{
 The track3D function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.

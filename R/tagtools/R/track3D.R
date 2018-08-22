@@ -12,7 +12,7 @@
 #' @param q3p x and y state error
 #' @param tagonx Easting of starting position (in meters, so requires projected data)
 #' @param tagony Northing of starting position (in meters, so requires projected data)
-#' @param enforce=T If TRUE, then speed and depth are kept strictly positive
+#' @param enforce If TRUE (the default), then speed and depth are kept strictly positive
 #' @param x Direct observations of Easting (in meters, so requires projected data)
 #' @param y Direct observations of Northing (in meters, so requires projected data)
 #' @seealso \code{\link{m2h},\link{a2pr}}

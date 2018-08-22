@@ -26,9 +26,9 @@ Possible input combinations: depth_rate(p) if p is a list, depth_rate(p,fc = fc)
 The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.
 }
 \examples{
-BW <- beaked_whale
+\dontrun{#' BW <- beaked_whale
 v <- depth_rate(p = BW$P$data, fs = BW$P$sampling_rate, fc = .8)
 depthrate <- list(v = v)
 plott(depthrate, BW$P$sampling_rate)
- @export
+}
 }

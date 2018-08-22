@@ -27,10 +27,8 @@ This function is used to reduce the time span of data by cropping out any data t
 Possible input combinations: crop_to(X, tcues = tcues) if X is a sensor structure, crop_to(X, sampling_rate, tcues) if x is a vector or matrix.
 }
 \examples{
-         data <- beaked_whale
-         d <- find_dives(data$P,300)
-         P2 <- crop_to(data$P, tcues = c(d$start[2], d$end[2]))	#crop to 2nd dive
-         Xdata <- list(datatest = P2$X)
-         plott(Xdata)
-         #plot shows the dive profile and acceleration of the second dive
+         d <- find_dives(beaked_whale$P,300)
+         P2 <- crop_to(beaked_whale$P, tcues = c(d$start[1], d$end[1]))	#crop to 1st dive
+         plott(list(P2$X), r=c(1), panel_labels=c('Depth'))
+         #plot shows the dive profile of the selected dive
 }
