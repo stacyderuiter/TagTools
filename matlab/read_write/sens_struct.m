@@ -74,7 +74,7 @@ X.creation_date = datestr(now) ;
 X.history = 'sens_struct' ;
 
 % read in sensor names database and compare against type
-[S,hdr]=read_csv('sensor_names.csv',1) ;
+[S,hdr]=read_csv('sensor_names.csv',0) ;
 k = strncmpi(type,{S.name},length(type)) ;
 if all(k==0),
    fprintf(' Warning: unknown sensor type %s. Set metadata manually\n', type) ;

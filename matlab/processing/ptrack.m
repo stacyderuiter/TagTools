@@ -58,7 +58,7 @@ function    [T,pe] = ptrack(A,M,s,fs,fc)
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
-%    Last modified: 10 May 2017
+%    Last modified: 16 Feb 2018: bug fixed for speed vectors
 
 T = [] ; pe = [] ;
 if nargin<3,
@@ -89,8 +89,18 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
+if length(s)>1,
+   if length(s)~=size(A,1),
+      fprintf('ptrack: length of speed vector must equal column length of A and M\n');
+      return
+   end
+   s = repmat(s(:)/fs,1,3) ;
+else
+   s = s/fs ;
+end
+
 W = body_axes(A,M,fs,fc) ;
-T = cumsum((s/fs).*(W.x)) ;
+T = cumsum(s.*(W.x)) ;
 
 if nargout>=2,
 	p = a2pr(A,fs,fc);

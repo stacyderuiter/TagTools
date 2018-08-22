@@ -71,9 +71,7 @@ if isstruct(p) && isstruct(A),
    end
    plim = fc ;
 	fc = fs ;
-	fs = p.fs ;
-	p = p.data ;
-   A = A.data
+   [A,p,fs] = sens2var(A,p);
 else
    if nargin<3,
       fprintf('ocdr: fs required for vector/matrix sensor data\n');

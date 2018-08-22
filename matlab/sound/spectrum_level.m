@@ -54,7 +54,7 @@ if nargin<3
 	return
 end
 
-if nargin<4 || isempty(w),
+if nargin<4 | isempty(w),
    w = nfft ;
 end
 
@@ -70,12 +70,12 @@ if length(w)==1,
    w = hanning(w) ;
 end
 
-P = zeros(nfft/2,size(x,2)) ;
+P = zeros(floor(nfft/2),size(x,2)) ;
 for k=1:size(x,2),
    [X,z] = buffer(x(:,k),length(w),nov,'nodelay') ;
    X = detrend(X).*repmat(w,1,size(X,2)) ;
    F = abs(fft(X,nfft)).^2 ;
-   P(:,k) = sum(F(1:nfft/2,:),2) ;
+   P(:,k) = sum(F(1:floor(nfft/2),:),2) ;
 end
 
 ndt = size(X,2) ;

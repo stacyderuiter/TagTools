@@ -122,8 +122,8 @@ ton = ton(1:k) ;
 toff = toff(1:k) ;
 
 % filter vertical velocity to find actual surfacing moments
-n = round(4*fs/dp_lp) ;
 if fs>=1,
+   n = round(4*fs/dp_lp) ;
    dp = fir_nodelay([0;diff(p)]*fs,n,dp_lp/(fs/2)) ;
 else
    dp = [0;diff(p)]*fs ;

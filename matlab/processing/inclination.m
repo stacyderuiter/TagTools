@@ -59,5 +59,6 @@ if nargin==3,
 end
 	
 
-v = sqrt(sum(M.^2,2)) ;         % compute magnetic field intensity
-incl = -real(asin(sum(A.*M,2)./v)) ;
+vm = sqrt(sum(M.^2,2)) ;         % compute magnetic field intensity
+va = sqrt(sum(A.^2,2)) ;         
+incl = -real(asin(sum(A.*M,2)./(va.*vm))) ;

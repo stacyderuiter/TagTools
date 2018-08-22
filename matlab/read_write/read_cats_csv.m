@@ -115,7 +115,11 @@ while 1,
       x(kk,1:length(xx)) = xx' ;
    end
 	df = str2double(DF) ;
-   dn = datenum(D,'dd-mm-yyyy HH:MM:SS')+df/3600/24 ; % Updated to allow compatibility with Octave datenum
+   if ~isempty(D),
+      dn = datenum(D,'dd-mm-yyyy HH:MM:SS')+df/3600/24 ; % Updated to allow compatibility with Octave datenum
+   else
+      dn = [] ;
+   end
    X(end+(1:size(x,1)),1:size(x,2)) = x ;
    DN(end+(1:length(dn))) = dn ;
 

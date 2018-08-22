@@ -7,9 +7,9 @@ function    [D,C] = fit_tracks(P,T,D,fs)
 %
 %      Inputs:
 %      P is a two column matrix containing the anchor positions.
-%       The two columns contain the 'x' and 'y' coordinates of the
-%       positions in a local level frame. Any units, axes and frame can
-%       used as long as they are consistent with the regularly sampled
+%       The two columns contain the 'northing' and 'easting' coordinates
+%       of the positions in a local level frame. Any units, axes and frame
+%       can be used as long as they are consistent with the regularly sampled
 %       track. Note that P should not be in spherical coordinates such
 %       as latitude and longitude - convert these to a local level frame
 %       using lalo2llf.
@@ -40,19 +40,22 @@ function    [D,C] = fit_tracks(P,T,D,fs)
 %
 %      Valid: Matlab, Octave
 %      markjohnson@st-andrews.ac.uk
-%      last modified: 29 Sept. 2017 
+%      last modified: 2 Feb 2018 - fixed handling of DR track after last fix 
      
 if nargin<4,
 	help fit_tracks
 	return
 end
 	
-kg = find(T>=0 & T<size(D,1)/fs) ;
-k = round(T(kg)*fs)+1 ;
-V = [0,0;P(kg,:)-D(k,:)] ;
-dk = [k(1);diff(k)] ;
+kg = find(T>=0 & T<size(D,1)/fs) ;  % find position fixes that coincide in time with the DR track
+k = round(T(kg)*fs)+1 ;             % find the corresponding DR track sample numbers
+V = [0,0;P(kg,:)-D(k,:)] ;          % errors between fixes and DR track at fix times
+% repeat last error - this will be applied to the remnant DR track after last fix
+V(end+1,:) = V(end,:) ;             
+
+dk = [k(1);diff(k);size(D,1)-k(end)] ;               
 ki = [0;cumsum(dk)] ;
-C = zeros(size(D,1),2) ;
+C = zeros(size(D,1),2) ;            % make space for the merged track
 for kk=1:length(dk),
    C(ki(kk)+1:ki(kk+1),:) = repmat(V(kk,:),dk(kk),1)+1/dk(kk)*(0:dk(kk)-1)'*(V(kk+1,:)-V(kk,:)) ;
 end

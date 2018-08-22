@@ -64,7 +64,7 @@ if isstruct(A),
    end
    [A,fs]=sens2var(A,'regular') ;
    if isempty(A), return, end
-elsif nargin<3,
+elseif nargin<3,
    help odba
    return
 end
@@ -73,7 +73,7 @@ if ischar(fh),				% 'wilson' or 'vedba' method is selected
 	n = 2*floor(fs/2)+1 ; 	% make sure n is odd
 	nz = floor(n/2) ;
 	Ah = filter(ones(n,1)/n,1,[A;zeros(nz,size(A,2))]) ;
-	Ah = Ah(nz+(1:size(A,1)),:) ;
+	Ah = Ah(nz+(1:size(A,1)),:) 
 	if strcmp(fh,'vedba'),
 		e = sqrt(sum(abs(Ah).^2,2)) ;		% use 2-norm
 	else

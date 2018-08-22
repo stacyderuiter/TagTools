@@ -64,7 +64,7 @@ C = textscan(fid,fmtspec,1,'Delimiter','\r');
 fclose(fid);
 x=strfind(C{1},'depid'); 	% Check for header
 fid = fopen(fname, 'r');
-if ~isempty(x)
+if isempty(x)
    C = textscan(fid,fmtspec,'Delimiter','\r');
 else
    C = textscan(fid,fmtspec,'Delimiter','\r','HeaderLines',1);
