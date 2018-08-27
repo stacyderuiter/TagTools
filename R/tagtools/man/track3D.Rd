@@ -34,6 +34,21 @@ track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
 
 \item{y}{Direct observations of Northing (in meters, so requires projected data)}
 }
+\value{
+A list with 10 elements:
+\itemize{
+ \item{\strong{p: }} the smoothed speeds
+ \item{\strong{fit.ks: }} the fitted speeds
+ \item{\strong{fit.kd: }} the fitted depths
+ \item{\strong{fit.xs: }} the fitted xs
+ \item{\strong{fit.ys: }} the fitted ys
+ \item{\strong{fit.rd: }} the smoothed depths
+ \item{\strong{fit.rx: }} the smoothed xs
+ \item{\strong{fit.ry: }} the smoothed ys
+ \item{\strong{fit.kp: }} the kalman a posteriori state covariance
+ \item{\strong{fit.ksmo: }} the kalman smoother variance
+}
+}
 \description{
 The track3D function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
 }
@@ -54,8 +69,6 @@ plot(-beaked_whale$P$data,pch=".",ylab="Depth (m)",xlab="Time")
 plot(track$fit.rx,track$fit.ry,xlab="X",ylab="Y",pch=".")
 points(track$fit.rx[c(1,length(track$fit.rx))],track$fit.ry[c(1,length(track$fit.rx))],pch=21,bg=5:6)
 legend("bottomright",cex=0.7,legend=c("Start","End"),col=c(5,6),pt.bg=c(5,6),pch=c(21,21))
-
-
 }
 }
 \seealso{
