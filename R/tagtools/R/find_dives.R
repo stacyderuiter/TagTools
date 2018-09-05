@@ -81,16 +81,20 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall =
   for (k in 1:length(ton)) {
     ind <- ton[k] + (-round(searchlen * sampling_rate):0)
     ind <- ind[which(ind > 0)]
-    ki = max(which(dp[ind] < dpthresh)) 
-    if (identical(ki, empty)) {
+    ki = which(dp[ind] < dpthresh) 
+    if (length(ki)==0) {
       ki <- 1
+    }else{
+      ki <- max(ki)
     }
     ton[k] = ind[ki] ;
     ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
     ind <- ind[which(ind <= length(p))] 
-    ki <- min(which(dp[ind] > -dpthresh))
-    if (identical(ki, empty)) {
+    ki <- which(dp[ind] > -dpthresh)
+    if (length(ki)==0) {
       ki <- 1
+    }else{
+      ki = min(ki)
     }
     toff[k] <- ind[ki]
     dm <- max(p[ton[k]:toff[k]])
