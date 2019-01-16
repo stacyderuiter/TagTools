@@ -53,8 +53,7 @@ function    [Y,G] = spherical_cal(X,n,method)
 %		for gyroscope data.
 
 %		Example:
-%		 C = spherical_cal()
-% 	    returns: C=?.
+%		 TBD.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
@@ -138,6 +137,7 @@ function    [Y,C] = appcal(X,C)
 C(length(C)+1:8) = 0 ;
 C = [C(1:3);0;C(4:8)] ;		% add the col1 fixed gain of 0
 C = reshape(C,3,[]) ;
+C(:,1) = min(max(C(:,1),-1000),1000);
 %	At this point:
 %	C(:,1) are the offsets for each column of X
 %	C(:,2) are the gain adjustments for each column of X (column 1 is always 0)

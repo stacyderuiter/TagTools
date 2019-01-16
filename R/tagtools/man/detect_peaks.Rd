@@ -16,7 +16,7 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
 
 \item{thresh}{The threshold level above which peaks in signal are detected. Inputs must be in the same units as the signal. If the input for thresh is missing/empty, the default level is the 0.99 quantile}
 
-\item{bktime}{The specified length of time (seconds) between jerk values detected above the threshold value (from the moment the first peak recedes below the threshold level to the moment the second peak surpasses the threshold level) that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty the default value for the blanking time is set as the .80 quantile of the vector of time differences for signal values above the specified threshold.}
+\item{bktime}{The specified length of time (seconds) between signal values detected above the threshold value (from the moment the first peak recedes below the threshold level to the moment the second peak surpasses the threshold level) that is required for each value to be considered a separate and unique peak. If the input for bktime is missing/empty the default value for the blanking time is set as the .80 quantile of the vector of time differences for signal values above the specified threshold.}
 
 \item{plot_peaks}{A conditional input. If the input is TRUE or missing, an interactive plot is generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. If the input is FALSE, the interactive plot is not generated. Look to the console for help on how to use the plot upon running of this function.}
 
@@ -26,12 +26,14 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
 A list containing vectors for the start times, end times, peak times, peak maxima, thresh, and bktime. All times are presented as the sampling value.
 }
 \description{
-This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum jerk, threshold level, and blanking time.
+This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum peak value, threshold level, and blanking time.
 }
 \note{
 As specified above under the description for the input of plot_peaks, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot_peaks is specified as true or if the input is left missing/empty.
 }
 \examples{
+\dontrun{
 BW <- beaked_whale
 detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = NULL, fs = BW$A$sampling_rate)
+}
 }

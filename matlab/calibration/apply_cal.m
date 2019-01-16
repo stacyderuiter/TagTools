@@ -30,7 +30,8 @@ function    X = apply_cal(X,C,T)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 30 July 2017
+%     Last modified: January 2018
+%     - cal fields can be in upper or lower case
 
 if nargin<2,
    help apply_cal
@@ -53,47 +54,76 @@ else
    x = X ;
 end
 
+p = [] ;
 if isfield(C,'poly'),
 	p = C.poly ;
+elseif isfield(C,'POLY'),
+	p = C.POLY ;
+end
+
+if ~isempty(p),
    if size(p,1)~=size(x,2),
       fprintf(' Calibration polynomial must have %d rows to match this data\n',size(x,2)) ;
       return
    end
    x = x.*repmat(p(:,1)',size(x,1),1) + repmat(p(:,2)',size(x,1),1);
    if isstruct(X),
-   	X.cal_poly = C.poly ;
+   	X.cal_poly = p ;
    end
 end
 
-if ~isempty(T) && isfield(C,'tcomp') && size(T,1)==size(x,1),
+p = [] ;
+if isfield(C,'tcomp'),
+	p = C.tcomp ;
+elseif isfield(C,'TCOMP'),
+	p = C.TCOMP ;
+end
+
+if ~isempty(p) && ~isempty(T) && size(T,1)==size(x,1),
 	% TODO interp T to match X
-   if ~isfield(C,'tref'),
-      tref = 20 ;
-	else
+   if isfield(C,'tref'),
 		tref = C.tref ;
+   elseif isfield(C,'TREF'),
+		tref = C.TREF ;
+	else
+      tref = 20 ;
    end
-	if length(C.tcomp)==size(x,2),
-		x = x + (T-tref)*C.tcomp(:)' ;
+	if length(p)==size(x,2),
+		x = x + (T-tref)*p(:)' ;
 	elseif size(X.data,2)==1,
-		x = x + polyval([C.tcomp(:)' 0],T) ;
+		x = x + polyval([p(:)' 0],T) ;
 	end
    if isstruct(X),
-      X.cal_tcomp = C.tcomp ;
+      X.cal_tcomp = p ;
       X.cal_tref = tref ;
    end
 end
 
+p = [] ;
 if isfield(C,'cross'),
-   x = x * C.cross ;
+	p = C.cross ;
+elseif isfield(C,'CROSS'),
+	p = C.CROSS ;
+end
+
+if ~isempty(p),
+   x = x * p ;
    if isstruct(X),
-      X.cal_cross = C.cross ;
+      X.cal_cross = p ;
    end
 end
 
+p = [] ;
 if isfield(C,'map'),
-	x = x * C.map ;
+	p = C.map ;
+elseif isfield(C,'MAP'),
+	p = C.MAP ;
+end
+
+if ~isempty(p),
+	x = x * p ;
    if isstruct(X),
-      X.cal_map = C.map ;
+      X.cal_map = p ;
    end
 end
 

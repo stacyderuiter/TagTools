@@ -170,5 +170,5 @@ parseCSV<-function(csvfilename){
   return(list(id=ret_frame$field, req = ret_frame$required, field=ret_frame$params))
 }
 
-openHTML <- function(x) browseURL(paste0('file://', file.path(getwd(), x)))
+openHTML <- function(x) utils::browseURL(paste0('file://', file.path(getwd(), x)))
 

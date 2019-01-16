@@ -64,7 +64,7 @@ if isstruct(A),
    end
    [A,fs]=sens2var(A,'regular') ;
    if isempty(A), return, end
-elsif nargin<3,
+elseif nargin<3,
    help odba
    return
 end

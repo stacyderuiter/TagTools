@@ -7,28 +7,26 @@
 depth_rate(p, fs, fc)
 }
 \arguments{
-\item{p}{A depth or altitude time series or a list of depth or altitude (e.g., from readtag.R). p can have any units and is in the form of a vector}
+\item{p}{A vector or depth or altitude data, or an animaltags list object containing depth or altitude data.}
 
-\item{fs}{is the sampling rate of p in Hz.}
+\item{fs}{(required only if p is a vector) is the sampling rate of p in Hz.}
 
 \item{fc}{(optional) A smoothing filter cut-off frequency in Hz. If fc is not given, a default value is used of 0.2 Hz (5 second time constant).}
 }
 \value{
-The vertical velocity with the same sampling rate as p. v has the same dimensions as p. The unit of v depends on the unit of p. If p is in meters, v is in meters/second
+v, The vertical velocity with the same sampling rate as p. v is a vector with the same dimensions as p. The unit of v depends on the unit of p. For example, if p is in meters, v is in meters/second
 }
 \description{
 This function is used to estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
-}
-\details{
-Possible input combinations: depth_rate(p) if p is a list, depth_rate(p,fc = fc) if p is a list, depth_rate(p,fs) if p is a vector, depth_rate(p,fs,fc) if p is a vector.
 }
 \note{
 The low-pass filter is a symmetric FIR with length 4fs/fc. The group delay of the filters is removed.
 }
 \examples{
-BW <- beaked_whale
-v <- depth_rate(p = BW$P$data, fs = BW$P$sampling_rate, fc = .8)
-depthrate <- list(v = v)
-plott(depthrate, BW$P$sampling_rate)
- @export
+\dontrun{
+v <- depth_rate(p = beaked_whale$P)
+plott(list(beaked_whale$P$data, v), fs=beaked_whale$P$sampling_rate, 
+r=c(1,0), panel_labels=c('Depth\\n(m)', 'Vertical Velocity\\n(m/s)')) 
+#plot of dive profile and depth rate
+}
 }

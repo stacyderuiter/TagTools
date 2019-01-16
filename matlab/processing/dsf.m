@@ -113,9 +113,18 @@ else
    Af = diff(A) ;
 end
 
-[S,f] = spectrum_level(Af,Nfft,fs,Nfft,Nfft/2) ;
+if Nfft>size(Af,1),
+   Nfft = size(Af,1) ;
+end
+
+[S,f] = spectrum_level(Af,Nfft,fs,Nfft,floor(Nfft/2));
 v = sum(10.^(S/10),2) ;      % sum spectral power in the three axes
+plot(v)
 [m,n] = max(v) ;
-p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;
-fpk = -p(2)/(2*p(1)) ;
+if n>1 && n<length(f),
+   p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;
+   fpk = -p(2)/(2*p(1)) ;
+else
+   fpk = f(n) ;
+end
 q = m/mean(v) ;

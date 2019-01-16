@@ -34,7 +34,7 @@ function 	ncfile = read_cats(fname,depid)
 %     markjohnson@st-andrews.ac.uk
 %     last modified: 22 July 2017
 
-if nargin<1,
+if nargin<2,
     help read_cats
     return
 end

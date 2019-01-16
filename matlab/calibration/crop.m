@@ -104,6 +104,7 @@ while 1,
    end
 end
 
+hold off
 if isstruct(X),
 	Y = crop_to(X,tcues) ;
 	T = tcues ;

@@ -59,7 +59,7 @@ function    [T,pe] = htrack(A,M,s,fs,fc)
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
-%    Last modified: 10 May 2017
+%    Last modified: 2 Feb 2018 - added interpolation over NaN input values
 
 T = [] ; pe = [] ;
 if nargin<3,
@@ -73,10 +73,8 @@ if isstruct(M) && isstruct(A),
 	else
 		fc = [] ;
 	end
-	fs = M.fs ;
-	M = M.data ;
-	A = A.data ;
-	if A.fs ~= M.fs,
+   [A,M,fs] = sens2var(A,M) ;
+	if isempty(A),
 		fprintf('ptrack: A and M must be at the same sampling rate\n') ;
 		return
 	end
@@ -94,12 +92,51 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
+% if there are any outages (NaNs) in A or M, interpolate over these and
+% remember the interpolated points to remove them from the DR track later
+[A,ka] = interpnan(A) ;
+[M,km] = interpnan(M) ;
+
 nf = 4*fs/fc ;
 hd = m2h(M,A,fs,fc);
 if length(s)==1,
 	s = repmat(s/fs,size(hd,1),2) ;
 else
+   [s,ks] = interpnan(s) ;
 	s = repmat(s/fs,1,2) ;
 end
 	
 T = cumsum(s.*[cos(hd) sin(hd)]) ;
+T(ka,:) = repmat(NaN,length(ka),2) ;
+T(km,:) = repmat(NaN,length(km),2) ;
+T(ks,:) = repmat(NaN,length(ks),2) ;
+return
+
+
+function  [x,k] = interpnan(x)
+%
+if size(x,1)==1,     % make sure x is a column vector if not a matrix
+   x = x(:) ;
+end
+
+nx = any(isnan(x),2) ;     % find the outages
+k = find(nx) ;             % remember their indices
+
+if nx(1)==1,         % if there is an outage at the start, just fill with duplicate values
+   kg = find(nx==0,1) ;    % find the first good value
+   x(1:kg-1,:) = repmat(x(kg,:),kg-1,1) ; % and duplicate it
+end
+
+if nx(end)==1,       % same if there is an outage at the end
+   kg = find(nx==0,1,'last') ;    % find the last good value
+   x(kg+1:end,:) = repmat(x(kg,:),size(x,1)-kg,1) ;   % and duplicate it
+end
+
+nx = any(isnan(x),2) ;     % now do remaining outages
+while sum(nx)>0,
+   ki = find(nx==1,1);     % find the next outage start
+   kg = ki-1+find(nx(ki:end)==0,1);    % find the first good value after the outage
+   x(ki:kg-1,:) = interp1([0;kg-ki+1],x([ki-1;kg],:),(1:kg-ki)') ;
+   nx = any(isnan(x),2) ;
+end
+return

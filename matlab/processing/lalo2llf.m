@@ -41,4 +41,4 @@ end
 
 trk = trk - repmat(pt,size(trk,1),1) ;
 NE = trk(:,1)*1852*60 ;
-NE(:,2) = trk(:,2)*1852*60*cos(pt(1)) ;
+NE(:,2) = trk(:,2)*1852*60*cos(pt(1)*pi/180) ;

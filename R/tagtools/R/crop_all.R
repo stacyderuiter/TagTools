@@ -6,11 +6,9 @@
 #' @param tcues A two-element vector containing the start and end time cue in seconds of the data segment to keep, i.e., tcues = c(start_time, end_time).
 #' @param X A sensor list or a set of sensor lists (e.g., from load_nc).
 #' @return A sensor list or set of sensor lists containing the cropped data segment. The output data have the same units, frame and sampling characteristics as the input. The list may have many sublists which are additional sensor structures as required to match the input.
-#' @examples test <- beaked_whale
-#'          d <- find_dives(test$P,300)
-#'          X <- crop_all(c(d$start[2], d$end[2]), test)	#crop all data to 2nd dive
-#'          testdata <- list(P = X$P, A = X$A)
-#'          plott(testdata)
+#' @examples d <- find_dives(beaked_whale$P,300)
+#'          X <- crop_all(c(d$start[1], d$end[1]), beaked_whale)	#crop all data to 1st dive
+#'          plott(X=list(X$P, X$A), r = c(1,0), panel_labels=c('Depth', 'Acc'))
 #'          #plot shows the dive profile and acceleration of the second dive
 #' @export
 

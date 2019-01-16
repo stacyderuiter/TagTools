@@ -12,12 +12,10 @@
 #'  \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. If X is a sensor list, the sampling times are stored in the list.
 #' }
 #' @examples 
-#'          data <- beaked_whale
-#'          d <- find_dives(data$P,300)
-#'          P2 <- crop_to(data$P, tcues = c(d$start[2], d$end[2]))	#crop to 2nd dive
-#'          Xdata <- list(datatest = P2$X)
-#'          plott(Xdata)
-#'          #plot shows the dive profile and acceleration of the second dive
+#'          d <- find_dives(beaked_whale$P,300)
+#'          P2 <- crop_to(beaked_whale$P, tcues = c(d$start[1], d$end[1]))	#crop to 1st dive
+#'          plott(list(P2$X), r=c(1), panel_labels=c('Depth'))
+#'          #plot shows the dive profile of the selected dive
 #' @export
 
 crop_to <- function(X, sampling_rate = NULL, tcues = NULL) {

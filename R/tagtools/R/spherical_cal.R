@@ -36,7 +36,7 @@ spherical_cal <- function(X, n=NULL, method=NULL) {
   G <- c()
   Y <- c()
   # remove any rows in X with NaNs
-  X <- na.omit(X)
+  X <- stats::na.omit(X)
   nv1 <- 3 		# number of variables for offset
   nv2 <- 5 		# number of variables for gain and offset
   nv3 <- 8 		# number of variables for gain, offset and cross
@@ -65,7 +65,7 @@ spherical_cal <- function(X, n=NULL, method=NULL) {
   Y <- listYC$Y
   C <- listYC$C
   nn <- norm2(Y) 
-  print(sprintf('Residual: %2.1f ', 100 * sd(nn) / mean(nn))) 
+  print(sprintf('Residual: %2.1f ', 100 * stats::sd(nn) / mean(nn))) 
   R <- t(Y) %*% Y 
   print(sprintf('Axial balance: %2.1f', 100 / pracma::cond(R))) 
   if (length(n) != 0) {
@@ -83,7 +83,7 @@ ccost <- function(C,X){
 
   for(k in 1:ncol(C)){
       n <- sqrt(rowSums(appcal(X,C[,k])$Y^2)) 
-      p <- sd(n)/mean(n)
+      p <- stats::sd(n)/mean(n)
   }
   return(p)
 }

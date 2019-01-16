@@ -13,7 +13,7 @@ function    [RI,t] = residence_index(T,fs,maxt,r,tstep)
 %     which differs a little from other definitions. RI is the amount of time
 %     that the animal is within a sphere of radius r meters divided by r. The
 %     units are therefore time/meter. A large RI implies that the track
-%     is circling and effectively staying in the same area. An RI of implies
+%     is circling and effectively staying in the same area. A low RI implies
 %		a progressing track with few course changes. The track can be
 %		two dimensional (i.e., horizontal information only) or three dimensional.
 %		If no depth or altitude information is given, the depth is assumed to be 
@@ -66,10 +66,17 @@ Tk = T(kcue,:) ;				% track points at tstep intervals
 RI = NaN*zeros(length(kcue),length(r)) ;
 
 for k=1:length(kcue),
+   if any(isnan(Tk(k,:))), continue, end
 	% find the track segment within maxt seconds at each sampling moment
 	kst = max(kcue(k)-maxt*fs,1) ;
 	ked = min(kcue(k)+maxt*fs,size(T,1)) ;
 	km = kst:ked ;
-	RI(k) = sum(norm2(T(km,:)-repmat(Tk(k,:),length(km),1))<r) ;
+   TT = T(km,:) ;
+   ng = sum(all(~isnan(TT),2)) ;
+   if ng>length(km)/2,
+      RI(k) = sum(norm2(TT-repmat(Tk(k,:),length(km),1))<r)*length(km)/ng ;
+   end
 end
-RI = max(RI/(fs*r)-1,0) ;
+
+k = find(~isnan(RI)) ;
+RI(k) = max(RI(k)/(fs*r)-1,0) ;

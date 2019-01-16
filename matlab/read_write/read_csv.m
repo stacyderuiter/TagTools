@@ -21,7 +21,7 @@ function       [X,headers] = read_csv(fname,hdr,rr,delim)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     last modified: 12 July 2017
+%     last modified: January 2018, fixed bug
 
 if nargin<1,
    help read_csv ;
@@ -51,10 +51,14 @@ if f<0,
 end
 
 lk = 1 ;                                 % line count
-if hdr>0,
+if hdr>=0,
    hh = fgetl(f) ;
    lk = lk+1 ;
    headers = parseline(hh,delim) ;     % break header into field names
+end
+
+if hdr>0,
+	return
 end
 
 nfields = length(headers) ;

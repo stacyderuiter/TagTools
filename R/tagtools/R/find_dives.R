@@ -12,7 +12,7 @@
 #' BW <- beaked_whale
 #' T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
 
-find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findall = NULL) {
+find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0) {
   if (nargs() < 2) {
     stop("inputs for p and mindepth are required")
   }
@@ -30,12 +30,15 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
       stop("sampling_rate is required when p is a vector")
     }
   }
+  
   if (is.null(surface)) {
     surface <- 1          #maximum p value for a surfacing
   }
+  
   if (is.null(findall)) {
     findall <- 0 
   }
+  
   searchlen <- 20         #how far to look in seconds to find actual surfacing
   dpthresh <- 0.25        #vertical velocity threshold for surfacing
   dp_lp <- 0.5           #low-pass filter frequency for vertical velocity
@@ -51,7 +54,7 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
     if (all(tth[kth] > toff)) {
       ks0 <- which(tsurf < tth[kth])
       ks1 <- which(tsurf > tth[kth])
-      if (!missing(findall) | ((!identical(ks0, empty)) & (!identical(ks1, empty)))) {
+      if (findall || ((!identical(ks0, empty)) & (!identical(ks1, empty)))) {
         k <- k + 1
         if (identical(ks0, empty)) {
           ton[k] <- 1
@@ -78,16 +81,20 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
   for (k in 1:length(ton)) {
     ind <- ton[k] + (-round(searchlen * sampling_rate):0)
     ind <- ind[which(ind > 0)]
-    ki = max(which(dp[ind] < dpthresh)) 
-    if (identical(ki, empty)) {
+    ki = which(dp[ind] < dpthresh) 
+    if (length(ki)==0) {
       ki <- 1
+    }else{
+      ki <- max(ki)
     }
     ton[k] = ind[ki] ;
     ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
     ind <- ind[which(ind <= length(p))] 
-    ki <- min(which(dp[ind] > -dpthresh))
-    if (identical(ki, empty)) {
+    ki <- which(dp[ind] > -dpthresh)
+    if (length(ki)==0) {
       ki <- 1
+    }else{
+      ki = min(ki)
     }
     toff[k] <- ind[ki]
     dm <- max(p[ton[k]:toff[k]])

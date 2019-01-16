@@ -1,4 +1,4 @@
-function		add_nc(fname,X)
+function		add_nc(fname,X, datatype)
 
 %		add_nc(fname,X)
 %		Add a variable to a NetCDF archive file. If the archive file does not exist,
@@ -12,6 +12,9 @@ function		add_nc(fname,X)
 %		 in a NetCDF file because the supporting information in these structures is
 %		 needed to describe the contents of the file. For non-archive and non-portable
 %		 storage of variables, consider using the usual 'save' function in Matlab and Octave.
+%       datatype is a string indicating the type of data (for sensor data
+%       structures). Defaults to 'double'; for comment fields you may want
+%       to use 'char'.
 %
 %		Example:
 %		 add_nc('dog17_124a',A)
@@ -23,6 +26,10 @@ function		add_nc(fname,X)
 
 if nargin<2,
 	help add_nc
+end
+
+if nargin<3 || isempty(datatype),
+    datatype='double';
 end
 	
 if ~isstruct(X),
@@ -67,12 +74,12 @@ end
 % now ready to save the structure
 if ~isempty(vname),		% X is a sensor structure
 	if ~isfield(X,'data') || isempty(X.data),
-		nccreate(fname,vname);
+		nccreate(fname,vname, 'Datatype', datatype);
    else
       if size(X.data,2)>1,
-         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1),[vname '_axis'],size(X.data,2)});
+         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1),[vname '_axis'],size(X.data,2)}, 'Datatype', datatype);
       else
-         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1)});
+         nccreate(fname,vname,'Dimensions',{[vname '_samples'],size(X.data,1)}, 'Datatype', datatype);
       end
 		ncwrite(fname,vname,X.data);
 	end

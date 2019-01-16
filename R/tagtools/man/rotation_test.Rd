@@ -4,8 +4,8 @@
 \alias{rotation_test}
 \title{Carry out a rotation randomization test.}
 \usage{
-rotation_test(event_times, exp_period, full_period = range(event_times, na.rm
-  = TRUE), n_rot = 10000, ts_fun = length, skip_sort = FALSE,
+rotation_test(event_times, exp_period, full_period = range(event_times,
+  na.rm = TRUE), n_rot = 10000, ts_fun = length, skip_sort = FALSE,
   conf_level = 0.95, return_rot_stats = FALSE, ...)
 }
 \arguments{
