@@ -26,7 +26,7 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
 A list containing vectors for the start times, end times, peak times, peak maxima, thresh, and bktime. All times are presented as the sampling value.
 }
 \description{
-This function detects peaks in data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum peak value, threshold level, and blanking time.
+This function detects peaks in time series data that exceed a specified threshold and returns each peak's start time, end time, maximum peak value, time of the maximum peak value, threshold level, and blanking time.
 }
 \note{
 As specified above under the description for the input of plot_peaks, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot_peaks is specified as true or if the input is left missing/empty.

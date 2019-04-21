@@ -47,13 +47,31 @@ end
 if isfield(X,'info'),		% X is a set of sensor structures
 	f = fieldnames(X) ;
 	for k=1:length(f),
-		add_nc(fname,X.(f{k})) ;
+        if isfield(varargin{k}, 'data')
+        if ischar(X.(f{k}).data)
+            datatype = 'char';
+        else
+            datatype = 'double';
+        end
+        else
+            datatype = 'double';
+        end
+		add_nc(fname,X.(f{k}), datatype) ;
 	end
 else
 	add_nc(fname,X) ;
 end
 
 % save the remaining variables to the file
-for k=1:nargin-2, 
-   add_nc(fname,varargin{k}) ;
+for k=1:nargin-2,
+    if isfield(varargin{k}, 'data')
+    if ischar(varargin{k}.data)
+        datatype = 'char';
+    else
+        datatype = 'double';
+    end
+    else
+        datatype = 'double';
+    end
+   add_nc(fname,varargin{k}, datatype) ;
 end
