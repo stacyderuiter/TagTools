@@ -1,4 +1,11 @@
+.desktop.ini
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+data/
+Practical/
+Presentations/
+R/HMMs/
+SMMWorkshop/
+TagTools_Workshop_Final/

@@ -3,6 +3,7 @@ title: "TagTools Demo"
 output: 
   learnr::tutorial:
     progressive: TRUE
+    allow_skip: TRUE
 runtime: shiny_prerendered
 ---
 
@@ -40,7 +41,8 @@ DS <- dive_stats(P=sperm_whale$P, dive_cues = D)
 ### Read in Data
 We can easily and quickly load tag data from the archive-ready NC file format.
 
-```{r, data-in, exercise=TRUE}
+
+```{r, data-in, echo=TRUE, eval=FALSE}
 sperm_whale <- load_nc('www/testset3')
 ```
 
@@ -68,7 +70,7 @@ str(sperm_whale$info, max.level = 1)
 Some metadata is automatically extracted from tag-specific data files when it is read in by tag tools and converted to an NC file archive. It is also possible for users to edit and add to this metadata, which is especially important for adding deployment- and experiment-specific information that is not "known" to the tag device.
 
 ```{r, meta-edit, exercise=TRUE}
-metadata_editor(csvfilename = 'www/testset3.csv')
+metadata_editor(csvfilename = 'http://www.calvin.edu/~sld33/data/testset3.csv')
 ```
 
 ## Calibration
@@ -76,9 +78,11 @@ One module of the tool kit allows for calibration and validation of tag data. To
 
 *Since the `sperm_whale` dataset has already been corrected, we demonstrate here with a different dataset from a humpback whale.*
 
+```{r, echo=TRUE, eval=FALSE}
+mn <- load_nc('mn12_186a_raw.nc')
+```
 
 ```{r, fix-pressure-mn, exercise=TRUE}
-mn <- load_nc('mn12_186a_raw.nc')
 mn$P_fixed <- fix_pressure(p = mn$P, t = mn$T)$p
 ```
 
@@ -95,14 +99,14 @@ mn$P_fixed_crop <- crop_to(mn$P_fixed, tcues = c(8400,8600))$X
 ### Viewing Temp Cal Results
 The tag tools include a simple function for producing aligned time-series plots for a whole dataset, or selected variables in it. The time axes are automatically scaled, including appropriate units, and the axes are linked (zooming in one zooms all panels).
 
-```{r, plott, exercise=TRUE}
+```{r, plott, exercise=TRUE, fig.width=4, fig.height=2.5}
 plott(X=list(Original = mn$P_crop, Corrected = mn$P_fixed_crop), r=TRUE)
 ```
 
 ### Plotts with Date-Time Axes
 It is also possible to use date-time axes with `plott()`:
 
-```{r, plott-date-time, exercise=TRUE}
+```{r, plott-date-time, exercise=TRUE, exercise.eval=TRUE}
 plott(X=list(Depth = sperm_whale$P, Accel = sperm_whale$A),
       r = c(TRUE, FALSE),
       recording_start = sperm_whale$info$dephist_deploy_datetime_start)
@@ -111,7 +115,7 @@ plott(X=list(Depth = sperm_whale$P, Accel = sperm_whale$A),
 ## Processing
 The tool kit data-processing module includes many tools for filtering data, changing sampling rates, and computing derived metrics. For example, for kinematic analysis, energetics or foraging ecology, tri-axial accelerometer data are often processed to obtain norm jerk or MSA (minimum specific acceleration):
 
-```{r, accel-derived, exercise=TRUE}
+```{r, accel-derived, exercise=TRUE, exercise.eval=TRUE}
 sperm_whale$njerk <- njerk(sperm_whale$A)
 sperm_whale$msa <- msa(sperm_whale$A)
 plott(X = list(Depth = sperm_whale$P,

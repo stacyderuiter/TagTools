@@ -116,7 +116,7 @@ return
 function    [CFG,fb,dtype] = getSensorCfg(cfgs)
 %
 %
-[CFG,fb] = checkD3Dfg(cfgs) ;
+[CFG,fb] = checkD3Cfg(cfgs) ;
 if ~isempty(CFG),
    dtype = 3 ;
 else
