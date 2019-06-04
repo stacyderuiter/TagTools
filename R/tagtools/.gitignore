@@ -1,4 +1,10 @@
 .Rproj.user
 .Rhistory
 .RData
-inst/doc
+
+data/
+R/HMMs/
+Practical/
+Presentations/
+SMMWorkshop/
+TagTools_Workshop_Final/
