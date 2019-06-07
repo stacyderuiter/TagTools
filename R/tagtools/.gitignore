@@ -1,6 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+*.Rproj
+**/desktop.ini
+
 
 data/
 R/HMMs/
