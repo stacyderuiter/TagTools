@@ -48,54 +48,44 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall =
     toff <- ifelse( sum(which(tsurf > tth)) == 0, max_et, min(tsurf[tsurf > tth]) )
   }, vectorize.args = "tth")
   
-  D0 <- data.frame(tth = tth) %>%
+  T <- data.frame(tth = tth) %>%
     dplyr::mutate(ton = dive_start(tth, tsurf, findall),
                   toff = dive_end(tth, tsurf, p, findall)) %>%
     #truncate dive list to only dives with starts and stops in the record (respecting findall)
     na.omit()
   
-  ### WORKING HERE 6/6/19
-  
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * sampling_rate / dp_lp)
-  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))$y
+  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))
+  
+ #WORKING HERE
+  
   #for each ton, look back to find last time whale was at the surface
   #for each toff, look forward to find next time whale is at the surface
-  dmax <- matrix(0, length(ton), 2)
-  for (k in 1:length(ton)) {
-    ind <- ton[k] + (-round(searchlen * sampling_rate):0)
-    ind <- ind[which(ind > 0)]
-    ki = which(dp[ind] < dpthresh) 
-    if (length(ki)==0) {
-      ki <- 1
-    }else{
-      ki <- max(ki)
-    }
-    ton[k] = ind[ki] ;
-    ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
-    ind <- ind[which(ind <= length(p))] 
-    ki <- which(dp[ind] > -dpthresh)
-    if (length(ki)==0) {
-      ki <- 1
-    }else{
-      ki = min(ki)
-    }
-    toff[k] <- ind[ki]
-    dm <- max(p[ton[k]:toff[k]])
-    km <- which.max(p[ton[k]:toff[k]])
-    dmax[k, ] <- c(dm, ((ton[k] + km - 1) / sampling_rate))
-  }
+  last_surf <-  Vectorize(function(ton, dp, searchlen, sampling_rate){
+    search_win <- ton + (- min(c(ton,round(searchlen * sampling_rate))):0)
+    ton <- ifelse( sum(dp[search_win] < dpthresh) == 0, search_win[1], tail(search_win[dp[search_win] < dpthresh], 1))
+  }, vectorize.args = "ton")
   
-  ## Add option for clustering dive types by depth and duration here.
+  next_surf <-  Vectorize(function(toff, dp, searchlen, sampling_rate, p){
+    search_win <- toff + (0:min(c(length(p)-toff+1,round(searchlen * sampling_rate))))
+    toff <- ifelse( sum(dp[search_win] > -dpthresh) == 0, search_win[1], head(search_win[dp[search_win] > -dpthresh],1))
+  }, vectorize.args = "toff")
+  
+  vmax <- Vectorize(function(p, ton, toff){which.max(p[ton:toff])}, 
+                    vectorize.args = c('ton', 'toff'))
+  
+  T <- T %>%
+    mutate(ton = last_surf(ton, dp, searchlen, sampling_rate),
+           toff = next_surf(toff, dp, searchlen, sampling_rate, p),
+           tmax = vmax(p, ton, toff),
+           max = p[ton + tmax - 1],
+           start = ton/sampling_rate,
+           end = toff/sampling_rate,
+           tmax = (ton+tmax-1)/sampling_rate
+    ) %>%
+    select(start, end, max, tmax)
   
   
-  #assemble output
-  t0 <- cbind(ton,toff)
-  t1 <- t0 / sampling_rate
-  t2 <- dmax
-  t <- cbind(t1, t2)
-  t <- matrix(t[stats::complete.cases(t)], byrow = FALSE, ncol = 4)
-  T <- data.frame(start = t[,1], end = t[,2],
-                  max = t[,3], tmax = t[,4])
   return(T)
 }
