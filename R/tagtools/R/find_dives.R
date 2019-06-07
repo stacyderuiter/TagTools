@@ -14,7 +14,7 @@
 
 find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0) {
   if (nargs() < 2) {
-    stop("inputs for p and mindepth are required")
+    stop("inputs for p and mindepth are required for find_dives()")
   }
   if (is.list(p)) {
     sampling_rate <- p$sampling_rate
@@ -31,47 +31,31 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall =
     }
   }
   
-  if (is.null(surface)) {
-    surface <- 1          #maximum p value for a surfacing
-  }
-  
-  if (is.null(findall)) {
-    findall <- 0 
-  }
-  
   searchlen <- 20         #how far to look in seconds to find actual surfacing
   dpthresh <- 0.25        #vertical velocity threshold for surfacing
   dp_lp <- 0.5           #low-pass filter frequency for vertical velocity
   #find threshold crossings and surface times
   tth <- which(diff(p > mindepth) > 0)
   tsurf <- which(p < surface)
-  ton <- 0 * tth
-  toff <- ton 
-  k <- 0 
-  empty <- integer(0)
-  #sort through threshold crossings to find valid dive start and end points
-  for (kth in 1:length(tth)) {
-    if (all(tth[kth] > toff)) {
-      ks0 <- which(tsurf < tth[kth])
-      ks1 <- which(tsurf > tth[kth])
-      if (findall || ((!identical(ks0, empty)) & (!identical(ks1, empty)))) {
-        k <- k + 1
-        if (identical(ks0, empty)) {
-          ton[k] <- 1
-        } else {
-          ton[k] <- max(tsurf[ks0])
-        }
-        if (identical(ks1, empty)) {
-          toff[k] <- length(p)
-        } else {
-          toff[k] <- min(tsurf[ks1])
-        }
-      }
-    }
-  }
-  #truncate dive list to only dives with starts and stops in the record
-  ton <- ton[1:k]
-  toff <- toff[1:k]
+  
+  dive_start <-  Vectorize(function(tth, tsurf, findall){
+    min_st <- ifelse(findall, 1, NA)
+    ton <- ifelse( sum(which(tsurf < tth)) == 0, min_st, max(tsurf[tsurf < tth]))
+  }, vectorize.args = "tth")
+  
+  dive_end <-  Vectorize(function(tth, tsurf, p, findall){
+    max_et <- ifelse(findall, length(p), NA)
+    toff <- ifelse( sum(which(tsurf > tth)) == 0, max_et, min(tsurf[tsurf > tth]) )
+  }, vectorize.args = "tth")
+  
+  D0 <- data.frame(tth = tth) %>%
+    dplyr::mutate(ton = dive_start(tth, tsurf, findall),
+                  toff = dive_end(tth, tsurf, p, findall)) %>%
+    #truncate dive list to only dives with starts and stops in the record (respecting findall)
+    na.omit()
+  
+  ### WORKING HERE 6/6/19
+  
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * sampling_rate / dp_lp)
   dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))$y
@@ -101,6 +85,10 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall =
     km <- which.max(p[ton[k]:toff[k]])
     dmax[k, ] <- c(dm, ((ton[k] + km - 1) / sampling_rate))
   }
+  
+  ## Add option for clustering dive types by depth and duration here.
+  
+  
   #assemble output
   t0 <- cbind(ton,toff)
   t1 <- t0 / sampling_rate
