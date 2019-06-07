@@ -21,6 +21,7 @@
 #' @param prop The proportion of the maximal excursion to use for defining the "destination" phase of a dive or flight. For example, if \code{prop} is 0.85 (the default), then the destination phase lasts from the first to the last time depth/altitude exceeds 0.85 times the within-dive maximum.
 #' @param angular Is X angular data? Defaults to FALSE. 
 #' @param X_name A short name to use for X variable in the output data frame. For example, if X is pitch data, use X_name='pitch' to get outputs column names like mean_pitch, etc. Defaults to 'angle' for angular data and 'aux' for non-angular data.
+#' @param n_clusters Number of clusters into which to group dives, based on k-means clustering of dive depth and duration. Default is 1 (no clustering).
 #' @export
 #' @return A data frame with one row for each dive/flight and columns as detailed below. All times are in seconds, and rates in units of x/sec where x is the units of \code{P}.
 #' \itemize{
@@ -39,11 +40,13 @@
 #' \code{angle_var} { If angular=TRUE and X is input, the angular variance for the entire excursion. Values for each phase are also provided individually in columns \code{to_angle_var}, \code{dest_angle_var}, and \code{from_angle_var}.}
 #' \code{mean_aux} { If angular=FALSE and X is input, the mean value of X for the entire excursion. Values for each phase are also provided in columns \code{mean_to_aux}, \code{mean_dest_aux}, and \code{mean_from_aux}.}
 #' \code{aux_sd} { If angular=FALSE and X is input, the standard deviation of X for the entire excursion. Values for each phase are also provided individually in columns \code{to_aux_sd}, \code{dest_aux_sd}, and \code{from_aux_sd}.}
-#'#' }
+#' \code{cluster} {The cluster to which the dive is assigned. This column is included only if \code{n_clusters} > 1.}
+#' }
 #' @seealso \code{\link{find_dives}}
 
 dive_stats <- function(P, X=NULL, dive_cues, fs=NULL, 
-                       prop=0.85, angular=FALSE, X_name=NULL){
+                       prop=0.85, angular=FALSE, X_name=NULL,
+                       n_clusters = 1){
   if (!is.list(P) & missing(fs)){
     stop('For vector input data, fs must be provided')
   }
@@ -74,6 +77,12 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
     }
     }
   }
+  
+  if (n_clusters == 'auto'){
+    sil = TRUE
+    }else{
+      sil=FALSE}
+
   
   di <- round(dive_cues*fs)
   
@@ -127,5 +136,13 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
     names(Y) <- gsub(pattern='angle', replacement=X_name, x=names(Y))
     names(Y) <- gsub(pattern='aux', replacement=X_name, x=names(Y))    
   }
+  
+  if (n_clusters > 1){
+  depth.dur <- Y %>% select(max, dur) %>% scale()
+  cluss <- cluster::clara(depth.dur, k=n_clusters)
+  Y <- Y %>%
+    mutate(cluster = factor(cluss$clustering))
+  }
+  #need to make other changes (See black notebook) and also tidy up
   return(Y)
   }
