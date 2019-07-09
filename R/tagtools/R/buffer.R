@@ -3,7 +3,7 @@
 #' This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
 #' @param x The signal vector to be buffered
 #' @param n The desired length of data segments (rows).
-#' @param p The desired amount of overlap between consecutive frames (columns) in the output matrix
+#' @param overlap The desired amount of overlap between consecutive frames (columns) in the output matrix
 #' @param opt The vector of samples specified to precede x[1] in an overlapping buffer
 #' @param nodelay A logical statement to determine if the vector should be buffered with or without delay. Default is FALSE (with delay)
 #' @return A list with 3 elements is returned if nodelay = FALSE:
@@ -16,40 +16,40 @@
 #' @export
 #' @examples x <- c(1:10)
 #'          n <- 3
-#'          p <- 2
+#'          overlap <- 2
 #'          opt <- c(2,1)
-#'          list1 <- buffer(x, n, p, opt)
-#'          list2 <- buffer(x, n, p, nodelay = TRUE)
+#'          list1 <- buffer(x, n, overlap, opt)
+#'          list2 <- buffer(x, n, overlap, nodelay = TRUE)
 
 buffer <- function(x, n, p, opt, nodelay = FALSE) {
-  if(missing(x)|| missing(n) || missing(p)){
-    stop("x, p or n is a required value")
+  if(missing(x)|| missing(n) || missing(overlap)){
+    stop("x, overlap and n are required values for buffer()")
   }
-  if (!(p < n)){
-    stop("p must be less than n")
+  if (!(overlap < n)){
+    stop("overlap must be less than n")
   }
   if(!nodelay){
     if(!missing(opt)){
-      if (length(opt) != p) {
-        stop("length of opt must equal p")
+      if (length(opt) != overlap) {
+        stop("length of opt must equal overlap")
       }
     }
     else{
-      opt <- rep(0, p)
+      opt <- rep(0, overlap)
     }
-    m <- floor(length(x) / (n - p))
+    m <- floor(length(x) / (n - overlap))
     tmat <- matrix(0, nrow = m, ncol = n)
     vecindex <- 1
     for (i in 1:m) {
       if (i == 1) {
-        tmat[i, 1:p] <- opt
-        for (f in (p + 1):n) {
+        tmat[i, 1:overlap] <- opt
+        for (f in (overlap + 1):n) {
           tmat[i, f] = x[vecindex]
           vecindex <- vecindex + 1
         }
       } else {
-        tmat[i, 1:p] <- tmat[i - 1, (-(n - p):0)]
-        for (c in (p + 1):n) {
+        tmat[i, 1:overlap] <- tmat[i - 1, (-(n - overlap):0)]
+        for (c in (overlap + 1):n) {
           tmat[i, c] <- x[vecindex]
           vecindex <- vecindex + 1
         }
@@ -59,18 +59,18 @@ buffer <- function(x, n, p, opt, nodelay = FALSE) {
     if (vecindex < length(x) + 1) {
       z <- x[vecindex:length(x)]
     }
-    ret_opt <- tmat[m, (-(n - p):0)]
+    ret_opt <- tmat[m, (-(n - overlap):0)]
     X <- t(tmat)
     return(list(X = X, z = z, opt = ret_opt))
   }
   else{
-    X <- buffer_nodelay(x, n, p)
+    X <- buffer_nodelay(x, n, overlap)
     return(X)
   }
 }
-buffer_nodelay <- function(vec, n, p){
-  m <- floor((length(vec) - n)/(n - p)) + 1
-  buffermatrix <-function(vec, m, n, p){
+buffer_nodelay <- function(vec, n, overlap){
+  m <- floor((length(vec) - n)/(n - overlap)) + 1
+  buffermatrix <-function(vec, m, n, overlap){
     retmat <- matrix(0, nrow = m, ncol = n)
     vecindex <- 1
     for(i in 1:m){
@@ -81,7 +81,7 @@ buffer_nodelay <- function(vec, n, p){
         }
       }
       else{
-        vecindex <- vecindex - p
+        vecindex <- vecindex - overlap
         for(c in 1:n){
           retmat[i,c] <- vec[vecindex]
           vecindex <- vecindex + 1
@@ -91,6 +91,6 @@ buffer_nodelay <- function(vec, n, p){
     return(retmat)
   }
   realretmat <- matrix(0, nrow = n, ncol = m)
-  realretmat <- t(buffermatrix(vec, m,n,p))
+  realretmat <- t(buffermatrix(vec, m,n,overlap))
   return(realretmat)
 }
