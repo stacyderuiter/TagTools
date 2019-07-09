@@ -21,7 +21,7 @@
 #'          list1 <- buffer(x, n, overlap, opt)
 #'          list2 <- buffer(x, n, overlap, nodelay = TRUE)
 
-buffer <- function(x, n, p, opt, nodelay = FALSE) {
+buffer <- function(x, n, overlap, opt, nodelay = FALSE) {
   if(missing(x)|| missing(n) || missing(overlap)){
     stop("x, overlap and n are required values for buffer()")
   }
