@@ -49,7 +49,7 @@ zero_crossings <- function(x, TH, Tmax = NULL) {
       if (is.na(kpl)[1]| length(kpl) == 0) {
         break
       }
-      suppressWarnings(kk <- match_last(1, knt <= kpl[1]))
+      kk <- match_last(1, knt <= kpl[1])
       if (!is.na(kk)) {
         cnt <- cnt + 1
         K[cnt,] <- c(knt[kk], kpl[1], SIGN)
@@ -62,7 +62,7 @@ zero_crossings <- function(x, TH, Tmax = NULL) {
       if (is.na(knl)[1]| length(knl) == 0) {
         break
       }
-      suppressWarnings(kk <- match_last(1, kpt <= knl[1]))
+      kk <- match_last(1, kpt <= knl[1])
       if (!is.na(kk)) {
         cnt <- cnt + 1
         K[cnt,] <- c(kpt[kk], knl[1], SIGN)

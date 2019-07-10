@@ -44,7 +44,7 @@ dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
   #force Nfft to the nearest power of 2
   Nfft <- 2^(round(log(Nfft)/log(2)))
   if (!is.null(fc)) {
-    Af <- fir_nodelay(diff(A), 6 * sampling_rate / fc, fc / (sampling_rate / 2))$y
+    Af <- fir_nodelay(diff(A), 6 * sampling_rate / fc, fc / (sampling_rate / 2))
   } else {
     Af <- diff(A)
   }

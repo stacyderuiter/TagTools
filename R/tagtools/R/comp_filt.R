@@ -21,7 +21,7 @@ comp_filt <- function(X, sampling_rate=NULL, fc) {
   nf <-  4 * sampling_rate / fc 
   Xf <- vector('list', length(fc) + 1) 
   for (k in 1:length(fc)) {
-    Xf[[k]] <- fir_nodelay(X, nf[k], fc[k] / (sampling_rate / 2))$y 
+    Xf[[k]] <- fir_nodelay(X, nf[k], fc[k] / (sampling_rate / 2))
     X <- X - Xf[[k]]
   }
   Xf[[k + 1]] <- X
