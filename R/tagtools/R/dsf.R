@@ -48,6 +48,9 @@ dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
   } else {
     Af <- diff(A)
   }
+  if (Nfft > nrow(Af)) {
+    Nfft <- nrow(Af)
+  }
   templist <- spec_lev(Af, Nfft, sampling_rate, Nfft, Nfft / 2)
   S <- templist$SL
   f <- templist$f
