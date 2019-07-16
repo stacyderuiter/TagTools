@@ -38,7 +38,7 @@ speed_from_depth <- function(p, A, sampling_rate, fc = 0.2, plim = 20/180*pi) {
   v = depth_rate(p=p, fs=sampling_rate, fc=fc)
   if (!missing(A)){ #if both p and A are input
     nf <- round(4 * sampling_rate / fc)
-    A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))$y
+    A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))
     pitch <- a2pr(A)$p
     pitch[abs(pitch) < plim] = NA
     s <- v / sin(pitch)
