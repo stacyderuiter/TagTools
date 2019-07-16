@@ -72,3 +72,5 @@ export(tortuosity)
 export(track3D)
 export(undo_cal)
 export(zero_crossings)
+
+importFrom(magrittr,"%>%")

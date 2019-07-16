@@ -23,6 +23,7 @@ Imports:
     graphics,
     hht,
     lubridate,
+    magrittr,
     matlab,
     ncdf4,
     pracma,

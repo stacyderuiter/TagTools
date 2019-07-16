@@ -12,9 +12,9 @@
 #' BW <- beaked_whale
 #' T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
 
-find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findall = NULL) {
+find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0) {
   if (nargs() < 2) {
-    stop("inputs for p and mindepth are required")
+    stop("inputs for p and mindepth are required for find_dives()")
   }
   if (is.list(p)) {
     sampling_rate <- p$sampling_rate
@@ -30,77 +30,62 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
       stop("sampling_rate is required when p is a vector")
     }
   }
-  if (is.null(surface)) {
-    surface <- 1          #maximum p value for a surfacing
-  }
-  if (is.null(findall)) {
-    findall <- 0 
-  }
+  
   searchlen <- 20         #how far to look in seconds to find actual surfacing
   dpthresh <- 0.25        #vertical velocity threshold for surfacing
   dp_lp <- 0.5           #low-pass filter frequency for vertical velocity
   #find threshold crossings and surface times
   tth <- which(diff(p > mindepth) > 0)
   tsurf <- which(p < surface)
-  ton <- 0 * tth
-  toff <- ton 
-  k <- 0 
-  empty <- integer(0)
-  #sort through threshold crossings to find valid dive start and end points
-  for (kth in 1:length(tth)) {
-    if (all(tth[kth] > toff)) {
-      ks0 <- which(tsurf < tth[kth])
-      ks1 <- which(tsurf > tth[kth])
-      if (!missing(findall) | ((!identical(ks0, empty)) & (!identical(ks1, empty)))) {
-        k <- k + 1
-        if (identical(ks0, empty)) {
-          ton[k] <- 1
-        } else {
-          ton[k] <- max(tsurf[ks0])
-        }
-        if (identical(ks1, empty)) {
-          toff[k] <- length(p)
-        } else {
-          toff[k] <- min(tsurf[ks1])
-        }
-      }
-    }
-  }
-  #truncate dive list to only dives with starts and stops in the record
-  ton <- ton[1:k]
-  toff <- toff[1:k]
+  
+  dive_start <-  Vectorize(function(tth, tsurf, findall){
+    min_st <- ifelse(findall, 1, NA)
+    ton <- ifelse( sum(which(tsurf < tth)) == 0, min_st, max(tsurf[tsurf < tth]))
+  }, vectorize.args = "tth")
+  
+  dive_end <-  Vectorize(function(tth, tsurf, p, findall){
+    max_et <- ifelse(findall, length(p), NA)
+    toff <- ifelse( sum(which(tsurf > tth)) == 0, max_et, min(tsurf[tsurf > tth]) )
+  }, vectorize.args = "tth")
+  
+  T <- data.frame(tth = tth) %>%
+    dplyr::mutate(ton = dive_start(tth, tsurf, findall),
+                  toff = dive_end(tth, tsurf, p, findall)) %>%
+    #truncate dive list to only dives with starts and stops in the record (respecting findall)
+    na.omit()
+  
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * sampling_rate / dp_lp)
   dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))
+  
+ #WORKING HERE
+  
   #for each ton, look back to find last time whale was at the surface
   #for each toff, look forward to find next time whale is at the surface
-  dmax <- matrix(0, length(ton), 2)
-  for (k in 1:length(ton)) {
-    ind <- ton[k] + (-round(searchlen * sampling_rate):0)
-    ind <- ind[which(ind > 0)]
-    ki = max(which(dp[ind] < dpthresh)) 
-    if (identical(ki, empty)) {
-      ki <- 1
-    }
-    ton[k] = ind[ki] ;
-    ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
-    ind <- ind[which(ind <= length(p))] 
-    ki <- min(which(dp[ind] > -dpthresh))
-    if (identical(ki, empty)) {
-      ki <- 1
-    }
-    toff[k] <- ind[ki]
-    dm <- max(p[ton[k]:toff[k]])
-    km <- which.max(p[ton[k]:toff[k]])
-    dmax[k, ] <- c(dm, ((ton[k] + km - 1) / sampling_rate))
-  }
-  #assemble output
-  t0 <- cbind(ton,toff)
-  t1 <- t0 / sampling_rate
-  t2 <- dmax
-  t <- cbind(t1, t2)
-  t <- matrix(t[stats::complete.cases(t)], byrow = FALSE, ncol = 4)
-  T <- data.frame(start = t[,1], end = t[,2],
-                  max = t[,3], tmax = t[,4])
+  last_surf <-  Vectorize(function(ton, dp, searchlen, sampling_rate){
+    search_win <- ton + (- min(c(ton,round(searchlen * sampling_rate))):0)
+    ton <- ifelse( sum(dp[search_win] < dpthresh) == 0, search_win[1], tail(search_win[dp[search_win] < dpthresh], 1))
+  }, vectorize.args = "ton")
+  
+  next_surf <-  Vectorize(function(toff, dp, searchlen, sampling_rate, p){
+    search_win <- toff + (0:min(c(length(p)-toff+1,round(searchlen * sampling_rate))))
+    toff <- ifelse( sum(dp[search_win] > -dpthresh) == 0, search_win[1], head(search_win[dp[search_win] > -dpthresh],1))
+  }, vectorize.args = "toff")
+  
+  vmax <- Vectorize(function(p, ton, toff){which.max(p[ton:toff])}, 
+                    vectorize.args = c('ton', 'toff'))
+  
+  T <- T %>%
+    mutate(ton = last_surf(ton, dp, searchlen, sampling_rate),
+           toff = next_surf(toff, dp, searchlen, sampling_rate, p),
+           tmax = vmax(p, ton, toff),
+           max = p[ton + tmax - 1],
+           start = ton/sampling_rate,
+           end = toff/sampling_rate,
+           tmax = (ton+tmax-1)/sampling_rate
+    ) %>%
+    select(start, end, max, tmax)
+  
+  
   return(T)
 }
