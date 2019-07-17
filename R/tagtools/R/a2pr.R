@@ -33,7 +33,7 @@ a2pr <- function(A, sampling_rate=NULL, fc=NULL) {
     A <- matrix(A, nrow=1)
   }
   if (!is.null(fc)) {
-    A <- fir_nodelay(A, round(4 / fc), fc / (sampling_rate / 2))$y
+    A <- fir_nodelay(A, round(4 / fc), fc / (sampling_rate / 2))
   }
   v <- sqrt(rowSums(A^2))
   # compute pitch and roll

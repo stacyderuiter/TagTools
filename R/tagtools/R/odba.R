@@ -28,7 +28,7 @@ odba <- function(A, sampling_rate=NULL, fh=NULL, method = "fir", n = NULL) {
       stop("sampling_rate (unless A is a tag sensor data list) and fh are required inputs to compute odba by the FIR method")
     }
     n <- 5 * round(sampling_rate / fh)
-    Ah <- fir_nodelay(A, n, (fh / (sampling_rate / 2)), "high")$y
+    Ah <- fir_nodelay(A, n, (fh / (sampling_rate / 2)), "high")
     e <- sqrt(rowSums(abs(Ah)^2))
   } else {
     if ((method == "vedba") | (method == "wilson")) {

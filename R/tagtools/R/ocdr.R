@@ -60,8 +60,8 @@ ocdr <- function(p, A, sampling_rate, fc, plim) {
   x3 <- p[length(p)] - p[length(p) - 1]
   X <- c(x1, x2, x3)
   diffp <- X * sampling_rate 
-  v <- fir_nodelay(diffp, nf, fc / (sampling_rate / 2))$y 
-  A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))$y 
+  v <- fir_nodelay(diffp, nf, fc / (sampling_rate / 2))
+  A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))
   pitch <- a2pr(A)$p
   pitch[which(abs(pitch) < plim)] <- NA 
   s <- v / sin(pitch) 

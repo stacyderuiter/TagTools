@@ -71,7 +71,8 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
   toff <- toff[1:k]
   #filter vertical velocity to find actual surfacing moments
   n <- round(4 * sampling_rate / dp_lp)
-  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate, n, dp_lp / (sampling_rate / 2))
+  dp <- fir_nodelay(matrix(c(0, diff(p)), ncol = 1) * sampling_rate,
+                    n, dp_lp / (sampling_rate / 2))
   #for each ton, look back to find last time whale was at the surface
   #for each toff, look forward to find next time whale is at the surface
   dmax <- matrix(0, length(ton), 2)

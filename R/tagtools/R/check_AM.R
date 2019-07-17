@@ -89,8 +89,8 @@ check_AM <- function(A,M=NULL,fs=NULL, find_incl=TRUE){
   if (fs>10){
   nf <- round(4*fs/fc)
   if (nrow(A)>nf){
-  M = fir_nodelay(M,nf,fc/(fs/2))$y 
-  A = fir_nodelay(A,nf,fc/(fs/2))$y 
+  M = fir_nodelay(M,nf,fc/(fs/2))
+  A = fir_nodelay(A,nf,fc/(fs/2)) 
   }
   }
   

@@ -51,8 +51,8 @@ ptrack <- function(A, M, s, sampling_rate, fc = NULL, include_pe = NULL) {
     include_pe <- FALSE
   }
   nf <- 4 * sampling_rate / fc
-  A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))$y
-  M <- fir_nodelay(M, nf, fc / (sampling_rate / 2))$y
+  A <- fir_nodelay(A, nf, fc / (sampling_rate / 2))
+  M <- fir_nodelay(M, nf, fc / (sampling_rate / 2))
   W <- body_axes(A, M)
   X <- t(drop(W[, 1, ]))
 #additional function --------------------------------------
