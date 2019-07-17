@@ -53,12 +53,12 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
       ks1 <- which(tsurf > tth[kth])
       if (!missing(findall) | ((!identical(ks0, empty)) & (!identical(ks1, empty)))) {
         k <- k + 1
-        if (identical(ks0, empty)) {
+        if (identical(ks0, empty) | length(ks0) == 0 | is.infinite(ks0)) {
           ton[k] <- 1
         } else {
           ton[k] <- max(tsurf[ks0])
         }
-        if (identical(ks1, empty)) {
+        if (identical(ks1, empty) | length(ks1) == 0 | is.infinite(ks1)) {
           toff[k] <- length(p)
         } else {
           toff[k] <- min(tsurf[ks1])
@@ -80,14 +80,14 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = NULL, findal
     ind <- ton[k] + (-round(searchlen * sampling_rate):0)
     ind <- ind[which(ind > 0)]
     ki = max(which(dp[ind] < dpthresh)) 
-    if (identical(ki, empty)) {
+    if (length(ki) == 0 | is.infinite(ki)) {
       ki <- 1
     }
     ton[k] = ind[ki] ;
     ind <- toff[k] + (0:round(searchlen * sampling_rate)) 
     ind <- ind[which(ind <= length(p))] 
     ki <- min(which(dp[ind] > -dpthresh))
-    if (identical(ki, empty)) {
+    if (length(ki) == 0 | is.infinite(ki)) {
       ki <- 1
     }
     toff[k] <- ind[ki]
