@@ -50,6 +50,9 @@ dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
   } else {
     Af <- diff(A)
   }
+  if (Nfft > nrow(Af)) {
+    Nfft <- nrow(Af)
+  }
   templist <- spec_lev(Af, Nfft, sampling_rate, Nfft, Nfft / 2)
   S <- templist$SL
   f <- templist$f
@@ -57,8 +60,12 @@ dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
   v <- rowSums(10^(S/10))
   m <- max(v)
   n <- which.max(v)
-  p <- pracma::polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)
-  fpk <- -p[2] / (2 * p[1])
+  if ((n > 1) & (n < length(f))) {
+    p <- pracma::polyfit(t(f[n+(-1:1)]), v[n+(-1:1)], 2)
+    fpk <- -p[2] / (2 * p[1])
+  } else {
+    fpk <- f[n]
+  }
   q <- m / mean(v)
   return(list(fpk = fpk, q = q))
 }
