@@ -22,7 +22,7 @@ function    W = body_axes(A,M,fs,fc)
 %     fs is the sampling rate of the sensor data in Hz (samples per second).
 %		 This is only needed if A and M are not sensor structures and filtering is required.
 %	   fc (optional) specifies the cut-off frequency of a low-pass filter to
-%		 apply to A and M before computing heading. The filter cut-off frequency is with 
+%		 apply to A and M before computing heading. The filter cut-off frequency is  
 %      in Hertz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not 
 %      specified, no filtering is performed.
 %
@@ -85,11 +85,8 @@ else
 		fprintf('body_axes: A and M must both be structures or matrices, not one of each\n') ;
 		return
 	end
-	if nargin==2,
+	if nargin==3,
 		fc = [] ;
-	elseif nargin==3,
-	   fprintf('Error: Need to specify fs and fc if calling body_axes with matrix inputs\n') ;
-	   return
 	end
 end	
 

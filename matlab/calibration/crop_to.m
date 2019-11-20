@@ -36,7 +36,8 @@ function		[X,T] = crop_to(X,fs,tcues)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 28 July 2017
+%     Last modified: 23 Dec 2018
+%     - changed sensor structure field names
 
 T = [] ;
 if nargin<2,
@@ -98,8 +99,8 @@ else
 end
 X.crop = tcues ;
 X.crop_units = 'seconds' ;
-X.start_time = tcues(1) ;
-X.start_time_units = 'seconds' ;
+X.start_offset = tcues(1) ;
+X.start_offset_units = 'seconds' ;
 
 if ~isfield(X,'history') || isempty(X.history),
 	X.history = 'crop_to' ;

@@ -1,8 +1,10 @@
-function    X = apply_cal(X,C,T)
+function    X = apply_cal(X,C,T,nomap)
 
 %     X = apply_cal(X,cal)
 %		or
 %     X = apply_cal(X,cal,T)
+%		or
+%     X = apply_cal(X,cal,T,nomap)
 %
 %		Implement a calibration on sensor data.
 %
@@ -16,6 +18,10 @@ function    X = apply_cal(X,C,T)
 %		 same size and sampling rate as the data in X. T
 %      is only required if there is a tcomp field in the
 %      cal structure.
+%	   nomap is an optional argument that is used to disable
+%		 axis mapping for vector sensors. Mapping is disabled
+%		 if nomap=1, otherwise mapping will be performed if
+%		 the cal structure contains a map field.
 %
 %		Returns:
 %		X is a sensor structure with calibration implemented.
@@ -24,14 +30,17 @@ function    X = apply_cal(X,C,T)
 %
 %     Cal fields currently supported are:
 %     poly, cross, map, tcomp, tref
+%		Any other fields in cal will be ignored.
 %
 %		Example:
 %		 TBD
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: January 2018
+%     Last modified: March 2018
 %     - cal fields can be in upper or lower case
+%		- added comments and nomap support
+%     - fixed errors in temperature compensation
 
 if nargin<2,
    help apply_cal
@@ -47,6 +56,10 @@ if nargin<3,
    T = [] ;
 end
 
+if nargin<4,
+   nomap = 0 ;
+end
+
 if isstruct(X),
    x = sens2var(X) ;
    if isempty(x), return, end
@@ -54,6 +67,7 @@ else
    x = X ;
 end
 
+% 1. find and apply the calibration polynomial
 p = [] ;
 if isfield(C,'poly'),
 	p = C.poly ;
@@ -72,6 +86,7 @@ if ~isempty(p),
    end
 end
 
+% 2. find and apply temperature compensation
 p = [] ;
 if isfield(C,'tcomp'),
 	p = C.tcomp ;
@@ -79,8 +94,7 @@ elseif isfield(C,'TCOMP'),
 	p = C.TCOMP ;
 end
 
-if ~isempty(p) && ~isempty(T) && size(T,1)==size(x,1),
-	% TODO interp T to match X
+if ~isempty(p) && ~isempty(T),
    if isfield(C,'tref'),
 		tref = C.tref ;
    elseif isfield(C,'TREF'),
@@ -88,17 +102,22 @@ if ~isempty(p) && ~isempty(T) && size(T,1)==size(x,1),
 	else
       tref = 20 ;
    end
-	if length(p)==size(x,2),
-		x = x + (T-tref)*p(:)' ;
-	elseif size(X.data,2)==1,
-		x = x + polyval([p(:)' 0],T) ;
-	end
-   if isstruct(X),
-      X.cal_tcomp = p ;
-      X.cal_tref = tref ;
+   t = sens2var(T) ;
+   if size(t,1)==size(x,1),
+      % TODO interp t to match X
+      if length(p)==size(x,2),
+         x = x + (t-tref)*p(:)' ;
+      elseif size(x,2)==1,
+		x = x + polyval([p(:)' 0],t-tref) ;
+      end
+      if isstruct(X),
+         X.cal_tcomp = p ;
+         X.cal_tref = tref ;
+      end
    end
 end
 
+% 3. find and apply any cross-axis corrections - only for vector sensors
 p = [] ;
 if isfield(C,'cross'),
 	p = C.cross ;
@@ -113,18 +132,24 @@ if ~isempty(p),
    end
 end
 
-p = [] ;
-if isfield(C,'map'),
-	p = C.map ;
-elseif isfield(C,'MAP'),
-	p = C.MAP ;
-end
+% 4. find and apply an axis conversion map - only for vector sensors
+if nomap==0,
+	p = [] ;
+	if isfield(C,'map'),
+		p = C.map ;
+	elseif isfield(C,'MAP'),
+		p = C.MAP ;
+	end
 
-if ~isempty(p),
-	x = x * p ;
-   if isstruct(X),
-      X.cal_map = p ;
-   end
+	if ~isempty(p),
+		x = x * p ;
+		if isstruct(X),
+			X.cal_map = p ;
+         if isfield(C,'axes'),
+            X.axes = C.axes ;
+         end
+		end
+	end
 end
 
 if ~isstruct(X),
@@ -136,11 +161,12 @@ X.data = x ;
 X.frame = 'tag' ;
 
 if isfield(C,'unit'),
-	X.source_unit = X.unit ;
-	X.source_unit_name = X.unit_name ;
-	X.source_unit_label = X.unit_label ;
 	X.unit = C.unit ;
+end
+if isfield(C,'unit_name'),
 	X.unit_name = C.unit_name ;
+end
+if isfield(C,'unit_label'),
 	X.unit_label = C.unit_label ;
 end
 

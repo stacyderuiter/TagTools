@@ -1,12 +1,17 @@
 function  [X,cues] = extract_cues(x,fs,cues,len)
 
-%     [X,cues] = extract_cues(x,fs,cues,len)
+%     [X,cues] = extract_cues(x,cues,len) % x is sensor structure
+%     or
+%     [X,cues] = extract_cues(x,fs,cues,len) % x is a vecotr or matrix
+%
 %     Extract multiple sub-samples of data from a vector or matrix. 
 %
 %		Inputs:
-%     x is a vector or matrix of measurements. If x is a matrix, each column
-%		 is treated as a separate measurement vector.
-%     fs is the sampling rate in Hz of the data in x.
+%     x is a sensor structure or a vector or matrix of measurements. 
+%      If x (or the data inside x) is a matrix, each column is treated as 
+%      a separate measurement vector.
+%     fs is the sampling rate in Hz of the data in x. fs is only needed if
+%      x is not a sensor structure.
 %     cues defines the start time in seconds of the intervals to be extracted from x.
 %     len is the length of the interval to extract in seconds. This should be a scalar.
 %
@@ -29,9 +34,19 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 %     Last modified: 10 May 2017
 
 X = [] ;
-if nargin<4,
+if nargin<3,
    help extract_cues
    return
+end
+
+if isstruct(x),
+   len = cues ;
+	cues = fs ;
+	[x,fs] = sens2var(x) ;
+	if isempty(x), return, end
+elseif nargin<4,
+	help extract_cues
+	return
 end
 
 if size(x,1)==1,

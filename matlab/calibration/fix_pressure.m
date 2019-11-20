@@ -1,4 +1,4 @@
-function    [p,pc] = fix_pressure(p,t,fs)
+function    [p,pc] = fix_pressure(p,t,fs,maxp)
 
 %     [p,pc] = fix_pressure(p,t,maxp)		% p and t are sensor structures
 %		or
@@ -17,7 +17,7 @@ function    [p,pc] = fix_pressure(p,t,fs)
 %		 p and t are not sensor strucures. The depth and temperature
 %      must both have the same sampling rate (use decdc.m or resample.m 
 %		 if needed to achieve this).
-%		maxp is the maximum depth or altitude reading in the pressure data
+%     maxp is the maximum depth or altitude reading in the pressure data
 %		 for which the animal could actually be at the surface. This is a
 %		 rough measurement of the potential error in the pressure data. The
 %		 unit is meters. Start with a small value, e.g., 2 m and re-run fix_depth
@@ -66,6 +66,8 @@ MAXSPEED = 0.05 ;    % maximum speed in metres/second of points at the surface t
 ASYMM = 0.2 ;        % maximum assymmetry between positive and negative residuals
 TREF = 20 ;          % standard temperature reference to use
 PRCTSURF = 2 ;       % minimum percent of time animal is near surface
+PSLOPE = 1/30 ;      % maximum rate of variation of zero-pressure m/s
+MINR2 = 0.2 ;        % minimum acceptable R2 for temperature regression
 
 pc = [] ;
 if nargin<2,
@@ -117,6 +119,10 @@ if isempty(v),
 	return
 end
 
+% do this if the temperature needs a time constant, e.g., 30 s
+%pf=1/(fs*30);
+%tt = filter(pf,[1 -(1-pf)],tt);
+
 % do initial offset correction - just using the 2%ile of the depth. This
 % assumes animals spend at least 2% of their time at or close to the
 % surface. Lower the percentile if this is not the case.
@@ -130,12 +136,17 @@ v = v(k) ;
 [K,s,KK] = zero_crossings(v,MAXSPEED) ; % find zero crossings of vertical velocity
 KK=KK(s>0,:) ;     % pick just the positive zero crossings
 % these are when the animal goes from descending to ascending if flying
-% or from ascending to descending is swimming
+% or from ascending to descending if swimming
 
 % select depth samples around each zero crossing
+last = [] ;
 k=zeros(length(v),1);
 for kk=1:size(KK,1),
-	k(KK(kk,1):KK(kk,2))=1 ;
+   pzc = min(pp(KK(kk,1):KK(kk,2))) ;
+   if isempty(last) || pzc<last(2)+PSLOPE/fs*(KK(kk,1)-last(1)),
+      k(KK(kk,1):KK(kk,2))=1 ;
+      last = [KK(kk,2),pzc] ;
+   end
 end
 k=find(k);
 ps=pp(k);      % pick just the 'surface' samples of pressure
@@ -158,7 +169,8 @@ end
 
 % compute the correction terms
 pc.tref = TREF ;
-if stats(3)>0.05,			% if the regression didn't help, just keep the offset adjustment
+if stats(1)<MINR2,	% if the regression didn't help, just keep the offset adjustment
+   fprintf('Low R-squared (%2.2f) for temperature regression - just correcting offset\n',stats(1)) ; 
 	pc.tcomp = [0 0] ;
 	pc.poly = [1 p0] ;
 else
@@ -183,7 +195,7 @@ else
 end
 
 if ~isfield(p,'history') || isempty(p.history),
-	p.history = 'fix_depth' ;
+	p.history = 'fix_pressure' ;
 else
-	p.history = [p.history ',fix_depth'] ;
+	p.history = [p.history ',fix_pressure'] ;
 end

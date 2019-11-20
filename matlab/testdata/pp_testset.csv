@@ -1,0 +1,35 @@
+field,required,params
+depid,1,
+dtype.source,0,
+dtype.datetime.made,0,
+dtype.nfiles,0,
+dtype.format,0,DTG
+device.serial,1,
+device.make,1,DTAG
+device.type,1,Archival
+device.model,1,DTAG4
+device.url,0,https://www.soundtags.org
+sensors.firm,1,Not specified
+sensors.soft,1,Not specified
+sensors.list,0,"3axis Accelerometer,3 axis Magnetometer,Pressure,Sound"
+animal.id,0,Unknown
+animal.species.common,1,Harbour porpoise
+animal.species.science,1,Phocoena phocoena
+animal.dbase.url,1,
+dephist.device.tzone,1,0
+dephist.device.regset,1,dd/mm/yyyy HH:MM:SS
+dephist.device.datetime.start,1,
+dephist.deploy.locality,1,"Kerteminde, Denmark"
+dephist.deploy.location.lat,1,55.45
+dephist.deploy.location.lon,1,10.65
+dephist.deploy.datetime.start,1,
+dephist.deploy.method,1,Suction cups
+project.name,1,Tagtools 2017
+project.datetime.start,1,2017-9-30
+project.datetime.end,1,2017-10-4
+provider.name,1,Mark Johnson
+provider.details,1,Univ St Andrews
+provider.email,1,info@animaltags.org
+provider.license,1,Creative Commons
+provider.cite,1,none
+provider.doi,1,none

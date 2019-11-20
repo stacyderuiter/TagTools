@@ -45,7 +45,7 @@ if isstruct(X),
 	if isempty(X), return, end
 else
 	if nargin<3,
-		help compfilt
+		help comp_filt
 		return
 	end
 end

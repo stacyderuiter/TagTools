@@ -1,6 +1,6 @@
 function    [K,s,KK] = zero_crossings(x,TH,Tmax)
 %
-%    	 [K,s] = zero_crossings(x,TH,Tmax)
+%    	 [K,s,KK] = zero_crossings(x,TH,Tmax)
 %      Find zero-crossings in a vector using a hysteretic detector. This is 
 %		 useful, e.g., to locate cyclic postural changes due to propulsion.
 %	
@@ -22,28 +22,75 @@ function    [K,s,KK] = zero_crossings(x,TH,Tmax)
 %
 %		Example:
 %		 [K,s] = zero_crossings(sin(2*pi*0.033*(1:100)'),0.3)
-% 	    returns: K=[15.143,30.286,45.429,60.628,75.771,90.914]'
+% 	    returns: K=[15,30,45,61,76,91]'
 %					 s=[-1,1,-1,1,-1,1]'
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 10 May 2017
+%     Last modified: 27 June 2018
+%     sped up processing for long data sets
+%     21 Jan 2019 minor edits
 
-K = [] ; s = [] ;
+K = [] ; s = [] ; KK = [] ;
 
 if nargin<2,
    help zero_crossings
    return
 end
 
+if nargin<3,
+   Tmax = [] ;
+end
+	
 % find all positive and negative threshold crossings
-xtp = diff(x>TH) ;
-xtn = diff(x<-TH) ;
+xtp = diff(x>TH(1)) ;
+xtn = diff(x<-TH(1)) ;
 kpl = find(xtp>0)+1 ;  % leading edges of positive threshold crossings
 kpt = find(xtp<0) ;  % trailing edges of positive threshold crossings
 knl = find(xtn>0)+1 ;  % leading edges of negative threshold crossings
 knt = find(xtn<0) ;  % trailing edges of negative threshold crossings
 
+% find valid positive-going zero-crossings
+k = [[knt -ones(length(knt),1)];[kpl ones(length(kpl),1)]] ;
+[z,I] = sort(k(:,1)) ;
+k = k(I,:) ;
+kz = find(diff(k(:,2))>1.5) ;
+kz = reshape([kz';kz'+1],[],1) ;
+k = k(kz,:) ;
+kkp = reshape(k(:,1),2,[])' ;
+kp = 0.5*sum(kkp,2) ;
+if ~isempty(Tmax),
+   dp = diff(k(:,1)) ;
+   dp = dp(1:2:end) ;
+   kp = kp(dp<Tmax(1)) ;
+end
+
+% find valid negative-going zero-crossings
+k = [[kpt -ones(length(kpt),1)];[knl ones(length(knl),1)]] ;
+[z,I] = sort(k(:,1)) ;
+k = k(I,:) ;
+kz = find(diff(k(:,2))>1.5) ;
+kz = reshape([kz';kz'+1],[],1) ;
+k = k(kz,:) ;
+kkn = reshape(k(:,1),2,[])' ;
+kn = 0.5*sum(kkn,2) ;
+if ~isempty(Tmax),
+   dn = diff(k(:,1)) ;
+   dn = dn(1:2:end) ;
+   kn = kn(dn<Tmax(1)) ;
+end
+
+% combine positive- and negative- going zero crossings
+kz = [[kn -ones(length(kn),1)];[kp ones(length(kp),1)]] ;
+kk = [kkn;kkp] ;
+[z,I] = sort(kz(:,1)) ;
+kz = kz(I,:) ;
+KK = kk(I,:) ;
+K = kz(:,1) ;
+s = kz(:,2) ;
+return 
+
+% old slow way of doing it
 K = zeros(length(kpl)+length(knl),3) ; % prepare space for the results
 cnt = 0 ;
 if min(kpl)<min(knl),      % find which direction zero-crossing comes first
@@ -81,7 +128,7 @@ end
 K = K(1:cnt,:) ;
 
 if nargin==3,
-   k = find(K(:,2)-K(:,1)<=Tmax) ;
+   k = find(K(:,2)-K(:,1)<=Tmax(1)) ;
    K = K(k,:) ;
 end
 

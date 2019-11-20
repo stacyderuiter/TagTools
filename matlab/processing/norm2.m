@@ -10,7 +10,7 @@ function    v=norm2(X)
 %		matrix.
 %
 %		Input:
-%		X is a vector or matrix.
+%		X is a vector or matrix or sensor structure.
 %
 %		Returns:
 %		v is the row-wise vector norm of X if X is a matrix. If X is a vector
@@ -22,7 +22,12 @@ function    v=norm2(X)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 10 May 2017
+%     Last modified: 24 Dec 2018
+%     - added support for sensor structure input
+
+if isstruct(X),
+   X = sens2var(X) ;
+end
 
 [m,n] = size(X) ;
 if m==1 | n==1,

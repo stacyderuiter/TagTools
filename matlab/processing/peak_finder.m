@@ -1,13 +1,18 @@
 function peaks = peak_finder(x,fs,thresh,blank,doplot)
 
-%  peaks = peak_finder(x,fs,thresh,blank,doplot)
-%   This function detects peaks in jerk data that exceed a specified 
+%   peaks = peak_finder(X,thresh,blank,doplot)  % X is a sensor structure
+%   or
+%   peaks = peak_finder(X,fs,thresh,blank,doplot)  % x is a vector
+%   This function detects peaks in a signal that exceed a specified 
 %   threshold and returns each peak's start time, end time, maximum jerk
 %   value, time of the maximum jerk, threshold level, and blanking time.
 %
 % INPUTS:
-%   x       A vector of data to be used in peak detection.
-%   fs      The sampling rate in Hz of the signal in x. 
+%   X   A sensor structure or vector containing data to be used 
+%       in peak detection. If X has more than one column of data,
+%       only the first column will be analysed.
+%   fs  The sampling rate in Hz of the signal in x. This is only
+%       required if X is not a sensor structure.
 %   thresh  The threshold level above which peaks in x are detected. 
 %       Input must be in the same units as x. If thresh is missing/empty,
 %       the default level is the 99 percentile of x.
@@ -25,22 +30,64 @@ function peaks = peak_finder(x,fs,thresh,blank,doplot)
 %       peak times, peak maxima, thresh, and blanking time. All times are in seconds.
 %
 
-if nargin < 2,
+if nargin < 1,
     help peak_finder
+    return
+end
+
+if isstruct(x),
+   if nargin>=4,
+      doplot = blank ;
+   else
+      doplot = [] ;
+   end
+   if nargin>=3,
+      blank = thresh ;
+   else
+      blank = [] ;
+   end
+   if nargin>=2,
+      thresh = fs ;
+   else
+      thresh = [] ;
+   end
+   [x,fs] = sens2var(x) ;
+else
+   if nargin < 2,
+      fprintf('Sampling rate is needed when input is a vector\n') ;
+      return
+   end
+   if nargin<5,
+      doplot = [] ;
+   end
+   if nargin<4,
+      blank = [] ;
+   end
+   if nargin<3,
+      thresh = [] ;
+   end
+end
+
+if size(x,1)==1,
+   x = x(:) ;
+end
+
+if size(x,2)>1,
+   x = x(:,1) ;
 end
 
 % determine default threshold
-if nargin < 3 || isempty(thresh),
+if isempty(thresh),
    thresh = prctile(x, 99);
 end
 
-if nargin<4 || isempty(blank),
+if isempty(blank),
    blanking = length(x)/10 ;
 else
    blanking = blank*fs ;
 end
 
-if nargin < 5 || isempty(doplot),
+if isempty(doplot),
    doplot = 1 ;
 end
 
@@ -88,7 +135,7 @@ function    peaks = getpeaks(x,fs,thresh,blanking)
 %
 % determine start sample of peaks that are above the threshold
 peaks = [] ;
-dxx = diff(x>thresh) ;
+dxx = diff(x>=thresh) ;
 cc = find(dxx>0)+1 ;
 if isempty(cc), return ; end
 

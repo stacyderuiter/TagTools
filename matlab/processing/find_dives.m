@@ -28,7 +28,7 @@ function    T = find_dives(p,varargin)
 %     T is a structure array with size equal to the number of dives/flights found. The
 %		 fields of T are:
 %    		start 	time in seconds of the start of each dive/flight
-%			end 		time in seconds of the start of each dive/flight
+%			end 		time in seconds of the end of each dive/flight
 %			max 		maximum depth/altitude reached in each dive/flight
 %			tmax	   time in seconds at which the animal reaches the max depth/altitude
 %

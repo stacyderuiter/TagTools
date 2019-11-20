@@ -6,7 +6,7 @@ function    [Y,T,tcues] = crop(X,fs)
 %		or
 %		[Y,T,tcues] = crop(X,T)			% X is a regularly sampled vector or matrix
 %
-%		Interactive data cropping tool. This function plots the input data #
+%		Interactive data cropping tool. This function plots the input data
 %		and allows the user to select start and end times for cropping.
 %
 %     Inputs:
@@ -33,6 +33,8 @@ function    [Y,T,tcues] = crop(X,fs)
 %		 plott(Pc)
 %		 % plot shows the cropped section
 %
+%     See also: crop_to, crop_all
+%
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 28 July 2017
@@ -43,6 +45,10 @@ if nargin<1,
 	return
 end
 	
+lcol = 'k' ;   % colour for the left indicator
+rcol = 'k' ;   % colour for the right indicator
+tcol = 'k' ;   % colour for the title
+
 if isstruct(X),
 	[x,fs] = sens2var(X) ;
 	if isempty(x), return, end
@@ -59,32 +65,37 @@ end
 
 clf					% clear the current figure
 if length(fs)>1,
-	plot(fs,x,'.') ;
+	ax = plott([fs,x],'i') ;
 else
-	plot((1:size(x,1))/fs,x) ;
+	ax = plott(x,fs) ;
 end
-xlabel('Time (seconds)') ;
+
+% find out what time scale factor plott is using
+div = [1 60 3600 24*3600] ;	% corresponding time multipliers
+s = get(get(ax,'Xlabel'),'String') ;
+scf = div(find(s(find(s=='(')+1) == 'smhd')) ;
+
 ht = title('Position the cursor and type s or e to adjust start or end. Type q to finish') ;
-set(ht,'color','r','fontsize',12)
+set(ht,'color',tcol,'fontsize',12)
 
 zoom off
 if length(fs)>1,
-	tcues = [min(T) max(T)] ;
+	tcues = [min(T) max(T)]/scf ;
 else
-	tcues = [0 size(x,1)/fs] ;
+	tcues = [0 size(x,1)/fs]/scf ;
 end
 
 LIMS = tcues ;
 hold on
-hs = plot([1;1]*tcues(1),get(gca,'YLim'),'g') ;
+hs = plot([1;1]*tcues(1),get(gca,'YLim'),lcol) ;
 set(hs,'LineWidth',1.5) ;
-hsm = plot(tcues(1),mean(get(gca,'YLim')),'g>') ;
-set(hsm,'MarkerSize',12,'MarkerFaceColor','g') ;
+hsm = plot(tcues(1),mean(get(gca,'YLim')),[lcol '>']) ;
+set(hsm,'MarkerSize',12,'MarkerFaceColor',lcol) ;
 
-he = plot([1;1]*tcues(2),get(gca,'YLim'),'r') ;
+he = plot([1;1]*tcues(2),get(gca,'YLim'),rcol) ;
 set(he,'LineWidth',1.5) ;
-hem = plot(tcues(2),mean(get(gca,'YLim')),'r<') ;
-set(hem,'MarkerSize',12,'MarkerFaceColor','r') ;
+hem = plot(tcues(2),mean(get(gca,'YLim')),[rcol '<']) ;
+set(hem,'MarkerSize',12,'MarkerFaceColor',rcol) ;
 
 while 1,
    [t,y,s] = ginput(1) ;
@@ -104,6 +115,7 @@ while 1,
    end
 end
 
+tcues = tcues*scf ;
 hold off
 if isstruct(X),
 	Y = crop_to(X,tcues) ;

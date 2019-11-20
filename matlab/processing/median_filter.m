@@ -81,8 +81,8 @@ else
    end
 end
 
-for k=1:size(X,2),
-   [Z,~] = buffer(x,n,n-1,'nodelay') ; %RJS updated 2017-08-02
+for k=1:size(x,2),
+   [Z,z] = buffer(x(:,k),n,n-1,'nodelay') ; %MJ updated 2018-03-01
    Y(nd2+1:end-nd2,k) = nanmedian(Z)' ;
 end
 

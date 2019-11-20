@@ -1,7 +1,7 @@
 function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargin)
-% This function detects peaks in time series data that exceed a specified 
-%   threshold and returns each peak's start time, end time, maximum signal
-%   value, time of the maximum signal value, threshold level, and blanking time.
+% This function detects peaks in jerk data that exceed a specified 
+%   threshold and returns each peak's start time, end time, maximum jerk
+%   value, time of the maximum jerk, threshold level, and blanking time.
 %
 % INPUTS:
 %   data = A vector (of all positive values) or matrix of data to be used 
@@ -13,17 +13,15 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       the peak detector. Only specify the function name (i.e. 'njerk'). 
 %       If left blank, the data input will be immediately passed through 
 %       the peak detector.
-%   thresh = The threshold level above which peaks in the signal are
-%       detected. Inputs must be in the same units as the signal
+%   thresh = The threshold level above which peaks in the jerk signal are
+%       detected. Inputs must be in the same units as the units of jerk 
 %       (see output peaks). If the input for thresh is missing/empty, the 
 %       default level is the 99 percentile.
-%   bktime = The specified length of time (seconds) between signal values detected 
-%       above the threshold value (from the moment the first peak recedes 
-%       below the threshold level to the moment the second peak surpasses 
-%       the threshold level)that is required for each value to be 
+%   bktime = The specified length of time between jerk values detected 
+%       above the threshold value that is required for each value to be 
 %       considered a separate and unique peak. If the input for bktime is
 %       missing/empty the default value for the blanking time is set as the
-%       85th percentile of the vector of time differences for signal values 
+%       80 percentile of the vector of time differences for signal values 
 %       above the specified threshold
 %   plot_peaks = A conditional input. If the input is true or 
 %       missing/empty, an interactive plot is generated, allowing the user 
@@ -65,100 +63,47 @@ if nargin < 6 || isempty(plot_peaks)
     plot_peaks = true;
 end
 
-if thresh > max(dnew)
-    start_time = NaN;
-    end_time = NaN;
-    peak_time = NaN;
-    peak_max = NaN;
-    thresh = thresh;
-    if isempty(bktime)
-        bktime = NaN;
-    else
-        bktime = bktime;
-    end
-    warning('Threshold level is greater the the maximum of the signal. No peaks are detected.')
+%create matrix for jerk and corresponding sampling number
+if size(dnew, 1) == 1
+    d = [(1:length(dnew)); dnew]';
 else
-    %create matrix for time-series and corresponding sampling number
-    if size(dnew, 1) == 1
-        d = [(1:length(dnew)); dnew]';
-    else
-        d = [(1:length(dnew)); dnew']';
-    end
-
-    %determine peaks that are above the threshold
-    pt = d(:,2) >= thresh;
-    pk = d(pt,:);
-
-    %is there more than one peak?
-    if size(pk, 1) == 1
-        start_time = pk(:, 1);
-        end_time = pk(:, 1);
-        peak_time = pk(:, 1);
-        peak_max = pk(:, 2);
-        thresh = thresh;
-        bktime = bktime;
-    else
-        %determine default blanking time
-        if nargin < 5 || isempty(bktime)
-            dpk = diff(pk(:,1));
-            bktime = prctile(dpk, 80);
-        else
-            bktime = bktime * sr;
-        end
-
-        %determine start times for each peak
-        dt = diff(pk(:,1));
-        pkst = [1; (dt >= bktime)];
-        start = pkst == 1;
-        start_time = pk(start, 1);
-
-        %determine end times for each peak
-        if sum(pkst) == 1
-            if dnew(end) > thresh
-                start_time = [];
-                end_time = [];
-            elseif dnew(end) <= thresh
-                end_time = pk(size(pk, 1), 1);
-            end
-        end
-        if sum(pkst) > 1
-            if pkst(end) == 0
-                if dnew(end) <= thresh
-                    ending = find(pkst == 1) - 1;
-                    end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-                elseif dnew(end) > thresh
-                    ending = find(pkst == 1) - 1;
-                    end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-                    %if the last peak does not end before the end of recording,
-                    %the peak is removed from analysis
-                    start_time = start_time(1:length(start_time - 1));
-                    end_time = end_time(1:length(end_time - 1));
-                end
-            elseif pkst(end) == 1
-                ending = find(pkst == 1) - 1;
-                end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-            end
-        end
-
-        %determine the time and maximum of each peak
-        peak_time = zeros(size(start_time, 1), 1);
-        peak_max = zeros(size(start_time, 1), 1);
-        if isempty(start_time) && isempty(end_time)
-            peak_time = [];
-            peak_max = [];
-        else
-            for a = 1:size(start_time, 1)
-                td = dnew(start_time(a):end_time(a));
-                [m, index] = max(td);
-                peak_time(a) = index + start_time(a) - 1;
-                peak_max(a) = m;
-            end
-        end
-
-        bktime = bktime / sr;
-    end
+    d = [(1:length(dnew)); dnew']';
 end
 
+%determine peaks that are above the threshold
+pt = d(:,2) >= thresh;
+pk = d(pt,:);
+
+%determine default blanking time
+if nargin < 5 || isempty(bktime)
+    dpk = diff(pk(:,1));
+    bktime = prctile(dpk, 80);
+end
+
+%determine start and end times for each peak
+dt = diff(pk(:,1));
+pkst = [1; (dt >= bktime)];
+start = pkst == 1;
+ending = find((pkst == 1)) - 1;
+start_time = pk(start, 1);
+end_time = [pk(ending(2:end), 1); pk(end, 1)];
+%if the last peak does not end before the end of recording, the peak is
+%   removed from analysis
+if pkst(end) == 0
+    start_time = start_time(1:end - 1);
+    end_time = end_time(1:end - 1);
+end
+
+%determine the time and maximum of each peak
+peak_time = zeros(size(start_time, 1), 1);
+peak_max = zeros(size(start_time, 1), 1);
+for a = 1:size(start_time, 1)
+    td = dnew(start_time(a):end_time(a));
+    [m, index] = max(td);
+    peak_time(a) = index + start_time(a);
+    peak_max(a) = m;
+end
+      
 %create structure of start times, end times, peak times, peak maxima, 
 %   thresh, and bktime
 field1 = 'start_time';  value1 = start_time;
@@ -194,15 +139,15 @@ if plot_peaks == true
     if length(x) == 3
         thresh = y(1);
         bktime = max(x(2:3)) - min(x(2:3));
-        peaks = detect_peaks2(dnew, sr, thresh, bktime);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     elseif length(x) == 1
         thresh = y(1);
-        peaks = detect_peaks2(dnew, sr, thresh, bktime);
+        peaks = detect_peaks(dnew, sr, [], thresh, [], false);
     elseif length(x) == 2
         bktime = max(x) - min(x);
-        peaks = detect_peaks2(dnew, sr, thresh, bktime);
+        peaks = detect_peaks(dnew, sr, [], [], bktime, false);
     else
-        peaks = detect_peaks2(dnew, sr, thresh, bktime);
+        peaks = detect_peaks(dnew, sr, [], thresh, bktime, false);
     end
 elseif plot_peaks == false
     plot(dnew)
@@ -213,112 +158,5 @@ elseif plot_peaks == false
     line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
     hold off
 end
-
-end
-
-%--------------------------------------------------------------------------
-function peaks = detect_peaks2(data, sr, thresh, bktime)
-dnew=data;
-if thresh > max(dnew)
-    start_time = NaN;
-    end_time = NaN;
-    peak_time = NaN;
-    peak_max = NaN;
-    thresh = thresh;
-    warning('Threshold level is greater the the maximum of the signal. No peaks are detected.')
-else
-    %create matrix for time-series and corresponding sampling number
-    if size(dnew, 1) == 1
-        d = [(1:length(dnew)); dnew]';
-    else
-        d = [(1:length(dnew)); dnew']';
-    end
-
-    %determine peaks that are above the threshold
-    pt = d(:,2) >= thresh;
-    pk = d(pt,:);
-
-    %is there more than one peak?
-    if size(pk, 1) == 1
-        start_time = pk(:, 1);
-        end_time = pk(:, 1);
-        peak_time = pk(:, 1);
-        peak_max = pk(:, 2);
-        thresh = thresh;
-        bktime = bktime;
-    else
-        %bktime already known from interactive plotting
-
-        %determine start times for each peak
-        dt = diff(pk(:,1));
-        pkst = [1; (dt >= bktime)];
-        start = pkst == 1;
-        start_time = pk(start, 1);
-
-        %determine end times for each peak
-        if sum(pkst) == 1
-            if dnew(end) > thresh
-                start_time = [];
-                end_time = [];
-            elseif dnew(end) <= thresh
-                end_time = pk(size(pk, 1), 1);
-            end
-        end
-        if sum(pkst) > 1
-            if pkst(end) == 0
-                if dnew(end) <= thresh
-                    ending = find(pkst == 1) - 1;
-                    end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-                elseif dnew(end) > thresh
-                    ending = find(pkst == 1) - 1;
-                    end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-                    %if the last peak does not end before the end of recording,
-                    %the peak is removed from analysis
-                    start_time = start_time(1:length(start_time - 1));
-                    end_time = end_time(1:length(end_time - 1));
-                end
-            elseif pkst(end) == 1
-                ending = find(pkst == 1) - 1;
-                end_time = [pk(ending(2:end), 1); pk(size(pk, 1), 1)];
-            end
-        end
-
-        %determine the time and maximum of each peak
-        peak_time = zeros(size(start_time, 1), 1);
-        peak_max = zeros(size(start_time, 1), 1);
-        if isempty(start_time) && isempty(end_time)
-            peak_time = [];
-            peak_max = [];
-        else
-            for a = 1:size(start_time, 1)
-                td = dnew(start_time(a):end_time(a));
-                [m, index] = max(td);
-                peak_time(a) = index + start_time(a) - 1;
-                peak_max(a) = m;
-            end
-        end
-    end
-end
-
-%create structure of start times, end times, peak times, peak maxima, 
-%   thresh, and bktime
-field1 = 'start_time';  value1 = start_time;
-field2 = 'end_time';  value2 = end_time;
-field3 = 'peak_time';  value3 = peak_time;
-field4 = 'peak_maxima';  value4 = peak_max;
-field5 = 'thresh';  value5 = thresh;
-field6 = 'bktime';  value6 = bktime;
-
-peaks = struct(field1,value1,field2,value2,field3,value3,field4,value4,...
-    field5,value5,field6,value6);
-
-%produce interactive plot, allowing you to alter thresh and bktime inputs
-plot(dnew)
-hold on 
-for i = 1:length(start_time)
-    plot(peak_time(i), peak_max(i), 'h', 'MarkerEdgeColor', [1 .5 0])
-end
-line([0,length(dnew)], [thresh, thresh], 'linestyle', '--', 'color', 'red')
-hold off
 
 end

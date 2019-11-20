@@ -15,7 +15,7 @@ function    a = absorption(f,T,d)
 %		same for all vector arguments) or a scalar.
 %
 %		Example:
-%		 absorption(140e3,13,10)   % returns 7.7302 dB
+%		 absorption(140e3,13,10)
 %
 %     After Kinsler and Frey pp. 159-160
 %     Valid: Matlab, Octave

@@ -79,12 +79,12 @@ chans = chans(:) ;
 uchans = unique(chans) ;
 
 % read the swv file and convert to fractional offset binary
-n = getaudio([fname '.swv'],'size') ;
+n = get_audio([fname '.swv'],'size') ;
 if n(1)*n(2)>50e6,
    fprintf(' File is too large to read in (%d bytes)\n',n(1)*n(2)*8) ;
    return ;
 end
-xb = getaudio([fname '.swv']) ;
+xb = get_audio([fname '.swv']) ;
 if dtype==3,
    k = find(xb<0) ;
    xb(k) = 2+xb(k) ;               % convert from two's complement to offset binary

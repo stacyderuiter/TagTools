@@ -93,7 +93,7 @@ if size(A,1)*size(A,2)==3,
 end
 
 % check that sizes of A and M are compatible
-if size(A,1)~=size(M,1),
+if ~isempty(M) && (size(A,1)~=size(M,1)),
 	n = min([size(A,1),size(M,1)]) ;
 	A = A(1:n,:) ;
 	M = M(1:n,:) ;

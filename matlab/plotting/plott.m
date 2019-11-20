@@ -53,6 +53,8 @@ function    [ax,h]=plott(varargin)
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 02 August 2017 by RJS
+%                    09 Nov 2018 mj: added time divisor to axes UserData
+%                    30 Dec 2018 mj: fixed bug on line 139
 
 ax=[]; h=[];
 if nargin<1,		% must have at least one input argument
@@ -135,7 +137,7 @@ if any(fsrt(:,1)==0),
 end
 	
 ax = zeros(length(X),1) ;
-nst = 0 ;
+nst = Inf ;
 ned = 0 ;
 for k=1:length(X),
    ax(k) = subplot(length(X),1,k) ;
@@ -163,7 +165,7 @@ for k=1:length(X),		% now we are ready to plot
    else
    	h{k}=plot((T{k}+fsrt(k,3))*(1/ddiv),X{k},'.'); grid
    end
-	set(ax(k),'XLim',xlims)
+	set(ax(k),'XLim',xlims,'UserData',ddiv)
 	if fsrt(k,2)==1,
 		set(ax(k),'ydir','reverse') ;
 	end

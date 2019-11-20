@@ -74,7 +74,7 @@ end
 C = get_d3_cuetab(recdir,prefix,'swv') ;
 if isempty(C.fn), return, end		% if no files with the required name were found
 basefs = C.fs ;
-fn = C.fnames ;
+fn = C.fn ;
 recdir = C.recdir ;
 ct = C.cuetab ;
 x = [] ;

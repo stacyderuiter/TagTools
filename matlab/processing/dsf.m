@@ -119,7 +119,7 @@ end
 
 [S,f] = spectrum_level(Af,Nfft,fs,Nfft,floor(Nfft/2));
 v = sum(10.^(S/10),2) ;      % sum spectral power in the three axes
-plot(v)
+%plot(f,v)
 [m,n] = max(v) ;
 if n>1 && n<length(f),
    p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;
