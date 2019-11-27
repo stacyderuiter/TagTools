@@ -1,0 +1,65 @@
+---
+title: "WMMC Work"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task and Priority List
+Ordered by priority within task types.
+
+### R scripts
+
+#### Analysis
+
+- prhpredictor
+  - Method 1
+  - Method 2
+  - tag2whale
+- ptrack
+- htrack
+- fit_tracks
+
+#### Data IO
+
+- read cats
+- read dtag
+- read daily diary
+- read little leo
+
+#### Interactive vis
+
+- "audit"
+
+#### Other
+
+fix_3d
+fix_offset_pressure
+residence_index
+rms_track
+change_fnames
+read_cats
+read_cats_csv
+read_csv
+read_dd
+read_ll3m
+read_tdr10dd_csv
+strip_quotes
+
+(sound)
+get_audio
+spec2tol
+wavseq_read
+
+### animaltags.org
+
+- Confirm that ftp works
+- Set up template site for this workshop/links/filestorage
+
+### Lectures and Practicals
+
+#### 1. Intro/ IO with prac
+
+#### 2. Tracks, detectors, and stats (no prac)

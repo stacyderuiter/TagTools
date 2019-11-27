@@ -271,7 +271,7 @@ Case Study
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 library(readr)
-bw11_210a_tagdata <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210a_tagdata.csv')
+bw11_210a_tagdata <- readr::read_csv('http://sldr.netlify.com/data/bw11_210a_tagdata.csv')
 Aw <- cbind(bw11_210a_tagdata$Awx, bw11_210a_tagdata$Awy, bw11_210a_tagdata$Awz)
 sampling_rate <- bw11_210a_tagdata$fs[1]  
 ```
@@ -337,7 +337,7 @@ tpevents <- (63000 / sampling_rate) / 30
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of known events is also hard to determine as it requires a trained scientist to manually scroll through a signal, looking for distinct characteristics in the plot that are known to be related to the desired behavioral event. Lucky for us, this hard work has already been completed by members of the SOCAL BRS project. We will name the vector containing the known times of lunges in our data set as "events". Now, because the event times determined by the members of SOCAL BRS are in units of seconds, we must first multiply our vector by the sampling rate in order to have the units be in samples.
 ```{r, message=FALSE, echo=FALSE, results='hide'}
-events <- readr::read_csv('http://www.calvin.edu/~sld33/data/bw11_210aLungeTimes.csv')
+events <- readr::read_csv('http://sldr.netlify.com/data/bw11_210aLungeTimes.csv')
 events <- events$Ltimes * sampling_rate
 ```
 ```{r}
