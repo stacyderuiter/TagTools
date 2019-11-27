@@ -17,7 +17,7 @@ Ordered by priority within task types.
 - prhpredictor
   - Method 1
   - Method 2
-  - tag2whale
+  - tag2animal
 - ptrack
 - htrack
 - fit_tracks
