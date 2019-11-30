@@ -1,0 +1,33 @@
+Package: tagtools
+Title: Tools for Working with Data from High-Resolution Biologging Tags
+Version: 0.0.0.9000
+Authors@R: person("Stacy", "DeRuiter", email = "sld33@calvin.edu", role = c("aut", "cre"))
+Description: High-resolution movement-sensor tags typically include accelerometers 
+    to measure body posture and sudden movements or changes in speed, 
+    magnetometers to measure direction of travel, and pressure sensors
+    to measure dive depth in aquatic or marine animals. 
+    A subset of tags include sensors for speed, turning rate (gyroscopes), and sound. 
+    This package provides software tools to facilitate calibration, processing, and analysis
+    of such data. Tools are provided for:
+    -Data Import/export,
+    -Calibration (from raw data to calibrated data in scientific units),
+    -Visualization (e.g., time-series plots, multiple events overlaid, long-term spectral averages),
+    -Data Processing (e.g., event detection, derived metrics like jerk and dynamic acceleration, 
+    dive detection and dive parameter calculation, integrating movement data with other sensors 
+    eg acoustic or camera, integrating position data from onboard GPS, visual observations, etc. 
+    with movement data), and
+    -Statistical Analysis (e.g., track reconstruction, Mahalanobis distance analysis, state-switching models).
+Depends: R (>= 3.4)
+Imports: CircStats, graphics, hht, lubridate, magrittr, matlab, ncdf4,
+        pracma, readr, rgl, signal, stats, utils, zoo, zoom
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2019-11-28 04:56:06 UTC; Stacy DeRuiter
+Author: Stacy DeRuiter [aut, cre]
+Maintainer: Stacy DeRuiter <sld33@calvin.edu>
+Built: R 3.6.1; ; 2019-11-28 04:57:31 UTC; windows

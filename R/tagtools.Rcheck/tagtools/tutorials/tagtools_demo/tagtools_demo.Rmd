@@ -1,0 +1,157 @@
+---
+title: "TagTools Demo"
+output: 
+  learnr::tutorial:
+    progressive: TRUE
+    allow_skip: TRUE
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+# library(checkr)
+# library(statPREP)
+library(tibble)
+library(ggformula)
+library(mosaic)
+library(tagtools)
+library(here)
+theme_set(theme_bw(base_size=22))
+# knitr::opts_chunk$set(exercise.checker = checkr::checkr_tutor)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.align = "center",
+  fig.width = 6, fig.height = 3.5)
+tutorial_options(exercise.eval = FALSE)
+
+# datasets
+sperm_whale <- load_nc('www/testset3')
+mn <- load_nc('www/mn12_186a_raw.nc')
+mn$P_fixed <- fix_pressure(p = mn$P, t = mn$T)$p
+mn$P_crop <- crop_to(mn$P, tcues = c(8400, 8600))$X
+mn$P_fixed_crop <- crop_to(mn$P_fixed, tcues = c(8400,8600))$X
+sperm_whale$njerk <- njerk(sperm_whale$A)
+sperm_whale$msa <- msa(sperm_whale$A)
+D <- find_dives(p = sperm_whale$P, mindepth=200)
+DS <- dive_stats(P=sperm_whale$P, dive_cues = D)
+```
+
+## Reading/Writing
+
+### Read in Data
+We can easily and quickly load tag data from the archive-ready NC file format.
+
+
+```{r, data-in, echo=TRUE, eval=FALSE}
+sperm_whale <- load_nc('www/testset3')
+```
+
+### Animaltag Objects
+The tag data object contains data *and* metadata:
+
+```{r, structures, exercise=TRUE}
+str(sperm_whale, max.level = 1)
+```
+
+### Sensor Data Structure
+Each data stream contains data bundled with metadata about the relevant sensor.
+
+```{r, one-sensor, exercise=TRUE}
+str(sperm_whale$A, max.level = 1)
+```
+
+### Tag Metadata
+There is also metadata about the tag deployment as a whole.
+```{r, deployment-meta, exercise=TRUE}
+str(sperm_whale$info, max.level = 1)
+```
+
+### User Interface for Editing Metadata
+Some metadata is automatically extracted from tag-specific data files when it is read in by tag tools and converted to an NC file archive. It is also possible for users to edit and add to this metadata, which is especially important for adding deployment- and experiment-specific information that is not "known" to the tag device.
+
+```{r, meta-edit, exercise=TRUE}
+metadata_editor(csvfilename = 'http://www.calvin.edu/~sld33/data/testset3.csv')
+```
+
+## Calibration
+One module of the tool kit allows for calibration and validation of tag data. To show just one example, `fix_pressure()` corrects pressure-sensor data offsets caused by mis-calibration or temperature dependence of the sensor.
+
+*Since the `sperm_whale` dataset has already been corrected, we demonstrate here with a different dataset from a humpback whale.*
+
+```{r, echo=TRUE, eval=FALSE}
+mn <- load_nc('mn12_186a_raw.nc')
+```
+
+```{r, fix-pressure-mn, exercise=TRUE}
+mn$P_fixed <- fix_pressure(p = mn$P, t = mn$T)$p
+```
+
+### Cropping
+To better see the effect of the temperature correction, let's crop the data to a brief period when the tag was on the whale. Here, the times for cropping are pre-set, but there are also interactive functions that allow the user to point and click on a graph of the data to select the crop region.
+
+```{r, crop-mn, exercise=TRUE}
+mn$P_crop <- crop_to(mn$P, tcues = c(8400, 8600))$X
+mn$P_fixed_crop <- crop_to(mn$P_fixed, tcues = c(8400,8600))$X
+```
+
+## Visualization
+
+### Viewing Temp Cal Results
+The tag tools include a simple function for producing aligned time-series plots for a whole dataset, or selected variables in it. The time axes are automatically scaled, including appropriate units, and the axes are linked (zooming in one zooms all panels).
+
+```{r, plott, exercise=TRUE, fig.width=4, fig.height=2.5}
+plott(X=list(Original = mn$P_crop, Corrected = mn$P_fixed_crop), r=TRUE)
+```
+
+### Plotts with Date-Time Axes
+It is also possible to use date-time axes with `plott()`:
+
+```{r, plott-date-time, exercise=TRUE, exercise.eval=TRUE}
+plott(X=list(Depth = sperm_whale$P, Accel = sperm_whale$A),
+      r = c(TRUE, FALSE),
+      recording_start = sperm_whale$info$dephist_deploy_datetime_start)
+```
+
+## Processing
+The tool kit data-processing module includes many tools for filtering data, changing sampling rates, and computing derived metrics. For example, for kinematic analysis, energetics or foraging ecology, tri-axial accelerometer data are often processed to obtain norm jerk or MSA (minimum specific acceleration):
+
+```{r, accel-derived, exercise=TRUE, exercise.eval=TRUE}
+sperm_whale$njerk <- njerk(sperm_whale$A)
+sperm_whale$msa <- msa(sperm_whale$A)
+plott(X = list(Depth = sperm_whale$P,
+               Jerk = sperm_whale$njerk,
+               MSA = sperm_whale$msa),
+      r=c(TRUE, FALSE, FALSE))
+```
+
+## Processing: Detection
+The tools also provide a function to detect dive start and end times, as well as a general event detector.
+
+```{r, find-dives, exercise=TRUE}
+D <- find_dives(p = sperm_whale$P, mindepth=200)
+knitr::kable(D)
+```
+
+### Dive Stats
+It is also possible to compute common descriptive statistics for all detected dives:
+
+```{r, dive-stats, exercise=TRUE}
+DS <- dive_stats(P=sperm_whale$P, dive_cues = D)
+knitr::kable(DS)
+```
+
+## Statistical Analysis
+The tool kit also provides tools for several tag-specific statistical procedures. For example, with one line of code, a user can:
+
+- Generate and estimated dead-reckoned track
+- Carry out a rotation test
+- Compute a Mahalanobis distance time-series
+
+The code below carries out a rotation test to determine whether the buzz rate during the first dive in the dataset is the same as the rest of the recording, while accounting for temporal autocorrelation in the data.
+
+```{r, rot-test, exercise=TRUE}
+rot_out <- rotation_test(event_times = sperm_whale$PCA$data,
+              exp_period = c(0, 3600))
+knitr::kable(rot_out)
+```
+

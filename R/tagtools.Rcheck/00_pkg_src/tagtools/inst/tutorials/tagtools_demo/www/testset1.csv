@@ -1,0 +1,38 @@
+field,required,params
+depid,1,md13_134a
+dtype.source,0,md13_134aprh25.mat
+dtype.datetime.made,0,7/07/2017 22:50:00
+dtype.nfiles,0,1
+dtype.format,0,MAT
+device.serial,1,77031D26
+device.make,1,DTAG
+device.type,1,Archival
+device.model,1,DTAG3
+device.url,0,https://www.soundtags.org
+sensors.firm,1,Not specified
+sensors.soft,1,Not specified
+sensors.list,0,"3axis Accelerometer,3 axis Magnetometer,Pressure"
+animal.id,0,Unknown
+animal.species.common,1,Blainville's beaked whale
+animal.species.science,1,Mesoplodon densirostris
+animal.dbase.url,1,https://www.cetabase.info/
+dephist.device.tzone,1,0
+dephist.device.regset,1,dd/mm/yyyy HH:MM:SS
+dephist.device.datetime.start,1,2013-05-14 12:42:00
+dephist.deploy.locality,1,"El Hierro,Canary Islands,Spain"
+dephist.deploy.location.lat,1,27.66
+dephist.deploy.location.lon,1,-18
+dephist.deploy.datetime.start,1,2013-05-14 12:42:00
+dephist.deploy.method,1,Suction cup
+project.name,1,El Hierro 2013
+project.datetime.start,1,2013-05-01
+project.datetime.end,1,2013-06-01
+provider.name,1,"Mark Johnson, Natacha Aguilar de Soto"
+provider.details,1,"Univ St Andrews, Univ La Laguna"
+provider.email,1,info@animaltags.org
+provider.license,1,Contact data provider
+provider.cite,1,Contact data provider
+provider.doi,1,Contact data provider
+udm.export,0,1
+udm.segment,0,"5062,10581"
+udm.segment.unit,0,seconds since tag start

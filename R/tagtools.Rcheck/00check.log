@@ -1,0 +1,143 @@
+* using log directory 'C:/Users/Stacy DeRuiter/Dropbox/TagTools/R/tagtools.Rcheck'
+* using R version 3.6.1 (2019-07-05)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: ISO8859-1
+* using options '--no-manual --as-cran'
+* checking for file 'tagtools/DESCRIPTION' ... OK
+* this is package 'tagtools' version '0.0.0.9000'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking serialization versions ... OK
+* checking whether package 'tagtools' can be installed ... WARNING
+Found the following significant warnings:
+  Note: possible error in 'buffer(x = x[, k], n = Z$n, ': unused argument (p = Z$n - Z$df) 
+See 'C:/Users/Stacy DeRuiter/Dropbox/TagTools/R/tagtools.Rcheck/00install.out' for details.
+Information on the location(s) of code generating the 'Note's can be
+obtained by re-running with environment variable R_KEEP_PKG_SOURCE set
+to 'yes'.
+* checking installed package size ... NOTE
+  installed size is 66.1Mb
+  sub-directories of 1Mb or more:
+    tutorials  64.8Mb
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking 'build' directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... NOTE
+Missing or unexported object: 'tagtools::applymethod1'
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+applymethod1: no visible global function definition for 'median'
+decz: possible error in buffer(x = x[, k], n = Z$n, p = Z$n - Z$df, opt
+  = Z$z[, k]): unused argument (p = Z$n - Z$df)
+tag2animal: no visible global function definition for 'error'
+tag2animal: no visible global function definition for 'tail'
+Undefined global functions or variables:
+  error median tail
+Consider adding
+  importFrom("stats", "median")
+  importFrom("utils", "tail")
+to your NAMESPACE file.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... NOTE
+Rd file 'detect_peaks.Rd':
+  \examples lines wider than 100 characters:
+     detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = NULL, fs = BW$A$samplin ... [TRUNCATED]
+
+Rd file 'find_dives.Rd':
+  \examples lines wider than 100 characters:
+     T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
+
+Rd file 'ptrack.Rd':
+  \examples lines wider than 100 characters:
+     list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, include_pe = TRUE)
+
+Rd file 'track3D.Rd':
+  \examples lines wider than 100 characters:
+     track=track3D(z=beaked_whale$P$data,phi=p$p,psi=h$h,sf=beaked_whale$A$sampling_rate,r=0.001,q1p=0.02,q2p=0.08,q3p=1.6e-05,tagonx=1000,t ... [TRUNCATED]
+     points(track$fit.rx[c(1,length(track$fit.rx))],track$fit.ry[c(1,length(track$fit.rx))],pch=21,bg=5:6)
+
+These lines will be truncated in the PDF manual.
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... WARNING
+Codoc mismatches from documentation object 'buffer':
+buffer
+  Code: function(x, n, overlap, opt, nodelay = FALSE)
+  Docs: function(x, n, p, opt, nodelay = FALSE)
+  Argument names in code not in docs:
+    overlap
+  Argument names in docs not in code:
+    p
+  Mismatches in argument names:
+    Position: 3 Code: overlap Docs: p
+
+Codoc mismatches from documentation object 'find_dives':
+find_dives
+  Code: function(p, mindepth, sampling_rate = NULL, surface = NULL,
+                 findall = NULL)
+  Docs: function(p, mindepth, sampling_rate = NULL, surface = 1,
+                 findall = 0)
+  Mismatches in argument default values:
+    Name: 'surface' Code: NULL Docs: 1
+    Name: 'findall' Code: NULL Docs: 0
+
+Codoc mismatches from documentation object 'fir_nodelay':
+fir_nodelay
+  Code: function(x, n, fc, qual = "low", return_coefs = FALSE)
+  Docs: function(x, n, fc, qual = "low")
+  Argument names in code not in docs:
+    return_coefs
+
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... OK
+* checking examples ... ERROR
+Running examples in 'tagtools-Ex.R' failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: msa
+> ### Title: Compute MSA
+> ### Aliases: msa
+> 
+> ### ** Examples
+> 
+> sampleMatrix = matrix(c(1, -0.5, 0.1, 0.8, -0.2, 0.6, 0.5, -0.9, -0.7),
++                       byrow = TRUE, nrow = 3, ncol = 3)
+> msa(A=sampleMatrix, ref=1)  
+Error in nrow(a) : object 'a' not found
+Calls: msa -> nrow
+Execution halted
+* checking for unstated dependencies in vignettes ... NOTE
+'library' or 'require' call not declared from: 'ggplot2'
+* checking package vignettes in 'inst/doc' ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 ERROR, 2 WARNINGs, 5 NOTEs

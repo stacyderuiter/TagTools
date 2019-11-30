@@ -104,8 +104,10 @@ decz <- function(x, df=NULL, Z=NULL, nf=12, frbw=0.8) {
   
   Z$ov <- NULL
   for (k in 1:ncol(x)) {
-    buff_out <- buffer(x=x[, k], n=Z$n, 
-                           p=Z$n - Z$df, opt=Z$z[, k]) 
+    buff_out <- buffer(x = x[, k],
+                       n = Z$n,
+                       overlap = Z$n - Z$df, 
+                       opt = Z$z[, k]) 
     if (k==1){
       y <- matrix(0, ncol(buff_out$X), ncol(x))    
     }

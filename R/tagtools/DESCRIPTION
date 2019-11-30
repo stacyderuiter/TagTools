@@ -22,6 +22,7 @@ Imports:
     CircStats,
     graphics,
     hht,
+    latex2exp,
     lubridate,
     magrittr,
     matlab,

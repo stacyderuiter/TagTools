@@ -4,14 +4,14 @@
 \alias{buffer}
 \title{Buffers a signal vector into matrix}
 \usage{
-buffer(x, n, p, opt, nodelay = FALSE)
+buffer(x, n, overlap, opt, nodelay = FALSE)
 }
 \arguments{
 \item{x}{The signal vector to be buffered}
 
 \item{n}{The desired length of data segments (rows).}
 
-\item{p}{The desired amount of overlap between consecutive frames (columns) in the output matrix}
+\item{overlap}{The desired amount of overlap between consecutive frames (columns) in the output matrix}
 
 \item{opt}{The vector of samples specified to precede x[1] in an overlapping buffer}
 
@@ -25,7 +25,7 @@ A list with 3 elements is returned if nodelay = FALSE:
 \item{\strong{opt: }} The last values, length of "p", of the matrix "X".
 }
 
-If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "p". The matrix starts with "opt" values if nodelay is FALSE.
+If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "overlap". The matrix starts with "opt" values if nodelay is FALSE.
 }
 \description{
 This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
@@ -33,8 +33,8 @@ This function is used to buffer a signal vector into a matrix of data frames. If
 \examples{
 x <- c(1:10)
          n <- 3
-         p <- 2
+         overlap <- 2
          opt <- c(2,1)
-         list1 <- buffer(x, n, p, opt)
-         list2 <- buffer(x, n, p, nodelay = TRUE)
+         list1 <- buffer(x, n, overlap, opt)
+         list2 <- buffer(x, n, overlap, nodelay = TRUE)
 }
