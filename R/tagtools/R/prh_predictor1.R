@@ -210,7 +210,7 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
       plot_fig2(A, sampling_rate, seg, prh, main_f2_prompt)
       
       while (fig2_status != "Done"){
-       # edit the point in the second figure
+       # edit a point in the second figure
         grDevices::setGraphicsEventHandlers(which = f1,
                                  prompt = 'WINDOW INACTIVE - DO NOT CLICK')
         grDevices::setGraphicsEventHandlers(which = f2,
@@ -218,6 +218,19 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
                              onKeybd = keybd2,
                              onMouseDown = mousedown1)
       fig2_status <- grDevices::getGraphicsEvent()
+      
+      if (fig2_status == 'x'){
+        #remove this dive from S and PRH
+        S = matrix(S[-ke,], ncol = 5, byrow = TRUE)
+        PRH = matrix(PRH[-ke,], ncol = 5, byrow = TRUE)
+        # then need to re-plot figure 1 because fewer segments are there
+        grDevices::dev.set(f1)
+        plot_fig1(P, sampling_rate, PRH, xl)
+        # then quit interaction with fig 2 
+        # because cannot execute above code more than once without causing trouble
+        fig2_status <- "Done"
+        break
+      }
 
         if (fig2_status %in% c('1', '2', '3', '4')){
         ss <- as.numeric(fig2_status) # convert '1', '2', ... to numeric 1, 2...

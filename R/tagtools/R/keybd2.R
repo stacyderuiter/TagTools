@@ -16,14 +16,6 @@ keybd2 <- function(key) {
   }
   
   if (key == 'x'){
-    #remove this dive from S and PRH
-    S = matrix(S[-ke,], ncol = 5, byrow = TRUE)
-    PRH = matrix(PRH[-ke,], ncol = 5, byrow = TRUE)
-    # then need to re-plot figure 1 because fewer segments are there
-    grDevices::dev.set(f1)
-    plot_fig1(P, sampling_rate, PRH, xl)
-    # then quit interaction with fig 2 
-    # because cannot execute above code more than once without causing trouble
-    return("Done")
+    return('x')
   }
 } # end of keybd2
