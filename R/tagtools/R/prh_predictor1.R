@@ -44,16 +44,19 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
     if(A$sampling_rate != P$sampling_rate){
       stop("A and P must have the sample sampling rate.\n")
     }
+    #**************************************************
+    # prepare data
+    #**************************************************
+    # extract bare variables from sensor structures
+    sampling_rate <- A$sampling_rate
+    A <- A$data
+    P <- P$data
+  }else{
+    if (missing(sampling_rate)){
+      stop('For prh_predictor1(), sampling_rate must be specified if A and P are matrices.')
+    }
   }
-  
-  #**************************************************
-  # prepare data
-  #**************************************************
-  # extract bare variables from sensor structures
-  sampling_rate <- A$sampling_rate
-  A <- A$data
-  P <- P$data
-  
+
   # decimate data to 5Hz if needed
   if (sampling_rate >= 7.5){
     df <- round(sampling_rate/5)
