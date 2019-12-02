@@ -9,7 +9,7 @@
 #' @param prompt Main title for top panel (prompt for user interaction)
 #' @noRd
 #' 
-plot_fig2_m2 <- function(A, v, sampling_rate, seg, prh, prompt){
+plot_prh_fig2_m2 <- function(A, v, sampling_rate, seg, prh, prompt){
   #*****************************************
   # colors for PRH data
   #*****************************************

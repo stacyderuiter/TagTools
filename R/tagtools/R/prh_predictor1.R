@@ -208,7 +208,7 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
       prh <- PRH[ke,]
       
       grDevices::dev.set(f2)
-      plot_fig2(A, sampling_rate, seg, prh, main_f2_prompt)
+      plot_prh_fig2(A, sampling_rate, seg, prh, main_f2_prompt)
       
       while (fig2_status != "Done"){
        # edit a point in the second figure
@@ -226,7 +226,7 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
         PRH = matrix(PRH[-ke,], ncol = 5, byrow = TRUE)
         # then need to re-plot figure 1 because fewer segments are there
         grDevices::dev.set(f1)
-        plot_fig1(P, sampling_rate, PRH, xl)
+        plot_prh_fig1(P, sampling_rate, PRH, xl)
         # then quit interaction with fig 2 
         # because cannot execute above code more than once without causing trouble
         fig2_status <- "Done"
@@ -257,7 +257,7 @@ prh_predictor1 <- function(P, A, sampling_rate = NULL, TH = 100, DIR = 'descent'
         grDevices::dev.set(f1)
         plot_prh_fig1(P, sampling_rate, PRH, xl, main_f1_prompt)
         grDevices::dev.set(f2)
-        plot_fig2(A, sampling_rate, seg, prh, main_f2_prompt)
+        plot_prh_fig2(A, sampling_rate, seg, prh, main_f2_prompt)
         fig2_status <- 'just adjusted box'
         
         } # end of "adjust boxes"

@@ -246,7 +246,7 @@ prh_predictor2 <- function(P, A, sampling_rate = NULL, MAXD = 10){
         PRH = matrix(PRH[-ke,], ncol = 5, byrow = TRUE)
         # then need to re-plot figure 1 because fewer segments are there
         grDevices::dev.set(f1)
-        plot_fig1(P, sampling_rate, PRH, xl)
+        plot_prh_fig1(P, sampling_rate, PRH, xl)
         # then quit interaction with fig 2 
         # because cannot execute above code more than once without causing trouble
         fig2_status <- "Done"
