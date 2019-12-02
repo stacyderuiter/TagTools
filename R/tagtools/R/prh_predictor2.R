@@ -32,7 +32,7 @@ prh_predictor2 <- function(P, A, sampling_rate = NULL, MAXD = 10){
   MINSEG <- 30 # minimum surface segment length in seconds
   MAXSEG <- 300 # maximum surface segment length in seconds
   GAP <- 5 # keep at least 5s away from a dive edge
-  PRH = NULL
+  PRH <- NULL
   
   #**************************************************
   # input checking
