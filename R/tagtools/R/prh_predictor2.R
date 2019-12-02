@@ -113,7 +113,7 @@ prh_predictor2 <- function(P, A, sampling_rate = NULL, MAXD = 10){
   V <- matrix(0, nrow = nrow(S), ncol = 1)
   for (k  in c(1:nrow(S))){
     ks <- (round(S[k,1]*sampling_rate) + 1) : round(S[k,2] * sampling_rate) 
-    V[k] <- norm(stats::std(A[ks,]), "2")
+    V[k] <- norm(stats::sd(A[ks,]), "2")
   }
   
   thr <- stats::median(V) + 1.5 * stats::IQR(V)*c(-1,1)
