@@ -4,9 +4,9 @@ function    PRH = prh_predictor2(P,A,fs,MAXD)
 %	  or
 %    PRH = prh_predictor2(P,A,fs,MAXD)			% P and A are matrices
 %	  or
-%    PRH = prh_predictor1(P,A)					% P and A are sensor structures
+%    PRH = prh_predictor2(P,A)					% P and A are sensor structures
 %	  or
-%    PRH = prh_predictor1(P,A,MAXD)				% P and A are sensor structures
+%    PRH = prh_predictor2(P,A,MAXD)				% P and A are sensor structures
 %    
 %     Predict the tag position on a diving animal parameterized by p0, r0, and
 %     h0, the cannonical angles between the principal axes of the tag and the animal.
@@ -113,7 +113,7 @@ end
 V = zeros(size(S,1),1) ;
 for k=1:size(S,1),
 	ks = round(S(k,1)*fs)+1:round(S(k,2)*fs) ;
-	V(k) = norm(std(A(ks,:))) ;
+	V(k) = norm(stats::sd(A(ks,:))) ;
 end
 thr = median(V)+1.5*iqr(V)*[-1 1] ;
 S = S(V>thr(1) & V<thr(2),:) ;

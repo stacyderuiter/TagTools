@@ -22,6 +22,8 @@ Ordered by priority within task types.
 - htrack
 - fit_tracks
 
+- find_dives: results not identical in matlab/R?
+
 #### Data IO
 
 - read cats
