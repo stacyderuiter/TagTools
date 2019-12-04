@@ -64,11 +64,8 @@ if isstruct(M) && isstruct(A),
 		fc = fs ;
 	else
 		fc = [] ;
-   end
-	
-   [A,M,fs] = sens2var(A,M,'regular') ;
-	if isempty(A),	return, end
-   
+  end
+
 	toffs = [0,0] ;
 	if isfield(A,'start_offset'),
 		toffs(1) = A.start_offset ;
@@ -80,6 +77,12 @@ if isstruct(M) && isstruct(A),
 		fprintf('body_axes: A and M must have the same start offset time\n') ;
 		return
    end
+
+	
+  [A,M,fs] = sens2var(A,M,'regular') ;
+	if isempty(A),	return, end
+   
+
 else
 	if isstruct(M) || isstruct(A),
 		fprintf('body_axes: A and M must both be structures or matrices, not one of each\n') ;
