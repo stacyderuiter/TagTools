@@ -57,7 +57,7 @@ dk = [k(1);diff(k);size(D,1)-k(end)] ;
 ki = [0;cumsum(dk)] ;
 C = zeros(size(D,1),2) ;            % make space for the merged track
 for kk=1:length(dk),
-   C(ki(kk)+1:ki(kk+1),:) = repmat(V(kk,:),dk(kk),1)+1/dk(kk)*(0:dk(kk)-1)'*(V(kk+1,:)-V(kk,:)) ;
+   C(ki(kk)+1:ki(kk+1),:) = repmat(V(kk,:),dk(kk),1) + 1/dk(kk)*(0:dk(kk)-1)'*(V(kk+1,:)-V(kk,:)) ;
 end
 D = D+C ;
 C = [zeros(1,size(C,2));diff(C)*fs] ;		% estimated 'currents'
