@@ -14,12 +14,6 @@ Ordered by priority within task types.
 
 #### Analysis
 
-- prhpredictor
-  - Method 1
-  - Method 2
-  - tag2animal
-- ptrack
-- htrack
 - fit_tracks
 
 - find_dives: results not identical in matlab/R?
