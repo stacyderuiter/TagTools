@@ -14,8 +14,6 @@ Ordered by priority within task types.
 
 #### Analysis
 
-- fit_tracks
-
 - find_dives: results not identical in matlab/R?
 
 #### Data IO
@@ -31,19 +29,13 @@ Ordered by priority within task types.
 
 #### Other
 
-fix_3d
-fix_offset_pressure
-residence_index
-rms_track
-change_fnames
-read_cats
-read_cats_csv
-read_csv
-read_dd
-read_ll3m
-read_tdr10dd_csv
-strip_quotes
+- fix_3d
+- fix_offset_pressure
+- residence_index
+- rms_track
 
+- check for other files with changes?
+- check for body_axes() used in other functions?
 (sound)
 get_audio
 spec2tol
