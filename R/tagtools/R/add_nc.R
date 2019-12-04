@@ -6,7 +6,7 @@
 #'	
 #'@param file The name of the netCDF file to which to save. If the name does not include a .nc suffix, this will be added automatically.
 #'@param X The sensor data or metadata list to be saved. a list of tag sensor and/or metadata lists. Alternatively, sensor and metadata lists may be input as multiple separate unnamed inputs. Only these kind of variables can be saved in a NetCDF file because the supporting information in these structures is needed to describe the contents of the file. For non-archive and non-portable storage of variables, consider using \code{\link{save}} or various functions to write data to text files. 
-#'@param vname The name of the sensor data stream to be saved. Defaults to the name of the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).
+#'@param vname The name of the sensor data stream to be saved. Defaults to the entry "name" from the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).
 #'@seealso \code{\link{save_nc}}, \code{\link{load_nc}}	
 #'@examples
 #'  \dontrun{
@@ -16,10 +16,17 @@
 #'}
 #'@export
 
-add_nc <-function(file,X,vname=substitute(X)){
+add_nc <-function(file,X,vname){
   # input checking
   if(!is.list(X) | "animaltag" %in% class(X)){
     stop('add_nc can only save individual sensor or metadata structures. Use save_nc to save an mutliple data streams or a whole animaltag object.') 
+  }
+  
+  if (missing(vname)){
+    vname <- X$name
+    if (length(vname == 0)){
+      vname <- substitute(X)
+    }
   }
 
   # append .nc suffix to file name if needed

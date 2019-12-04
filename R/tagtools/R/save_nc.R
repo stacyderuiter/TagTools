@@ -25,8 +25,9 @@ save_nc <- function(file, X, ...){
   
   # if one or more loose inputs are given, collect into a list
   if (length(X$depid) > 0){
+    xname <- X$name
     X <- list(X, ...)
-    names(X)[1] <- substitute(X)
+    names(X)[1] <- xname
   }
   
   # if there are multiple inputs, make sure that info
@@ -41,6 +42,7 @@ save_nc <- function(file, X, ...){
   
   # write sensors and metadata to file
   for (k in 1:length(X)){
-      add_nc(file, X[[k]], vname=names(X)[k])
+    var_name <- ifelse('name' %in% names(X[[k]]), X[[k]]$name, 'info')
+      add_nc(file, X[[k]], vname = var_name)
   }
 }

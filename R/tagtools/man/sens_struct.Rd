@@ -4,14 +4,14 @@
 \alias{sens_struct}
 \title{Generate a sensor structure from a sensor data vector or matrix.}
 \usage{
-sens_struct(data, fs = NULL, T = NULL, depid, type, unit = NULL,
-  frame = NULL, name = NULL, start_offset = 0,
+sens_struct(data, sampling_rate = NULL, T = NULL, depid, type,
+  unit = NULL, frame = NULL, name = NULL, start_offset = 0,
   start_offset_units = "second")
 }
 \arguments{
 \item{data}{sensor data vector or matrix}
 
-\item{fs}{(optional) sensor data sampling rate in Hz}
+\item{sampling_rate}{(optional) sensor data sampling rate in Hz}
 
 \item{T}{(optional) is the time in seconds of each measurement in data for irregularly sampled data. The time reference (i.e., the 0 time) should be with respect to the start time of the deployment.}
 
@@ -41,5 +41,5 @@ Generate a sensor structure from a sensor data vector or matrix.
 \examples{
 \dontrun{
 #example will only work if data matrix Aw is in your workspace.
-#A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
+#A <- sens_struct(data=Aw,sampling_rate=fs,depid='md13_134a', type='acc')}
 }

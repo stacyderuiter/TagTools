@@ -7,7 +7,7 @@
 #'             sensor names in the sensor_names.csv file. If more than one sensor
 #'             matches type, a warning will be given. type can be in upper or lower case.
 #' @param T (optional) is the time in seconds of each measurement in data for irregularly sampled data. The time reference (i.e., the 0 time) should be with respect to the start time of the deployment.
-#' @param fs (optional) sensor data sampling rate in Hz
+#' @param sampling_rate (optional) sensor data sampling rate in Hz
 #' @param unit (optional) units in which data are sampled. Default determined by matching \code{type} with defaults in sensor_names.csv
 #' @param frame (optional) frame of reference for data axes, for example 'animal' or 'tag'. Default determined by matching \code{type} with defaults in sensor_names.csv.
 #' @param name (optional) "full name" to assign to the variable. Default determined by matching \code{type} to defaults in sensor_names.csv/
@@ -18,16 +18,15 @@
 #' @examples
 #' \dontrun{
 #' #example will only work if data matrix Aw is in your workspace.
-#' #A <- sens_struct(data=Aw,fs=fs,depid='md13_134a', type='acc')}
+#' #A <- sens_struct(data=Aw,sampling_rate=fs,depid='md13_134a', type='acc')}
 
-sens_struct <- function(data,fs=NULL,T=NULL, depid, type,
+sens_struct <- function(data, sampling_rate=NULL, T=NULL,
+                        depid, type,
                         unit=NULL, frame=NULL, name=NULL,
-                        start_offset=0, start_offset_units='second'){
+                        start_offset = 0, start_offset_units = 'second'){
 
   sens_names <- utils::read.csv(system.file('extdata', 'sensor_names.csv', package='tagtools'),
                                 stringsAsFactors=FALSE)
-  #during development (package not installed)
-  #sens_names <- read.csv('R/tagtools/inst/extdata/sensor_names.csv', stringsAsFactors=FALSE)
   if (missing(data) | missing(type) | missing(depid)){
     cat('Not enough inputs to sens_struct. Pre-defined sensor types are:\n',
                    as.character(sens_names[,'name']))
@@ -35,9 +34,9 @@ sens_struct <- function(data,fs=NULL,T=NULL, depid, type,
     X = NULL ;
   }
 
-if (length(fs)==1){# regularly sampled data
+if (length(sampling_rate)==1){# regularly sampled data
   X <- list(data = data, sampling='regular',
-            sampling_rate=fs, sampling_rate_unit='Hz')
+            sampling_rate=sampling_rate, sampling_rate_unit='Hz')
 }else{                 # irregular data
    if (length(T) != min(nrow(data), length(data))){
       stop('number of sampling times does not match number of samples.')
@@ -99,7 +98,7 @@ X$start_offset <- start_offset
 X$start_offset_units <- start_offset_units
 
 if (!is.na(sens_names[k,'def_cols'])){
-   if (is.null(fs)){
+   if (is.null(sampling_rate)){
       X$column_name <- paste('time, ', sens_names[k,'def_cols'], sep='')
    }else{
       X$column_name = sens_names[k,'def_cols'];
