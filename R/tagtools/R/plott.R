@@ -6,9 +6,9 @@
 #' 
 #' @param X List whose elements are either lists (containing data and metadata) or vectors/matrices of time series data. See details.
 #' @param fsx (Optional) A numeric vector whose length matches the number of sensor data streams (list elements) in X. (If shorter, \code{fsx} will be recycled to the appropriate length). \code{fsx} gives the sampling rate in Hz for each data object. Sampling rates are not needed when the data object(s) \code{X} are list(s) that contain sampling rate information -- and beware, because \code{fsx} (if given) will override sensor metadata.
-#' @param r (Optional) Logical. Should the direction of the y-axis be flipped? Default is FALSE. If \code{r} is of length one (or shorter than the number of sensor data streams in X) it will be recycled to match the number of sensor data streams.data object that it follows if r='r'. Reversed y-axes are useful, for example, for plotting dive profiles which match the physical situation (with greater depths lower in the display). If r is a number, it specifies the number of seconds time offset for the preceding data object.
+#' @param r (Optional) Logical. Should the direction of the y-axis be flipped? Default is FALSE. If \code{r} is of length one (or shorter than the number of sensor data streams in X) it will be recycled to match the number of sensor data streams. Reversed y-axes are useful, for example, for plotting dive profiles which match the physical situation (with greater depths lower in the display). If the name of a sensor list is "P" or contains the word "depth", it will automatically be reversed.
 #' @param offset (Optional) A vector of offsets, in seconds, between the start of each sensor data stream and the start of the first one. For example, if acceleration data collection started and then depth data collection commenced 436 seconds later, then the \code{offset} for the depth data would be 436.
-#' @param date_time_axis (Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Defaults is TRUE. 
+#' @param date_time_axis (Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Default is FALSE. 
 #' @param recording_start (Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording. If a character string is provided it will be coerced to POSIXct with \code{\link{as.POSIXct}}.
 #' @param panel_heights (Optional) A vector of relative or absolute heights for the different panels (one entry for each sensor data stream in \code{X}). Default is equal-height panels. If \code{panel_heights} is a numeric vector, it is interpreted as relative panel heights. To specify absolute panel heights in centimeters using \code{lcm} (see help for \code{\link[graphics]{layout}}).  
 #' @param panel_labels (Optional) A list of y-axis labels for the panels. Defaults to names(X).
@@ -25,15 +25,18 @@
 #' plott(list, HS$P$sampling_rate, r = c(TRUE, FALSE))
 #' }
 
-plott <- function(X, fsx=NULL, r=FALSE, offset=0, 
-                  date_time_axis=TRUE,
+plott <- function(X, fsx=NULL, r = FALSE, offset = 0, 
+                  date_time_axis=FALSE,
                   recording_start=NULL,
                   panel_heights=rep.int(1, length(X)),
                   panel_labels=names(X), line_colors,
                   interactive=FALSE, par_opts, ...) {
   if (length(r) < length(X)){
     r <- rep.int(r, length(X))
-    }
+    zi <- ('depth' %in% tolower(names(X))) | (names(X) == 'P')
+    r[zi] <- TRUE
+  }
+  
   if (missing(par_opts)){
     par_opts <- list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex=0.8)
   }
@@ -85,9 +88,9 @@ plott <- function(X, fsx=NULL, r=FALSE, offset=0,
     }
     if (class(recording_start)=='character'){
       # try to coerce recording start time to POSIX if needed
-      recording_start <- as.POSIXct(recording_start, tz='GMT')
+      recording_start <- lubridate::ymd_hms(recording_start, tz='GMT')
     }
-    if (sum(grepl('POSIX', class(recording_start)))){
+    if (sum(grepl('POSIX', class(recording_start))) > 0){
       times <- lapply(times, function(x, rs) lubridate::seconds(x) +
                       rs, rs=recording_start)
       x_lim <- recording_start + lubridate::seconds(x_lim)

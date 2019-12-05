@@ -9,7 +9,7 @@ plott(
   fsx = NULL,
   r = FALSE,
   offset = 0,
-  date_time_axis = TRUE,
+  date_time_axis = FALSE,
   recording_start = NULL,
   panel_heights = rep.int(1, length(X)),
   panel_labels = names(X),
@@ -24,11 +24,11 @@ plott(
 
 \item{fsx}{(Optional) A numeric vector whose length matches the number of sensor data streams (list elements) in X. (If shorter, \code{fsx} will be recycled to the appropriate length). \code{fsx} gives the sampling rate in Hz for each data object. Sampling rates are not needed when the data object(s) \code{X} are list(s) that contain sampling rate information -- and beware, because \code{fsx} (if given) will override sensor metadata.}
 
-\item{r}{(Optional) Logical. Should the direction of the y-axis be flipped? Default is FALSE. If \code{r} is of length one (or shorter than the number of sensor data streams in X) it will be recycled to match the number of sensor data streams.data object that it follows if r='r'. Reversed y-axes are useful, for example, for plotting dive profiles which match the physical situation (with greater depths lower in the display). If r is a number, it specifies the number of seconds time offset for the preceding data object.}
+\item{r}{(Optional) Logical. Should the direction of the y-axis be flipped? Default is FALSE. If \code{r} is of length one (or shorter than the number of sensor data streams in X) it will be recycled to match the number of sensor data streams. Reversed y-axes are useful, for example, for plotting dive profiles which match the physical situation (with greater depths lower in the display). If the name of a sensor list is "P" or contains the word "depth", it will automatically be reversed.}
 
 \item{offset}{(Optional) A vector of offsets, in seconds, between the start of each sensor data stream and the start of the first one. For example, if acceleration data collection started and then depth data collection commenced 436 seconds later, then the \code{offset} for the depth data would be 436.}
 
-\item{date_time_axis}{(Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Defaults is TRUE.}
+\item{date_time_axis}{(Optional) Logical. Should the x-axis units be date-times rather than time-since-start-of-recording?  Ignored if \code{recording_start} is not provided and \code{X} does not contain metadata on recording start time. Default is FALSE.}
 
 \item{recording_start}{(Optional) The start time of the tag recording as a \code{\link{POSIXct}} object. If provided, the time axis will show calendar date/times; if not, it will show days/hours/minutes/seconds (as appropriate) since time 0 = the start of recording. If a character string is provided it will be coerced to POSIXct with \code{\link{as.POSIXct}}.}
 
