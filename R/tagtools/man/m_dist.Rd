@@ -4,8 +4,19 @@
 \alias{m_dist}
 \title{Calculate Mahalanobis distance}
 \usage{
-m_dist(data, sampling_rate, smoothDur, overlap, consec, cumSum, expStart,
-  expEnd, baselineStart, baselineEnd, BL_COV)
+m_dist(
+  data,
+  sampling_rate,
+  smoothDur,
+  overlap,
+  consec,
+  cumSum,
+  expStart,
+  expEnd,
+  baselineStart,
+  baselineEnd,
+  BL_COV
+)
 }
 \arguments{
 \item{data}{A data frame or matrix with one row for each time point. Note that the Mahalanobis distance calculation should be carried out on continuous data only, so if your data contain logical, factor or character data, proceed at your own risk...errors (or at least meaningless results) will probably ensue.}

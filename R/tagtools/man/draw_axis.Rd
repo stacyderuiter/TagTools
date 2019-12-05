@@ -7,7 +7,7 @@
 draw_axis(side = 1, x = NULL, date_time, last_panel)
 }
 \arguments{
-\item{side}{See \code{\link{axis}}.}
+\item{side}{See \code{\link[graphics]{axis}}.}
 
 \item{x}{A date-time or date object.}
 

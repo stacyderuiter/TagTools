@@ -4,8 +4,7 @@
 \alias{find_dives}
 \title{Find time cues for dives}
 \usage{
-find_dives(p, mindepth, sampling_rate = NULL, surface = 1,
-  findall = 0)
+find_dives(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0)
 }
 \arguments{
 \item{p}{A depth or altitude time series (a sensor data list or  a vector) in meters.}

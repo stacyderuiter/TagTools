@@ -4,8 +4,14 @@
 \alias{make_specgram}
 \title{Plot a spectrogram with default settings}
 \usage{
-make_specgram(x, nfft = 256, fs = 2, window = signal::hanning(nfft),
-  noverlap = length(window)/2, draw_plot = TRUE)
+make_specgram(
+  x,
+  nfft = 256,
+  fs = 2,
+  window = signal::hanning(nfft),
+  noverlap = length(window)/2,
+  draw_plot = TRUE
+)
 }
 \arguments{
 \item{x}{The input signal}

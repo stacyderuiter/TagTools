@@ -4,9 +4,17 @@
 \alias{rotation_test}
 \title{Carry out a rotation randomization test.}
 \usage{
-rotation_test(event_times, exp_period, full_period = range(event_times,
-  na.rm = TRUE), n_rot = 10000, ts_fun = length, skip_sort = FALSE,
-  conf_level = 0.95, return_rot_stats = FALSE, ...)
+rotation_test(
+  event_times,
+  exp_period,
+  full_period = range(event_times, na.rm = TRUE),
+  n_rot = 10000,
+  ts_fun = length,
+  skip_sort = FALSE,
+  conf_level = 0.95,
+  return_rot_stats = FALSE,
+  ...
+)
 }
 \arguments{
 \item{event_times}{A vector of the times of events. Times can be given in any format. If \code{event_times} should not be sorted prior to analysis (for example, if times are given in hours of the day and the times in the dataset span several days), be sure to specify \code{skip_sort=TRUE}.}

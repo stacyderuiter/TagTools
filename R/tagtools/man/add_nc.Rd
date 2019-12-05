@@ -8,14 +8,14 @@ Add one tag sensor or metadata variable to a NetCDF archive file. If the archive
 it is created. The file is assumed to be in the current working directory 
 unless a pathname is added to the beginning of fname.}
 \usage{
-add_nc(file, X, vname = substitute(X))
+add_nc(file, X, vname)
 }
 \arguments{
 \item{file}{The name of the netCDF file to which to save. If the name does not include a .nc suffix, this will be added automatically.}
 
 \item{X}{The sensor data or metadata list to be saved. a list of tag sensor and/or metadata lists. Alternatively, sensor and metadata lists may be input as multiple separate unnamed inputs. Only these kind of variables can be saved in a NetCDF file because the supporting information in these structures is needed to describe the contents of the file. For non-archive and non-portable storage of variables, consider using \code{\link{save}} or various functions to write data to text files.}
 
-\item{vname}{The name of the sensor data stream to be saved. Defaults to the name of the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).}
+\item{vname}{The name of the sensor data stream to be saved. Defaults to the entry "name" from the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).}
 }
 \description{
 Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.

@@ -4,8 +4,15 @@
 \alias{detect_peaks}
 \title{Detect peaks in signal vector data}
 \usage{
-detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL,
-  plot_peaks = NULL, ...)
+detect_peaks(
+  data,
+  sr,
+  FUN = NULL,
+  thresh = NULL,
+  bktime = NULL,
+  plot_peaks = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{A vector (of all positive values) or matrix of data to be used in peak detection. If data is a matrix, you must specify a FUN to be applied to data.}

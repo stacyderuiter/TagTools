@@ -4,8 +4,10 @@
 \alias{metadata_editor}
 \title{Edits a html file from given csv.}
 \usage{
-metadata_editor(masterHTML = system.file("extdata", "tagmetadata.html",
-  package = "tagtools"), csvfilename)
+metadata_editor(
+  masterHTML = system.file("extdata", "tagmetadata.html", package = "tagtools"),
+  csvfilename
+)
 }
 \arguments{
 \item{masterHTML}{default masterHTML is located in the package, or can be changed according to user input.}

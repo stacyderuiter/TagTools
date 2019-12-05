@@ -1,0 +1,17 @@
+sensor,axis,attribute,v1,v2,v3
+A,0,max,40,,
+A,1,poly,2.95,-0.11,
+A,2,poly,3.21,0.456,
+A,3,poly,3.18,0.213,
+A,1,map,1,0,0
+A,2,map,0,1,0
+A,3,map,0,0,1
+P,0,max,200,,
+P,1,poly,153,-0.3,
+M,0,max,4,,
+M,1,poly,480,-145,
+M,2,poly,480,12,
+M,3,poly,480,83,
+M,1,map,1,0,0
+M,2,map,0,1,0
+M,3,map,0,0,1

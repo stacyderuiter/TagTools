@@ -4,8 +4,21 @@
 \alias{track3D}
 \title{Reconstruct a track from pitch, heading and depth data, given a starting position}
 \usage{
-track3D(z, phi, psi, sf, r = 0.001, q1p = 0.02, q2p = 0.08,
-  q3p = 1.6e-05, tagonx, tagony, enforce = T, x, y)
+track3D(
+  z,
+  phi,
+  psi,
+  sf,
+  r = 0.001,
+  q1p = 0.02,
+  q2p = 0.08,
+  q3p = 1.6e-05,
+  tagonx,
+  tagony,
+  enforce = T,
+  x,
+  y
+)
 }
 \arguments{
 \item{z}{A vector with depth over time (in meters, an observation)}

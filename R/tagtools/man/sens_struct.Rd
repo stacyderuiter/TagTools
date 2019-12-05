@@ -4,9 +4,18 @@
 \alias{sens_struct}
 \title{Generate a sensor structure from a sensor data vector or matrix.}
 \usage{
-sens_struct(data, sampling_rate = NULL, T = NULL, depid, type,
-  unit = NULL, frame = NULL, name = NULL, start_offset = 0,
-  start_offset_units = "second")
+sens_struct(
+  data,
+  sampling_rate = NULL,
+  T = NULL,
+  depid,
+  type,
+  unit = NULL,
+  frame = NULL,
+  name = NULL,
+  start_offset = 0,
+  start_offset_units = "second"
+)
 }
 \arguments{
 \item{data}{sensor data vector or matrix}

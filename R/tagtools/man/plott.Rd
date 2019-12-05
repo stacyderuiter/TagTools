@@ -4,10 +4,20 @@
 \alias{plott}
 \title{Plot tag data time series}
 \usage{
-plott(X, fsx = NULL, r = FALSE, offset = 0, date_time_axis = TRUE,
-  recording_start = NULL, panel_heights = rep.int(1, length(X)),
-  panel_labels = names(X), line_colors, interactive = FALSE, par_opts,
-  ...)
+plott(
+  X,
+  fsx = NULL,
+  r = FALSE,
+  offset = 0,
+  date_time_axis = TRUE,
+  recording_start = NULL,
+  panel_heights = rep.int(1, length(X)),
+  panel_labels = names(X),
+  line_colors,
+  interactive = FALSE,
+  par_opts,
+  ...
+)
 }
 \arguments{
 \item{X}{List whose elements are either lists (containing data and metadata) or vectors/matrices of time series data. See details.}

@@ -1,0 +1,35 @@
+field,required,params
+depid,1,
+dtype.source,0,
+dtype.datetime.made,0,
+dtype.nfiles,0,
+dtype.format,0,
+device.serial,1,
+device.make,1,
+device.type,1,Archival
+device.model,1,
+device.url,0,
+sensors.firm,1,Not specified
+sensors.soft,1,Not specified
+sensors.list,0,
+animal.id,0,Unknown
+animal.species.common,1,
+animal.species.science,1,
+animal.dbase.url,1,
+dephist.device.tzone,1,0
+dephist.device.regset,1,dd/mm/yyyy HH:MM:SS
+dephist.device.datetime.start,1,
+dephist.deploy.locality,1,
+dephist.deploy.location.lat,1,
+dephist.deploy.location.lon,1,
+dephist.deploy.datetime.start,1,
+dephist.deploy.method,1,
+project.name,1,
+project.datetime.start,1,
+project.datetime.end,1,
+provider.name,1,
+provider.details,1,
+provider.email,1,
+provider.license,1,Contact data provider
+provider.cite,1,Contact data provider
+provider.doi,1,Contact data provider

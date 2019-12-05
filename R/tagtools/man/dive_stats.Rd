@@ -4,8 +4,15 @@
 \alias{dive_stats}
 \title{Compute summary statistics for dives or flights}
 \usage{
-dive_stats(P, X = NULL, dive_cues, fs = NULL, prop = 0.85,
-  angular = FALSE, X_name = NULL)
+dive_stats(
+  P,
+  X = NULL,
+  dive_cues,
+  fs = NULL,
+  prop = 0.85,
+  angular = FALSE,
+  X_name = NULL
+)
 }
 \arguments{
 \item{P}{Depth data. A vector (or one-column matrix), or a tag sensor data list.}
