@@ -52,14 +52,15 @@ add_nc <-function(file,X,vname){
                        sep='')
         stop(e_msg)
       }
-    }
     
     prev_vars <- names(nc_conn$var)
+    #if (vname != 'info'){
     if(vname %in% prev_vars){
       e_msg <- paste('Variable ', vname,
                      ' already exists in file. Choose a different name.\n',
                      sep='')
       stop(e_msg)
+    }
     }
   }# end of "if file already exists" checks
 
@@ -146,7 +147,8 @@ add_nc <-function(file,X,vname){
   for (m in 1:length(X)){
     ncdf4::ncatt_put(nc_conn, varid=0, 
                      attname=names(X)[m],
-                     attval=X[[m]])  
+                     attval=X[[m]],
+                     prec = 'text')  
   }
   }# end of "if metatdata info structure"
   

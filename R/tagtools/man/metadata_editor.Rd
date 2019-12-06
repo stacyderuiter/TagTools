@@ -6,7 +6,7 @@
 \usage{
 metadata_editor(
   masterHTML = system.file("extdata", "tagmetadata.html", package = "tagtools"),
-  csvfilename
+  csvfilename = system.file("extdata", "blank_template.csv", package = "tagtools")
 )
 }
 \arguments{

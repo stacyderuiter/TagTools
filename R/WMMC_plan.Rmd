@@ -10,6 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Task and Priority List
 Ordered by priority within task types.
 
+TO DO FRIDAY
+
+matlab version of prac and to Lucia
+
+why is dephist start time saving in NC file as a number? change to character...
+I think it is fixed by as.character(), need to check.
+
+Need to re-run all and check for further bugs.
 ### R scripts
 
 #### Analysis

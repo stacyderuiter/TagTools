@@ -36,7 +36,7 @@ read_cats <- function(fname,depid){
                device_url=NULL,
                dephist_device_tzone=0,
                dephist_device_regset='dd-mm-yyyy HH:MM:SS',
-               dephist_device_datetime_start = V[1,1]
+               dephist_device_datetime_start = as.character(V[1,1])
   )
   
   # time stuff

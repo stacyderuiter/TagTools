@@ -87,7 +87,9 @@ while 1,
    sr = fread(fin,CHNK,'uchar') ;
    cc = cc+1 ;
    s = [ss;sr] ;
-   fprintf(' %d MB read: %s\n',cc*CHNK/1e6,s(1:19)) ;
+   if length(s) >= 19
+       fprintf(' %d MB read: %s\n',cc*CHNK/1e6,s(1:19)) ;
+   end
    kl = find(s==10) ;
    if ~isempty(kl),
       ss = s(kl(end)+1:end) ;

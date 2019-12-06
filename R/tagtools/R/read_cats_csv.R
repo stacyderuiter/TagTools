@@ -41,7 +41,10 @@ read_cats_csv <- function(fname, max_samps = Inf, skip_samps = 0){
   # but it's not meant to then read ALL of them in and then paste together -
   # may be useful though if ever actually doing processing on chunks.
   V <- suppressMessages(readr::read_csv(file = fname, col_names = TRUE,
-                       col_types = readr::cols(`Time (UTC)` = readr::col_character()),# can do this?
+                     col_types = readr::cols(`Time (UTC)` = readr::col_character(),
+                                               `GPS (raw) 1 [raw]` = readr::col_character(),
+                                               `GPS (raw) 2 [raw]` = readr::col_character()
+                                             ),
                        na = c(NA, '', ' '),
                        trim_ws = TRUE,
                        skip = skip_samps,
@@ -49,10 +52,12 @@ read_cats_csv <- function(fname, max_samps = Inf, skip_samps = 0){
   )
   # make mus and degree symbols and superscripts not show up as black diamonds with question marks inside
   # that make R throw errors...
-  names(V) <- iconv(names(V), to = 'iso_8859_1')
+  
+  names(V) <- iconv(names(V), to = 'iso_8859_2')
+  
   # add date-time in POSIX format
-  di <- which(stringr::str_detect(names(V), 'Date '))
-  ti <- which(stringr::str_detect(names(V), 'Time '))
+   di <- which(stringr::str_detect(names(V), 'Date '))
+   ti <- which(stringr::str_detect(names(V), 'Time '))
   
   V$Datetime <- lubridate::dmy_hms(paste(dplyr::pull(V[,di]),
                                          dplyr::pull(V[,ti])))

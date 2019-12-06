@@ -6,12 +6,13 @@
 #' @return A "dynamic tagmetadata.html" which is the masterHTML with changes from csv. This file is written to the current working directory, and also opened for editing by the user.
 #' @export
 
-metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.html", package='tagtools'), csvfilename){
+metadata_editor <- function(masterHTML = system.file('extdata', "tagmetadata.html", package='tagtools'), 
+                            csvfilename = system.file('extdata', 'blank_template.csv', package='tagtools')){
  
   csvFile <- parseCSV(csvfilename)
   htmlFile <- scan(file = masterHTML, what = character(0), sep = "\n", quote = "")
   newHTML <- htmlFile
- csvFile2 <- readr::read_csv(csvfilename)
+ csvFile2 <- suppressMessages(readr::read_csv(csvfilename))
   param2 <- csvFile2$params
   req2 <- csvFile2$required
   field2 <- csvFile2$field

@@ -5,10 +5,10 @@
 <script>
 
 
-var req_field = [1 ,0 ,0 ,0 ,0 ,1 ,1 ,1 ,1 ,0 ,1 ,1 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,0 ,0 ,0]
+var req_field = [1 ,0 ,0 ,0 ,0 ,1 ,1 ,1 ,1 ,0 ,1 ,1 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,0]
 var uploadBool = false;
-var csv_fields = ["depid" ,"dtype.source" ,"dtype.datetime.made" ,"dtype.nfiles" ,"dtype.format" ,"device.serial" ,"device.make" ,"device.type" ,"device.model" ,"device.url" ,"sensors.firm" ,"sensors.soft" ,"sensors.list" ,"animal.id" ,"animal.species.common" ,"animal.species.science" ,"animal.dbase.url" ,"dephist.device.tzone" ,"dephist.device.regset" ,"dephist.device.datetime.start" ,"dephist.deploy.locality" ,"dephist.deploy.location.lat" ,"dephist.deploy.location.lon" ,"dephist.deploy.datetime.start" ,"dephist.deploy.method" ,"project.name" ,"project.datetime.start" ,"project.datetime.end" ,"provider.name" ,"provider.details" ,"provider.email" ,"provider.license" ,"provider.cite" ,"provider.doi" ,"udm.export" ,"udm.segment" ,"udm.segment.unit"]
-var other_field = ["md13_134a" ,"md13_134aprh25.mat" ,"7/07/2017 22:50:00" ,"1" ,"MAT" ,"77031D26" ,"DTAG" ,"Archival" ,"DTAG3" ,"https://www.soundtags.org" ,"Not specified" ,"Not specified" ,'"3axis Accelerometer,3 axis Magnetometer,Pressure"' ,"Unknown" ,"Blainville's beaked whale" ,"Mesoplodon densirostris" ,"https://www.cetabase.info/" ,"0" ,"dd/mm/yyyy HH:MM:SS" ,"2013-05-14 12:42:00" ,'"El Hierro,Canary Islands,Spain"' ,"27.66" ,"-18" ,"2013-05-14 12:42:00" ,"Suction cup" ,"El Hierro 2013" ,"2013-05-01" ,"2013-06-01" ,'"Mark Johnson, Natacha Aguilar de Soto"' ,'"Univ St Andrews, Univ La Laguna"' ,"info@animaltags.org" ,"Contact data provider" ,"Contact data provider" ,"Contact data provider" ,"1" ,'"5062,10581"' ,"seconds since tag start"]
+var csv_fields = [""info.depid"" ,""info.data.source"" ,""info.data.datetime.made"" ,""info.data.nfiles"" ,""info.data.format"" ,""info.device.serial"" ,""info.device.make"" ,""info.device.type"" ,""info.device.model"" ,""info.device.url"" ,""info.sensors.firm"" ,""info.sensors.soft"" ,""info.sensors.list"" ,""info.animal.id"" ,""info.animal.species.common"" ,""info.animal.species.science"" ,""info.animal.dbase.url"" ,""info.dephist.device.tzone"" ,""info.dephist.device.regset"" ,""info.dephist.device.datetime.start"" ,""info.dephist.deploy.locality"" ,""info.dephist.deploy.location.lat"" ,""info.dephist.deploy.location.lon"" ,""info.dephist.deploy.datetime.start"" ,""info.dephist.deploy.method"" ,""info.project.name"" ,""info.project.datetime.start"" ,""info.project.datetime.end"" ,""info.provider.name"" ,""info.provider.details"" ,""info.provider.email"" ,""info.provider.license"" ,""info.provider.cite"" ,""info.provider.doi"" ,""info.udm.export""]
+var other_field = [""mn12_186a"" ,'"mn12_186a.obj"' ,'"24/06/2017 09:29"' ,"1" ,'"OBJ"' ,'"LL57537"' ,'"Little Leonardo"' ,'"Archival"' ,'"3MPD3GT-W2000"' ,'"http://l-leo.com/eng/data-logger"' ,'"Not specified"' ,'"Not specified"' ,'"{'3axis Accelerometer', '3 axis Magnetometer’,'Pressure','Speed', 'Temperarature'}"' ,'"Unknown"' ,'"Humpback whale"' ,'"Megaptera novaeangliae"' ,'"https://www.rorqual.com/"' ,"-4" ,'"dd/mm/yyyy HH:MM:SS"' ,'"04/07/2012 07:59:01"' ,'"{'Mingan Islands, Canada'}"' ,"50.17481" ,"-64.0737686" ,'"04/07/2012 12:42:00"' ,'"Suction cup"' ,'"SENSES-2012"' ,'"2012-06-01"' ,'"2012-10-01"' ,'"René Swift"' ,'"Sea Mammal Research Unit"' ,'"rjs30@st-andrews.ac.uk"' ,'"Contact data provider"' ,'"Contact data provider"' ,'"Contact data provider"' ,"1"]
 function findIndexbyField(str, array){ 
 var i;
 arrlength = array.length;
@@ -432,22 +432,22 @@ border-top: none;
 <div id="DeviceInfo" class="tabcontent">
 <h3> Device information </h3>
 <p>
-Device Serial Number: <span style="color: red">*</span> <input name="Device Serial Number" type="text" id="device.serial"  value="77031D26"/><br /><br />
-Device manufacturer:  <span style="color: red">*</span> <input name="Device manufacturer:" type="text" id="device.make"  value="DTAG"/><br /><br />
-Type of device: <span style="color: red">*</span>  <input name="Type of device" type="text" id="device.type"  value="Archival"/><br /><br />
-Model Name and Version: <span style="color: red">*</span> <input name="Model Name and Version" type="text" id="device.model"  value="DTAG3"/><br /><br />
-URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="device.url"  value="https://www.soundtags.org"/><br /><br />
-Device firmware version: <span style="color: red">*</span> <input name="Device firmware version" type="text" id="sensors.firm"  value="Not specified"/><br /><br />
-Software off loader version: <span style="color: red">*</span> <input name="Software off loader version" type="text" id="sensors.soft"  value="Not specified"/><br /><br />
+Device Serial Number: <span style="color: red">*</span> <input name="Device Serial Number" type="text" id="device.serial" value = ""/><br /><br />
+Device manufacturer:  <span style="color: red">*</span> <input name="Device manufacturer:" type="text" id="device.make" value = ""/><br /><br />
+Type of device: <span style="color: red">*</span>  <input name="Type of device" type="text" id="device.type" value = ""/><br /><br />
+Model Name and Version: <span style="color: red">*</span> <input name="Model Name and Version" type="text" id="device.model" value = ""/><br /><br />
+URL to tag model specifications: <input name="URL to tag model specifications" type="text" id="device.url" value = ""/><br /><br />
+Device firmware version: <span style="color: red">*</span> <input name="Device firmware version" type="text" id="sensors.firm" value = ""/><br /><br />
+Software off loader version: <span style="color: red">*</span> <input name="Software off loader version" type="text" id="sensors.soft" value = ""/><br /><br />
 </p>
 </div>
 <div id="TagAnimal" class="tabcontent">
 <h3> Tag and animal information </h3>
 <p>
-Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="animal.id"  value="Unknown"/><br /><br />
-Describe how the tag was attached (e.g. glued, implanted, suction cups): <span style="color: red">*</span> <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="dephist.deploy.method"  value="Suction cup"/><br /><br />
-Common name of species: <span style="color: red">*</span> <input name="Common name of species" type="text" id="animal.species.common"  value="Blainville's beaked whale"/><br /><br />
-Scientific name: <span style="color: red">*</span> <input name="Scientific name" type="text" id="animal.species.science"  value="Mesoplodon densirostris" /> <br /><br />
+Catalogue ID, Band ID or Flipper Tag ID (optional):<input name="Type of ID" type="text" id="animal.id" value = ""/><br /><br />
+Describe how the tag was attached (e.g. glued, implanted, suction cups): <span style="color: red">*</span> <input name="Describe how the tag was attached (e.g. glued, implanted, suction cups)" type="text" id="dephist.deploy.method" value = ""/><br /><br />
+Common name of species: <span style="color: red">*</span> <input name="Common name of species" type="text" id="animal.species.common" value = ""/><br /><br />
+Scientific name: <span style="color: red">*</span> <input name="Scientific name" type="text" id="animal.species.science" value = "" /> <br /><br />
 </p>
 </div>
 <div id = "TimeZoneTime" class = "tabcontent">
@@ -482,7 +482,7 @@ Time zone of device (+- HRS UTC): <span style="color: red">*</span> <select name
 <option timeZoneId="26" UTCAdjustment="UTC-02:00" useDaylightTime="1" value="-2">(UTC-02:00) Mid-Atlantic</option>
 <option timeZoneId="27" UTCAdjustment="UTC-01:00" useDaylightTime="0" value="-1">(UTC-01:00) Cape Verde Is.</option>
 <option timeZoneId="28" UTCAdjustment="UTC-01:00" useDaylightTime="1" value="-1">(UTC-01:00) Azores</option>
-<option timeZoneId="29" UTCAdjustment="UTC+00:00" useDaylightTime="0" value="0" selected >(UTC+00:00) Casablanca, Monrovia, Reykjavik</option>
+<option timeZoneId="29" UTCAdjustment="UTC+00:00" useDaylightTime="0" value="0">(UTC+00:00) Casablanca, Monrovia, Reykjavik</option>
 <option timeZoneId="30" UTCAdjustment="UTC+00:00" useDaylightTime="1" value="0">(UTC+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</option>
 <option timeZoneId="31" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
 <option timeZoneId="32" UTCAdjustment="UTC+01:00" useDaylightTime="1" value="1">(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
@@ -538,43 +538,43 @@ Time zone of device (+- HRS UTC): <span style="color: red">*</span> <select name
 <option timeZoneId="82" UTCAdjustment="UTC+13:00" useDaylightTime="0" value="13">(UTC+13:00) Nuku'alofa</option>
 </select>	<br /><br />
 <!-- Regional settings for device(date format): <input name="Regional settings for device(date format)" type="text" id="dephist.device.regset"/><br /><br />-->
-UTC Device start date (YYYY-MM-DD)<span style="color: red">*</span> : <input name="UTC Device start date" type="text" id="dephist.device.datetime.start0"  value="2013-05-14"/><br /><br />
-UTC Device start time (military) (HH:MM:SS) <span style="color: red">*</span> : <input name=" UTC Device start time" type="text" id="dephist.device.datetime.start1"  value="12:42:00"/><br /><br />
-UTC Date of Deployment (YYYY-MM-DD) <span style="color: red">*</span> : <input name="UTC Date of Deployment" type="text" id="dephist.deploy.datetime.start0"  value="2013-05-14"/><br /><br />
-UTC Time of Deployment (military) (HH:MM:SS) <span style="color: red">*</span> : <input name="UTC Time of Deployment" type="text" id="dephist.deploy.datetime.start1"  value="12:42:00"/><br />
+UTC Device start date (YYYY-MM-DD)<span style="color: red">*</span> : <input name="UTC Device start date" type="text" id="dephist.device.datetime.start0" value = ""/><br /><br />
+UTC Device start time (military) (HH:MM:SS) <span style="color: red">*</span> : <input name=" UTC Device start time" type="text" id="dephist.device.datetime.start1" value = ""/><br /><br />
+UTC Date of Deployment (YYYY-MM-DD) <span style="color: red">*</span> : <input name="UTC Date of Deployment" type="text" id="dephist.deploy.datetime.start0" value = ""/><br /><br />
+UTC Time of Deployment (military) (HH:MM:SS) <span style="color: red">*</span> : <input name="UTC Time of Deployment" type="text" id="dephist.deploy.datetime.start1" value = ""/><br />
 </p>
 </div>
 <div id = "Locality" class = "tabcontent">
 <h3> Locality Information</h3>
 <p>
-Locality of Deployment <span style="color: red">*</span> (write and separate by commas) : <input name="Locality of Deployment" type="text" id="dephist.deploy.locality"  value="El Hierro,Canary Islands,Spain"/><br /><br />
-Latitude of Deployment (decimal degrees) <span style="color: red">*</span> :  <input name="Latitude of Deployment" type="text" id="dephist.deploy.location.lat"  value="27.66"/><br /><br />
-Longitude of Deployment (decimal degrees) <span style="color: red">*</span> : <input name="Longitude of Deployment" type="text" id="dephist.deploy.location.lon"  value="-18"/><br /><br />
+Locality of Deployment <span style="color: red">*</span> (write and separate by commas) : <input name="Locality of Deployment" type="text" id="dephist.deploy.locality" value = ""/><br /><br />
+Latitude of Deployment (decimal degrees) <span style="color: red">*</span> :  <input name="Latitude of Deployment" type="text" id="dephist.deploy.location.lat" value = ""/><br /><br />
+Longitude of Deployment (decimal degrees) <span style="color: red">*</span> : <input name="Longitude of Deployment" type="text" id="dephist.deploy.location.lon" value = ""/><br /><br />
 </p>
 </div>
 <div id = "Project" class = "tabcontent">
 <h3> Project information </h3>
 <p>
-Project Name <span style="color: red">*</span> : <input name="Project Name" type="text" id="project.name"  value="El Hierro 2013"/><br /><br />
-Start date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="Start date for all project related deployments" type="text" id="project.datetime.start"  value="2013-05-01"/><br /><br />
-End date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="End date for all project related deployments" type="text" id="project.datetime.end"  value="2013-06-01"/><br /><br />
+Project Name <span style="color: red">*</span> : <input name="Project Name" type="text" id="project.name" value = ""/><br /><br />
+Start date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="Start date for all project related deployments" type="text" id="project.datetime.start" value = ""/><br /><br />
+End date for all project related deployments (YYYY-MM-DD) <span style="color: red">*</span> : <input name="End date for all project related deployments" type="text" id="project.datetime.end" value = ""/><br /><br />
 </p>
 </div>
 <div id = "Provider" class = "tabcontent">
 <h3> Provider information </h3>
 <p>
-Name of data provider / license holder <span style="color: red">*</span>: <input name="Name of data provider / license holder" type="text" id="provider.name"  value="Mark Johnson, Natacha Aguilar de Soto"/><br /><br />
-Affiliation of data provider <span style="color: red">*</span>: <input name="Affiliation etc of data provider" type="text" id="provider.details"  value="Univ St Andrews, Univ La Laguna"/><br /><br />
-URL to organisation holding animal data <span style="color: red">*</span>: <input name="URL to organisation holding animal data" type="text" id="animal.dbase.url"  value="https://www.cetabase.info/"/><br /><br />
-Email of data provider <span style="color: red">*</span>: <input name="Email of data provider" type="text" id="provider.email"  value="info@animaltags.org"/><br /><br />
-Describe provider restrictions to data access and distribution <span style="color: red">*</span>: <input name="Describe provider restrictions to data access and distribution" type="text" id="provider.license"  value="Contact data provider"/><br /><br />
+Name of data provider / license holder <span style="color: red">*</span>: <input name="Name of data provider / license holder" type="text" id="provider.name" value = ""/><br /><br />
+Affiliation of data provider <span style="color: red">*</span>: <input name="Affiliation etc of data provider" type="text" id="provider.details" value = ""/><br /><br />
+URL to organisation holding animal data <span style="color: red">*</span>: <input name="URL to organisation holding animal data" type="text" id="animal.dbase.url" value = ""/><br /><br />
+Email of data provider <span style="color: red">*</span>: <input name="Email of data provider" type="text" id="provider.email" value = ""/><br /><br />
+Describe provider restrictions to data access and distribution <span style="color: red">*</span>: <input name="Describe provider restrictions to data access and distribution" type="text" id="provider.license" value = ""/><br /><br />
 </p>
 </div>
 <div id = "Citation" class = "tabcontent">
 <h3>Citation information </h3>
-Citation to be used in publications <span style="color: red">*</span>: <input name="Citation to be used in publications" type="text" id="provider.cite"  value="Contact data provider"/><br /><br />
-DOI for data <span style="color: red">*</span>: <input name="DOI for data" type="text" id="provider.doi"  value="Contact data provider"/><br /><br />
-Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="udm.export" checked /><br /><br /><br /><br />
+Citation to be used in publications <span style="color: red">*</span>: <input name="Citation to be used in publications" type="text" id="provider.cite" value = ""/><br /><br />
+DOI for data <span style="color: red">*</span>: <input name="DOI for data" type="text" id="provider.doi" value = ""/><br /><br />
+Do you want your user defined meta-data to published?: <input name="Do you want your user defined meta-data to published?" type="checkbox" id="udm.export" /><br /><br /><br /><br />
 </p>
 </div>
 <p>

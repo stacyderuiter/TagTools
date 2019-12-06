@@ -50,8 +50,9 @@ ptrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2, return_pe = FALSE) {
     s <- s[kg]
   }
   W <- body_axes(A[kg,], M[kg,], sampling_rate, fc)
-  T[kg,] <- cumsum(s * W$x)
+  T[kg,] <- apply((s * W$x), 1, cumsum)
   T <- data.frame(T)
+ # T <- T[,c(1:2)]
   names(T) <- c('northing', 'easting', 'dunno')
   
   if (return_pe == TRUE){
