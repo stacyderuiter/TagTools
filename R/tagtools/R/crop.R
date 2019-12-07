@@ -4,7 +4,8 @@
 #' 
 #' Possible input combinations include: crop(X) if X is a sensor list, crop(X, sampling_rate) if X is a vector or matrix.
 #' @param X A sensor list, vector or matrix. X can be regularly or irregularly sampled data in any frame and unit.
-#' @param sampling_rate The sampling rate of X in Hz. This is only needed if X is not a sensor list. If X is regularly sampled, sampling_rate is one number. sampling_rate may also be a vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.
+#' @param sampling_rate The sampling rate of X in Hz. This is only needed if X is not a sensor list. If X is regularly sampled, sampling_rate is one number. 
+#' @param T A vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.
 #' @return A list with 3 elements:
 #' \itemize{
 #'  \item{\strong{Y: }} A sensor list, vector or matrix containing the cropped data segment. If the input is a sensor list, the output will also be. The output has the same units, frame and sampling characteristics as the input.
@@ -18,7 +19,7 @@
 #'          #plot shows the cropped section
 #' @export
 
-crop <- function(X, sampling_rate) {
+crop <- function(X, sampling_rate, T = NULL) {
   if (missing(X)) {
     stop("X is a required input")
   }
@@ -43,16 +44,16 @@ crop <- function(X, sampling_rate) {
       x <- matrix(x, nrow = length(x), ncol = 1)
     }
   }
-  if (length(sampling_rate) > 1) {
-    graphics::matplot(sampling_rate, x, type = "p", xlab = "Time (seconds)")
-    graphics::matplot(sampling_rate, x, type = "p", xlab = "Time (seconds)", ylim = c(floor(graphics::par("usr")[3]), ceiling(graphics::par("usr")[4])))
+  if (!is.null(T)) {
+    graphics::matplot(T, x, type = "p", xlab = "Time (seconds)")
+    graphics::matplot(T, x, type = "p", xlab = "Time (seconds)", ylim = c(floor(graphics::par("usr")[3]), ceiling(graphics::par("usr")[4])))
   } else {
     graphics::matplot((c(1:nrow(x)) / sampling_rate), x, type = "l", xlab = "Time (seconds)")
     graphics::matplot((c(1:nrow(x)) / sampling_rate), x, type = "l", xlab = "Time (seconds)", ylim = c(floor(graphics::par("usr")[3]), ceiling(graphics::par("usr")[4])))
   }
   print("Position your cursor and then click once followed by clicking FINISH to change the start, or click twice in the same spot followed by clicking FINISH to change the end. If you wish to change both the start and end click once at the start time desired and twice at the end time desired.")
-  if (length(sampling_rate) > 1) {
-    tcues <- c(min(sampling_rate), max(sampling_rate))
+  if (length(T) > 1) {
+    tcues <- c(min(T), max(T))
   } else {
     tcues <- c(0, (nrow(x) / sampling_rate))
   }
@@ -88,15 +89,17 @@ crop <- function(X, sampling_rate) {
   }
   if (is.list(X)) {
     cto <- crop_to(X, tcues = tcues)
-    Y <- cto$X
-    T <- tcues
+    Y <- cto
+    return(Y)
   } else {
-    cto <- crop_to(x, sampling_rate, tcues)
-    Y <- cto$X
-    T <- cto$T
-    if (length(sampling_rate) == 1) {
-      T <- tcues
+    cto <- crop_to(x, sampling_rate = sampling_rate, tcues = tcues)
+    if (!is.null(T)) {
+      Y <- cto$X
+      T <- cto$T
+      return(list(Y=Y, T=T, tcues = tcues))
+    }else{
+      Y <- cto
+      return(list(Y=Y, tcues = tcues))
     }
   }
-  return(list(Y = Y, T = T, tcues = tcues))
 }

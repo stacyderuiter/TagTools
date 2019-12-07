@@ -4,27 +4,26 @@
 \alias{crop_to}
 \title{Reduce the time span of data}
 \usage{
-crop_to(X, sampling_rate = NULL, tcues = NULL)
+crop_to(X, sampling_rate = NULL, tcues, T = NULL)
 }
 \arguments{
 \item{X}{A sensor list, vector, or matrix. X can be regularly or irregularly samples data in any frame and unit.}
 
-\item{sampling_rate}{The sampling rate of X in Hz. This is only needed if X is not a sensor structure. If X is regularly sampled, sampling_rate is one number. sampling_rate may also be a vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.}
+\item{sampling_rate}{The sampling rate of X in Hz. This is only needed if X is not a sensor structure.}
 
 \item{tcues}{A two-element vector containing the start and end time cues in seconds of the data segment to keep (i.e., tcues <- c(start_time, end_time)).}
+
+\item{T}{A vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.}
 }
 \value{
-A list with 2 elements:
+Cropped data in the same format as X, unless X is irregularly sampled and NOT a sensor list. In that case, the function returns a list with 2 elements:
 \itemize{
  \item{\strong{X: }} A sensor list, vector or matrix containing the cropped data segment. If the input is a sensor list, the output will also be. The output has the same units, frame and sampling characteristics as the input.
- \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. If X is a sensor list, the sampling times are stored in the list.
+ \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. (If X is a sensor list, the sampling times are stored in the list.)
 }
 }
 \description{
 This function is used to reduce the time span of data by cropping out any data that falls before and after two time cues.
-}
-\details{
-Possible input combinations: crop_to(X, tcues = tcues) if X is a sensor structure, crop_to(X, sampling_rate, tcues) if x is a vector or matrix.
 }
 \examples{
          d <- find_dives(beaked_whale$P,300)
