@@ -33,6 +33,10 @@ fit_tracks <- function(P, T = NULL, D, sampling_rate){
     }
   }
   
+  if (!is.matrix(T) & !is.data.frame(T)){
+    T <- matrix(T, ncol = 1)
+  }
+  
   if (is.null(T)){
     stop('fit_tracks: input T is required.\n')
   }
@@ -59,18 +63,18 @@ fit_tracks <- function(P, T = NULL, D, sampling_rate){
   V <- rbind(V, 
              V[nrow(V),])             
 
-  dk <- rbind(k[1],
-              diff(k),
-              nrow(D) - tail(k,1))
+  dk <- c(k[1], diff(k), nrow(D) - tail(k,1))
   ki <- c(0, t(cumsum(dk)))
   C <- matrix(0, nrow = nrow(D), ncol = 2) # make space for the merged track
 
   for (kk in c(1:length(dk))){
-    C[(ki[kk] + 1) : ki[kk+1],] <- matrix(V[kk,], nrow = dk[kk], ncol = 2, byrow = TRUE) +
-                                    matrix((1/dk[kk])*c(0:(dk[kk] - 1)), 
+    C[(ki[kk] + 1) : ki[kk+1],] <- matrix(as.numeric(V[kk,]), nrow = dk[kk], ncol = 2, byrow = TRUE) +
+                                    (matrix(matrix((1/dk[kk])*c(0:(dk[kk] - 1)), 
                                             nrow = dk[kk], 
-                                            ncol = 2) *
-                                    (V[kk+1,] - V[kk,])
+                                            ncol = 2) %*%
+                                    as.numeric(V[kk+1,] - V[kk,]),
+                                    nrow = dk[kk],
+                                    ncol = 2))
   }
 
   D <-  D + C

@@ -24,9 +24,8 @@ track points in a local level frame. Units, axes and frame must match those of P
 D, a data frame with 4 columns: "northing" and "easting" along the new track,
 and "current_n" and "current_e", the track increments needed to match the tracks.
 If the difference between the two tracks is due to the medium moving, 
- these increments can be considered an estimate of the current in m/s. 
- The axes and frame are the same as for the input data.
- @export
+these increments can be considered an estimate of the current in m/s. 
+The axes and frame are the same as for the input data.
 }
 \description{
 Simple track integration method to merge infrequent 
