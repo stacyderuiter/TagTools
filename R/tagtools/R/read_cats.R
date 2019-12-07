@@ -25,29 +25,29 @@
 read_cats <- function(fname,depid){
   V <- read_cats_csv(fname)
   info <- list(depid=depid,
-               data_source=fname,
-               data_nfiles=1,
-               data_format='csv',
-               device_serial=NULL,
-               device_make='CATS',
-               device_type='Archival',
-               device_model_name=NULL,
-               device_model_version=NULL,
-               device_url=NULL,
-               dephist_device_tzone=0,
-               dephist_device_regset='dd-mm-yyyy HH:MM:SS',
+               data_source = fname,
+               data_nfiles = '1',
+               data_format = 'csv',
+               device_serial = NULL,
+               device_make = 'CATS',
+               device_type = 'Archival',
+               device_model_name = NULL,
+               device_model_version = NULL,
+               device_url = NULL,
+               dephist_device_tzone = '0',
+               dephist_device_regset = 'dd-mm-yyyy HH:MM:SS',
                dephist_device_datetime_start = as.character(V[1,1])
   )
   
   # time stuff
-  dT <- as.numeric(diff(V[,1] - V[1,1]))
+  dT <- as.numeric(diff(V[,1] - rep(V[1,1], nrow(V))))
   md <- stats::median(dT)
   km <- abs(dT - md) < 0.5*md
   if (sum(km) < 0.75*length(dT)){
     warning('Many gaps in sampling. Inferred sampling rate may be inaccurate.\n')
   }
   # inferred sampling rate in Hertz
-  sampling_rate <- 1 / (mean(dT[km])*3600*24)
+  sampling_rate <- 1 / mean(dT[km])
   
   # check which sensors are present
   Sens <- c('Acc','Mag','Gyr','Temp','Depth','Light')
