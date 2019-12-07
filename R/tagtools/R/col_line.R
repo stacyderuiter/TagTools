@@ -32,7 +32,7 @@ col_line <- function(formula, x, y, c, c_lab = quote(c),
                    color = color_formula,
                    marker = list(size = 1))
   }else{
-    fig <- ggformula::gf_path(formula, data = data, color = color_formula) %>%
+    fig <- ggformula::gf_path(formula, data = data, color = color_formula, ...) %>%
       ggformula::gf_labs(color = c_lab)
   }
  fig

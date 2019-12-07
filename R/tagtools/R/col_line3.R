@@ -1,75 +1,33 @@
 #' Plot coloured line(s) in 3 dimensions
 #' 
 #' This function is used to plot three dimensional lines with each individual line possessing a different color.
-#' @param x A vector or matrix of points on the horizontal axis.
-#' @param y A vector or matrix of points on the vertical axis.
-#' @param z A vector or matrix of points on the third axis.
+#' @param formula a formula of the form y ~ x giving the (unquoted) variable names to plot
+#' @param x ignored if a formula is provided. A vector or matrix of points on the horizontal axis.
+#' @param y ignored if a formula is provided. A vector or matrix of points on the vertical axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
-#' @param ... Additional inputs for rgl::plot3d()
+#' @param c_lab A string to use as the label for the color legend
+#' @param data (optional) a data.frame containing variables used for plotting
+#' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
+#' @param ... Additional inputs for plot_ly()
 #' @export
 #' @seealso \code{\link{col_line}}, \code{\link{cline}}
-#' @note x, y, z and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
+#' @note x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). 
 
-col_line3 <- function(x, y, z, c, ...) {
-  if (length(x) == length(y) & length(x) == length(c) & length(x) == length(z)) {
-    x <- matrix(x, nrow = 1)
-    y <- matrix(y, nrow = 1)
-    z <- matrix(z, nrow = 1)
-    c <- matrix(c, nrow = 1)
-    X <- matrix(0, length(x), 1)
-    Y <- matrix(0, length(x), 1)
-    Z <- matrix(0, length(x), 1)
-    C <- matrix(0, length(x), 1)
-    for (k in 1:length(x)) {
-      X[k] <- x[k]
-      Y[k] <- y[k]
-      Z[k] <- z[k]
-      C[k] <- c[k]
+col_line3 <- function(formula = NULL, x, y, z = 0, c, col_lab = quote(c),
+                      interactive = FALSE, data = parent.frame(), ...) {
+  if (missing(formula) | is.null(formula)){
+    if (missing(x) | missing(y)){
+      stop('Inputs x and y are required for col_line3 unless formula is provided.\n')
     }
-    data <- list()
-    for (j in 1:(length(X) - 1)) {
-      for (l in (j + 1)) {
-        data[[j]] <- data.frame(X[j:l], Y[j:l], Z[j:l])
-      }
-    }
-    rgl::plot3d(NA, NA, NA, xlim = c(0, max(x)), ylim = c(0, max(y)), zlim = c(0, max(z)), xlab = "x", ylab = "y", zlab = "z")
-    for (i in 1:(length(X)-1)) {
-      d <- data[[i]]
-      rgl::lines3d(x = d[, 1], y = d[, 2], z = d[, 3], color = C[i], lwd = 3, ...)
-    }
-  } else {
-    if (nrow(x) == nrow(y) & nrow(x) == nrow(c) & nrow(x) == nrow(z) & ncol(x) == ncol(y) & ncol(x) == ncol(c) & ncol(x) == ncol(z)) {
-      if (ncol(x) == 1) {
-        x <- matrix(x, nrow = 1)
-        y <- matrix(y, nrow = 1)
-        z <- matrix(z, nrow = 1)
-        c <- matrix(c, nrow = 1)
-      }
-      datax <- list()
-      for (j in 1:(nrow(x) - 1)) {
-        for (l in (j + 1)) {
-          datax[[j]] <- data.frame(x[j:l, ])
-        }
-      }
-      datay <- list()
-      for (j in 1:(nrow(y) - 1)) {
-        for (l in (j + 1)) {
-          datay[[j]] <- data.frame(y[j:l, ])
-        }
-      }
-      dataz <- list()
-      for (j in 1:(nrow(z) - 1)) {
-        for (l in (j + 1)) {
-          dataz[[j]] <- data.frame(z[j:l, ])
-        }
-      }
-      rgl::plot3d(NA, NA, NA, xlim = c(0, max(x)), ylim = c(0, max(y)), zlim = c(0, max(z)), xlab = "x", ylab = "y", zlab = "z")
-      for (i in 1:(nrow(x)-1)) {
-        dx <- as.matrix(datax[[i]])
-        dy <- as.matrix(datay[[i]])
-        dz <- as.matrix(dataz[[i]])
-        rgl::lines3d(x = dx, y = dy, z = dz, color = c[i], lwd = 3, ...)
-      }
-    }
+    x_formula <- as.formula(paste('~', quote(x)))
+    y_formula <- as.formula(paste('~', quote(y)))
   }
+  
+  z_formula <- as.formula(paste('~ -', quote(z)))
+  
+  color_formula <- as.formula(paste('~', quote(c)))
+  
+  plot_ly(x = x_formula, y = y_formula, z = z_formula,
+          type="scatter3d", mode="lines", color = color_formula, 
+          data = data, ...)
 }
