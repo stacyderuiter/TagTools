@@ -4,12 +4,14 @@
 \alias{crop}
 \title{Interactive data cropping tool.}
 \usage{
-crop(X, sampling_rate)
+crop(X, sampling_rate, T = NULL)
 }
 \arguments{
 \item{X}{A sensor list, vector or matrix. X can be regularly or irregularly sampled data in any frame and unit.}
 
-\item{sampling_rate}{The sampling rate of X in Hz. This is only needed if X is not a sensor list. If X is regularly sampled, sampling_rate is one number. sampling_rate may also be a vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.}
+\item{sampling_rate}{The sampling rate of X in Hz. This is only needed if X is not a sensor list. If X is regularly sampled, sampling_rate is one number.}
+
+\item{T}{A vector of sampling times for X. This is only needed if X is not a sensor list and X is not regularly sampled.}
 }
 \value{
 A list with 3 elements:

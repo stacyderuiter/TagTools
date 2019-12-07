@@ -27,9 +27,14 @@ detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plo
   } else {
     dnew <- data
   }
+  
+  if ('depid' %in% names(data)){
+    dnew <- dnew$data
+  }
+  
   #set default threshold level
   if (is.null(thresh) == TRUE) {
-    thresh <- stats::quantile(dnew, c(0.99))
+    thresh <- stats::quantile(dnew, 0.99)
   }
   
   if (is.null(plot_peaks) == TRUE) {

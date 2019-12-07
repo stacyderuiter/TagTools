@@ -32,7 +32,7 @@ plott <- function(X, fsx=NULL, r = FALSE, offset = 0,
                   panel_labels=names(X), line_colors,
                   interactive=FALSE, par_opts, ...) {
   
-  if (length(r) == FALSE){
+  if (r == FALSE){
     r <- rep.int(r, length(X))
     zi <- ('depth' == tolower(names(X))) | (names(X) == 'P')
     r[zi] <- TRUE

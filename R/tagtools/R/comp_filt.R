@@ -25,6 +25,8 @@ comp_filt <- function(X, sampling_rate=NULL, fc) {
     X <- X - Xf[[k]]
   }
   Xf[[k + 1]] <- X
+  if (length(Xf) == 2){
   names(Xf) <- c('lowpass', 'highpass')
+  }
   return(Xf);
 }
