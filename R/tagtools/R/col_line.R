@@ -10,10 +10,11 @@
 #' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
 #' @param ... Additional inputs to be passed to gf_path()
 #' @return If output is assigned to an object, it will be a ggplot (or ggplotly) object and no plot will be displayed. Otherwise, the plot will be rendered.
+#' @importFrom magrittr "%>%"
 #' @note x, y and c must all be vectors of the same size. 
 #' @export
 
-col_line <- function(formula, x, y, c, c_lab = quote(c),
+col_line <- function(formula, x=NULL, y=NULL, c, c_lab = quote(c),
                      data = NULL, interactive = FALSE, ...) {
   if (missing(formula) | is.null(formula)){
     if (missing(x) | missing(y)){
@@ -25,7 +26,7 @@ col_line <- function(formula, x, y, c, c_lab = quote(c),
   color_formula <- as.formula(paste('~', quote(c)))
   
   if (interactive == TRUE){
-    fig <- plot_ly(x = as.formula(paste('~', as.character(formula[3]))),
+    fig <- plotly::plot_ly(x = as.formula(paste('~', as.character(formula[3]))),
                    y = as.formula(paste('~', as.character(formula[2]))),
                    data = data,
                    type = "scatter", mode = "markers",

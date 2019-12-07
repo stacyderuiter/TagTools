@@ -8,7 +8,7 @@
 #' @note x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 #' @export
 
-col_line <- function(x, y, c, ...) {
+col_line_old <- function(x, y, c, ...) {
   if (length(x) == length(y) & length(x) == length(c)) {
      x <- matrix(x, nrow = 1)
      y <- matrix(y, nrow = 1)
