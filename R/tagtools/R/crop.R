@@ -19,7 +19,7 @@
 #'          #plot shows the cropped section
 #' @export
 
-crop <- function(X, sampling_rate, T = NULL) {
+crop <- function(X, sampling_rate = NULL, T = NULL) {
   if (missing(X)) {
     stop("X is a required input")
   }
