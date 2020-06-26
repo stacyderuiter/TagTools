@@ -38,7 +38,7 @@ msa <- function(A, ref) {
     stop("A must be an acceleration matrix")
   }
   m <- abs(sqrt(rowSums(A^2)) - ref)
-  if (is.list(A0)){
+  if (exists('A0', inherits = FALSE)){
     M <- A0
     M$data <- m
     M$creation_date <- Sys.time()
