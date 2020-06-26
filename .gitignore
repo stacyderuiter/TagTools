@@ -4,6 +4,7 @@ desktop.ini
 .RData
 .Ruserdata
 .Rbuildignore
+.dropbox
 *.Rproj
 data/
 Practical/

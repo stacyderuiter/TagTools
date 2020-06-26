@@ -24,15 +24,22 @@ msa <- function(A, ref) {
     if (length(A$meta_conv) > 0) {
       ref <- ref*A$meta_conv
     }
-    a <- A$data
-  }
+    if (hasName(A, 'data')){
+      A0 <- A
+      A <- A$data
+    } else {
+      # try to coerce data frame to matrix
+      A <- as.matrix(A)
+    }
+  } 
+  
   # catch the case of a single acceleration vector
-  if (min(c(nrow(a), ncol(a))) == 1) {
+  if (min(c(nrow(A), ncol(A))) == 1) {
     stop("A must be an acceleration matrix")
   }
-  m <- abs(sqrt(rowSums(a^2)) - ref)
-  if (is.list(A)){
-    M <- A
+  m <- abs(sqrt(rowSums(A^2)) - ref)
+  if (is.list(A0)){
+    M <- A0
     M$data <- m
     M$creation_date <- Sys.time()
     M$type <- 'msa'
