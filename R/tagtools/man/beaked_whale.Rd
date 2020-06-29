@@ -4,12 +4,14 @@
 \name{beaked_whale}
 \alias{beaked_whale}
 \title{Set of sensor lists for a beaked_whale}
-\format{A set of sensor lists:
+\format{
+A set of sensor lists:
 \describe{
   \item{A}{sensor list contining a triaxial acceleration matrix sampled at 25 Hz}
   \item{M}{sensor list containing a triaxial magnetometer matrix sampled at 25 Hz}
   \item{P}{sensor list containing a pressure (depth) vector sampled at 25 Hz}
-}}
+}
+}
 \usage{
 beaked_whale
 }

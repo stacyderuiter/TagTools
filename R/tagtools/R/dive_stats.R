@@ -15,12 +15,13 @@
 #' 
 #' @param P Depth data. A vector (or one-column matrix), or a tag sensor data list.
 #' @param X (optional) Another data stream (as a vector (or a one-column matrix) or a tag sensor data list) for which to compute mean and variability. If \code{angular} is TRUE, interpreted as angular data (for example pitch, roll, or heading) and means and variances are computed accordingly. 
-#'  The unit of measure must be radians (NOT degrees).
+#'  The unit of measure must be radians (NOT degrees). Currently, \code{X} must be regularly sampled.
 #' @param dive_cues A two-column data frame or matrix with dive/flight start times in the first column and dive/flight end times in the second. May be obtained from \code{\link{find_dives}}. Units should be seconds since start of tag recording.
-#' @param fs (optional if \code{P} is a tag sensor data list) Sampling rate of \code{P} (and \code{X}, if \code{X} is given).
+#' @param sampling_rate (optional and ignored if \code{P} or \code{X} are tag sensor data lists) Sampling rate of \code{P} (and \code{X}, if \code{X} is given). If omitted, then input data must be sensor data lists. If one value is given and both \code{P} and \code{X} are input, they are assumed to have the same sampling rate. If \code{P} and \code{X} have different sampling rates, then this input can have two elements (first for \code{P}, second for \code{X}).
 #' @param prop The proportion of the maximal excursion to use for defining the "destination" phase of a dive or flight. For example, if \code{prop} is 0.85 (the default), then the destination phase lasts from the first to the last time depth/altitude exceeds 0.85 times the within-dive maximum.
 #' @param angular Is X angular data? Defaults to FALSE. 
 #' @param X_name A short name to use for X variable in the output data frame. For example, if X is pitch data, use X_name='pitch' to get outputs column names like mean_pitch, etc. Defaults to 'angle' for angular data and 'aux' for non-angular data.
+#' @param na.rm Logical, default is TRUE. If TRUE, then returned mean values ignore missing values, computing an average over all non-missing observations.
 #' @export
 #' @return A data frame with one row for each dive/flight and columns as detailed below. All times are in seconds, and rates in units of x/sec where x is the units of \code{P}.
 #' \itemize{
@@ -42,10 +43,11 @@
 #'#' }
 #' @seealso \code{\link{find_dives}}
 
-dive_stats <- function(P, X=NULL, dive_cues, fs=NULL, 
-                       prop=0.85, angular=FALSE, X_name=NULL){
-  if (!is.list(P) & missing(fs)){
-    stop('For vector input data, fs must be provided')
+dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL, 
+                       prop = 0.85, angular = FALSE, X_name = NULL,
+                       na.rm = TRUE){
+  if (!is.list(P) & missing(sampling_rate)){
+    stop('For vector input data, sampling_rate must be provided')
   }
   
   if (is.null(X_name)){
@@ -55,23 +57,29 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
       X_name = 'aux'
     }
   }
-
-  if (is.list(P)){
+  
+  if (is.list(P) & hasName(P, 'data') & hasName(P, 'sampling_rate')){
     fs <- P$sampling_rate
     P <- as.matrix(P$data, ncol=1)
+  } else{
+    fs <- unlist(head(sampling_rate,1))
   }
   
-  if (is.list(X)){
+  if (is.list(X) & hasName(X, 'data') & hasName(X, 'sampling_rate')){
     if (X$sampling_rate != fs){
-      stop('Sampling rates of P and X must match.')
+      xfs <- X$sampling_rate
+      #stop('Sampling rates of P and X must match.')
+    } else {
+      xfs <- fs
     }
     X <- as.matrix(X$data, ncol=1)
-  }else{
+  } else {
     if (!is.null(X)){
-    X <- as.matrix(X, ncol=1)
-    if (nrow(X) != nrow(P)){
-      stop('P and X must be sampled at the same rate.')
-    }
+      X <- as.matrix(X, ncol=1)
+      xfs <- unlist(tail(sampling_rate,1))
+      if (xfs == fs & nrow(X) != nrow(P)){
+        warning('inputs P and X have different numbers of observations, but the same sampling rate. Use sampling_rate input if you need to specify different sampling rates for each one.')
+      }
     }
   }
   
@@ -80,23 +88,38 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
   Y <- data.frame(num=c(1:nrow(dive_cues)))
   
   for (d in 1:nrow(dive_cues)){#loop over dives
-      z <- P[di[d,1]:di[d,2]] 
-      Y$max[d] <- max(z, na.rm=TRUE)
-      pt <- range(which(z > prop * max(z)), na.rm=TRUE)
-      Y$dur[d] <- dive_cues[d,2] - dive_cues[d,1]
-      Y$dest_st[d] <- pt[1]/fs
-      Y$dest_et[d] <- pt[2]/fs
-      Y$dest_dur[d] <- Y$dest_et[d] - Y$dest_st[d]
-      Y$to_dur[d] <- pt[1]/fs
-      Y$to_rate[d] <- (z[pt[1]] - z[1])/Y$to_dur[d]
-      Y$from_dur[d] <- (1/fs)*(length(z)-pt[2])
-      Y$from_rate[d] <- (utils::tail(z,1) - z[pt[2]])/Y$from_dur[d]
-      if (!is.null(X)){
-        if (angular){#angular data
-        a <- X[di[d,1]:di[d,2]] 
-        at <- a[c(1:pt[1])]
-        af <- a[c(pt[2]:length(a))]
-        ad <- a[c(pt[1]:pt[2])]
+    z <- P[di[d,1]:di[d,2]] 
+    Y$max[d] <- max(z, na.rm=TRUE)
+    pt <- range(which(z > prop * max(z)), na.rm=TRUE)
+    Y$dur[d] <- dive_cues[d,2] - dive_cues[d,1]
+    Y$dest_st[d] <- pt[1]/fs
+    Y$dest_et[d] <- pt[2]/fs
+    Y$dest_dur[d] <- Y$dest_et[d] - Y$dest_st[d]
+    Y$to_dur[d] <- pt[1]/fs
+    Y$to_rate[d] <- (z[pt[1]] - z[1])/Y$to_dur[d]
+    Y$from_dur[d] <- (1/fs)*(length(z)-pt[2])
+    Y$from_rate[d] <- (utils::tail(z,1) - z[pt[2]])/Y$from_dur[d]
+    if (!is.null(X)){
+      if (xfs != fs){
+        dix <- round(dive_cues*xfs)
+        ptx <- round(pt / fs * xfs)
+      } else{
+        dix <- di
+        ptx <- pt
+      }
+      if (angular){#angular data
+        a <- X[dix[d,1]:dix[d,2]] 
+        at <- a[c(1:ptx[1])]
+        af <- a[c(ptx[2]:length(a))]
+        ad <- a[c(ptx[1]:ptx[2])]
+        if (na.omit){
+          # CircStats functions return NA if any NAs present
+          # (no na.omit input avail)
+          a <- na.omit(a)
+          at <- na.omit(at)
+          af <- na.omit(af)
+          ad <- na.omit(ad)
+        }
         Y$mean_angle[d] <- CircStats::circ.mean(a)
         Y$angle_var[d] <- CircStats::circ.disp(a)$var
         Y$mean_to_angle[d] <- CircStats::circ.mean(at)
@@ -105,22 +128,22 @@ dive_stats <- function(P, X=NULL, dive_cues, fs=NULL,
         Y$to_angle_var[d] <- CircStats::circ.disp(at)$var
         Y$dest_angle_var[d] <- CircStats::circ.disp(ad)$var
         Y$from_angle_var[d] <- CircStats::circ.disp(af)$var
-  }else{
-    #not angular data
-    a <- X[di[d,1]:di[d,2]] 
-    at <- a[c(1:pt[1])]
-    af <- a[c(pt[2]:length(a))]
-    ad <- a[c(pt[1]:pt[2])]
-    Y$mean_aux[d] <- mean(a, na.rm=TRUE)
-    Y$aux_sd[d] <- stats::sd(a, na.rm=TRUE)
-    Y$mean_to_aux[d] <- mean(at, na.rm=TRUE)
-    Y$mean_dest_aux[d] <- mean(ad, na.rm=TRUE)
-    Y$mean_from_aux[d] <- mean(af, na.rm=TRUE)
-    Y$to_aux_sd[d] <- stats::sd(at, na.rm=TRUE)
-    Y$dest_aux_sd[d] <- stats::sd(ad, na.rm=TRUE)
-    Y$from_aux_sd[d] <- stats::sd(af, na.rm=TRUE)
-  }
-      }#end processing X
+      }else{
+        #not angular data
+        a <- X[dix[d,1]:dix[d,2]] 
+        at <- a[c(1:ptx[1])]
+        af <- a[c(ptx[2]:length(a))]
+        ad <- a[c(ptx[1]:ptx[2])]
+        Y$mean_aux[d] <- mean(a, na.rm=TRUE)
+        Y$aux_sd[d] <- stats::sd(a, na.rm=TRUE)
+        Y$mean_to_aux[d] <- mean(at, na.rm=TRUE)
+        Y$mean_dest_aux[d] <- mean(ad, na.rm=TRUE)
+        Y$mean_from_aux[d] <- mean(af, na.rm=TRUE)
+        Y$to_aux_sd[d] <- stats::sd(at, na.rm=TRUE)
+        Y$dest_aux_sd[d] <- stats::sd(ad, na.rm=TRUE)
+        Y$from_aux_sd[d] <- stats::sd(af, na.rm=TRUE)
+      }
+    }#end processing X
   }#end loop over dives
   #change output column names if needed
   if (!(X_name %in% c('angle', 'aux'))){

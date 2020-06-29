@@ -8,27 +8,30 @@ dive_stats(
   P,
   X = NULL,
   dive_cues,
-  fs = NULL,
+  sampling_rate = NULL,
   prop = 0.85,
   angular = FALSE,
-  X_name = NULL
+  X_name = NULL,
+  na.rm = TRUE
 )
 }
 \arguments{
 \item{P}{Depth data. A vector (or one-column matrix), or a tag sensor data list.}
 
 \item{X}{(optional) Another data stream (as a vector (or a one-column matrix) or a tag sensor data list) for which to compute mean and variability. If \code{angular} is TRUE, interpreted as angular data (for example pitch, roll, or heading) and means and variances are computed accordingly. 
-The unit of measure must be radians (NOT degrees).}
+The unit of measure must be radians (NOT degrees). Currently, \code{X} must be regularly sampled.}
 
 \item{dive_cues}{A two-column data frame or matrix with dive/flight start times in the first column and dive/flight end times in the second. May be obtained from \code{\link{find_dives}}. Units should be seconds since start of tag recording.}
 
-\item{fs}{(optional if \code{P} is a tag sensor data list) Sampling rate of \code{P} (and \code{X}, if \code{X} is given).}
+\item{sampling_rate}{(optional and ignored if \code{P} or \code{X} are tag sensor data lists) Sampling rate of \code{P} (and \code{X}, if \code{X} is given). If omitted, then input data must be sensor data lists. If one value is given and both \code{P} and \code{X} are input, they are assumed to have the same sampling rate. If \code{P} and \code{X} have different sampling rates, then this input can have two elements (first for \code{P}, second for \code{X}).}
 
 \item{prop}{The proportion of the maximal excursion to use for defining the "destination" phase of a dive or flight. For example, if \code{prop} is 0.85 (the default), then the destination phase lasts from the first to the last time depth/altitude exceeds 0.85 times the within-dive maximum.}
 
 \item{angular}{Is X angular data? Defaults to FALSE.}
 
 \item{X_name}{A short name to use for X variable in the output data frame. For example, if X is pitch data, use X_name='pitch' to get outputs column names like mean_pitch, etc. Defaults to 'angle' for angular data and 'aux' for non-angular data.}
+
+\item{na.rm}{Logical, default is TRUE. If TRUE, then returned mean values ignore missing values, computing an average over all non-missing observations.}
 }
 \value{
 A data frame with one row for each dive/flight and columns as detailed below. All times are in seconds, and rates in units of x/sec where x is the units of \code{P}.
