@@ -20,13 +20,13 @@
 #' 
 
 dsf <- function(A, sampling_rate=NULL, fc = NULL, Nfft = NULL) {
-  if (is.list(A)){
+  if (is.list(A) & hasName(A, 'data') & hasName(A, 'sampling_rate')){
     AA <- A
     sampling_rate <- AA$sampling_rate
     A <- AA$data
   }else{
     if (missing(sampling_rate) | is.null(sampling_rate)){
-      stop('sampling_rate is a required input is A is a matrix')
+      stop('sampling_rate is a required input, unless A is a sensor data list')
   }
   }
   #default low-pass filter at 2.5 Hz
