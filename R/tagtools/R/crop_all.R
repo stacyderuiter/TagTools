@@ -28,9 +28,10 @@ crop_all <- function(tcues, X) {
       X[[k]] <- crop_to(X[[k]], tcues = tcues)
     }
     return(X)
-  }
+  } else {
   for (k in 1:length(X)) {
-    X[[k]] <- crop_to(X[[k]], tcues = tcues)$X
+    X[[k]] <- crop_to(X[[k]], tcues = tcues)
+  }
   }
   return(X)
 }
