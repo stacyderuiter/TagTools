@@ -113,7 +113,7 @@ end
 V = zeros(size(S,1),1) ;
 for k=1:size(S,1),
 	ks = round(S(k,1)*fs)+1:round(S(k,2)*fs) ;
-	V(k) = norm(stats::sd(A(ks,:))) ;
+	V(k) = norm(std(A(ks,:))) ;
 end
 thr = median(V)+1.5*iqr(V)*[-1 1] ;
 S = S(V>thr(1) & V<thr(2),:) ;
