@@ -1,0 +1,35 @@
+field,required,params
+depid,1,
+dtype.source,0,"sw13_165aprh.mat,sw13_165aaud.txt"
+dtype.datetime.made,0,8/08/2017 14:00:00
+dtype.nfiles,0,1
+dtype.format,0,DTG
+device.serial,1,
+device.make,1,DTAG
+device.type,1,Archival
+device.model,1,DTAG4
+device.url,0,https://www.soundtags.org
+sensors.firm,1,Not specified
+sensors.soft,1,Not specified
+sensors.list,0,"3axis Accelerometer,3 axis Magnetometer,Pressure,Sound"
+animal.id,0,Unknown
+animal.species.common,1,Human
+animal.species.science,1,Homo sapiens
+animal.dbase.url,1,
+dephist.device.tzone,1,0
+dephist.device.regset,1,dd/mm/yyyy HH:MM:SS
+dephist.device.datetime.start,1,
+dephist.deploy.locality,1,"St Andrews, UK"
+dephist.deploy.location.lat,1,56.34
+dephist.deploy.location.lon,1,2.8
+dephist.deploy.datetime.start,1,
+dephist.deploy.method,1,Waist belt
+project.name,1,Tagtools 2017
+project.datetime.start,1,2017-08-07
+project.datetime.end,1,2017-08-09
+provider.name,1,Heather Vance
+provider.details,1,Univ St Andrews
+provider.email,1,info@animaltags.org
+provider.license,1,Creative Commons
+provider.cite,1,none
+provider.doi,1,none

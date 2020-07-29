@@ -1,0 +1,40 @@
+type,name,attribute,axis,value1,value2,value3,comment
+cal,,date,,30-Jul-2017 15:42:30,,,date and time of last save
+cal,,tagid,,3033440c,,,tag identification or serial number
+cal,,depid,,md14_158a,,,deployment identification if this file is associated with a particular deployment
+cal,,tagtype,,d3,,,tag type and version
+acc,int,max,n,40,,,internal accelerometer: full-scale acceleration
+acc,int,unit,,m/s2,,,units for this sensor
+acc,int,unit_name,,meters per second squared,,,full name of the units for this sensor
+acc,int,unit_label,,m/s^2,,,how to label a plot for this sensor
+acc,int,poly,x,2.95,-0.11,,scale factor and offset for the x-axis
+acc,int,poly,y,3.21,0.456,,scale factor and offset for the y-axis
+acc,int,poly,z,3.18,0.213,,scale factor and offset for the z-axis
+acc,int,map,x,1,0,0,tag x axis is this much of each of the sensor axes
+acc,int,map,y,0,1,0,tag y axis is this much of each of the sensor axes
+acc,int,map,z,0,0,1,tag z axis is this much of each of the sensor axes
+press,int,max,n,200,,,internal pressure sensor: full-scale range in metres
+press,int,unit,,m,,,units for this sensor
+press,int,unit_name,,meters,,,full name of the units for this sensor
+press,int,unit_label,,m,,,how to label a plot for this sensor
+press,int,poly,n,153,-0.3,,scale factor and offset
+mag,int,max,n,400,,,internal magnetometer: full-scale field strength in uT
+mag,int,unit,,uT,,,units for this sensor
+mag,int,unit_name,,micro Teslas,,,full name of the units for this sensor
+mag,int,unit_label,,\muT,,,how to label a plot for this sensor
+mag,int,poly,x,480,-145,,scale factor and offset for the x-axis
+mag,int,poly,y,480,12,,scale factor and offset for the y-axis
+mag,int,poly,z,480,83,,scale factor and offset for the z-axis
+mag,int,map,x,1,0,0,tag x axis is this much of each of the sensor axes
+mag,int,map,y,0,1,0,tag y axis is this much of each of the sensor axes
+mag,int,map,z,0,0,1,tag z axis is this much of each of the sensor axes
+acc,ext,max,n,20,,,external accelerometer: full-scale acceleration in m/s2
+acc,ext,unit,,m/s2,,,units for this sensor
+acc,ext,unit_name,,meters per second squared,,,full name of the units for this sensor
+acc,ext,unit_label,,m/s^2,,,how to label a plot for this sensor
+acc,ext,poly,x,4,-0.11,,scale factor and offset for the x-axis
+acc,ext,poly,y,2,0.456,,scale factor and offset for the y-axis
+acc,ext,poly,z,1,0.213,,scale factor and offset for the z-axis
+acc,ext,map,x,0,-1,0,tag x axis is this much of each of the sensor axes
+acc,ext,map,y,1,0,0,tag y axis is this much of each of the sensor axes
+acc,ext,map,z,0,0,-1,tag z axis is this much of each of the sensor axes
