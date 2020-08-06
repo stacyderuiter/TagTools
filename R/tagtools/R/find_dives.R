@@ -33,7 +33,7 @@ find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall =
 
   searchlen <- 20         #how far to look in seconds to find actual surfacing
   dpthresh <- 0.25        #vertical velocity threshold for surfacing
-  dp_lp <- 0.5           #low-pass filter frequency for vertical velocity
+  dp_lp <- 0.25           #low-pass filter frequency for vertical velocity
   #find threshold crossings and surface times
   tth <- which(diff(p > mindepth) > 0)
   tsurf <- which(p < surface)
