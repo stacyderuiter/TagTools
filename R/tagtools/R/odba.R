@@ -37,7 +37,13 @@ odba <- function(A, sampling_rate=NULL, fh=NULL, method = "fir", n = NULL) {
       }
       n <- 2 * floor(n / 2) + 1 #make sure n is odd
       nz <- floor(n / 2)
-      Ah <- signal::filter(rep(1,n) / n, 1, x = rbind(A, matrix(0, nrow = nz, ncol = ncol(A))))
+      h = rbind(matrix(0, nrow = nz, ncol = 1),
+                matrix(1, nrow = 1, ncol = 1),
+                matrix(0, nrow = nz, ncol = 1)) - 
+        matrix(1, nrow = n, ncol = 1) / n
+      Ah <- signal::filter(h, 1, x = rbind(matrix(0, nrow = nz, ncol = ncol(A)),
+                                           A, 
+                                           matrix(0, nrow = nz, ncol = ncol(A))))
       Ah <- matrix(Ah, byrow = FALSE, ncol = 3)
       Ah <- Ah[nz + c(1:nrow(A)), ] 
       if (method == "vedba") {
