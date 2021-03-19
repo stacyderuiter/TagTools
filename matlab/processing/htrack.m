@@ -132,8 +132,8 @@ end
 
 nx = any(isnan(x),2) ;     % now do remaining outages
 while sum(nx)>0,
-   ki = find(nx==1,1)     % find the next outage start
-   kg = ki-1+find(nx(ki:end)==0,1)    % find the first good value after the outage
+   ki = find(nx==1,1) ;    % find the next outage start
+   kg = ki-1+find(nx(ki:end)==0,1) ;   % find the first good value after the outage
    x(ki:kg-1,:) = interp1([0;kg-ki+1],x([ki-1;kg],:),(1:kg-ki)') ;
    nx = any(isnan(x),2) ;
 end
