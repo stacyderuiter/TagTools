@@ -75,7 +75,7 @@ if ~isempty(T.Attributes),
    V = {T.Attributes(:).Value} ;
    info = struct ;
    for k=1:length(F),
-      info.(F{k}) = V{k} ;
+      info.(matlab.lang.makeValidName(F{k})) = V{k} ;
    end
 
    if nargin<2 || any(strcmp(vname,'info')),

@@ -71,7 +71,7 @@ if isstruct(p) && isstruct(A)
     end
     plim = fc ;
 	fc = fs ;
-	fs = p.fs ;
+	fs = p.sampling_rate ;
 	p = p.data ;
     A = A.data ;
 else

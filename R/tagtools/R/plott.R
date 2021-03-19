@@ -26,16 +26,18 @@
 #' }
 
 plott <- function(X, fsx=NULL, r = FALSE, offset = 0, 
-                  date_time_axis=FALSE,
-                  recording_start=NULL,
-                  panel_heights=rep.int(1, length(X)),
-                  panel_labels=names(X), line_colors,
-                  interactive=FALSE, par_opts, ...) {
+                  date_time_axis = FALSE,
+                  recording_start = NULL,
+                  panel_heights = rep.int(1, length(X)),
+                  panel_labels = names(X), line_colors,
+                  interactive = FALSE, par_opts, ...) {
   
-  if (r == FALSE){
+  if (length(r) == 1){
+    if (r == FALSE){
     r <- rep.int(r, length(X))
-    zi <- ('depth' == tolower(names(X))) | (names(X) == 'P')
+    zi <- ('depth' %in% tolower(names(X))) | (tolower(names(X)) == 'p')
     r[zi] <- TRUE
+    }
   }
   
   if (missing(par_opts)){

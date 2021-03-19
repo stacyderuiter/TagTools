@@ -110,7 +110,9 @@ if ~isempty(Xa),
 		Xa.history = 'tag2animal' ;
 	else
 		Xa.history = [Xa.history ',tag2animal'] ;
-   end
+    end
+else % if matrix input, return matrix output
+    Xa = X;
 end
 return
 
