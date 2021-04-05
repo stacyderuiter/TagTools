@@ -57,10 +57,11 @@ htrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2) {
   
   if (length(s) == 1){
     s <- matrix(s / sampling_rate, nrow = length(hd), ncol = 2)
-    skipks <- TRUE
+    ksused <- FALSE
   } else {
     s <- interp_nan(s)
     ks <- s$k
+    ksused <- TRUE
     s <- s$data
     s <- matrix(s / sampling_rate, ncol = 2)
   }
@@ -70,7 +71,7 @@ htrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2) {
   # replace NAs
   T[ka,] <- NA
   T[km,] <- NA
-  if (!skipks) {
+  if (ksused) {
     T[ks,] <- NA
   }
   
