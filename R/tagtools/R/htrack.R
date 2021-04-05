@@ -57,6 +57,7 @@ htrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2) {
   
   if (length(s) == 1){
     s <- matrix(s / sampling_rate, nrow = length(hd), ncol = 2)
+    skipks <- TRUE
   } else {
     s <- interp_nan(s)
     ks <- s$k
@@ -69,7 +70,9 @@ htrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2) {
   # replace NAs
   T[ka,] <- NA
   T[km,] <- NA
-  T[ks,] <- NA
+  if (!skipks) {
+    T[ks,] <- NA
+  }
   
   T <- data.frame(T)
   names(T) <- c('northing', 'easting')
