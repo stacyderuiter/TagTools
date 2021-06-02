@@ -26,15 +26,13 @@
 #' @return A data frame with one row for each dive/flight and columns as detailed below. All times are in seconds, and rates in units of x/sec where x is the units of \code{P}.
 #' \itemize{
 #' \code{max} { The maximum depth or altitude}
+#' \code{st} {start time of dive (seconds) - from input dive_cues}
+#' \code{et} {end time of dive (seconds) - from input dive_cues}
 #' \code{dur} { The duration of the excursion}
-#' \code{dest_st} { The start time of the destination phase}
-#' \code{dest_et} { The end time of the destination phase}
+#' \code{dest_st} { The start time of the destination phase in seconds since start of tag recording (which is also the end time of to phase)}
+#' \code{dest_et} { The end time of the destination phase in seconds since start of tag recording (which is also the start of the from phase).}
 #' \code{dest_dur} { The duration in seconds of destination phase}
-#' \code{to_st} { The start time of the to phase}
-#' \code{to_et} { The end time of the to phase}
 #' \code{to_dur} { The duration in seconds of to phase}
-#' \code{from_st} { The start time of the from phase}
-#' \code{from_et} { The end time of the from phase}
 #' \code{from_dur} { The duration in seconds of from phase}
 #' \code{mean_angle} { If angular=TRUE and X is input, the mean angle for the entire excursion. Values for each phase are also provided in columns \code{mean_to_angle}, \code{mean_dest_angle}, and \code{mean_from_angle}.}
 #' \code{angle_var} { If angular=TRUE and X is input, the angular variance for the entire excursion. Values for each phase are also provided individually in columns \code{to_angle_var}, \code{dest_angle_var}, and \code{from_angle_var}.}
@@ -92,8 +90,8 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
     Y$max[d] <- max(z, na.rm=TRUE)
     pt <- range(which(z > prop * max(z)), na.rm=TRUE)
     Y$dur[d] <- dive_cues[d,2] - dive_cues[d,1]
-    Y$dest_st[d] <- pt[1]/fs
-    Y$dest_et[d] <- pt[2]/fs
+    Y$dest_st[d] <- pt[1]/fs + dive_cues[d,1]
+    Y$dest_et[d] <- pt[2]/fs + dive_cues[d,1]
     Y$dest_dur[d] <- Y$dest_et[d] - Y$dest_st[d]
     Y$to_dur[d] <- pt[1]/fs
     Y$to_rate[d] <- (z[pt[1]] - z[1])/Y$to_dur[d]
@@ -145,10 +143,22 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
       }
     }#end processing X
   }#end loop over dives
+  
   #change output column names if needed
   if (!(X_name %in% c('angle', 'aux'))){
     names(Y) <- gsub(pattern='angle', replacement=X_name, x=names(Y))
     names(Y) <- gsub(pattern='aux', replacement=X_name, x=names(Y))    
   }
+  
+  # add in dive start/end times from input dive_cues
+  # and start-end times of each phase
+  Y$st <- dive_cues[,1]
+  Y$et <- dive_cues[,2]
+  
+  Y <- dplyr::select(Y, num, max, st, et, dur, 
+                     dest_st, dest_et, dest_dur,
+                     to_dur, from_dur,
+                     dplyr::everything())
+  
   return(Y)
   }
