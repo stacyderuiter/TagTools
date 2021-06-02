@@ -5,6 +5,7 @@ desktop.ini
 .Ruserdata
 .Rbuildignore
 .dropbox
+.DS_Store
 *.Rproj
 data/
 Practical/
