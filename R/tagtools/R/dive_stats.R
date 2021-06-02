@@ -112,7 +112,7 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
         at <- a[c(1:ptx[1])]
         af <- a[c(ptx[2]:length(a))]
         ad <- a[c(ptx[1]:ptx[2])]
-        if (na.omit){
+        if (na.rm){
           # CircStats functions return NA if any NAs present
           # (no na.omit input avail)
           a <- na.omit(a)
