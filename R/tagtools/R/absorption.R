@@ -21,6 +21,6 @@ absorption <- function(f, T, d) {
   A <- 8.95e-8 * (1 + 2.3e-2 * T - 5.1e-4 * T^2) 
   B <- 4.88e-7 * (1 + 1.3e-2 * T) * (1 - 0.9e-3 * Pa) 
   C <- 4.76e-13 * (1 - 4.0e-2 * T + 5.9e-4 * T^2) * (1 - 3.8e-4 * Pa) 
-  a <- A * f1 * f^2 / (f1^2 + f^2) + B * f2 * f^2 / (f2^2 + f^2) + C * f^2 
-  return(a)
+  absp <- A * f1 * f^2 / (f1^2 + f^2) + B * f2 * f^2 / (f2^2 + f^2) + C * f^2 
+  return(absp)
 }
