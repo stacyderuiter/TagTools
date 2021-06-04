@@ -12,7 +12,7 @@
 #'  \item{\strong{T: }} A vector of sampling times for Y. This is only returned if X is irregularly sampled and X is not a sensor list. If X is a sensor list, the sampling times are stored in the list.
 #'  \item{\strong{tcues: }} tcues is a two-element vector containing the start and end time cue in seconds of the data segment kept, i.e., tcues = c(start_time, end_time).
 #' }
-#' @examples data <- beaked_whale
+#' @examples data <- beaked_whale 
 #'          Pc <- crop(data$P)		#interactively select a section of data
 #'          Ydata <- list(depth = Pc$Y)
 #'          plott(Ydata)
