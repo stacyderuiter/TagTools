@@ -1,7 +1,7 @@
 #' Generate the cardinal axes of an animal 
 #' 
 #' This function is used to generate the cardinal axes of an animal (i.e., the longitudinal, transverse, and ventro-dorsal) from accelerometer and magnetic field measurements. This functions generates an approximate orthonormal basis from each measurement of A and M by: (i) normalizing A and M to unit length, (ii) rotating the magnetometer measurement to the horizontal plane (Mh), (iii) computing the cross-product, N, of A and Mh to generate the third axis, (iv) transposing [Mh,N,A] to form the body axis basis.
-#' @param A The acceleration matrix with columns [ax ay az], or a sensor data list. Acceleration can be in any consistent unit, e.g., g or m/s^2.
+#' @param A The acceleration matrix with columns [ax ay az], or a sensor data list. Acceleration can be in any consistent unit, e.g., g or $m/s^2$.
 #' @param M The magnetometer signal matrix, M=[mx,my,mz], or a sensor data list, in any consistent unit (e.g., in uT or Gauss).
 #' @param sampling_rate sampling rate of A and M in Hz (optional if A and M are sensor data lists)
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing the axes. The filter cut-off frequency is in Hz. The filter length is 4*fs/fc. Filtering adds no group delay. If fc is not specified, no filtering  is performed.

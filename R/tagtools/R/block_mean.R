@@ -13,7 +13,7 @@
 #' @examples samplematrix <- matrix(c(1,3,5,7,9,11,13,15,17), byrow = TRUE, ncol = 3)
 #'          list <- block_mean(samplematrix, n = 3, nov = 1)
 
-block_mean <- function(X,n,nov) {
+block_mean <- function(X, n, nov) {
   if (missing(nov)) {
     nov <- 0
   }
@@ -45,5 +45,5 @@ block_mean <- function(X,n,nov) {
     t <- as.matrix(round(n / 2 + (0:(nrow(Y) - 1)) * (n - nov)))
   }
 
-  return(list(Y= Y, t = t))
+  return(list(Y = Y, t = t))
 }

@@ -35,7 +35,11 @@ block_acf <- function(resids, blocks, max_lag,
         }
         # adjust for the growing r
         i1 <- i1 + utils::head(c(0:(-1 + nlevels(blocks))), -1)
-        this_acf <- stats::acf(r, lag.max = max_lag, type = "correlation", plot = FALSE, na.action = stats::na.pass)
+        this_acf <- stats::acf(r, 
+                               lag.max = max_lag, 
+                               type = "correlation", 
+                               plot = FALSE, 
+                               na.action = stats::na.pass)
         block_acf[k + 1] <- this_acf$acf[k + 1, 1, 1]
     }
     if (make_plot) {

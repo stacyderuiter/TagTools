@@ -35,7 +35,7 @@ add_nc <-function(file,X,vname){
   }
   
   # test if X is a metadata structure or a sensor structure
-  if(length(X$depid)==0){
+  if(length(X$depid) == 0){
     stop('Items to save to netCDF files must be tag sensor or metadata list objects.')
   }
   
@@ -62,58 +62,58 @@ add_nc <-function(file,X,vname){
       stop(e_msg)
     }
     }
-  }# end of "if file already exists" checks
+  } # end of "if file already exists" checks
 
   # now ready to save the data or metadata
   if ('data' %in% names(X)){ # X is a sensor structure
     if (length(X$data) == 0){
       # if X is empty...
-      ncv <- ncdf4::ncvar_def(name=vname, 
-                              units='',#X$meta_unit,
-                              dim=list(),
-                              missval=NULL)
+      ncv <- ncdf4::ncvar_def(name = vname, 
+                              units = '',#X$meta_unit,
+                              dim = list(),
+                              missval = NULL)
     }else{ #if there is some data
       if (is.null(dim(X$data))){
-        #if data is a vector make it a column matrix
+        # if data is a vector make it a column matrix
         X$data <- matrix(X$data, nrow=length(X$data))
       }
       dims <- list()
       dimnames <- c('samples', 'axes', '3rd dim', '4th dim')
       dimnames <- paste(vname, dimnames)
-      for (d in 1:length(dim(X$data))){
-        dims[[d]] <- ncdf4::ncdim_def(name=dimnames[d], 
-                                    units='', 
-                                    vals=c(1:dim(X$data)[d]),
-                                    create_dimvar=FALSE)
+      for (d in 1:length(dim(X$data))) {
+        dims[[d]] <- ncdf4::ncdim_def(name = dimnames[d], 
+                                    units = '', 
+                                    vals = c(1:dim(X$data)[d]),
+                                    create_dimvar = FALSE)
       }
-      ncv <- ncdf4::ncvar_def(name=vname, 
-                              units='',
-                              dim=dims,
-                              missval=NULL,
-                              longname='')
+      ncv <- ncdf4::ncvar_def(name = vname, 
+                              units = '',
+                              dim = dims,
+                              missval = NULL,
+                              longname = '')
       if (!file.exists(file)){
         # if the file doesn't exist create it 
         nc_conn <- ncdf4::nc_create(file,ncv)
       }else{
         # if file already exists add variable to it
-        nc_conn <- ncdf4::nc_open(file, write=TRUE)
+        nc_conn <- ncdf4::nc_open(file, write = TRUE)
         nc_conn <- ncdf4::ncvar_add(nc_conn, ncv)
       }
-      #then write the data into the variable ncv
+      # then write the data into the variable ncv
       ncdf4::ncvar_put(nc_conn, ncv, 
-                       vals=as.vector(X$data))#,
-                       #count=dim(X$data))
-    }# end of writing sensor data
+                       vals = as.vector(X$data))#,
+                       #count = dim(X$data))
+    } # end of writing sensor data
     
     # add metadata (from sensor data structure)
-    i_meta <- which(names(X)!='data')
+    i_meta <- which(names(X) !='data')
     for (m in i_meta){
-      ncdf4::ncatt_put(nc_conn, varid=vname, 
-                       attname=names(X)[m],
-                       attval=X[[m]])  
+      ncdf4::ncatt_put(nc_conn, varid = vname, 
+                       attname = names(X)[m],
+                       attval = X[[m]])  
     }
 
-    if (length(i_meta)==0){
+    if (length(i_meta) == 0){
       w_msg <- paste('No metadata in variable ',
                      vname, '.\n')
       warning(w_msg)
@@ -122,40 +122,46 @@ add_nc <-function(file,X,vname){
     if (length(prev_depid) == 0){
       # if this is a new file make sure the depid is specified
       # in the variable and as a global attribute
-      ncdf4::ncatt_put(nc_conn, varid=vname, 
-                       attname='depid', attval=X$depid)
-      ncdf4::ncatt_put(nc_conn, varid=0,
-                       attname='depid', attval=X$depid)
+      ncdf4::ncatt_put(nc_conn, 
+                       varid = vname, 
+                       attname = 'depid', 
+                       attval = X$depid)
+      ncdf4::ncatt_put(nc_conn, 
+                       varid = 0,
+                       attname = 'depid', 
+                       attval = X$depid)
     }
     # add creation data to variable
-    ncdf4::ncatt_put(nc_conn, vname,
-                     attname='creation_date',
-                     attval=as.character(Sys.time()));
+    ncdf4::ncatt_put(nc_conn, 
+                     vname,
+                     attname = 'creation_date',
+                     attval = as.character(Sys.time()));
   }	#end of "if it's a sensor data structure"	
  
   # When X is a metadata "info" structure
-  if (length(X$data)==0){
+  if (length(X$data) == 0){
   if (!file.exists(file)){
     stop('A netCDF file can not be created without at least one sensor data variable.')
   }else{
     # if file already exists add variable to it
-    nc_conn <- ncdf4::nc_open(file, write=TRUE)
+    nc_conn <- ncdf4::nc_open(file, write = TRUE)
   }
   
   # add metadata (from info/metadata data structure)
-  i_meta <- which(names(X)!='data')
+  i_meta <- which(names(X) != 'data')
   for (m in 1:length(X)){
-    ncdf4::ncatt_put(nc_conn, varid=0, 
-                     attname=names(X)[m],
-                     attval=X[[m]],
+    ncdf4::ncatt_put(nc_conn, 
+                     varid = 0, 
+                     attname = names(X)[m],
+                     attval = X[[m]],
                      prec = 'text')  
   }
-  }# end of "if metatdata info structure"
+  } # end of "if metadata info structure"
   
   # add creation date (global attribute)
-  ncdf4::ncatt_put(nc_conn, varid=0,
-                   attname='creation_date',
-                   attval=as.character(Sys.time()))
+  ncdf4::ncatt_put(nc_conn, varid = 0,
+                   attname = 'creation_date',
+                   attval = as.character(Sys.time()))
   
   ncdf4::nc_close(nc_conn)
 }

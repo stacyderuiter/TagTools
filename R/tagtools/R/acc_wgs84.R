@@ -1,6 +1,6 @@
 #' Calculate total acceleration
 #' 
-#'  This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 internationalgravity formula.
+#'  This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 international gravity formula.
 #' 
 #' @param latitude The latitude in degrees.
 #' @return g given in units of m/s^2

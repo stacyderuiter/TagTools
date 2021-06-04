@@ -28,7 +28,8 @@ applymethod1 <- function(A, sampling_rate, ss){
   At2 <- Ak2 %*% t(Q) 
   
   # sum-of-squares needed for ls algorithm
-  AA <- matrix(apply(cbind((At2[,1:2])^2, At2[,1] * At2[,2]),
+  AA <- matrix(apply(cbind((At2[,1:2])^2, 
+                           At2[,1] * At2[,2]),
                      MARGIN = 2, FUN = sum),
                nrow = 1)
   
@@ -37,7 +38,7 @@ applymethod1 <- function(A, sampling_rate, ss){
   
   # check that this is a minimum - if not add 180 degrees
   if ( matrix(AA[1, 1:2], nrow = 1)  %*%
-       matrix(data = c(1,-1), nrow = 2) *
+       matrix(data = c(1, -1), nrow = 2) *
        cos(h2) - 
        2*AA[,3] * 
        sin(h2) < 0){
@@ -55,7 +56,7 @@ applymethod1 <- function(A, sampling_rate, ss){
     matrix(data = c(1,1), nrow = 2) / 2 + 
     matrix(AA[1:2], nrow = 1) %*%
     matrix(data = c(-1,1), nrow = 2) %*% 
-    cos(h2)/2 + AA[3]*sin(h2)
+    cos(h2)/2 + AA[3] * sin(h2)
   
   # 2. energy ratio between plane-of-motion and axis of rotation 
   QQ <- t(Ak2) %*% Ak2 # form outer product of acceleration in diving segment
@@ -92,7 +93,7 @@ applymethod1 <- function(A, sampling_rate, ss){
   # by convention, constrain r0 and h0 to the interval -pi:pi
   for (k in c(2:3)){
     if (abs(prh[k]) > pi){
-      prh[k] <- prh[k] - sign(prh[k])*2*pi
+      prh[k] <- prh[k] - sign(prh[k]) * 2*pi
     }
   }
   return(prh)
