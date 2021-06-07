@@ -8,6 +8,8 @@
 #' @param c_lab A string to use as the label for the color legend
 #' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
 #' @param ... Additional inputs for plot_ly()
+#' @example 
+#' col_line3(1:20, 1:20, 1:20, 1:20)
 #' @export
 #' @seealso \code{\link{col_line}}, \code{\link{cline}}
 #' @note x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))).

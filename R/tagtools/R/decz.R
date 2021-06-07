@@ -20,7 +20,7 @@
 #' # Decimate beaked whale acceleration data from testset1 by a factor of 10
 #' # in 3 chunks
 #' \dontrun{
-#' bw <- load_nc('data/testset1.nc')
+#' bw <- load_nc('data/testset1.nc') # make sure the folder Data is in your working directory, and that a file testset1.nc is in this folder
 #' a_rows <- nrow(bw$A$data)
 #' a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
 #' a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)

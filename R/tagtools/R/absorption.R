@@ -8,7 +8,7 @@
 #' @note After Kinsler and Frey pp. 159-160
 #' @export
 #' @examples absorption(140e3,13,10)
-#'          #Returns: 0.04354982 dB
+#'          #Returns: 0.04354982 dB/m
 
 absorption <- function(f, T, d) {
   if (missing(d)) {

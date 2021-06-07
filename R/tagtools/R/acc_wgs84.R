@@ -3,11 +3,11 @@
 #'  This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 international gravity formula.
 #' 
 #' @param latitude The latitude in degrees.
-#' @return g given in units of m/s^2
+#' @return g given in units of $m/s^2$
 #' @note Source: http://solid_earth.ou.edu/notes/potential/igf.htm
 #' @export
 #' @examples acc_wgs84(50)
-#'          #Returns: 9.8107 m/s^2
+#'          #Returns: 9.8107 $m/s^2$
 
 acc_wgs84 <- function(latitude) {
   if (missing(latitude)) {

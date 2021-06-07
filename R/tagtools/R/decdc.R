@@ -8,9 +8,9 @@
 #' @export
 #' @examples
 #' s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1)
-#' plot(c(0:1000), s) # before decimation
+#' plot(c(1:length(s)), s) # before decimation
 #' y <- decdc(x = s, df = 4)
-#' plot(c(1:250), y) # after decimation
+#' plot(c(1:length(y)), y) # after decimation
 #' 
 
 decdc <- function(x,df) {

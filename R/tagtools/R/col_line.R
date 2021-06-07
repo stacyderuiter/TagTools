@@ -11,6 +11,8 @@
 #' @param ... Additional inputs to be passed to gf_path()
 #' @return If output is assigned to an object, it will be a ggplot (or ggplotly) object and no plot will be displayed. Otherwise, the plot will be rendered.
 #' @importFrom magrittr "%>%"
+#' @example 
+#' col_line(1:20, 1:20, 1:20)
 #' @note x, y and c must all be vectors of the same size.
 #' @export
 

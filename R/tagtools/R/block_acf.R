@@ -1,6 +1,6 @@
 #' Compute autocorrelation function
 #'
-#' This function allows calculation of an ACF for a dataset with multiple independent units (for example, data from several individuals, data from multiple dives by an individual animal, etc.). The groups (individual, dive, etc.) should be coded in a categorical variable. The function calculates correlation coefficients over all levels of the categorical variable, but respecting divisions between levels (for example, individual animals are kept separate).
+#' This function allows calculation of an autocorrelation function (ACF) for a dataset with multiple independent units (for example, data from several individuals, data from multiple dives by an individual animal, etc.). The groups (individual, dive, etc.) should be coded in a categorical variable. The function calculates correlation coefficients over all levels of the categorical variable, but respecting divisions between levels (for example, individual animals are kept separate).
 #' @param resids The variable for which the ACF is to be computed (often a vector of residuals from a fitted model)
 #' @param blocks A categorical variable indicating the groupings (must be the same length as resids. ACF will be computed only for data points within the same block.)
 #' @param max_lag ACF will be computed at 0-max_lag lags, ignoring all observations that span blocks. Defaults to the minimum number of observations in any block. The function will allow you to specify a max_lag longer than the shortest block if you so choose.
