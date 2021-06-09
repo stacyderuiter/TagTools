@@ -14,7 +14,7 @@
 #' @export
 
 extract <- function(x, sampling_rate, tst, ted) {
-  if (missing(ted) | missing(x) | missing(sampling_rate) | missing(tst)) {
+  if (missing(ted)) {
     stop("inputs for all arguments are required")
   }
   if (is.matrix(x) && nrow(x) == 1) {

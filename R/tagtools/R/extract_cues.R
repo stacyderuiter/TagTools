@@ -16,7 +16,7 @@
 #' BW <- beaked_whale # beaked_whale must be in your working directory
 #' list <- extract_cues(x = BW$A$data, sampling_rate = BW$A$sampling_rate, cues = 6, len = 11)
 extract_cues <- function(x, sampling_rate, cues, len) {
-  if (missing(len) | missing(x) | missing(sampling_rate) | missing(cues)) {
+  if (missing(len)) {
     stop("inputs for all arguments are required")
   }
   if (nrow(x) == 1) {
