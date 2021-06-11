@@ -22,14 +22,14 @@
 #'          list2 <- buffer(x, n, overlap, nodelay = TRUE)
 
 buffer <- function(x, n, overlap, opt, nodelay = FALSE) {
-  if(missing(x)|| missing(n) || missing(overlap)){
+  if(missing(x)|| missing(n) || missing(overlap)) {
     stop("x, overlap and n are required values for buffer()")
   }
-  if (!(overlap < n)){
+  if (!(overlap < n)) {
     stop("overlap must be less than n")
   }
-  if(!nodelay){
-    if(!missing(opt)){
+  if(!nodelay) {
+    if(!missing(opt)) {
       if (length(opt) != overlap) {
         stop("length of opt must equal overlap")
       }
@@ -68,21 +68,21 @@ buffer <- function(x, n, overlap, opt, nodelay = FALSE) {
     return(X)
   }
 }
-buffer_nodelay <- function(vec, n, overlap){
+buffer_nodelay <- function(vec, n, overlap) {
   m <- floor((length(vec) - n)/(n - overlap)) + 1
-  buffermatrix <-function(vec, m, n, overlap){
+  buffermatrix <-function(vec, m, n, overlap) {
     retmat <- matrix(0, nrow = m, ncol = n)
     vecindex <- 1
-    for(i in 1:m){
-      if(i == 1){
-        for(f in 1:n){
+    for(i in 1:m) {
+      if(i == 1) {
+        for(f in 1:n) {
           retmat[i,f] <- vec[vecindex]
           vecindex <- vecindex + 1
         }
       }
       else{
         vecindex <- vecindex - overlap
-        for(c in 1:n){
+        for(c in 1:n) {
           retmat[i,c] <- vec[vecindex]
           vecindex <- vecindex + 1
         }

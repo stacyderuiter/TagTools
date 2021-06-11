@@ -6,7 +6,7 @@
 #' @param y The y location of the mouse (in ndc coordinates)
 #' @noRd
 #' 
-crosshairs <- function(buttons, x, y){
+crosshairs <- function(buttons, x, y) {
   trans_black <- grDevices::rgb(0, 0, 0, alpha = 0.4)
   xp <- graphics::grconvertX(x, from = 'ndc', to = 'user') 
   yp <- graphics::grconvertY(y, from = 'ndc', to = 'user')

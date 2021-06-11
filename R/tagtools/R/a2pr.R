@@ -21,7 +21,7 @@
 #' list <- a2pr(samplematrix)
 #' }
 
-a2pr <- function(A, sampling_rate=NULL, fc=NULL) {
+a2pr <- function(A, sampling_rate = NULL, fc = NULL) {
   # input checks-----------------------------------------------------------
   if (is.list(A)) {
     sampling_rate <- A$sampling_rate
@@ -33,7 +33,8 @@ a2pr <- function(A, sampling_rate=NULL, fc=NULL) {
     A <- matrix(A, nrow=1)
   }
   if (!is.null(fc)) {
-    A <- fir_nodelay(A, round(4 / fc), fc / (sampling_rate / 2))
+    A <- fir_nodelay(A, round(4 / fc), 
+                     fc / (sampling_rate / 2))
   }
   v <- sqrt(rowSums(A^2))
   # compute pitch and roll

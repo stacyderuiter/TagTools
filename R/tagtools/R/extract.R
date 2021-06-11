@@ -1,5 +1,5 @@
-#' Extract a sub-sample of data 
-#' 
+#' Extract a sub-sample of data
+#'
 #' This function is used to extract a sub-sample of data from a vector or matrix.
 #' @param x A vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
 #' @param sampling_rate the sampling rate in Hz of the data in x.
@@ -17,10 +17,10 @@ extract <- function(x, sampling_rate, tst, ted) {
   if (missing(ted)) {
     stop("inputs for all arguments are required")
   }
-  if (is.matrix(x) && nrow(x) == 1 ){
+  if (is.matrix(x) && nrow(x) == 1) {
     x <- t(x)
   }
-  if(is.vector(x)) {
+  if (is.vector(x)) {
     x <- as.matrix(x)
   }
   npre <- NULL
@@ -38,23 +38,22 @@ extract <- function(x, sampling_rate, tst, ted) {
       npst <- ked - nrow(x)
       ked <- nrow(x)
     }
-    if(ncol(x)>1){
+    if (ncol(x) > 1) {
       X2 <- x[kst:ked, ]
     }
-    else{
+    else {
       X2 <- as.matrix(x[kst:ked])
     }
     if (!is.null(npre)) {
       X1 <- matrix(NaN, npre, ncol(x))
-        X <- rbind(X1, X2)
+      X <- rbind(X1, X2)
     }
-    if(!is.null(npst))
-    {
+    if (!is.null(npst)) {
       X3 <- matrix(NaN, npst, ncol(x))
       if (!is.null(npre)) {
         X <- rbind(X, X3)
       }
-      else{
+      else {
         X <- rbind(X2, X3)
       }
     } else {

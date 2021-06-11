@@ -8,19 +8,21 @@
 #' @export
 #' @examples
 #' s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1)
+#' plot(c(1:length(s)), s) # before decimation
 #' y <- decdc(x = s, df = 4)
-#' #Returns: 0.0023
+#' plot(c(1:length(y)), y) # after decimation
+#' 
 
 decdc <- function(x,df) {
   if (missing(df)) {
     stop("df is a required input")
   }
-  if (is.list(x)){
+  if (is.list(x)) {
     X <- x
     x <- X$data
-    list_out=TRUE
-  }else{
-    list_out=FALSE
+    list_out = TRUE
+  } else {
+    list_out = FALSE
     X <- NULL
   }
   if (nrow(x) < 2) {
@@ -28,7 +30,7 @@ decdc <- function(x,df) {
   }
   if (!is.matrix(x) & length(dim(x))==1){
     # if data is not a matrix, make it one
-    x <- matrix(x, ncol=1)
+    x <- matrix(x, ncol = 1)
   }
   if (round(df) != df) {
     df <- round(df)
@@ -37,13 +39,13 @@ decdc <- function(x,df) {
   flen <- 12 * df
   h <- as.vector(signal::fir1(flen, 0.8 / df))
   xlen <- nrow(x)
-  #ensures that the output samples coincide with every df of the input samples
+  # ensures that the output samples coincide with every df of the input samples
   dc <- flen + floor(flen / 2) - round(df / 2) + seq(df, xlen, df)
   y <- matrix(0, nrow = length(dc),ncol = ncol(x))
   for (k in 1:ncol(x)) {
     abc <- (2 * x[1, k]) - x[1 + (seq((flen + 1), 1, -1)), k]
     bcd <- x[, k]
-    cde <- (2 * x[xlen, k]) - (x[xlen - c(1:(flen + 1),k)])
+    cde <- (2 * x[xlen, k]) - (x[xlen - c(1:(flen + 1), k)])
     xx <- c(abc, bcd, cde)
     v <- signal::conv(h,xx)
  #   v <- pracma::conv(h,xx) # results identical and signal is a bit faster? SDR
@@ -53,7 +55,7 @@ decdc <- function(x,df) {
   if (list_out){
     X$data <- y
     X$sampling_rate <- X$sampling_rate/df
-    h = sprintf('decdc(%d)',df)
+    h = sprintf('decdc(%d)', df)
     if ('history' %in% names(X) | is.null(X$history)){
     X$history <- h
     }else{

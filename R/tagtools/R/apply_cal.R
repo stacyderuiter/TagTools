@@ -13,7 +13,7 @@
 #' #coming soon!
 #' @export
 
-apply_cal <- function(X,cal,T=NULL){
+apply_cal <- function(X, cal, T = NULL){
 
 if (!is.list(cal)){
    stop('Input argument cal must be a calibration list (for example, from spherical_cal)')
@@ -22,9 +22,9 @@ if (!is.list(cal)){
 if (is.list(X)){
    x <- X$data
    if (!is.matrix(x)){
-     x <- matrix(x, ncol=1)
+     x <- matrix(x, ncol = 1)
    }
-   if (length(x)==0){
+   if (length(x) == 0){
      stop('No data found in input X')
    }
 }else{
@@ -34,7 +34,7 @@ if (is.list(X)){
   if (is.list(T)){
     T <- T$data
     if (!is.matrix(T)){
-      T <- matrix(T, ncol=1)
+      T <- matrix(T, ncol = 1)
     }
   }
   
@@ -45,28 +45,28 @@ if ('poly' %in% names(cal)){
                  ncol(x), ' rows to match the number of columns in input data X', sep='')
      stop(em)
    }
-   x = x*matrix(t(p[,1]), nrow=nrow(x), ncol=nrow(p), byrow=TRUE) + 
-           matrix(t(p[,2]), nrow=nrow(x), ncol=nrow(p), byrow=TRUE)
+   x = x*matrix(t(p[,1]), nrow = nrow(x), ncol = nrow(p), byrow = TRUE) + 
+           matrix(t(p[,2]), nrow = nrow(x), ncol = nrow(p), byrow = TRUE)
    if (is.list(X)){
    	X$cal_poly = cal$poly
    }
 }#end of "if poly"
 
 if (!is.null(T) & 'tcomp' %in% names(cal)){
-  if (nrow(T)==nrow(x)){
+  if (nrow(T) == nrow(x)){
 	# TODO interp T to match X
    if (!('tref' %in% names(cal))) {
       tref <- 20 
 	 }else{
 		  tref <- cal$tref
 	}
-	if (length(cal$tcomp)==ncol(x)){
-		x <- x + (T-tref)*matrix(cal$tcomp, nrow=1)
+	if (length(cal$tcomp) == ncol(x)){
+		x <- x + (T-tref)*matrix(cal$tcomp, nrow = 1)
   }else{
-    if (ncol(x)==1){
-      M <- stats::poly(T,length(cal$tcomp), raw=TRUE)
+    if (ncol(x) == 1){
+      M <- stats::poly(T,length(cal$tcomp), raw = TRUE)
       M <- M[,c(ncol(M):1)]
-      x <- x + M%*%matrix(cal$tcomp, ncol=1)
+      x <- x + M%*%matrix(cal$tcomp, ncol = 1)
 		}
   }
   if (is.list(X)){

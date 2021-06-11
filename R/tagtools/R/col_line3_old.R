@@ -1,5 +1,5 @@
 #' Plot coloured line(s) in 3 dimensions
-#' 
+#'
 #' This function is used to plot three dimensional lines with each individual line possessing a different color.
 #' @param x A vector or matrix of points on the horizontal axis.
 #' @param y A vector or matrix of points on the vertical axis.
@@ -33,7 +33,7 @@ col_line3_old <- function(x, y, z, c, ...) {
       }
     }
     rgl::plot3d(NA, NA, NA, xlim = c(0, max(x)), ylim = c(0, max(y)), zlim = c(0, max(z)), xlab = "x", ylab = "y", zlab = "z")
-    for (i in 1:(length(X)-1)) {
+    for (i in 1:(length(X) - 1)) {
       d <- data[[i]]
       rgl::lines3d(x = d[, 1], y = d[, 2], z = d[, 3], color = C[i], lwd = 3, ...)
     }
@@ -64,7 +64,7 @@ col_line3_old <- function(x, y, z, c, ...) {
         }
       }
       rgl::plot3d(NA, NA, NA, xlim = c(0, max(x)), ylim = c(0, max(y)), zlim = c(0, max(z)), xlab = "x", ylab = "y", zlab = "z")
-      for (i in 1:(nrow(x)-1)) {
+      for (i in 1:(nrow(x) - 1)) {
         dx <- as.matrix(datax[[i]])
         dy <- as.matrix(datay[[i]])
         dz <- as.matrix(dataz[[i]])

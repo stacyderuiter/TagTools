@@ -1,5 +1,5 @@
-#' Extract multiple sub-samples of data 
-#' 
+#' Extract multiple sub-samples of data
+#'
 #' This function is used to extract multiple sub-samples of data from a vector or matrix.
 #' @param x is a vector or matrix of measurements. If x is a matrix, each column is treated as a separate measurement vector.
 #' @param sampling_rate is the sampling rate in Hz of the data in x.
@@ -12,10 +12,9 @@
 #' }
 #' @note Output sampling rate is the same as the input sampling rate.
 #' @export
-#' @examples 
-#' BW <- beaked_whale
+#' @examples
+#' BW <- beaked_whale # beaked_whale must be in your working directory
 #' list <- extract_cues(x = BW$A$data, sampling_rate = BW$A$sampling_rate, cues = 6, len = 11)
-
 extract_cues <- function(x, sampling_rate, cues, len) {
   if (missing(len)) {
     stop("inputs for all arguments are required")
@@ -34,9 +33,9 @@ extract_cues <- function(x, sampling_rate, cues, len) {
       X[, kk] <- x[kcues[kk] + c(1:klen), ]
     }
   } else {
-    X = replicate(length(k), matrix(0, klen, ncol(x)))
+    X <- replicate(length(k), matrix(0, klen, ncol(x)))
     for (kk in 1:length(k)) {
-      X[,, kk] <- x[kcues[kk] + c(1:klen), ]
+      X[, , kk] <- x[kcues[kk] + c(1:klen), ]
     }
   }
   list <- list(X = X, cues = cues)

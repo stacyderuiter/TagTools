@@ -30,7 +30,7 @@ block_rms <- function(X, n, nov = NULL) {
     Y <- rep(0, ncol(ss))
     Y[] <- colSums(ss)
     Y <- sqrt(Y / n)
-    t <- round(n / 2 + (0:(length(Y)-1)) * (n - nov))
+    t <- round(n / 2 + (0:(length(Y) - 1)) * (n - nov))
   }
   else{
     #catch the case of a row vector input

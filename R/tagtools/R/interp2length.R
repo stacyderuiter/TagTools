@@ -9,16 +9,22 @@
 #' @param n_out is an optional length for the output data. If n_out is not given, the output data length will be the input data length * fs_out/fs_in.
 #' @return Y is a sensor structure, vector or matrix of interpolated data with the same number of columns as X.
 #' @examples 
+#'          plott(X = list(harbor_seal$P), fsx = 5) 
+#'          # get an idea of what the data looks like
 #'          P_dec <- decdc(harbor_seal$P, 5)
+#'          
 #'          # note: you would not really want to decimate and then linearly interpolate. 
 #'          # only doing so here to create an example from existing datasets 
 #'          # that have uniform sampling rates across sensors
+#'          
 #'          P_interp <- interp2length(X = P_dec, Z = harbor_seal$A)
+#'          plott(X = list(P_interp$data), fsx = 1) 
+#'          # compare to original plot. should be pretty close 
 #' @export
 
 interp2length <- function(X, Z, fs_in = NULL, fs_out = NULL, n_out = NULL) {
   # INPUT CHECKING ----------------------------
-  if (missing(X) | missing(Z)){
+  if (missing(X) | missing(Z)) {
     stop("Inputs X and Z are required for interp2length().")
   }
   if (is.list(X)) {
@@ -26,7 +32,7 @@ interp2length <- function(X, Z, fs_in = NULL, fs_out = NULL, n_out = NULL) {
     fs_in <- X$sampling_rate
   } else {
     if (missing(fs_in)){
-      stop('input fs_in is required if X is not a sensor data list.')
+      stop('Input fs_in is required if X is not a sensor data list.')
     }
     x <- X
   }
@@ -61,14 +67,14 @@ interp2length <- function(X, Z, fs_in = NULL, fs_out = NULL, n_out = NULL) {
   
   # DO INTERPOLATION ---------------------------------
   
-  if (fs_in == fs_out){
+  if (fs_in == fs_out) {
     # if sampling rates are the same, no need to interpolate,
     # just make sure the length is right
     y <- check_size(x, n_out)
-  }else{
+  } else {
     # if sampling rates are different
     y <- matrix(0, nrow = nrow(z), ncol = ncol(x))
-    for (c in 1:ncol(x)){
+    for (c in 1:ncol(x)) {
       y[ , c] <- approx(x = c(0:(nrow(x)-1)) / fs_in, 
                 y = x[, c], 
                 xout = c(0:(nrow(z)-1)) / fs_out,
@@ -80,27 +86,27 @@ interp2length <- function(X, Z, fs_in = NULL, fs_out = NULL, n_out = NULL) {
   
 # FORMAT OUTPUT (TO SENSOR LIST IF NEEDED) ----------
   
-  if (is.list(X)){
+  if (is.list(X)) {
     Y <- X
     Y$data <- y
     Y$sampling_rate <- fs_out
     Y$history <- paste(Y$history, ' interp2length from', fs_in, 'Hz to ', fs_out, 'Hz')
-  }else{
+  } else {
     Y = y
   }
   
   return(Y)
 }
 
-check_size <- function(y, n_out){
-  if (nrow(y) < n_out){
+check_size <- function(y, n_out) {
+  if (nrow(y) < n_out) {
     warning(paste('Data size mismatch: data is shorter than expected by ', n_out - nrow(y), ' rows.'))
     y <- rbind(y,
                matrix(data = y[nrow(y),],
                       nrow = n_out - nrow(y),
                       byrow = TRUE))
   }
-  if (nrow(y) > n_out){
+  if (nrow(y) > n_out) {
     warning(paste('Data size mismatch: data is longer than expected by ', n_out - nrow(y), ' rows.'))
     y <- y[1:n_out,]
   }
