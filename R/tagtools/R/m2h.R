@@ -2,7 +2,7 @@
 #' 
 #' This function is used to compute the heading, field intensity, and the inclination angle by gimballing the magnetic field measurement matrix with the pitch and roll estimated from the accelerometer matrix.
 #' 
-#' @param M A sensor data structure or matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
+#' @param M A sensor data structure or matrix, M = [mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).
 #' @param A A sensor data structure or matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.
 #' @param sampling_rate (optional) The sampling rate of the sensor data in Hz (samples per second). This is only needed if filtering is required. If \code{A} and \code{M} are sensor data lists, then sampling_rate is obtained from them.
 #' @param fc (optional) The cut-off frequency of a low-pass filter to apply to A and M before computing heading. The filter cut-off frequency is with in Hertz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is not specified, no filtering is performed.
@@ -48,7 +48,7 @@ m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
       A <- fir_nodelay(A, nf, fc)
     }
   }
-  #get the pitch and roll from A
+  # get the pitch and roll from A
   listpr <- a2pr(A)
   p <- listpr$p
   r <-listpr$r
@@ -60,11 +60,11 @@ m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
   Ty <- c(rep(0, length(cp)), cr, -sr)
   Tz <- c(sp, (sr * cp), (cr * cp))
   Mh <- cbind(rowSums(M * Tx), rowSums(M * Ty), rowSums(M * Tz))
-  #heading estimate in FRU system
+  # heading estimate in FRU system
   h  <- atan2(-Mh[, 2], Mh[, 1])
-  #compute mag field intensity and inclination
+  # compute mag field intensity and inclination
   v <- sqrt(rowSums(M^2))
-  #compute inclination
+  # compute inclination
   suppressWarnings(x <- asin(Mh[, 3] / v))
   signvector <- Mh[, 3] / v
   for(i in 1: length(x)){
@@ -73,7 +73,11 @@ m2h <- function(M, A, sampling_rate=NULL, fc = NULL) {
     }
   }
   incl <- -x
-  #Mh[, ] is (sp * Mx + srcp * My + crcp * Mz) which is A.M if there is no specific acceleration. So the inclination angle computed here is the same as the angle computed directly from A and M by the function inclination.R if there is no specific acceleration. If there is specific acceleration, both methods produce inclination angle estimates with errors and the errors are different because of the different computational methods.
+  # Mh[, ] is (sp * Mx + srcp * My + crcp * Mz) which is A.M if there is no specific acceleration. 
+  # So the inclination angle computed here is the same as the angle computed directly from A and M
+  # by the function inclination.R if there is no specific acceleration. If there is specific acceleration,
+  # both methods produce inclination angle estimates with errors and the errors are different because of the
+  # different computational methods.
   return(list(h = h, v = v, incl = incl))
 }
     

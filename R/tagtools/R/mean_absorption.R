@@ -1,16 +1,15 @@
 #' Calculate the mean absorption in salt water
-#' 
-#' This function is used to calculate the mean absorption in salt water over a frequency range. 
+#'
+#' This function is used to calculate the mean absorption in salt water over a frequency range.
 #' @param freq Specifies the frequency range, freq = c(fmin, fmax) in Hz. For a single frequency, use a scalar value for freq.
 #' @param r The path (slant) length in metres.
-#' @param depth The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth=c(dmax,dmin) for a path that extends between two depths.
+#' @param depth The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth = c(dmax, dmin) for a path that extends between two depths.
 #' @param Ttab (optional) The temperature (a scalar) in degrees C or specifies a temperature profile Ttab = c(depth, tempr) where depth and tempr are equal-sized column vectors. Default value is an isothermal profile of 13 degrees.
 #' @return The mean sound absorption over the path in dB.
 #' @note After Kinsler and Frey pp. 159-160.
 #' @export
 #' @examples mean_absorption(c(25e3, 60e3), 1000, c(0, 700))
-#'          #Returns: 7.728188 dB/m
-
+#' # Returns: 7.728188 dB/m
 mean_absorption <- function(freq, r, depth, Ttab = NULL) {
   if (missing(depth)) {
     stop("inputs for few, r, and depth are all required")
@@ -30,14 +29,14 @@ mean_absorption <- function(freq, r, depth, Ttab = NULL) {
       tempr <- pracma::repmat(tempr, nrow(depth), ncol(depth))
     }
   }
-  #handle case of a single frequency
+  # handle case of a single frequency
   if (length(freq) == 1) {
     a <- r * mean(absorption(freq, tempr, depth))
     return(a)
   }
-  #handle a range of frequencies
-  f <- seq(min(freq), max(freq), len = 50) 
-  aa = matrix(0, length(depth), length(f)) 
+  # handle a range of frequencies
+  f <- seq(min(freq), max(freq), len = 50)
+  aa <- matrix(0, length(depth), length(f))
   for (k in 1:length(depth)) {
     aa[k, ] <- absorption(f, tempr[k], depth[k])
   }
@@ -47,7 +46,7 @@ mean_absorption <- function(freq, r, depth, Ttab = NULL) {
   }
   a <- matrix(0, length(r), 1)
   for (kk in 1:length(r)) {
-    a[kk] = -10 * log10(mean(10^(-aa * r[kk] / 10)))
+    a[kk] <- -10 * log10(mean(10^(-aa * r[kk] / 10)))
   }
   return(a)
 }
