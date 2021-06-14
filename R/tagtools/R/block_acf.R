@@ -9,46 +9,48 @@
 #' @keywords correlation, visualization, model assessment
 #' @export
 #' @examples
-#' block_acf(resids=ChickWeight$weight, 
-#'           blocks=ChickWeight$Chick)
-
-block_acf <- function(resids, blocks, max_lag, 
+#' block_acf(
+#'   resids = ChickWeight$weight,
+#'   blocks = ChickWeight$Chick
+#' )
+block_acf <- function(resids, blocks, max_lag,
                       make_plot = TRUE, ...) {
-    # input checks-----------------------------------------------------------
-    blocks <- as.factor(blocks)
-    if (length(blocks) != length(resids)) {
-        warning("blocks and resids must be the same length.")
+  # input checks-----------------------------------------------------------
+  blocks <- as.factor(blocks)
+  if (length(blocks) != length(resids)) {
+    warning("blocks and resids must be the same length.")
+  }
+  if (missing(max_lag)) {
+    max_lag <- min(tapply(blocks, blocks, length))
+  }
+
+  # get indices of last element of each block (excluding the last block)
+  i1 <- cumsum(as.vector(utils::head(tapply(blocks, blocks, length), -1)))
+  block_acf <- matrix(1, nrow = max_lag + 1, ncol = 1)
+  r <- resids
+
+  for (k in 1:max_lag) {
+    # insert NA before first entry of each new block
+    for (b in 1:length(i1)) {
+      r <- append(resids, NA, i1[b])
     }
-    if (missing(max_lag)) {
-        max_lag = min(tapply(blocks, blocks, length))
-    }
-    
-    # get indices of last element of each block (excluding the last block)
-    i1 <- cumsum(as.vector(utils::head(tapply(blocks, blocks, length), -1)))
-    block_acf <- matrix(1, nrow = max_lag + 1, ncol = 1)
-    r <- resids
-    
-    for (k in 1:max_lag) {
-      # insert NA before first entry of each new block
-        for (b in 1:length(i1)) {
-            r <- append(resids, NA, i1[b])
-        }
-        # adjust for the growing r
-        i1 <- i1 + utils::head(c(0:(-1 + nlevels(blocks))), -1)
-        this_acf <- stats::acf(r, 
-                               lag.max = max_lag, 
-                               type = "correlation", 
-                               plot = FALSE, 
-                               na.action = stats::na.pass)
-        block_acf[k + 1] <- this_acf$acf[k + 1, 1, 1]
-    }
-    if (make_plot) {
-        # get an acf object in which the block_acf results will be inserted. Facilitates plotting.
-        A <- stats::acf(resids, lag.max = max_lag, plot = F)
-        # insert coefficients from block_acf into A
-        A$acf[, 1, 1] <- block_acf
-        # plot block_acf
-        graphics::plot(A, ...)
-    }
-    return(block_acf)
+    # adjust for the growing r
+    i1 <- i1 + utils::head(c(0:(-1 + nlevels(blocks))), -1)
+    this_acf <- stats::acf(r,
+      lag.max = max_lag,
+      type = "correlation",
+      plot = FALSE,
+      na.action = stats::na.pass
+    )
+    block_acf[k + 1] <- this_acf$acf[k + 1, 1, 1]
+  }
+  if (make_plot) {
+    # get an acf object in which the block_acf results will be inserted. Facilitates plotting.
+    A <- stats::acf(resids, lag.max = max_lag, plot = F)
+    # insert coefficients from block_acf into A
+    A$acf[, 1, 1] <- block_acf
+    # plot block_acf
+    graphics::plot(A, ...)
+  }
+  return(block_acf)
 }

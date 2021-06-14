@@ -1,5 +1,5 @@
 #' Compute mean of sample blocks
-#' 
+#'
 #' This function is used to compute the means of successive blocks of samples.
 #' @param X A vector or a matrix containing samples of a signal in each column.
 #' @param n The number of samples from X to use in each analysis block.
@@ -10,15 +10,14 @@
 #'  \item{\strong{t: }} The time at which each output in Y is reported, in units of samples of X.  So if t[1] = 12, then the value Y[1] corresponds to the “time” 12 samples in X.
 #' }
 #' @export
-#' @examples samplematrix <- matrix(c(1,3,5,7,9,11,13,15,17), byrow = TRUE, ncol = 3)
-#'          list <- block_mean(samplematrix, n = 3, nov = 1)
-
+#' @examples samplematrix <- matrix(c(1, 3, 5, 7, 9, 11, 13, 15, 17), byrow = TRUE, ncol = 3)
+#' list <- block_mean(samplematrix, n = 3, nov = 1)
 block_mean <- function(X, n, nov) {
   if (missing(nov)) {
     nov <- 0
   }
-  nov <- min(n, nov) 
-  if(is.vector(X) & !is.list(X)){
+  nov <- min(n, nov)
+  if (is.vector(X) & !is.list(X)) {
     ss <- buffer(X[], n, nov, nodelay = TRUE)
     Y <- rep(0, ncol(ss))
     for (i in 1:ncol(ss)) {
@@ -26,7 +25,7 @@ block_mean <- function(X, n, nov) {
     }
     t <- as.matrix(round(n / 2 + (0:(length(Y) - 1)) * (n - nov)))
   }
-  else{
+  else {
     if (nrow(X) == 1) {
       X <- t(X)
     }
