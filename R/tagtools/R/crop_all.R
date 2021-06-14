@@ -8,8 +8,8 @@
 #' @return A sensor list or set of sensor lists containing the cropped data segment. The output data have the same units, frame and sampling characteristics as the input. The list may have many sublists which are additional sensor structures as required to match the input.
 #' @examples d <- find_dives(beaked_whale$P,300) 
 #'          X <- crop_all(c(d$start[1], d$end[1]), beaked_whale)	#crop all data to 1st dive
-#'          plott(X=list(X$P, X$A), r = c(1,0), panel_labels=c('Depth', 'Acc'))
-#'          # plot shows the dive profile and acceleration of the second dive
+#'          plott(X = list(X$P, X$A), r = c(1, 0), panel_labels = c('Depth', 'Acc'))
+#'          # plot shows the dive profile and acceleration of the first dive
 #' @export
 
 crop_all <- function(tcues, X) {
