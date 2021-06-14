@@ -17,100 +17,119 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' #example will only work if data matrix Aw is in your workspace.
-#' #A <- sens_struct(data=Aw,sampling_rate=fs,depid='md13_134a', type='acc')}
-
-sens_struct <- function(data, sampling_rate=NULL, T=NULL,
+#' # example will only work if data matrix Aw is in your workspace.
+#' # A <- sens_struct(data=Aw,sampling_rate=fs,depid='md13_134a', type='acc')
+#' }
+#'
+sens_struct <- function(data, sampling_rate = NULL, T = NULL,
                         depid, type,
-                        unit=NULL, frame=NULL, name=NULL,
-                        start_offset = 0, start_offset_units = 'second'){
-
-  sens_names <- utils::read.csv(system.file('extdata', 'sensor_names.csv', package='tagtools'),
-                                stringsAsFactors=FALSE)
-  if (missing(data) | missing(type) | missing(depid)){
-    cat('Not enough inputs to sens_struct. Pre-defined sensor types are:\n',
-                   as.character(sens_names[,'name']))
+                        unit = NULL, frame = NULL, name = NULL,
+                        start_offset = 0, start_offset_units = "second") {
+  sens_names <- utils::read.csv(system.file("extdata", "sensor_names.csv", package = "tagtools"),
+    stringsAsFactors = FALSE
+  )
+  if (missing(data) | missing(type) | missing(depid)) {
+    cat(
+      "Not enough inputs to sens_struct. Pre-defined sensor types are:\n",
+      as.character(sens_names[, "name"])
+    )
     stop("Please check inputs to sens_struct.")
-    X = NULL ;
+    X <- NULL
   }
 
-if (length(sampling_rate)==1){# regularly sampled data
-  X <- list(data = data, sampling='regular',
-            sampling_rate=sampling_rate, sampling_rate_unit='Hz')
-}else{                 # irregular data
-   if (length(T) != min(nrow(data), length(data))){
-      stop('number of sampling times does not match number of samples.')
-   }
-  X <- list(data=matrix(0, nrow=length(T), ncol=1+max(1,ncol(data))))
-  X$data[,1] <- T
-  X$data[,2:ncol(X$data)]<- data
-	X$sampling = 'irregular'
-	X$sampling_time = 'column 1'
-	X$sampling_time_unit = 'second'
-  fs = NULL
-}
+  if (length(sampling_rate) == 1) { # regularly sampled data
+    X <- list(
+      data = data, sampling = "regular",
+      sampling_rate = sampling_rate, sampling_rate_unit = "Hz"
+    )
+  } else { # irregular data
+    if (length(T) != min(nrow(data), length(data))) {
+      stop("number of sampling times does not match number of samples.")
+    }
+    X <- list(data = matrix(0, nrow = length(T), ncol = 1 + max(1, ncol(data))))
+    X$data[, 1] <- T
+    X$data[, 2:ncol(X$data)] <- data
+    X$sampling <- "irregular"
+    X$sampling_time <- "column 1"
+    X$sampling_time_unit <- "second"
+    fs <- NULL
+  }
 
-X$depid = depid ;
-X$creation_date = as.character(Sys.time()) ;
-X$history = 'sens_struct' ;
+  X$depid <- depid
+  X$creation_date <- as.character(Sys.time())
+  X$history <- "sens_struct"
 
-# compare sensor names database against type
-k <- grepl(type, sens_names$name, ignore.case=TRUE)
-if (sum(k)==0){
-  w_msg <- paste('unknown sensor type ', type, '. Set metadata manually or define more inputs to sens_struct().', sep='')
-   warning(w_msg)
-   X$name <- type
-	 X$type <- type
-	 if (!missing(unit)){X$unit <- unit}
-	 if (!missing(frame)){X$frame <- frame}
-	 if (!missing(name)){X$name <- name}
-	 if (!missing(start_offset)){X$start_offset <- start_offset}
-	 if (!missing(start_offset_units)){X$start_offset_units <- start_offset_units}
-	 return(X)
-}
+  # compare sensor names database against type
+  k <- grepl(type, sens_names$name, ignore.case = TRUE)
+  if (sum(k) == 0) {
+    w_msg <- paste("unknown sensor type ", type, ". Set metadata manually or define more inputs to sens_struct().", sep = "")
+    warning(w_msg)
+    X$name <- type
+    X$type <- type
+    if (!missing(unit)) {
+      X$unit <- unit
+    }
+    if (!missing(frame)) {
+      X$frame <- frame
+    }
+    if (!missing(name)) {
+      X$name <- name
+    }
+    if (!missing(start_offset)) {
+      X$start_offset <- start_offset
+    }
+    if (!missing(start_offset_units)) {
+      X$start_offset_units <- start_offset_units
+    }
+    return(X)
+  }
 
-if (sum(k)>1){
-   e_msg <- paste('More than one sensor type matches ',
-                  type, '. Retry with a longer type.')
-   stop(e_msg)
-}
+  if (sum(k) > 1) {
+    e_msg <- paste(
+      "More than one sensor type matches ",
+      type, ". Retry with a longer type."
+    )
+    stop(e_msg)
+  }
 
-nc = sens_names[k,'axes']
-if (max(1, ncol(data))!=nc){
-  w_msg <- paste('Size of data does not match number of columns (',
-                 nc, ' expected for ', sens_names[k,'name'], ')', sep='')
-  warning(w_msg)
-}
+  nc <- sens_names[k, "axes"]
+  if (max(1, ncol(data)) != nc) {
+    w_msg <- paste("Size of data does not match number of columns (",
+      nc, " expected for ", sens_names[k, "name"], ")",
+      sep = ""
+    )
+    warning(w_msg)
+  }
 
-if (is.null(name)){
-  X$name <- sens_names[k,'abbrev']
-}else{
-  X$name <- name
-}
+  if (is.null(name)) {
+    X$name <- sens_names[k, "abbrev"]
+  } else {
+    X$name <- name
+  }
 
-X$type <- sens_names[k,'abbrev']
-X$full_name <- sens_names[k,'name']
-X$description <- sens_names[k, 'description']
-X$unit <- sens_names[k, 'def_units']
-X$unit_name <- sens_names[k,'def_unit_name']
-X$unit_label <- sens_names[k, 'def_label']
-X$start_offset <- start_offset
-X$start_offset_units <- start_offset_units
+  X$type <- sens_names[k, "abbrev"]
+  X$full_name <- sens_names[k, "name"]
+  X$description <- sens_names[k, "description"]
+  X$unit <- sens_names[k, "def_units"]
+  X$unit_name <- sens_names[k, "def_unit_name"]
+  X$unit_label <- sens_names[k, "def_label"]
+  X$start_offset <- start_offset
+  X$start_offset_units <- start_offset_units
 
-if (!is.na(sens_names[k,'def_cols'])){
-   if (is.null(sampling_rate)){
-      X$column_name <- paste('time, ', sens_names[k,'def_cols'], sep='')
-   }else{
-      X$column_name = sens_names[k,'def_cols'];
-   }
-}
+  if (!is.na(sens_names[k, "def_cols"])) {
+    if (is.null(sampling_rate)) {
+      X$column_name <- paste("time, ", sens_names[k, "def_cols"], sep = "")
+    } else {
+      X$column_name <- sens_names[k, "def_cols"]
+    }
+  }
 
-if (!is.na(sens_names[k,'def_frame'])){
-   X$frame <- sens_names[k, 'def_frame']
-}
+  if (!is.na(sens_names[k, "def_frame"])) {
+    X$frame <- sens_names[k, "def_frame"]
+  }
 
-if (!is.na(sens_names[k,'def_axes'])){
-   X$axes <- sens_names[k,'def_axes']
-}
-return(X)
+  if (!is.na(sens_names[k, "def_axes"])) {
+    X$axes <- sens_names[k, "def_axes"]
+  }
+  return(X)
 }
