@@ -11,19 +11,19 @@
 #' x <- (pi / 180) * matrix(c(25, -60, 33), ncol = 3)
 #' Q <- euler2rotmat(x[, 1], x[, 2], x[, 3])
 #' V <- rotate_vecs(c(0.77, -0.6, -0.22), Q)
-#' #Returns: V = c(0.7072485, -0.1255922, 0.6966535)
+#' # Returns: V = c(0.7072485, -0.1255922, 0.6966535)
 #' }
-
+#'
 rotate_vecs <- function(V, Q) {
   if (missing(Q)) {
     stop("inputs for all arguments are required")
   }
-  if (is.list(V)){
-    list_out=TRUE
+  if (is.list(V)) {
+    list_out <- TRUE
     V0 <- V
     V <- V$data
-  }else{
-    list_out=FALSE
+  } else {
+    list_out <- FALSE
   }
   if (is.vector(V)) {
     V <- matrix(V, nrow = 1)
@@ -34,13 +34,13 @@ rotate_vecs <- function(V, Q) {
   if (length(dim(Q))) {
     V <- V %*% t(Q)
   } else {
-    for(k in 1:nrow(V)) {
-      V[k, ] <- V[k, ] %*% t(Q[,, k])
+    for (k in 1:nrow(V)) {
+      V[k, ] <- V[k, ] %*% t(Q[, , k])
     }
   }
-  if (list_out){
-   V0$data <- V
-   V <- V0
+  if (list_out) {
+    V0$data <- V
+    V <- V0
   }
   return(V)
 }
