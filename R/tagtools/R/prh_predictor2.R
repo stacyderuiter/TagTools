@@ -86,11 +86,11 @@ prh_predictor2 <- function(P, A, sampling_rate = NULL, MAXD = 10) {
   # check if there is a segment before first dive and after last dive
   s1 <- c(max(T$start[1] - MAXSEG, 0), T$start[1])
   se <- c(T$end[nrow(T)], min(T$end[nrow(T)] + MAXSEG, (nrow(P) - 1) / sampling_rate))
-  k <- tail(which(P[(round(sampling_rate * s1[1]) + 1):round(sampling_rate * s1[2])] > MAXD), 1)
+  k <- utils::tail(which(P[(round(sampling_rate * s1[1]) + 1):round(sampling_rate * s1[2])] > MAXD), 1)
   if (length(k) != 0) {
     s1[1] <- s1[1] + k / sampling_rate
   }
-  k <- head(which(P[(round(sampling_rate * se[1]) + 1):round(sampling_rate * se[2])] > MAXD), 1)
+  k <- utils::head(which(P[(round(sampling_rate * se[1]) + 1):round(sampling_rate * se[2])] > MAXD), 1)
   if (length(k) != 0) {
     se[2] <- se[1] + (k - 1) / sampling_rate
   }
@@ -99,7 +99,7 @@ prh_predictor2 <- function(P, A, sampling_rate = NULL, MAXD = 10) {
 
   # break up long surfacing intervals
   while (TRUE) {
-    k <- head(which(apply(S, MARGIN = 1, FUN = diff) > MAXSEG), 1)
+    k <- utils::head(which(apply(S, MARGIN = 1, FUN = diff) > MAXSEG), 1)
     if (length(k) == 0) {
       break
     }

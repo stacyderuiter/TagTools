@@ -20,6 +20,7 @@ Description: High-resolution movement-sensor tags typically include acceleromete
 Depends: R (>= 3.4)
 Imports:
     CircStats,
+    dplyr,
     ggformula,
     graphics,
     hht,
@@ -34,6 +35,7 @@ Imports:
     rgl,
     signal,
     stats,
+    stringr,
     utils,
     zoo,
     zoom

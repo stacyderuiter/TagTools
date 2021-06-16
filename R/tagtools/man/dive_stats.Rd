@@ -18,7 +18,7 @@ dive_stats(
 \arguments{
 \item{P}{Depth data. A vector (or one-column matrix), or a tag sensor data list.}
 
-\item{X}{(optional) Another data stream (as a vector (or a one-column matrix) or a tag sensor data list) for which to compute mean and variability. If \code{angular} is TRUE, interpreted as angular data (for example pitch, roll, or heading) and means and variances are computed accordingly. 
+\item{X}{(optional) Another data stream (as a vector (or a one-column matrix) or a tag sensor data list) for which to compute mean and variability. If \code{angular} is TRUE, interpreted as angular data (for example pitch, roll, or heading) and means and variances are computed accordingly.
 The unit of measure must be radians (NOT degrees). Currently, \code{X} must be regularly sampled.}
 
 \item{dive_cues}{A two-column data frame or matrix with dive/flight start times in the first column and dive/flight end times in the second. May be obtained from \code{\link{find_dives}}. Units should be seconds since start of tag recording.}

@@ -56,11 +56,11 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
     }
   }
 
-  if (is.list(P) & hasName(P, "data") & hasName(P, "sampling_rate")) {
+  if (is.list(P) & utils::hasName(P, "data") & utils::hasName(P, "sampling_rate")) {
     fs <- P$sampling_rate
     P <- as.matrix(P$data, ncol = 1)
   } else {
-    fs <- unlist(head(sampling_rate, 1))
+    fs <- unlist(utils::head(sampling_rate, 1))
   }
 
   if (is.list(X) & hasName(X, "data") & hasName(X, "sampling_rate")) {
@@ -74,12 +74,17 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
   } else {
     if (!is.null(X)) {
       X <- as.matrix(X, ncol = 1)
-      xfs <- unlist(tail(sampling_rate, 1))
+      xfs <- unlist(utils::tail(sampling_rate, 1))
       if (xfs == fs & nrow(X) != nrow(P)) {
         warning("inputs P and X have different numbers of observations, but the same sampling rate. Use sampling_rate input if you need to specify different sampling rates for each one.")
       }
     }
   }
+  
+  # bind ouput col names to variables so later select()
+  # does not result in R CMD check NOTEs
+  num <- max <- st <- et <- dur <- 
+    dest_st <- dest_et <- dest_dur <- to_dur <- from_dur <- NULL
 
   di <- round(dive_cues * fs)
 
@@ -112,11 +117,11 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
         ad <- a[c(ptx[1]:ptx[2])]
         if (na.rm) {
           # CircStats functions return NA if any NAs present
-          # (no na.omit input avail)
-          a <- na.omit(a)
-          at <- na.omit(at)
-          af <- na.omit(af)
-          ad <- na.omit(ad)
+          # (no stats::na.omit input avail)
+          a <- stats::na.omit(a)
+          at <- stats::na.omit(at)
+          af <- stats::na.omit(af)
+          ad <- stats::na.omit(ad)
         }
         Y$mean_angle[d] <- CircStats::circ.mean(a)
         Y$angle_var[d] <- CircStats::circ.disp(a)$var

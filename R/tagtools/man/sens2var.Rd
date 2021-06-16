@@ -2,10 +2,7 @@
 % Please edit documentation in R/sens2var.R
 \name{sens2var}
 \alias{sens2var}
-\title{Extract data from a sensor structure.
- 
-This function extracts loose data variables from tag sensor data lists.
-It can also be used to check two sensor data lists for compatibility (i.e., same duration and sampling rate).}
+\title{Extract data from a sensor structure.}
 \usage{
 sens2var(Sx, Sy = NULL, regular = NULL)
 }

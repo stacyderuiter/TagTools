@@ -2,11 +2,7 @@
 % Please edit documentation in R/add_nc.R
 \name{add_nc}
 \alias{add_nc}
-\title{Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.
-	
-Add one tag sensor or metadata variable to a NetCDF archive file. If the archive file does not exist,
-it is created. The file is assumed to be in the current working directory 
-unless a pathname is added to the beginning of fname.}
+\title{Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.}
 \usage{
 add_nc(file, X, vname)
 }
@@ -18,17 +14,15 @@ add_nc(file, X, vname)
 \item{vname}{The name of the sensor data stream to be saved. Defaults to the entry "name" from the sensor or metadata list provided by the user (but an option to specify a name is provided to faciliate calling this function from \code{save_nc}).}
 }
 \description{
-Save an item to a NetCDF or add one tag sensor or metadata variable to a NetCDF archive file.
-	
 Add one tag sensor or metadata variable to a NetCDF archive file. If the archive file does not exist,
-it is created. The file is assumed to be in the current working directory 
+it is created. The file is assumed to be in the current working directory
 unless a pathname is added to the beginning of fname.
 }
 \examples{
- \dontrun{
- #if A is in workspace,
- #add_nc('dog17_124a',A)
- # generates a file dog17_124a.nc (if it does not already exist) and adds a variable A.
+\dontrun{
+# if A is in workspace,
+# add_nc('dog17_124a',A)
+# generates a file dog17_124a.nc (if it does not already exist) and adds a variable A.
 }
 }
 \seealso{

@@ -28,7 +28,7 @@ This function plots the input data # and allows the user to select start and end
 Possible input combinations include: crop(X) if X is a sensor list, crop(X, sampling_rate) if X is a vector or matrix.
 }
 \examples{
-data <- beaked_whale
+data <- beaked_whale 
          Pc <- crop(data$P)		#interactively select a section of data
          Ydata <- list(depth = Pc$Y)
          plott(Ydata)

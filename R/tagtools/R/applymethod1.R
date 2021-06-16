@@ -89,7 +89,7 @@ applymethod1 <- function(A, sampling_rate, ss) {
   Q <- tagtools::euler2rotmat(prh[1], prh[2], prh[3])
   # animal frame acceleration for the segment
   Aa <- Ak2 %*% t(Q)
-  if (median(sign(Aa[, 1])) != ss[5]) {
+  if (stats::median(sign(Aa[, 1])) != ss[5]) {
     # if incorrect, add/subtract 180 degrees
     prh[3] <- (prh[3] - pi) %% (2 * pi)
   }

@@ -40,7 +40,7 @@ tag2animal <- function(X, sampling_rate, OTAB, Ya = NULL) {
 
   if (missing(sampling_rate) & !is.list(X)) {
     # if X is a matrix, then sampling_rate must be provided
-    error("input sampling_rate is require for tag2animal conversion, unless X is an animaltags data structure")
+    stop("input sampling_rate is require for tag2animal conversion, unless X is an animaltags data structure")
   }
 
   if (is.list(X)) { # get sampling_rate and data from X is X is animaltags sensor structure
@@ -84,8 +84,8 @@ tag2animal <- function(X, sampling_rate, OTAB, Ya = NULL) {
     PTAB <- o2p(OTAB)
     # time stamps
     t <- matrix(c(0:(nrow(X) - 1)) / sampling_rate, ncol = 1)
-    if (PTAB[nrow(PTAB), 1] < tail(t, 1)) {
-      PTAB <- rbind(PTAB, matrix(c(tail(t, 1), PTAB[nrow(PTAB), 2:4]), nrow = 1))
+    if (PTAB[nrow(PTAB), 1] < utils::tail(t, 1)) {
+      PTAB <- rbind(PTAB, matrix(c(utils::tail(t, 1), PTAB[nrow(PTAB), 2:4]), nrow = 1))
     }
     prh <- matrix(0, nrow = nrow(t), ncol = 3)
     for (col in c(2:4)) {
