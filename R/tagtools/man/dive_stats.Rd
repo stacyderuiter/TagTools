@@ -37,15 +37,13 @@ The unit of measure must be radians (NOT degrees). Currently, \code{X} must be r
 A data frame with one row for each dive/flight and columns as detailed below. All times are in seconds, and rates in units of x/sec where x is the units of \code{P}.
 \itemize{
 \code{max} { The maximum depth or altitude}
+\code{st} {start time of dive (seconds) - from input dive_cues}
+\code{et} {end time of dive (seconds) - from input dive_cues}
 \code{dur} { The duration of the excursion}
-\code{dest_st} { The start time of the destination phase}
-\code{dest_et} { The end time of the destination phase}
+\code{dest_st} { The start time of the destination phase in seconds since start of tag recording (which is also the end time of to phase)}
+\code{dest_et} { The end time of the destination phase in seconds since start of tag recording (which is also the start of the from phase).}
 \code{dest_dur} { The duration in seconds of destination phase}
-\code{to_st} { The start time of the to phase}
-\code{to_et} { The end time of the to phase}
 \code{to_dur} { The duration in seconds of to phase}
-\code{from_st} { The start time of the from phase}
-\code{from_et} { The end time of the from phase}
 \code{from_dur} { The duration in seconds of from phase}
 \code{mean_angle} { If angular=TRUE and X is input, the mean angle for the entire excursion. Values for each phase are also provided in columns \code{mean_to_angle}, \code{mean_dest_angle}, and \code{mean_from_angle}.}
 \code{angle_var} { If angular=TRUE and X is input, the angular variance for the entire excursion. Values for each phase are also provided individually in columns \code{to_angle_var}, \code{dest_angle_var}, and \code{from_angle_var}.}
@@ -59,8 +57,8 @@ compute summary dive statistics.
 }
 \details{
 In addition to the maximum excursion and duration, \code{dive_stats} divides each excursion into three phases:
-"to" (descent for dives, ascent for flights), "from" (ascent for dives, descent for flights), and "destination". 
-The "destination" (bottom for dives and top for flights) 
+"to" (descent for dives, ascent for flights), "from" (ascent for dives, descent for flights), and "destination".
+The "destination" (bottom for dives and top for flights)
 phase of the excursion is identified using a "proportion of maximum depth/altitude" method,
 whereby for example the bottom phase of a dive lasts from the first to the last time the depth exceeds a stated proportion of the maximum depth.
 Average vertical velocity is computed for the to and from phases using a simple method: total depth/altitude change divided by total time.

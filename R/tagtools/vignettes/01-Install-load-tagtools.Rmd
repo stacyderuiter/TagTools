@@ -1,0 +1,94 @@
+---
+title: "Setting up tagtools"
+author: "(R version)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know this package. We hope it is useful to you. 
+
+In this vignette you will complete the first important setup steps of installing the package on your machine and making sure it is loaded in your session.
+
+# Installing tagtools for R
+
+## Prerequisites
+Before you begin, you must have R and -- recommended -- RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop). If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
+
+These practicals assume that you have some basic experience working with R/RStudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. 
+
+## Install tagtools from github
+If you have `devtools` installed on your computer, you can use it to install the `tagtools` package directly from github.
+
+If you want or need to install `devtools`, or want more information about it, see the [online installation guide at r-project.org](https://www.r-project.org/nosvn/pandoc/devtools.html).
+
+```{r}
+devtools::install_github('stacyderuiter/TagTools/R/tagtools')
+```
+
+## Install tagtools from zip archive
+If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials. *Note: in this case you will probably also have to manually install all the packages `tagtools` depends on; if you use the `devtools` method above, you will not.*
+
+- **Windows** users will want to use the **.zip** archive
+- **Mac** or **Linux** users will want to use the **.tgz** archive
+
+Save the appropriate archive to a known location on your computer.
+
+Then, run:
+
+```{r}
+install.packages('YourPath/YourFilename')
+```
+
+(fill in the absolute or relative path to the archive file, and the archive file name). For example, on a Mac, if the file is saved to Downloads, your path might look like this: 
+
+```{r}
+install.packages('/Users/YourUsernameHere/Downloads/FileName.tgz')
+```
+
+You can also use the "install packages" GUI in RStudio -- go to the "Packages" tab, click "Install", choose "Package Archive File" from the "Install From" pulldown menu, and then navigate to the archive file. Then just follow the prompts.
+
+You must also make sure you have installed all the packages that `tagtools` depends on:
+
+```{r}
+dpnds <- c('CircStats', 'ggformula', 'graphics', 'hht', 'latex2exp', 'lubridate', 'magrittr', 'matlab', 'ncdf4', 'plotly', 'pracma', 'readr', 'rgl', 'signal', 'stats', 'utils', 'zoo', 'zoom')
+install.packages(pkgs = dpnds)
+```
+
+Note here that we are writing an object `dpnds`, which is a vector of these 18 (text) strings, concatenated together with `c()`. Then `install.packages()` can take all these dependencies as an input.
+
+## Check tagtools Installation
+
+Once the `tagtools` are successfully installed, you should be able to run
+
+```{r}
+library(tagtools)
+```
+
+Another check is to make sure that function help files are accessible; for example,
+
+```{r}
+?load_nc
+```
+
+Now or at any point in the future, you might get an error saying the function doesn't exist. When this happens, make sure you have tagtools loaded in your library. While you won't have to reinstall these packages with `install.packages()` unless you start working on a different machine, you will have to run `library(tagtools)` or `require(tagtools)` every time you restart RStudio. 
+
+Having fewer packages loaded is kinder to your computer's memory, so it is good that R doesn't automatically load everything. However, it does mean that every time you restart RStudio, you must reload the packages you need, such as `tagtools`, yourself. 
+
+If the command `?` pulls up a help file for the function `load_nc` like it should, you're all set. 
+
+# Review
+
+What have you learned so far? Important setup steps that will help avoid confusion and delay moving forward.
+
+Congrats!
