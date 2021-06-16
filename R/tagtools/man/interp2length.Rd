@@ -24,9 +24,15 @@ Y is a sensor structure, vector or matrix of interpolated data with the same num
 This function is used to reduce the time span of data by cropping out any data that falls before and after two time cues.
 }
 \examples{
+         plott(X = list(harbor_seal$P), fsx = 5) 
+         # get an idea of what the data looks like
          P_dec <- decdc(harbor_seal$P, 5)
+         
          # note: you would not really want to decimate and then linearly interpolate. 
          # only doing so here to create an example from existing datasets 
          # that have uniform sampling rates across sensors
+         
          P_interp <- interp2length(X = P_dec, Z = harbor_seal$A)
+         plott(X = list(P_interp$data), fsx = 1) 
+         # compare to original plot. should be pretty close 
 }

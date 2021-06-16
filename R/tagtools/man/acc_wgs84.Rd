@@ -10,15 +10,15 @@ acc_wgs84(latitude)
 \item{latitude}{The latitude in degrees.}
 }
 \value{
-g given in units of m/s^2
+g given in units of $m/s^2$
 }
 \description{
-This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 internationalgravity formula.
+This function calculates the total acceleration due to gravitation and centripetal force at the earth's surface according to the WGS84 international gravity formula.
 }
 \note{
 Source: http://solid_earth.ou.edu/notes/potential/igf.htm
 }
 \examples{
 acc_wgs84(50)
-         #Returns: 9.8107 m/s^2
+# Returns: 9.8107 $m/s^2$
 }

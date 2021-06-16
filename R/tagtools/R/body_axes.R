@@ -27,10 +27,10 @@ body_axes <- function(A, M, sampling_rate = NULL, fc = NULL) {
     sampling_rate <- A$sampling_rate
     A <- A$data
     toffs <- c(0, 0)
-    if (start_offset %in% names(A)) {
+    if ('start_offset' %in% names(A)) {
       toffs[1] <- A$start_offset
     }
-    if (start_offset %in% names(M)) {
+    if ('start_offset' %in% names(M)) {
       toffs[2] <- M$start_offset
     }
     if (toffs[1] != toffs[2]) {

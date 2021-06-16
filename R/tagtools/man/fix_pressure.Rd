@@ -11,9 +11,9 @@ fix_pressure(p, t, sampling_rate, maxp = NULL)
 
 \item{t}{A sensor list or vector of temperature in degrees Celsius}
 
-\item{sampling_rate}{The sampling_rate of p and t in Hz. This is only needed if p and t are not sensor lists. The depth and temperature must both have the same sampling rate (ues decdc if needed to achieve this).}
+\item{sampling_rate}{The sampling_rate of p and t in Hz. This is only needed if p and t are not sensor lists. The depth and temperature must both have the same sampling rate (use `decdc` if needed to achieve this).}
 
-\item{maxp}{The maximum depth or altitue reading in the pressure data for which the animal could actually be at the surface. This is a rought measurement of the potential error in the pressure data. The unit is meters. Start with a small value, e.g., 2m and rerun fix_pressure with a larger value if there are still obvious temperature-related errors in the resulting depth/altitude profile.}
+\item{maxp}{The maximum depth or altitude reading in the pressure data for which the animal could actually be at the surface. This is a rough measurement of the potential error in the pressure data. The unit is meters. Start with a small value, e.g., 2m and rerun fix_pressure with a larger value if there are still obvious temperature-related errors in the resulting depth/altitude profile.}
 }
 \value{
 A list with 2 elements:
@@ -23,11 +23,11 @@ A list with 2 elements:
 }
 }
 \description{
-This function is used to correct a depth or altitude profile for offsets caused by mis-calibration and temperature. This function finds minima in the dive/altitude profile that are consistent with surfacing/landing. It uses the depth/height at these points to fit a temperature regression.
+This function is used to correct a depth or altitude profile for offsets caused by miscalibration and temperature. This function finds minima in the dive/altitude profile that are consistent with surfacing/landing. It uses the depth/height at these points to fit a temperature regression.
 }
 \note{
-This function makes a number of assumptions about the depth/altitude data and about the behaviour of animals: First, the depth data should have few incorrect outlier (negative) values that fall well beyond the surface. These can be reduced using median_filter.m before calling fix_depth. Second, the animal is assumed to be near the surface at least 2% of the time. If the animal is less frequently at the surface, you may need to change the value of PRCTSURF near the start of the function. Third, potential surfacings are detected by looking for zero-crossings inthe vertical speed and this requires defining a threshold in vertical speed that must be crossed by each zero crossing. The value used is 0.05 m/s but this may be too high for animals that move very slowly near the surface. In which case, change MAXSPEED near the start of the function.
+This function makes a number of assumptions about the depth/altitude data and about the behaviour of animals: First, the depth data should have few incorrect outlier (negative) values that fall well beyond the surface. These can be reduced using median_filter.m before calling fix_depth. Second, the animal is assumed to be near the surface at least 2% of the time. If the animal is less frequently at the surface, you may need to change the value of PRCTSURF near the start of the function. Third, potential surfacings are detected by looking for zero-crossings in the vertical speed and this requires defining a threshold in vertical speed that must be crossed by each zero crossing. The value used is 0.05 m/s but this may be too high for animals that move very slowly near the surface. In which case, change MAXSPEED near the start of the function.
 }
 \examples{
-#Example Coming Soon!
+# Example Coming Soon!
 }

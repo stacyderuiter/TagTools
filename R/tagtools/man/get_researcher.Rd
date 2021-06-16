@@ -7,7 +7,7 @@
 get_researcher(initial)
 }
 \arguments{
-\item{initial}{a two-letter code for the species of interest (first letter of Genus and first letter of species)}
+\item{initial}{a two-letter code for the researcher of interest (first letter of first name and first letter of last name)}
 }
 \description{
 Find matching researcher in a list of known tag researchers

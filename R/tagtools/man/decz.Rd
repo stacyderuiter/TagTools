@@ -35,7 +35,8 @@ Decimation is performed in the same way as for \code{\link{decdc}}. The group de
 # Decimate beaked whale acceleration data from testset1 by a factor of 10
 # in 3 chunks
 \dontrun{
-bw <- load_nc('data/testset1.nc')
+bw <- load_nc('data/testset1.nc') # make sure the folder Data is in your working directory, and that a file testset1.nc is in this folder
+plott(list(Accel = bw$A)) # acceleration data before decimation
 a_rows <- nrow(bw$A$data)
 a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
 a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)
@@ -49,6 +50,8 @@ for (k in 1:nrow(a_ind)){
   Z <- decz_out$Z 
   y <- rbind(y,decz_out$y)
 }
+decz_out$y$sampling_rate <- 2.5
+plott(list(DecAccel = decz_out)) # does not plot
 }
 }
 \seealso{

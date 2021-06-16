@@ -41,3 +41,6 @@ This function is used to plot two dimensional lines with each individual line po
 \note{
 x, y and c must all be vectors of the same size.
 }
+\examples{
+col_line(1:20, 1:20, 1:20)
+}

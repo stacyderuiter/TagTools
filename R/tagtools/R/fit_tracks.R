@@ -67,7 +67,7 @@ fit_tracks <- function(P, T = NULL, D, sampling_rate) {
     V[nrow(V), ]
   )
   
-  dk <- c(k[1], diff(k), nrow(D) - tail(k, 1))
+  dk <- c(k[1], diff(k), nrow(D) - utils::tail(k, 1))
   ki <- c(0, t(cumsum(dk)))
   C <- matrix(0, nrow = nrow(D), ncol = 2) # make space for the merged track
   

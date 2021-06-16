@@ -17,17 +17,19 @@ tortuosity(T, sampling_rate, intvl)
 The tortuosity index which is between 0 and 1 as described above. t contains a value for each period of intvl seconds.
 }
 \description{
-This function is used to measure the toruosity of a regularly sampled horizontal track. Tortuosity can be measured in a number of ways. This function compares the stretched-out track length (STL) over an interval of time with the distance made good (DMG, i.e., the distance actually covered in the interval). The index returned is (STL-DMG)/STL which is 0 for straightline movement and 1 for extreme circular movement.
+This function is used to measure the tortuosity of a regularly sampled horizontal track. Tortuosity can be measured in a number of ways. This function compares the stretched-out track length (STL) over an interval of time with the distance made good (DMG, i.e., the distance actually covered in the interval). The index returned is (STL-DMG)/STL which is 0 for straightline movement and 1 for extreme circular movement.
 }
 \note{
 This tortuosity index is fairly insensitive to speed so if T is produced by dead-reckoning (e.g., using ptrack or htrack), the speed estimate is not important. Also the frame of T is not important as long as the two axes (nominally called northing and easting) used to describe the positions are perpendicular.
 }
 \examples{
-\dontrun{ 
+\dontrun{
 BW <- beaked_whale
-T <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
-sampling_rate = BW$A$sampling_rate, 
-fc = NULL, include_pe = TRUE)$T
+T <- ptrack(
+  A = BW$A$data, M = BW$M$data, s = 3,
+  sampling_rate = BW$A$sampling_rate,
+  fc = NULL, include_pe = TRUE
+)$T
 t <- tortuosity(T, sampling_rate = BW$A$sampling_rate, intvl = 25)
 }
 }

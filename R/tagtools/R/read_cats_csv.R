@@ -1,7 +1,7 @@
 #' Read a CSV file with sensor data from a CATS tag
 #'
 #' Read in data from a CATS tag deployment (stored in a .csv file). This function is usable by itself but is more normally
-#' called by \code{\link{read_cats()}} which handles metadata and creates a NetCDF file.
+#' called by \code{\link[tagtools]{read_cats}} which handles metadata and creates a NetCDF file.
 #' @param fname is the file name of the CATS CSV file including the complete
 #' path name if the file is not in the current working directory or in a
 #' directory on the path. The .csv suffix is optional.

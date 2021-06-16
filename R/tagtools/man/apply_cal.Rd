@@ -22,5 +22,5 @@ A tag sensor data structure (or a matrix or vector, if X was a matrix or vector)
 Given an appropriate set of calibration constants and information, this function will apply the calibration procedure to a tag sensor data set. Cal fields currently supported are: poly, cross, map, tcomp, tref
 }
 \examples{
-#coming soon!
+# coming soon!
 }

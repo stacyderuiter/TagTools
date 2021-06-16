@@ -18,8 +18,8 @@ A sensor list or set of sensor lists reverted to the sensor frame, i.e., without
 This function is used to undo any calibration steps that have been applied to sensor data. This will reverse any re-mapping, scaling and offset adjustments that have been applied to the data, reverting the sensor data to the state it was when read in from the source (excluding any filtering or decimation steps).
 }
 \examples{
-\dontrun{ 
+\dontrun{
 BW <- beaked_whale
 undo_cal(BW)
-         }
+}
 }

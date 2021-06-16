@@ -28,7 +28,7 @@ be added to the structure.
 Convert tag frame measurements to animal frame using pre-determined tag orientation(s) on the animal.
 }
 \details{
-This function uses the OTAB matrix to convert sensor data \code{X} from tag frame of reference to whale frame of reference.   
+This function uses the OTAB matrix to convert sensor data \code{X} from tag frame of reference to whale frame of reference.
 Each row of OTAB is: \code{cue1, cue2, pitch, roll, heading}
 where cue1 is the start time of a move in seconds with respect to the
 start of X. cue2 is the end time of the move. If cue1 and cue2 are the
@@ -41,8 +41,10 @@ The first row of OTAB must have cue1 and cue2 equal to 0 as this is the initial
 orientation of the tag on the animal. Subsequent rows (if any) of OTAB describe
 }
 \examples{
-  
-\dontrun{# See animaltags.org for examples of how to use this function.}
+\dontrun{
+# See animaltags.org for examples of how to use this function.
+}
+
 }
 \seealso{
 [prh_predictor1], [prh_predictor2]

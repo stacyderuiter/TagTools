@@ -46,14 +46,14 @@ A list containing the following components:
      \item{\strong{CI_low: }}{Lower bound on rotation-resampling percentile-based confidence interval}
      \item{\strong{CI_up: }}{Upper bound on rotation-resampling percentile-based confidence interval}
      \item{\strong{conf_level: }}{Confidence level, as a proportion}
-     
+
      }}
   \item{\strong{rot_stats}}{ (If \code{return_rot_stats} is TRUE), a vector of \code{n_rot} statistics from the rotated datasets}
   }
 }
 \description{
 Carry out a rotation test (as applied in Miller et al. 2004 and detailed in DeRuiter and Solow 2008). This test is a
-variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events 
+variation on standard randomization or permutation tests that is appropriate for time-series of non-independent events
 (for example, time series of behavioral events that tend to occur in clusters).
 }
 \details{
@@ -63,14 +63,16 @@ the rotation test samples many contiguous blocks from the original data, each th
 computed for these "rotated" samples, provides a distribution to which the test statistic from the data can be compared.
 }
 \examples{
-r <- rotation_test(event_times = 
-2000*runif(500), 
-exp_period = c(100,200), 
-return_rot_stats=TRUE, ts_fun=mean)
+r <- rotation_test(
+  event_times =
+    2000 * runif(500),
+  exp_period = c(100, 200),
+  return_rot_stats = TRUE, ts_fun = mean
+)
 }
 \references{
 Miller, P. J. O., Shapiro, A. D., Tyack, P. L. and Solow, A. R. (2004). Call-type matching in vocal exchanges of free-ranging resident killer whales, Orcinus orca. Anim. Behav. 67, 1099–1107.
-   
+
    DeRuiter, S. L. and Solow, A. R. (2008). A rotation test for behavioural point-process data. Anim. Behav. 76, 1103–1452.
 }
 \seealso{

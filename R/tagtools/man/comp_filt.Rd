@@ -2,7 +2,7 @@
 % Please edit documentation in R/comp_filt.R
 \name{comp_filt}
 \alias{comp_filt}
-\title{Complimentary filtering of a signal.}
+\title{Complementary filtering of a signal.}
 \usage{
 comp_filt(X, sampling_rate = NULL, fc)
 }
@@ -11,7 +11,7 @@ comp_filt(X, sampling_rate = NULL, fc)
 
 \item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second).}
 
-\item{fc}{Specifies the cut-off frequency or frequencies of the complimentary filters. Frequencies are in Hz. If one frequency is given, X will be split into a low- and a high-frequency component. If fc contains more than one value, X will be split into multiple complimentary bands. Each filter length is 4*sampling_rate/fc. Filtering adds no group delay.}
+\item{fc}{Specifies the cut-off frequency or frequencies of the complementary filters. Frequencies are in Hz. If one frequency is given, X will be split into a low- and a high-frequency component. If fc contains more than one value, X will be split into multiple complementary bands. Each filter length is 4*sampling_rate/fc. Filtering adds no group delay.}
 }
 \value{
 A list of filtered signals. There are n+1 sections of the list where n is the length of fc. List sections are ordered in Xf from lowest to highest frequency. Each list section contains a vector or matrix of the same size as X, and at the same sampling rate as X.
@@ -21,4 +21,10 @@ This function breaks signal X into two or more frequency bands such that the sum
 }
 \details{
 Possible input combinations: comp_filt(X,sampling_rate,fc) if X is a vector or matrix, comp_filt(X,fc = fc) if X is a list
+}
+\examples{
+
+Xf <- comp_filt(X = beaked_whale$A$data, sampling_rate = beaked_whale$A$sampling_rate, fc = .8)
+xf <- list(Xf1 = Xf[[1]], Xf2 = Xf[[2]])
+plott(xf, beaked_whale$A$sampling_rate)
 }
