@@ -36,7 +36,7 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
       }
     }
     count_misses <- length(events) - count_hits
-    #calculate the hit rate and false alarm rate
+    # calculate the hit rate and false alarm rate
     hits_rate <- count_hits / length(events)
     false_alarm_rate <- count_false_alarms / tpevents
     detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
@@ -51,13 +51,13 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
     stop("inputs for data and sr are both required")
   }
   
-  #apply function specified in the inputs to data
+  # apply function specified in the inputs to data
   if (!is.null(FUN)) {
     dnew <- FUN(data,  ...)
   } else {
     dnew <- data
   }
-  #set default threshold level
+  # set default threshold level
   if (is.null(thresh) == TRUE) {
     thresh <- stats::quantile(dnew, c(0.99))
   }
@@ -70,16 +70,16 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
     stop("Threshold level is greater the the maximum of the signal. No peaks are detected.")
   }
   
-  #create matrix for data and corresponding sampling number
+  # create matrix for data and corresponding sampling number
   d1 <- matrix(c(1:length(dnew)), ncol = 1)
   d2 <- matrix(dnew, ncol = 1)
   d <- cbind(d1, d2)
   
-  #determine peaks that are above the threshold
+  # determine peaks that are above the threshold
   pt <- d[, 2] >= thresh
   pk <- d[pt, ]
   
-  #is there more than one peak?
+  # is there more than one peak?
   if (length(pk) == 2) {
     start_time <- pk[1]
     end_time <- pk[1]
@@ -88,7 +88,7 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
     thresh <- thresh
     bktime <- as.numeric(bktime)
   } else {
-    #set default blanking time
+    # set default blanking time
     if (is.null(bktime)) {
       dpk <- diff(pk[, 1])
       bktime <- stats::quantile(dpk, c(.8))
@@ -96,12 +96,12 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
       bktime <- as.numeric(bktime * sr)
     }
     
-    #determine start times for each peak
+    # determine start times for each peak
     dt <- diff(pk[, 1])
     pkst <- c(1, (dt >= bktime))
     start_time <- pk[(pkst == 1), 1]
     
-    #determine the end times for each peak
+    # determine the end times for each peak
     if (sum(pkst) == 1) {
       if (dnew[length(dnew)] > thresh) {
         start_time <- c()
@@ -121,7 +121,7 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
           if (dnew[length(dnew)] > thresh) {
             ending <- which(pkst == 1) - 1
             end_time <- c(pk[ending[2:length(ending)], 1], pk[nrow(pk), 1])
-            #if the last peak does not end before the end of recording, the peak is removed from analysis
+            # if the last peak does not end before the end of recording, the peak is removed from analysis
             start_time <- start_time[1:length(start_time - 1)]
             end_time <- end_time[1:length(end_time - 1)]
           }
@@ -134,7 +134,7 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
       }
     }
     
-    #determine the time and maximum of each peak
+    # determine the time and maximum of each peak
     peak_time <- matrix(0, length(start_time), 1)
     peak_max <- matrix(0, length(start_time), 1)
     if (is.null(start_time) & is.null(end_time)) {
@@ -153,12 +153,12 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
     bktime <- bktime / sr
   }
   
-  #create a list of start times, end times, peak times, peak maxima, thresh, and bktime
+  # create a list of start times, end times, peak times, peak maxima, thresh, and bktime
   peaks <- list(start_time = start_time, end_time = end_time, peak_time = peak_time, peak_max = peak_max, thresh = thresh, bktime = bktime)
   
   
   if (plot_peaks == TRUE) {
-    #create a plot which allows for the thresh and bktime to be manipulated
+    # create a plot which allows for the thresh and bktime to be manipulated
     graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)))
     print("GRAPH HELP: For changing only the thresh level, click once within the plot and then click finish or push escape or push escape to specify the y-value at which your new thresh level will be. For changing just the bktime value, click twice within the plot and then click finish or push escape to specify the length for which your bktime will be. To change both the bktime and the thresh, click three times within the plot: the first click will change the thresh level, the second and third clicks will change the bktime. To return your results without changing the thresh and bktime from their default values, simply click finish or push escape.")
     x <- peaks$peak_time
@@ -264,7 +264,7 @@ detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NU
 
 Case Study
 ---
-###Detecting lunge feeding events of a blue whale from triaxial acceleration data
+### Detecting lunge feeding events of a blue whale from triaxial acceleration data
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this case study, I will be providing an example on how to use the detect_peaks function in order to detect the times of lunge feedings events of a blue whale. Previous studies have shown the effectiveness of using the norm jerk of triaxial acceleration to detect the presence of lunge feeding events in tag data (Simon et al., 2012; Owen et al., 2016). The norm jerk is the square-root of the sum of the squares of each axis of the acceleration matrix. This is a good proxy for feeding behavior events because blue whales, and other lunge feeding whales, are known to drastically increase their speed and acceleration while approaching a feeding patch. Then, upon opening their mouthes to engulf the prey, there is an extremely sudden decrease in speed and acceleration due to drag. This rapid increase and decrease in speed and acceleration can be observed in the norm jerk signal as a large peak in the signal. Thankfully, the tagtools package has the function njerk which can be used to convert our acceleration matrix into the norm jerk signal vector.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To begin, I will load the data to be used in this case study. All of the following data was obtain by members of the SOCAL Behavioral Response Study project (http://sea-inc.net/socal-brs/). This particular blue whale was tagged with a DTAG2, which gathered multisensor data including, but not limited to, triaxial accelerometer and pressure (depth) data. This particular data set has been used in a variety of publications (DeRuiter et al., 2017; Goldbogen et al., 2013; Goldbogen et al., 2015). For the time being, we will load the acceleration matrix (within the whale frame) from the blue whale data set. The acceleration matrix within the whale frame will be labeled as "Aw". I will also create a variable "sampling_rate" that specifies the sampling rate of my acceleration data, which is used to run the njerk function.
@@ -329,7 +329,7 @@ plott(X, sampling_rate, line_colors = "blue")
 str(peaks)
 ```
 
-####ROC Curves and Detection Optimization
+#### ROC Curves and Detection Optimization
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receiver operating characteristic (ROC) curves are a type of plot that are used in order to enhance the overall performance of automated event detection functions by determining an optimal threshold level. These plots are generated by determining the true positive rate and the false positive rate of an event detection function (in this case detect_peaks) at a specified threshold level. A single point on the plot specifies the true positive rate and false positive rate at one specified threshold level. Therefore, in order to generate a full ROC curve, event detections must be performed at a variety of different thresholds. The rate of true positive detections is calulated by dividing the number of true positive detections by the number of actual events. The rate of false positive detections is calculated by dividing the number of false positive detections by the total number of possible events within the time of tag recording. Determining the number of total possible events can be very difficult, unfortunately, because in a biological system, the value is dependent upon a long list of determining factors. For example, the number of times a whale can lunge feed within a given amount of time is dependent upon the availability of its food source, the energy required to swim through currents, the time required to filter water through its baleen after engulfing prey, etc. In a paper written by Jeremy Goldbogen of Stanford University, fin whales were determined to be able to lunge feed every 44.5 ± 19.1 seconds (Goldbogen et al., 2006). Therefore, since blue whales are of similar size to fin whales, averaging only a few meters longer, let's say that blue whales are able to lunge feed after a minimum of 30 seconds since the previous feeding event. Using this number, we can determine the total possible number of lunge feeding events by dividing the total number of samples in our data by the sampling_rate, and then dividing this number by 30. By doing this, we get 420 total possible lunge feeding events (tpevents) by our blue whale.
 ```{r}
 tpevents <- (63000 / sampling_rate) / 30
@@ -348,7 +348,7 @@ head(events, 8)
 ```{r, echo=FALSE, message=FALSE, fig.width=7, fig.height=5}
 rates <- rates_test(data = Aw[1:63000, ], sampling_rate = 5, FUN = njerk, bktime = 30, indices = 63000, events = events, ntests = (1.75 / 0.05), testint = 0.05)
 library(ggplot2)
-ggplot((data.frame(rates)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + geom_point() + theme_bw() + theme(axis.text=element_text(size=15), axis.title=element_text(size=15,face="bold")) + geom_smooth(se = FALSE, span = 0.6)
+ggplot2::ggplot((data.frame(rates)), aes(x = False_Positive_Rate, y = True_Positive_Rate)) + ggplot2::geom_point() + ggplot2::theme_bw() + ggplot2::theme(axis.text=element_text(size=15), axis.title=element_text(size=15,face="bold")) + ggplot2::geom_smooth(se = FALSE, span = 0.6)
 head(rates, 37)
 ```
 
@@ -371,8 +371,8 @@ depthevents <- cropped_depth[events]
 depthdetections <- cropped_depth[peaks$peak_time]
 Dive_Profile <- list(Dive_Profile = cropped_depth)
 plott(Dive_Profile, 5, r = TRUE, par_opts = list(mar=c(1,5,0,0), oma=c(2,0,2,1), las=1, lwd=1, cex = 1))
-points(x = klunge, y = depthevents, col = "red", cex = 1.4, pch = 16)
-points(x = dettimes, y = depthdetections, col = "gold", cex = 1.4, pch = "+:")
+graphics::points(x = klunge, y = depthevents, col = "red", cex = 1.4, pch = 16)
+graphics::points(x = dettimes, y = depthdetections, col = "gold", cex = 1.4, pch = "+:")
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The resulting data shows the lunge feeding events detected by the detect_peaks function while using an "optimal" threshold and blanking time. I have included a plot of the dive profile of the blue whale with the lunges detected by the detect_peaks function marked in gold and the known lunge times marked in red. One brief note about the dive profile plot shown above is that gold and red markings which overlap slightly but which are not directly overlayed still represent a correctly detected lunge feeding event. This is because the exact time at which the lunge was determined to have occured is slightly different between the detect_peaks function and the manual detections performed by the SOCAL BRS researchers.
