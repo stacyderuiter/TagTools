@@ -8,7 +8,7 @@ desktop.ini
 .DS_Store
 *.Rproj
 data/
-# Practical/
+Practical/
 tagtools.Rcheck/
 Presentations/
 R/HMMs/
