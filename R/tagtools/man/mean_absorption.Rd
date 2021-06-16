@@ -11,7 +11,7 @@ mean_absorption(freq, r, depth, Ttab = NULL)
 
 \item{r}{The path (slant) length in metres.}
 
-\item{depth}{The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth=c(dmax,dmin) for a path that extends between two depths.}
+\item{depth}{The depths covered by the path. This can be a single value for a horizontal path or a two component vector i.e., depth = c(dmax, dmin) for a path that extends between two depths.}
 
 \item{Ttab}{(optional) The temperature (a scalar) in degrees C or specifies a temperature profile Ttab = c(depth, tempr) where depth and tempr are equal-sized column vectors. Default value is an isothermal profile of 13 degrees.}
 }
@@ -26,5 +26,5 @@ After Kinsler and Frey pp. 159-160.
 }
 \examples{
 mean_absorption(c(25e3, 60e3), 1000, c(0, 700))
-         #Returns: 7.728188 dB/m
+# Returns: 7.728188 dB/m
 }

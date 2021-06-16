@@ -7,7 +7,7 @@
 read_cats(fname, depid)
 }
 \arguments{
-\item{fname}{is the file name of the CATS CSV file including the complete 
+\item{fname}{is the file name of the CATS CSV file including the complete
 path name if the file is not in the current working directory or in a
 directory on the path. The .csv suffix is optional.}
 
@@ -15,7 +15,7 @@ directory on the path. The .csv suffix is optional.}
 to this deployment, for example, 'mn12_186a'.}
 }
 \value{
-A string (constructed by: '\code{depid}_raw.nc'; for example, 'mn12_186a_raw.nc') containing the file name of the netCDF (.nc) file in which the output has been saved. This function 
+A string (constructed by: '\code{depid}_raw.nc'; for example, 'mn12_186a_raw.nc') containing the file name of the netCDF (.nc) file in which the output has been saved. This function
 generates a netCDF file in the current working directory containing
 		the tag data variables, including:
 		\itemize{
@@ -34,6 +34,8 @@ process. This function is (somewhat) optimised for speed and memory use so will
 tolerate large files. But processing could be slow.
 }
 \examples{
-\dontrun{ nc_filename <- read_cats('my_cats_file.csv', 'my_cats_deplyment_name')
-load_nc('my_cats_deployment_name_raw.nc')} 				
+\dontrun{
+nc_filename <- read_cats("my_cats_file.csv", "my_cats_deplyment_name")
+load_nc("my_cats_deployment_name_raw.nc")
+}
 }

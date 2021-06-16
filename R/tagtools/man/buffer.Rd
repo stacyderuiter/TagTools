@@ -32,9 +32,9 @@ This function is used to buffer a signal vector into a matrix of data frames. If
 }
 \examples{
 x <- c(1:10)
-         n <- 3
-         overlap <- 2
-         opt <- c(2,1)
-         list1 <- buffer(x, n, overlap, opt)
-         list2 <- buffer(x, n, overlap, nodelay = TRUE)
+n <- 3
+overlap <- 2
+opt <- c(2, 1)
+list1 <- buffer(x, n, overlap, opt)
+list2 <- buffer(x, n, overlap, nodelay = TRUE)
 }

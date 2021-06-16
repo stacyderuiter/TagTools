@@ -17,10 +17,10 @@ median_filter(X, n, noend = TRUE)
 The output of the filter. It has the same size as S and has the same sampling rate and units as X. If X is a sensor list, the return will also be.
 }
 \description{
-This function computes the nth-order median filter each column of X. The filter output is the median of each consecutive group of n samples. This is useful for removing occasional outliers in data that is otherwise fairly smooth. This makes it appropriate for pressure, temperature and magnetometer data (amongst other sensors) but not so suitable for acceleration which can be highly dynamic. The filter does not introduce delay. The start and end values, i.e., within n samples of the start or end of the input data, are computed with decreasing order median filters unless noend=TRUE. If noend=TRUE, start and end values are taken directly from X without short median filters.
+This function computes the nth-order median filter each column of X. The filter output is the median of each consecutive group of n samples. This is useful for removing occasional outliers in data that is otherwise fairly smooth. This makes it appropriate for pressure, temperature and magnetometer data (amongst other sensors) but not so suitable for acceleration which can be highly dynamic. The filter does not introduce delay. The start and end values, i.e., within n samples of the start or end of the input data, are computed with decreasing order median filters unless noend = TRUE. If noend = TRUE, start and end values are taken directly from X without short median filters.
 }
 \examples{
 v <- matrix(c(1, 3, 4, 4, 20, -10, 5, 6, 6, 7), ncol = 1)
-w <- median_filter(v, n=3)
-#Returns : c(1, 3, 4, 4, 4, 5, 5, 6, 6, 7)
+w <- median_filter(v, n = 3)
+# Returns: w = c(1, 3, 4, 4, 4, 5, 5, 6, 6, 7)
 }

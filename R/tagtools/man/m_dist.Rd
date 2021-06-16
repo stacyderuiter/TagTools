@@ -27,9 +27,9 @@ m_dist(
 
 \item{overlap}{The amount of overlap, in minutes, between consecutive "comparison" windows. smooth_dur - overlap will give the time resolution of the  resulting distance time series. If not specified or zero, there will be no overlap.  Overlap will also be set to zero if smoothDur is unspecified or zero.}
 
-\item{consec}{Logical. If consec=TRUE, then the calculated distances are between consecutive windows of duration smoothDur, sliding forward over the data set by a time step of (smoothDur-overlap) minutes. If TRUE, baselineStart and baselineEnd inputs will be used to define the period used to calculate the data covariance matrix. Default is consec=FALSE.}
+\item{consec}{Logical. If consec = TRUE, then the calculated distances are between consecutive windows of duration smoothDur, sliding forward over the data set by a time step of (smoothDur-overlap) minutes. If TRUE, baselineStart and baselineEnd inputs will be used to define the period used to calculate the data covariance matrix. Default is consec = FALSE.}
 
-\item{cumSum}{Logical.  If cum_sum=TRUE, then output will be the cumulative sum of the calculated distances, rather than the distances themselves. Default is cum_sum=FALSE.}
+\item{cumSum}{Logical.  If cum_sum = TRUE, then output will be the cumulative sum of the calculated distances, rather than the distances themselves. Default is cum_sum = FALSE.}
 
 \item{expStart}{Start times (in seconds since start of the data set) of the experimental exposure period(s).}
 
@@ -39,7 +39,7 @@ m_dist(
 
 \item{baselineEnd}{End time (in seconds since start of the data set) of the baseline period. If not specified, the entire data set will be used (baseline_end will be the last sampled time-point in the data set).}
 
-\item{BL_COV}{Logical.  If BL_COV=TRUE, then a covariance matrix using all data in baseline period will be used for calculating the Mahalanobis distance. Default is BL_COV=FALSE.}
+\item{BL_COV}{Logical.  If BL_COV=  TRUE, then a covariance matrix using all data in baseline period will be used for calculating the Mahalanobis distance. Default is BL_COV = FALSE.}
 }
 \value{
 Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
@@ -48,7 +48,7 @@ Data frame containing results: D$t is times in seconds since start of dataset, a
 This function is used to calculate the Mahalanobis distance for a multivariate time series.
 }
 \examples{
-\dontrun{BW <- beaked_whale
+\dontrun {BW <- beaked_whale
 dframe <- m_dist(BW$A$data, BW$A$sampling_rate)
 }
 }

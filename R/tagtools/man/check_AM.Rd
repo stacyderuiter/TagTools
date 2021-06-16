@@ -19,25 +19,25 @@ check_AM(A, M = NULL, fs = NULL, find_incl = TRUE)
 If find_incl is false, then the matrix fstr is returned. Otherwise, check_AM returns a list with elements:
 \itemize{
    \item{\code{fstr, }} {The estimated field intensity of A and or M in the same units as A and M.
-         fstr is a vector or a two column matrix. If only one type of data is input, 
+         fstr is a vector or a two column matrix. If only one type of data is input,
          fstr will be a column vector. If both A and M are input, fstr will have two columns
          with the field strength of A in the 1st column and the field strength of M in the
          2nd column.}
-   \item{\code{incl, }} {The estimated field inclination angle (i.e., the angle with respect to the 
-   horizontal plane) in radians. incl is a column vector. By convention, a field 
-   vector pointing below the horizon has a positive inclination angle. This is only 
+   \item{\code{incl, }} {The estimated field inclination angle (i.e., the angle with respect to the
+   horizontal plane) in radians. incl is a column vector. By convention, a field
+   vector pointing below the horizon has a positive inclination angle. This is only
    returned if the function is called with both A and M data.}
 }
 }
 \description{
 Compute field intensity of acceleration and magnetometer data,
- and the inclination angle of the magnetic field. 
- This is useful for checking the quality of a calibration, 
+ and the inclination angle of the magnetic field.
+ This is useful for checking the quality of a calibration,
  for detecting drift, and for validating the mapping
  of the sensor axes to the tag axes.
 }
 \details{
-The sampling rate of fstr and incl is the same as the input sampling rate. 
+The sampling rate of fstr and incl is the same as the input sampling rate.
 This function automatically low-pass filters the data with a cut-off frequency
  of 5 Hz if the sampling rate is greater than 10 Hz.
  Frame: This function assumes a [north,east,up] navigation frame and a
@@ -45,9 +45,11 @@ This function automatically low-pass filters the data with a cut-off frequency
 }
 \examples{
 \dontrun{
-AMcheck <- check_AM(A=matrix(c(-0.3,0.52,0.8), nrow=1),
-                    M=matrix(c(22,-22,14), nrow=1),
-                    fs=1)
-#returns AMcheck$fstr = 1.0002, 34.11744 and AMcheck$incl = 0.20181 radians
+AMcheck <- check_AM(
+  A = matrix(c(-0.3, 0.52, 0.8), nrow = 1),
+  M = matrix(c(22, -22, 14), nrow = 1),
+  fs = 1
+)
+# returns AMcheck$fstr = 1.0002, 34.11744 and AMcheck$incl = 0.20181 radians
 }
 }

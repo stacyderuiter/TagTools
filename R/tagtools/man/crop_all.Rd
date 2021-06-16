@@ -21,8 +21,8 @@ This function is used to reduce the time span of a dataset by cropping out any d
 Possible input combinations: crop_all(X) if X is a sensor list or set of sensor lists, crop_all(tcues, X, Y, ...) if X, Y, ... are sensor lists.
 }
 \examples{
-d <- find_dives(beaked_whale$P,300)
+d <- find_dives(beaked_whale$P,300) 
          X <- crop_all(c(d$start[1], d$end[1]), beaked_whale)	#crop all data to 1st dive
-         plott(X=list(X$P, X$A), r = c(1,0), panel_labels=c('Depth', 'Acc'))
-         #plot shows the dive profile and acceleration of the second dive
+         plott(X = list(X$P, X$A), r = c(1, 0), panel_labels = c('Depth', 'Acc')) 
+         # plot shows the dive profile and acceleration of the first dive 
 }

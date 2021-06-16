@@ -23,9 +23,10 @@ This function saves a tag dataset to a netCDF file (this is an archival file for
 Warning: this will overwrite any previous NetCDF file with the same name. The file is assumed to be in the current working directory unless \code{file} includes file path information.
 }
 \examples{
-\dontrun{save_nc('dog17_124a',A,M,P,info)
-#or equivalently:
-save_nc('dog17_124a',X=list(A,M,P,info))
-#generates a file dog17_124a.nc and adds variables A, M and P, and a metadata structure.
+\dontrun{
+save_nc("dog17_124a", A, M, P, info)
+# or equivalently:
+save_nc("dog17_124a", X = list(A, M, P, info))
+# generates a file dog17_124a.nc and adds variables A, M and P, and a metadata structure.
 }
 }

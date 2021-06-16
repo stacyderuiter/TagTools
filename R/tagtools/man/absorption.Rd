@@ -25,6 +25,6 @@ Input arguments can be scalars, or a mixture of vectors and scalars as long as e
 After Kinsler and Frey pp. 159-160
 }
 \examples{
-absorption(140e3,13,10)
-         #Returns: 0.04354982 dB
+absorption(140e3, 13, 10)
+# Returns: 0.04354982 dB/m
 }

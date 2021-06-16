@@ -18,19 +18,19 @@ prh_predictor1(P, A, sampling_rate = NULL, TH = 100, DIR = "descent")
 \item{DIR}{is an optional dive direction constraint. The default (DIR = 'descent') is to only analyse descents as these tend to give better results. But if DIR = 'both', both descents and ascents are analysed.}
 }
 \value{
-PRH, a data frame with columns \code{cue} \code{p0}, \code{r0}, \code{h0}, and \code{q} 
+PRH, a data frame with columns \code{cue} \code{p0}, \code{r0}, \code{h0}, and \code{q}
 with a row for each dive edge analysed. \code{cue} is the time in second-since-tag-start of the dive edge analysed.
 \code{p0}, \code{r0}, and \code{h0} are the deduced tag orientation angles in radians.
 \code{q} is the quality indicator with a low value (near 0, e.g., <0.05) indicating that the data fit more consistently with the assumptions of the method.
 }
 \description{
 Predict the tag position on a diving animal parameterized by p0, r0, and
-h0, the cannonical angles between the principal axes of the tag and the animal.
+h0, the canonical angles between the principal axes of the tag and the animal.
 The tag orientation on the animal can change with time and this function
 provides a way to estimate the orientation at the start and end of each suitable
 dive. The function critically assumes that the animal rests horizontally at the
 surface (at least on average) and dives steeply away from the surface without an
-initial roll. If ascents are processed, there must also be no roll in the last 
+initial roll. If ascents are processed, there must also be no roll in the last
 seconds of the ascents. See prh_predictor2 for a method more suitable to animals
 that make short dives between respirations.
 The function provides a graphical interface showing the estimated tag-to-animal

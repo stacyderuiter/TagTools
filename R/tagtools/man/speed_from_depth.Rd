@@ -42,5 +42,5 @@ Output sampling rate is the same as the input sampling rate. If A and p are inpu
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A descending animal will have a negative pitch angle.
 }
 \examples{
-  s <- speed_from_depth(harbor_seal$P, harbor_seal$A)    
+s <- speed_from_depth(harbor_seal$P, harbor_seal$A)
 }

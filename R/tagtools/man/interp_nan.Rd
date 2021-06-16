@@ -17,7 +17,7 @@ This is an internal function used by \code{\link{htrack}}
 }
 \examples{
 \dontrun{
-A <- matrix(c(NA, NA ,3, 4,5,6,7,8,9,10,NA,NA,13,14,15,16, NA, NA), ncol = 2)
+A <- matrix(c(NA, NA, 3, 4, 5, 6, 7, 8, 9, 10, NA, NA, 13, 14, 15, 16, NA, NA), ncol = 2)
 result <- interp_nan(A)
 }
 }

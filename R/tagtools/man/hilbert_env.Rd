@@ -2,7 +2,9 @@
 % Please edit documentation in R/hilbert_env.R
 \name{hilbert_env}
 \alias{hilbert_env}
-\title{Compute the envelope of X using Hilbert transform.}
+\title{Compute the envelope of X using Hilbert transform.
+ 
+Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.}
 \usage{
 hilbert_env(X, N = 1024)
 }
@@ -17,16 +19,18 @@ E, the envelope of X. E is the same size as X: it has the same number of columns
 X but being an envelope, all values are >=0.
 }
 \description{
+Compute the envelope of X using Hilbert transform.
+ 
 Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.
 }
 \examples{
-\dontrun{
-s <- matrix(sin(0.1*c(1:10000)), ncol=1)*
-     matrix(sin(0.001*c(1:10000)), ncol=1)
+\dontrun {
+s <- matrix(sin(0.1 * c(1:10000)), ncol = 1) *
+      matrix(sin(0.001 * c(1:10000)), ncol = 1)
 E <- hilbert_env(s)
 #E contains 3 positive half cycles of a sine wave that trace 
 #the upper limit of signal s.
-plot(c(1:length(s)), s, col='grey34')
-lines(c(1:length(E)), E, col='black')
+plot(c(1:length(s)), s, col = 'grey34')
+lines(c(1:length(E)), E, col = 'black')
 }
 }

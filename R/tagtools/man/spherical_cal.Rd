@@ -26,24 +26,24 @@ This function is used to deduce the calibration constants for a triaxial field s
 }
 \details{
 The function reports the residual and the axial balance of the data.
-A low residual e.g., <5\% indicates that the data can be calibrated 
-well and there is not much noise. 
-The axial balance indicates whether the movement in X is 
-suitable for data-driven calibration. If the movement covers all 
-directions fairly equally, the axial balance will be high. 
-A balance <20 \% may lead to unreliable calibration. 
-For bench calibrations, a high axial balance is achieved by 
-rotating the sensor through the full 3-dimensions. 
-Sampling rate and frame of Y are the same as the input data so 
-Y has the same size as X. The units of Y are the same as the units 
-used for n. If n is not specified, the units of Y are the same as 
-for the input data. It is a good idea to low-pass filter and/or 
-remove outliers from the sensor data before using this function 
+A low residual e.g., <5\% indicates that the data can be calibrated
+well and there is not much noise.
+The axial balance indicates whether the movement in X is
+suitable for data-driven calibration. If the movement covers all
+directions fairly equally, the axial balance will be high.
+A balance <20 \% may lead to unreliable calibration.
+For bench calibrations, a high axial balance is achieved by
+rotating the sensor through the full 3-dimensions.
+Sampling rate and frame of Y are the same as the input data so
+Y has the same size as X. The units of Y are the same as the units
+used for n. If n is not specified, the units of Y are the same as
+for the input data. It is a good idea to low-pass filter and/or
+remove outliers from the sensor data before using this function
 to reduce errors from specific acceleration and sensor noise.
 }
 \note{
-This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large. 
-For this reason it is most suitable for bench calibrations rather than 
-field data. This function is only usable for field sensors. 
+This function uses a Simplex search for optimal calibration parameters and so can be slow if the data size is large.
+For this reason it is most suitable for bench calibrations rather than
+field data. This function is only usable for field sensors.
 It will not work for gyroscope data.
 }
