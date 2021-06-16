@@ -21,6 +21,7 @@
 #' # in 3 chunks
 #' \dontrun{
 #' bw <- load_nc('data/testset1.nc') # make sure the folder Data is in your working directory, and that a file testset1.nc is in this folder
+#' plott(list(Accel = bw$A)) # acceleration data before decimation
 #' a_rows <- nrow(bw$A$data)
 #' a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
 #' a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)
@@ -34,6 +35,8 @@
 #'   Z <- decz_out$Z 
 #'   y <- rbind(y,decz_out$y)
 #' }
+#' decz_out$y$sampling_rate <- 2.5
+#' plott(list(DecAccel = decz_out)) # does not plot
 #' }
 
 decz <- function(x, df=NULL, Z=NULL, nf=12, frbw=0.8) {

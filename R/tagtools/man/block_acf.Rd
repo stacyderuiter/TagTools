@@ -18,11 +18,13 @@ block_acf(resids, blocks, max_lag, make_plot = TRUE, ...)
 \item{...}{Additional arguments to be passed to plot.acf}
 }
 \description{
-This function allows calculation of an ACF for a dataset with multiple independent units (for example, data from several individuals, data from multiple dives by an individual animal, etc.). The groups (individual, dive, etc.) should be coded in a categorical variable. The function calculates correlation coefficients over all levels of the categorical variable, but respecting divisions between levels (for example, individual animals are kept separate).
+This function allows calculation of an autocorrelation function (ACF) for a dataset with multiple independent units (for example, data from several individuals, data from multiple dives by an individual animal, etc.). The groups (individual, dive, etc.) should be coded in a categorical variable. The function calculates correlation coefficients over all levels of the categorical variable, but respecting divisions between levels (for example, individual animals are kept separate).
 }
 \examples{
-block_acf(resids=ChickWeight$weight, 
-          blocks=ChickWeight$Chick)
+block_acf(
+  resids = ChickWeight$weight,
+  blocks = ChickWeight$Chick
+)
 }
 \keyword{assessment}
 \keyword{correlation,}

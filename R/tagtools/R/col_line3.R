@@ -5,10 +5,10 @@
 #' @param y A vector or matrix of points on the vertical (y) axis.
 #' @param z A vector or matrix of points on the third (z) axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
-#' @param c_lab A string to use as the label for the color legend
+#' @param col_lab A string to use as the label for the color legend
 #' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
 #' @param ... Additional inputs for plot_ly()
-#' @example 
+#' @examples 
 #' col_line3(1:20, 1:20, 1:20, 1:20)
 #' @export
 #' @seealso \code{\link{col_line}}, \code{\link{cline}}
@@ -19,11 +19,11 @@ col_line3 <- function(x, y, z = 0, c, col_lab = quote(c),
   if (missing(x) | missing(y)) {
     stop("Inputs x and y are required for col_line3 unless formula is provided.\n")
   }
-  x_formula <- as.formula(paste("~", quote(x)))
-  y_formula <- as.formula(paste("~", quote(y)))
-  z_formula <- as.formula(paste("~ -", quote(z)))
+  x_formula <- stats::as.formula(paste("~", quote(x)))
+  y_formula <- stats::as.formula(paste("~", quote(y)))
+  z_formula <- stats::as.formula(paste("~ -", quote(z)))
 
-  color_formula <- as.formula(paste("~", quote(c)))
+  color_formula <- stats::as.formula(paste("~", quote(c)))
 
   plotly::plot_ly(
     x = x_formula, y = y_formula, z = z_formula,

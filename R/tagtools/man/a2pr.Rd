@@ -29,10 +29,13 @@ Output sampling rate is the same as the input sampling rate.
 Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. In these frames, a positive pitch angle is an anti-clockwise rotation around the y-axis. A positive roll angle is a clockwise rotation around the x-axis. A descending animal will have a negative pitch angle while an animal rolled with its right side up will have a positive roll angle.
 }
 \examples{
-\dontrun{samplematrix <- matrix(c(0.77, -0.6, -0.22, 0.45, -0.32, 0.99, 0.2, -0.56, 0.5), 
-                       byrow = TRUE, nrow = 3)
+\dontrun{
+samplematrix <- matrix(c(0.77, -0.6, -0.22, 0.45, -0.32, 0.99, 0.2, -0.56, 0.5),
+  byrow = TRUE, nrow = 3
+)
 list <- a2pr(samplematrix)
 }
+
 }
 \seealso{
 \code{\link{m2h}}

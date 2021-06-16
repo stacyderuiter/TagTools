@@ -8,7 +8,7 @@ csv2struct(fname)
 }
 \arguments{
 \item{fname}{Name of the text file to be read. If no file extension is provided, '.csv' will be
-added automatically. If the file is not located in the current working directory, then \code{file} must include the correct relative or absolute path.}
+added automatically. If the file is not located in the current working directory, then \code{fname} must include the correct relative or absolute path.}
 }
 \value{
 a metadata list populated from \code{fname} (one list element per row in the file). All list elements are stored as \code{"character"} class objects (even if the field contains a number, a date, etc) - no attempt is made to determine the most appropriate class for each item.

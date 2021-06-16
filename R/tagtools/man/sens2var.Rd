@@ -2,10 +2,7 @@
 % Please edit documentation in R/sens2var.R
 \name{sens2var}
 \alias{sens2var}
-\title{Extract data from a sensor structure.
- 
-This function extracts loose data variables from tag sensor data lists.
-It can also be used to check two sensor data lists for compatibility (i.e., same duration and sampling rate).}
+\title{Extract data from a sensor structure.}
 \usage{
 sens2var(Sx, Sy = NULL, regular = NULL)
 }
@@ -27,8 +24,6 @@ A list with entries:
 }
 }
 \description{
-Extract data from a sensor structure.
- 
 This function extracts loose data variables from tag sensor data lists.
 It can also be used to check two sensor data lists for compatibility (i.e., same duration and sampling rate).
 }
@@ -36,5 +31,5 @@ It can also be used to check two sensor data lists for compatibility (i.e., same
 This function is provided for the compatibility checking functionality and for parallel operation with the matlab/octave tag toolkit. However, in R loose variables in the workspace are less commonly used in R, and an R function does not return multiple objects as matlab functions can. Thus, the result of "unpacking" a sensor list is the same data...stored in different and less well documented list (pretty useless).
 }
 \examples{
-#no example given because hard to figure out when you'll use it!    
+# no example given because hard to figure out when you'll use it!
 }

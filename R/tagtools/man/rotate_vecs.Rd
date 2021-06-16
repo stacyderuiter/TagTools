@@ -25,6 +25,7 @@ Frame: This function makes no assumptions about frame.
 x <- (pi / 180) * matrix(c(25, -60, 33), ncol = 3)
 Q <- euler2rotmat(x[, 1], x[, 2], x[, 3])
 V <- rotate_vecs(c(0.77, -0.6, -0.22), Q)
-#Returns: V = c(0.7072485, -0.1255922, 0.6966535)
+# Returns: V = c(0.7072485, -0.1255922, 0.6966535)
 }
+
 }

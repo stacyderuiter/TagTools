@@ -7,7 +7,7 @@
 read_cats_csv(fname, max_samps = Inf, skip_samps = 0)
 }
 \arguments{
-\item{fname}{is the file name of the CATS CSV file including the complete 
+\item{fname}{is the file name of the CATS CSV file including the complete
 path name if the file is not in the current working directory or in a
 directory on the path. The .csv suffix is optional.}
 
@@ -17,7 +17,7 @@ for testing. If max_samps is not given, the entire file is read.}
 \item{skip_samps}{Number of lines of data to skip (excluding header) before starting to read in data. Defaults to 0 (start at the beginning of the file), but can be used to read in a part of a file, or to read in and process a large file in chunks.}
 }
 \value{
-A tibble data frame containing the data read from the file. The column names are 
+A tibble data frame containing the data read from the file. The column names are
     names are taken from the first line of the CSV file and include units and axis. Some columns may be empty (if for example, a tag did not record data from a certain sensor type).
 }
 \description{
@@ -29,6 +29,6 @@ CATS csv files can be extremely large; perhaps too large to read the entire file
 }
 \examples{
 \dontrun{
- V <- read_cats_csv('cats_test_segment')
+V <- read_cats_csv("cats_test_segment")
 }
 }

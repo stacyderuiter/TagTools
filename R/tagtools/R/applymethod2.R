@@ -58,7 +58,7 @@ applymethod2 <- function(A, v, sampling_rate, ss) {
   # between Aa[,1] and depth_rate is negative.
   Q <- euler2rotmat(prh[1], prh[2], prh[3]) # make final transformation matrix
   Aa <- As %*% t(Q) # animal frame acceleration for the segment
-  pp <- coef(lm(vs ~ Aa[, 1]))[2]
+  pp <- stats::coef(stats::lm(vs ~ Aa[, 1]))[2]
   if (pp > 0) {
     prh[3] <- (prh[3] - pi) %% (2 * pi) # if incorrect, add/subtract 180 degrees
   }

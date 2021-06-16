@@ -1,6 +1,6 @@
 #' Make a rotation (or direction cosine) matrix
 #'
-#' This function is used to make a rotation (or direction cosine matrix out of sets of Euler angles, pitch, roll, and heading.
+#' This function is used to make a rotation (or direction cosine) matrix out of sets of Euler angles, pitch, roll, and heading.
 #' @param p The pitch angle in radians.
 #' @param r The roll angle in radians.
 #' @param h The heading or yaw angle in radians.

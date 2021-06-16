@@ -75,7 +75,7 @@ interp2length <- function(X, Z, fs_in = NULL, fs_out = NULL, n_out = NULL) {
     # if sampling rates are different
     y <- matrix(0, nrow = nrow(z), ncol = ncol(x))
     for (c in 1:ncol(x)) {
-      y[ , c] <- approx(x = c(0:(nrow(x)-1)) / fs_in, 
+      y[ , c] <- stats::approx(x = c(0:(nrow(x)-1)) / fs_in, 
                 y = x[, c], 
                 xout = c(0:(nrow(z)-1)) / fs_out,
                 rule = 2 # return value at the closest data extreme when extrapolating (should be only a few samples)

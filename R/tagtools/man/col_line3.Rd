@@ -27,6 +27,9 @@ This function is used to plot three dimensional lines with each individual line 
 \note{
 x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))).
 }
+\examples{
+col_line3(1:20, 1:20, 1:20, 1:20)
+}
 \seealso{
 \code{\link{col_line}}, \code{\link{cline}}
 }

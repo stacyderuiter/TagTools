@@ -9,6 +9,7 @@ desktop.ini
 *.Rproj
 data/
 Practical/
+tagtools.Rcheck/
 Presentations/
 R/HMMs/
 SMMWorkshop/

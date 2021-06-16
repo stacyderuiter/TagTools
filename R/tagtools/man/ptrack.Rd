@@ -15,7 +15,7 @@ ptrack(A, M, s, sampling_rate = NULL, fc = 0.2, return_pe = FALSE)
 
 \item{sampling_rate}{The sampling rate of the sensor data in Hz (samples per second). This input will be ignored if A and/or M are sensor lists, in which case the sampling rate will be extracted from them.}
 
-\item{fc}{(optional) The cut-off frequency of a low-pass filter to aply to A and M before computing bodypointing angle. The filter cut-off frequency is in Hz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
+\item{fc}{(optional) The cut-off frequency of a low-pass filter to apply to A and M before computing bodypointing angle. The filter cut-off frequency is in Hz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.}
 
 \item{return_pe}{Logical. If return_pe is TRUE, the estimated depth or altitude predicted will be returned with the estimated track. Default is FALSE.}
 }
@@ -31,10 +31,11 @@ Frame: This function assumes a [north,east,up] navigation frame and a [forward,r
 CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be affected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
 }
 \examples{
-\dontrun{ 
+\dontrun{
 BW <- beaked_whale
 list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, return_pe = TRUE)
 }
+
 }
 \seealso{
 \code{\link{htrack}}, \code{\link{fit_track}}, \code{\link{track3D}}

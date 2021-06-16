@@ -27,7 +27,7 @@ This function returns one invariant axis that applies to the entire input signal
 }
 \examples{
  \dontrun{
- s <- matrix(sin(2*pi*0.1*c(1:100)), ncol=1)
+ s <- matrix(sin( 2 * pi * 0.1 * c(1:100)), ncol=1)
  A <- s \%*\% c(0.9, -0.4, 0.3) + s^2 \%*\% c(0, 0.2, 0.1)
  inv_axis_out <- inv_axis(A)
    }

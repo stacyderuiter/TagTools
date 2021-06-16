@@ -20,8 +20,8 @@ make_specgram(
 
 \item{fs}{The sampling frequency in Hz}
 
-\item{window}{If you specify a scalar for \code{window}, 
-make_specgram uses a Hanning window of that length. 
+\item{window}{If you specify a scalar for \code{window},
+make_specgram uses a Hanning window of that length.
 \code{window} must have length smaller than or equal to \code{nfft} and greater than \code{noverlap}.}
 
 \item{noverlap}{The number of samples the sections of \code{x} overlap.}
@@ -42,15 +42,18 @@ the same input argument names and defaults as the tag tools Matlab/Octave functi
 }
 \examples{
 \dontrun{
-x <- signal::chirp(seq(from=0, by=0.001, to=2),f0=0,
-t1=2,f1=500)
+x <- signal::chirp(seq(from = 0, by = 0.001, to = 2),
+  f0 = 0,
+  t1 = 2,
+  f1 = 500
+)
 fs <- 2
 nfft <- 256
 numoverlap <- 128
-window = signal::hanning(nfft)
-#Spectrogram plot
-make_specgram(x,nfft,fs,window,numoverlap) 
+window <- signal::hanning(nfft)
+# Spectrogram plot
+make_specgram(x, nfft, fs, window, numoverlap)
 # or calculate and don't plot
-S <- make_specgram(x,nfft,fs,window,numoverlap, draw_plot=FALSE) 
+S <- make_specgram(x, nfft, fs, window, numoverlap, draw_plot = FALSE)
 }
 }

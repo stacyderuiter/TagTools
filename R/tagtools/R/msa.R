@@ -24,7 +24,7 @@ msa <- function(A, ref) {
     if (length(A$meta_conv) > 0) {
       ref <- ref * A$meta_conv
     }
-    if (hasName(A, "data")) {
+    if (utils::hasName(A, "data")) {
       A0 <- A
       A <- A$data
     } else {

@@ -24,6 +24,6 @@ A list with 2 elements:
 This function is used to compute the means of successive blocks of samples.
 }
 \examples{
-samplematrix <- matrix(c(1,3,5,7,9,11,13,15,17), byrow = TRUE, ncol = 3)
-         list <- block_mean(samplematrix, n = 3, nov = 1)
+samplematrix <- matrix(c(1, 3, 5, 7, 9, 11, 13, 15, 17), byrow = TRUE, ncol = 3)
+list <- block_mean(samplematrix, n = 3, nov = 1)
 }

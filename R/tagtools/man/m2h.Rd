@@ -7,7 +7,7 @@
 m2h(M, A, sampling_rate = NULL, fc = NULL)
 }
 \arguments{
-\item{M}{A sensor data structure or matrix, M=[mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
+\item{M}{A sensor data structure or matrix, M = [mx,my,mz] in any consistent unit (e.g., in uT or Gauss) or magnetometer sensor list (e.g., from readtag.R).}
 
 \item{A}{A sensor data structure or matrix with columns [ax ay az] or acceleration sensor list (e.g., from readtag.R). Acceleration can be in any consistent unit, e.g., g or m/s^2.}
 

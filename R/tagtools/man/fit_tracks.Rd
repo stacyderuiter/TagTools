@@ -7,10 +7,10 @@
 fit_tracks(P, T = NULL, D, sampling_rate)
 }
 \arguments{
-\item{P}{a two column matrix or data frame containing the anchor positions. The first column should be the "northing" and the second the "easting" coordinates. (If data frame is input, then columns with those two names (in any position) will be used if present).}
+\item{P}{a two column matrix or data frame containing the anchor positions. The first column should be the "northing" and the second the "easting" coordinates. (If data frame is input, then columns with those two names, in any position, will be used if present).}
 
 \item{T}{a vector of times corresponding to the positions P. If P is a data frame with a column called "T" then that column will be used.
-Times are in seconds since the start of the regularly sampled track. 
+Times are in seconds since the start of the regularly sampled track.
 T must have the same number of rows as P. Times
 must be greater than or equal to 0 and less than the time length of the regularly sampled track.}
 
@@ -23,12 +23,12 @@ track points in a local level frame. Units, axes and frame must match those of P
 \value{
 D, a data frame with 4 columns: "northing" and "easting" along the new track,
 and "current_n" and "current_e", the track increments needed to match the tracks.
-If the difference between the two tracks is due to the medium moving, 
-these increments can be considered an estimate of the current in m/s. 
+If the difference between the two tracks is due to the medium moving,
+these increments can be considered an estimate of the current in m/s.
 The axes and frame are the same as for the input data.
 }
 \description{
-Simple track integration method to merge infrequent 
+Simple track integration method to merge infrequent
 but accurate positions with a regularly sampled track
 that is not absolutely accurate.
 }

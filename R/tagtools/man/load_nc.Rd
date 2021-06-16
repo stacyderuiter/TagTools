@@ -18,7 +18,9 @@ An \code{animaltag} object (a list) containing sensor and metadata structures. T
 This function loads a tag dataset from a netCDF file (this is an archival file format supported by the tagtools package and suitable for submission to online data archives).
 }
 \examples{
-\dontrun{#Note: must have the file testset1.nc saved in current working directory for this to work
-#load_nc('testset1.nc')}
+\dontrun{
+# Note: must have the file testset1.nc saved in current working directory for this to work
+# load_nc('testset1.nc')
+}
 
 }

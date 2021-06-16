@@ -18,7 +18,7 @@
 #' @examples
 #' # coming soon!
 dsf <- function(A, sampling_rate = NULL, fc = NULL, Nfft = NULL) {
-  if (is.list(A) & hasName(A, "data") & hasName(A, "sampling_rate")) {
+  if (is.list(A) & utils::hasName(A, "data") & utils::hasName(A, "sampling_rate")) {
     AA <- A
     sampling_rate <- AA$sampling_rate
     A <- AA$data

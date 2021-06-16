@@ -21,7 +21,7 @@ get_researcher <- function(initial) {
     print(matches)
     r <- readline(prompt = 'Type the row number of the correct match: ')
     r <- as.numeric(r)
-    if (length(n) == 0 | is.na(n) | n < 1 | n > nrow(matches)) {
+    if (length(r) == 0 | is.na(r) | r < 1 | r > nrow(matches)) {
       stop('User input not recognized.')
     }
     k <- matches[r,'Name'] == S$Name

@@ -22,6 +22,8 @@ Decimation is performed by first low-pass filtering x and then keeping 1 sample 
 }
 \examples{
 s <- matrix(sin(2 * pi / 100 * c(0:1000) - 1), ncol = 1)
+plot(c(1:length(s)), s) # before decimation
 y <- decdc(x = s, df = 4)
-#Returns: 0.0023
+plot(c(1:length(y)), y) # after decimation
+
 }

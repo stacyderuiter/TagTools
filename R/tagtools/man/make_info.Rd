@@ -22,5 +22,7 @@ A list containing metadata for a tag deployment. It's recommended to name this o
 This function allows the user to generate a "skeleton" info structure for a tag deployment, with some common pieces of metadata filled in. Additional information can then be added manually or using a custom script before saving this \code{info} as part of a netCDF file.
 }
 \examples{
-\dontrun{ info <- make_info('zc19_365a', 'dtag', 'zc', 'sdr')}
+\dontrun{
+info <- make_info("zc19_365a", "dtag", "zc", "sdr")
+}
 }
