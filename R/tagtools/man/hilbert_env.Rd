@@ -24,12 +24,10 @@ Compute the envelope of X using Hilbert transform.
 Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.
 }
 \examples{
-\dontrun {
+\dontrun{
 s <- matrix(sin(0.1 * c(1:10000)), ncol = 1) *
-      matrix(sin(0.001 * c(1:10000)), ncol = 1)
+ matrix(sin(0.001 * c(1:10000)), ncol = 1)
 E <- hilbert_env(s)
-#E contains 3 positive half cycles of a sine wave that trace 
-#the upper limit of signal s.
 plot(c(1:length(s)), s, col = 'grey34')
 lines(c(1:length(E)), E, col = 'black')
 }

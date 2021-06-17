@@ -7,16 +7,15 @@
 #' @param N (optional) specifies the transform length used. The default value is 1024 and this may be fine for most situations.
 #' @return E, the envelope of X. E is the same size as X: it has the same number of columns and the same number of samples per signal. It has the same units as
 #' X but being an envelope, all values are >=0.
-#' @examples \dontrun {
+#' @export
+#' @examples \dontrun{
 #' s <- matrix(sin(0.1 * c(1:10000)), ncol = 1) *
-#'       matrix(sin(0.001 * c(1:10000)), ncol = 1)
+#'  matrix(sin(0.001 * c(1:10000)), ncol = 1)
 #' E <- hilbert_env(s)
-#' #E contains 3 positive half cycles of a sine wave that trace 
-#' #the upper limit of signal s.
 #' plot(c(1:length(s)), s, col = 'grey34')
 #' lines(c(1:length(E)), E, col = 'black')
 #' }
-#' @export
+
 
 hilbert_env <- function(X, N = 1024) {
 # note: N must be even
