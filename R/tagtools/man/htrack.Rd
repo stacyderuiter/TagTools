@@ -35,5 +35,5 @@ plot(bwhtrack$easting, bwhtrack$northing, xlab = "Easting, m", ylab = "Northing,
 }
 }
 \seealso{
-\code{\link[tagtools]{ptrack}}, \code{\link[tagtools]{fit_track}}, \code{\link{track3D}}
+\code{\link[tagtools]{ptrack}}, \code{\link[tagtools]{fit_tracks}}, \code{\link{track3D}}
 }

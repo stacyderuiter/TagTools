@@ -1,44 +1,62 @@
 #' Plot coloured line(s) in 2 dimensions
 #'
 #' This function is used to plot two dimensional lines with each individual line possessing a different color.
-#' @param formula a formula of the form y ~ x giving the (unquoted) variable names to plot
-#' @param x ignored if a formula is provided. A vector or matrix of points on the horizontal axis.
-#' @param y ignored if a formula is provided. A vector or matrix of points on the vertical axis.
+#' @param x A vector or matrix of points on the horizontal axis.
+#' @param y A vector or matrix of points on the vertical axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
-#' @param c_lab A string to use as the label for the color legend
-#' @param data (optional) a data.frame containing variables used for plotting
-#' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
-#' @param ... Additional inputs to be passed to gf_path()
-#' @return If output is assigned to an object, it will be a ggplot (or ggplotly) object and no plot will be displayed. Otherwise, the plot will be rendered.
-#' @importFrom magrittr "%>%"
-#' @examples 
-#' col_line(1:20, 1:20, 1:20)
-#' @note x, y and c must all be vectors of the same size.
+#' @param ... Additional inputs for plot()
+#' @note x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 #' @export
 
-col_line <- function(formula, x = NULL, y = NULL, c, c_lab = quote(c),
-                     data = NULL, interactive = FALSE, ...) {
-  if (missing(formula) | is.null(formula)) {
-    if (missing(x) | missing(y)) {
-      stop("Inputs x and y are required for col_line unless formula is provided.\n")
+col_line <- function(x, y, c, ...) {
+  if (length(x) == length(y) & length(x) == length(c)) {
+    x <- matrix(x, nrow = 1)
+    y <- matrix(y, nrow = 1)
+    c <- matrix(c, nrow = 1)
+    X <- matrix(0, length(x), 1)
+    Y <- matrix(0, length(x), 1)
+    C <- matrix(0, length(x), 1)
+    for (k in 1:length(x)) {
+      X[k] <- x[k]
+      Y[k] <- y[k]
+      C[k] <- c[k]
     }
-    formula <- stats::as.formula(paste(y, "~", x))
-  }
-
-  color_formula <- stats::as.formula(paste("~", quote(c)))
-
-  if (interactive == TRUE) {
-    fig <- plotly::plot_ly(
-      x = stats::as.formula(paste("~", as.character(formula[3]))),
-      y = stats::as.formula(paste("~", as.character(formula[2]))),
-      data = data,
-      type = "scatter", mode = "markers",
-      color = color_formula,
-      marker = list(size = 1)
-    )
+    data <- list()
+    for (j in 1:(length(X) - 1)) {
+      for (l in (j + 1)) {
+        data[[j]] <- data.frame(X[j:l], Y[j:l])
+      }
+    }
+    graphics::plot(NA, xlim = c(0, max(x)), ylim = c(0, max(y)))
+    for (i in 1:(length(X) - 1)) {
+      d <- data[[i]]
+      graphics::lines(x = d[, 1], y = d[, 2], col = C[i], lwd = 3, xlab = NULL, ylab = NULL, ...)
+    }
   } else {
-    fig <- ggformula::gf_path(formula, data = data, color = color_formula, ...) %>%
-      ggformula::gf_labs(color = c_lab)
+    if (nrow(x) == nrow(y) & nrow(x) == nrow(c) & ncol(x) == ncol(y) & ncol(x) == ncol(c)) {
+      if (ncol(x) == 1) {
+        x <- matrix(x, nrow = 1)
+        y <- matrix(y, nrow = 1)
+        c <- matrix(c, nrow = 1)
+      }
+      datax <- list()
+      for (j in 1:(nrow(x) - 1)) {
+        for (l in (j + 1)) {
+          datax[[j]] <- data.frame(x[j:l, ])
+        }
+      }
+      datay <- list()
+      for (j in 1:(nrow(y) - 1)) {
+        for (l in (j + 1)) {
+          datay[[j]] <- data.frame(y[j:l, ])
+        }
+      }
+      graphics::matplot(NA, xlim = c(0, max(x)), ylim = c(0, max(y)))
+      for (i in 1:(nrow(x) - 1)) {
+        dx <- datax[[i]]
+        dy <- datay[[i]]
+        graphics::matlines(x = dx, y = dy, col = c[i], lwd = 3, lty = 1, xlab = NULL, ylab = NULL, ...)
+      }
+    }
   }
-  fig
 }

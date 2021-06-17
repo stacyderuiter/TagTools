@@ -40,5 +40,5 @@ return_pe = TRUE)
 
 }
 \seealso{
-\code{\link[tagtools]{htrack}}, \code{\link[tagtools]{fit_track}}, \code{\link{track3D}}
+\code{\link[tagtools]{htrack}}, \code{\link[tagtools]{fit_tracks}}, \code{\link{track3D}}
 }
