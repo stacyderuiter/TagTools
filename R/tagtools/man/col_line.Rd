@@ -4,43 +4,20 @@
 \alias{col_line}
 \title{Plot coloured line(s) in 2 dimensions}
 \usage{
-col_line(
-  formula,
-  x = NULL,
-  y = NULL,
-  c,
-  c_lab = quote(c),
-  data = NULL,
-  interactive = FALSE,
-  ...
-)
+col_line(x, y, c, ...)
 }
 \arguments{
-\item{formula}{a formula of the form y ~ x giving the (unquoted) variable names to plot}
+\item{x}{A vector or matrix of points on the horizontal axis.}
 
-\item{x}{ignored if a formula is provided. A vector or matrix of points on the horizontal axis.}
-
-\item{y}{ignored if a formula is provided. A vector or matrix of points on the vertical axis.}
+\item{y}{A vector or matrix of points on the vertical axis.}
 
 \item{c}{A vector or matrix of values representing the colour to draw at each point.}
 
-\item{c_lab}{A string to use as the label for the color legend}
-
-\item{data}{(optional) a data.frame containing variables used for plotting}
-
-\item{interactive}{logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)}
-
-\item{...}{Additional inputs to be passed to gf_path()}
-}
-\value{
-If output is assigned to an object, it will be a ggplot (or ggplotly) object and no plot will be displayed. Otherwise, the plot will be rendered.
+\item{...}{Additional inputs for plot()}
 }
 \description{
 This function is used to plot two dimensional lines with each individual line possessing a different color.
 }
 \note{
-x, y and c must all be vectors of the same size.
-}
-\examples{
-col_line(1:20, 1:20, 1:20)
+x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 }

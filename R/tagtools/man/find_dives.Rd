@@ -25,5 +25,8 @@ This function is used to find the time cues for the start and end of either dive
 }
 \examples{
 BW <- beaked_whale
-T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
+T <- find_dives(p = BW$P$data, 
+sampling_rate = BW$P$sampling_rate, 
+mindepth = 5, surface = 2, 
+findall = NULL)
 }

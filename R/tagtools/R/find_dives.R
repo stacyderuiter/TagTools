@@ -10,7 +10,11 @@
 #' @export
 #' @examples
 #' BW <- beaked_whale
-#' T <- find_dives(p = BW$P$data, sampling_rate = BW$P$sampling_rate, mindepth = 5, surface = 2, findall = NULL)
+#' T <- find_dives(p = BW$P$data, 
+#' sampling_rate = BW$P$sampling_rate, 
+#' mindepth = 5, surface = 2, 
+#' findall = NULL)
+
 find_dives <- function(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0) {
   if (nargs() < 2) {
     stop("inputs for p and mindepth are required")

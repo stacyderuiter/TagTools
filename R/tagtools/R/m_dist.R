@@ -13,40 +13,40 @@
 #' @param baselineEnd End time (in seconds since start of the data set) of the baseline period. If not specified, the entire data set will be used (baseline_end will be the last sampled time-point in the data set).
 #' @param BL_COV Logical.  If BL_COV=  TRUE, then a covariance matrix using all data in baseline period will be used for calculating the Mahalanobis distance. Default is BL_COV = FALSE.
 #' @return Data frame containing results: D$t is times in seconds since start of dataset, at which Mahalanobis distances are reported. If a smoothDur was applied, then the reported times will be the start times of each "comparison" window. D$dist is the Mahalanobis distances between the specified baseline period and the specified "comparison" periods.
-#' @examples
-#' \dontrun {BW <- beaked_whale
-#' dframe <- m_dist(BW$A$data, BW$A$sampling_rate)
-#' }
 #' @export
+#' @examples \dontrun{ BW <- beaked_whale
+#' m_dist_result <- m_dist(BW$A$data, BW$A$sampling_rate)
+#' }
+
 
 m_dist <- function(data, sampling_rate, smoothDur, overlap, consec, cumSum, expStart, expEnd, baselineStart, baselineEnd, BL_COV) {
   # Input checking---------------------------------------
-  if(missing(sampling_rate)) {
+  if (missing(sampling_rate)) {
     sampling_rate <- 1
   }
-  if(missing(smoothDur)) {
+  if (missing(smoothDur)) {
     smoothDur <- 0
   }
-  if(missing(overlap) | smoothDur == 0) {
+  if (missing(overlap) | smoothDur == 0) {
     overlap <- 0
   }
-  if(missing(consec)) {
+  if (missing(consec)) {
     consec = FALSE
   }
-  if(missing(cumSum)) {
+  if (missing(cumSum)) {
     cumSum = FALSE
   }
-  if(missing(expStart) | missing(expEnd)) {
+  if (missing(expStart) | missing(expEnd)) {
     expStart <- NA
     expEnd <- NA
   }
-  if(missing(baselineStart)) {
+  if (missing(baselineStart)) {
     baselineStart <- 0
   }
-  if(missing(baselineEnd)) {
+  if (missing(baselineEnd)) {
     baselineEnd <- floor(nrow(data)/sampling_rate)
   }
-  if(missing(BL_COV)) {
+  if (missing(BL_COV)) {
     BL_COV = FALSE
   }
   # preliminaries - conversion, preallocate space, etc.

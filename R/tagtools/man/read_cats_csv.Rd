@@ -22,7 +22,7 @@ A tibble data frame containing the data read from the file. The column names are
 }
 \description{
 Read in data from a CATS tag deployment (stored in a .csv file). This function is usable by itself but is more normally
-called by \code{\link{read_cats()}} which handles metadata and creates a NetCDF file.
+called by \code{\link[tagtools]{read_cats}} which handles metadata and creates a NetCDF file.
 }
 \note{
 CATS csv files can be extremely large; perhaps too large to read the entire file into memory at once and work with it.

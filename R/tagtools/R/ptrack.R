@@ -11,12 +11,14 @@
 #' @return The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (variables 'northing' and 'easting' in the output data frame) relative to the animal'sposition at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/sampling_rate,2/sampling_rate,... relative to the start time of the measurements. OR, if return_pe = TRUE, this function returns the above value and the estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
 #' @note Frame: This function assumes a [north,east,up] navigation frame and a [forward,right,up] local frame. Both A and M must be rotated if needed to match the animal's cardinal axes otherwise the track will not be meaningful.
 #' @note CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to get an idea of HOW animals move rather than WHERE they go. Few animals probably travel in exactly the direction of their longitudinal axis and anyway measuring the precise orientation of the longitudinal axis of a non-rigid animal is fraught with error. Moreover, if there is net flow in the medium, the animal will be affected by the flow in addition to its autonomous movement. For swimming animals this can lead to substantial errors. The forward speed is assumed to be with respect to the medium so the track derived here is NOT the 'track-made-good', i.e., the geographic movement of the animal. It estimates the movement of the animal with respect to the medium. There are numerous other sources of error so use at your own risk!
-#' @seealso \code{\link[tagtools]{htrack}}, \code{\link[tagtools]{fit_track}}, \code{\link{track3D}}
+#' @seealso \code{\link[tagtools]{htrack}}, \code{\link[tagtools]{fit_tracks}}, \code{\link{track3D}}
 #' @export
 #' @examples
 #' \dontrun{
 #' BW <- beaked_whale
-#' list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, return_pe = TRUE)
+#' list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
+#' sampling_rate = BW$A$sampling_rate, fc = NULL, 
+#' return_pe = TRUE)
 #' }
 #'
 ptrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2, return_pe = FALSE) {
