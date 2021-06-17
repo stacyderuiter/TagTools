@@ -22,8 +22,3 @@ This function assumes the track is on the surface of the geoid,
  and also uses a simple spherical model for the geoid. For
  more accurate conversion to a Cartesian frame, use spatial and mapping packages in Matlab/Octave.
 }
-\examples{
-\dontrun{
-
-}
-}
