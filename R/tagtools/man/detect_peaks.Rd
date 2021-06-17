@@ -41,6 +41,8 @@ As specified above under the description for the input of plot_peaks, an interac
 \examples{
 \dontrun{
 BW <- beaked_whale
-detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = NULL, fs = BW$A$sampling_rate)
+detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, 
+FUN = njerk, thresh = NULL, bktime = NULL, 
+plot_peaks = NULL, fs = BW$A$sampling_rate)
 }
 }

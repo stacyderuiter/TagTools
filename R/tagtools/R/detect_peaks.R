@@ -13,7 +13,9 @@
 #' @note As specified above under the description for the input of plot_peaks, an interactive plot can be generated, allowing the user to manipulate the thresh and bktime values and observe the changes in peak detection. The plot output is only given if the input for plot_peaks is specified as true or if the input is left missing/empty.
 #' @examples \dontrun{
 #' BW <- beaked_whale
-#' detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, FUN = njerk, thresh = NULL, bktime = NULL, plot_peaks = NULL, fs = BW$A$sampling_rate)
+#' detect_peaks(data = BW$A$data, sr = BW$A$sampling_rate, 
+#' FUN = njerk, thresh = NULL, bktime = NULL, 
+#' plot_peaks = NULL, fs = BW$A$sampling_rate)
 #' }
 detect_peaks <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL, ...) {
   if (missing(data) | missing(sr)) {

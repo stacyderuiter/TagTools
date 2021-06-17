@@ -1,10 +1,10 @@
 ---
 title: "Setting up tagtools"
-author: "(R version)"
+author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{install-load-tagtools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  echo = TRUE
 )
 ```
 
@@ -32,8 +32,9 @@ If you have `devtools` installed on your computer, you can use it to install the
 
 If you want or need to install `devtools`, or want more information about it, see the [online installation guide at r-project.org](https://www.r-project.org/nosvn/pandoc/devtools.html).
 
-```{r}
-devtools::install_github('stacyderuiter/TagTools/R/tagtools')
+```{r, eval = FALSE}
+devtools::install_github('stacyderuiter/TagTools/R/tagtools',
+                         build_vignettes = TRUE)
 ```
 
 ## Install tagtools from zip archive
@@ -46,13 +47,13 @@ Save the appropriate archive to a known location on your computer.
 
 Then, run:
 
-```{r}
+```{r, eval = FALSE}
 install.packages('YourPath/YourFilename')
 ```
 
 (fill in the absolute or relative path to the archive file, and the archive file name). For example, on a Mac, if the file is saved to Downloads, your path might look like this: 
 
-```{r}
+```{r, eval = FALSE}
 install.packages('/Users/YourUsernameHere/Downloads/FileName.tgz')
 ```
 
@@ -60,8 +61,12 @@ You can also use the "install packages" GUI in RStudio -- go to the "Packages" t
 
 You must also make sure you have installed all the packages that `tagtools` depends on:
 
-```{r}
-dpnds <- c('CircStats', 'ggformula', 'graphics', 'hht', 'latex2exp', 'lubridate', 'magrittr', 'matlab', 'ncdf4', 'plotly', 'pracma', 'readr', 'rgl', 'signal', 'stats', 'utils', 'zoo', 'zoom')
+```{r, eval = FALSE}
+dpnds <- c('CircStats', 'ggformula', 'graphics', 'hht', 
+           'latex2exp', 'lubridate', 'magrittr', 
+           'matlab', 'ncdf4', 'plotly', 'pracma', 
+           'readr', 'rgl', 'signal', 'stats', 
+           'utils', 'zoo', 'zoom')
 install.packages(pkgs = dpnds)
 ```
 
@@ -77,7 +82,7 @@ library(tagtools)
 
 Another check is to make sure that function help files are accessible; for example,
 
-```{r}
+```{r, eval = FALSE}
 ?load_nc
 ```
 

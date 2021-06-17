@@ -38,4 +38,5 @@ s <- ocdr(p = HS$P$data, A = HS$A$data, sampling_rate = HS$P$sampling_rate, fc =
 speed <- list(s = s)
 plott(speed, testset2$P$sampling_rate)
 }
+
 }

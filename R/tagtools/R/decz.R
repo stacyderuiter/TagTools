@@ -20,17 +20,17 @@
 #' # Decimate beaked whale acceleration data from testset1 by a factor of 10
 #' # in 3 chunks
 #' \dontrun{
-#' bw <- load_nc('data/testset1.nc') # make sure the folder Data is in your working directory, and that a file testset1.nc is in this folder
-#' plott(list(Accel = bw$A)) # acceleration data before decimation
-#' a_rows <- nrow(bw$A$data)
+#' plott(list(Accel = beaked_whale$A)) # acceleration data before decimation
+#' a_rows <- nrow(beaked_whale$A$data)
 #' a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
 #' a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)
 #' df <- 10
 #' Z <- NULL
 #' y <- NULL
 #' for (k in 1:nrow(a_ind)){
-#'   decz_out <- decz(x=bw$A$data[c(a_ind[k,1]:a_ind[k,2]), ],
-#'                      df=df, Z=Z)
+#'   decz_out <- decz(
+#'    x = beaked_whale$A$data[c(a_ind[k,1]:a_ind[k,2]), ],
+#'    df = df, Z = Z)
 #'   df <- NULL
 #'   Z <- decz_out$Z 
 #'   y <- rbind(y,decz_out$y)

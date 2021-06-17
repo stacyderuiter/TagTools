@@ -21,7 +21,7 @@ odba(A, sampling_rate = NULL, fh = NULL, method = "fir", n = NULL)
 A column vector of ODBA with the same number of rows as A. e has the same units as A.
 }
 \description{
-This function is used to compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006. ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the inputaccelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.
+This function is used to compute the 'Overall Dynamic Body Acceleration' sensu Wilson et al. 2006. ODBA is the norm of the high-pass-filtered acceleration. Several methods for computing ODBA are in use which differ by which norm and which filter are used. In the Wilson paper, the 1-norm and a rectangular window (moving average) filter are used. The moving average is subtracted from the input accelerations to implement a high-pass filter. The 2-norm may be preferable if the tag orientation is unknown or may change and this is termed VeDBA. A tapered symmetric FIR  filter gives more efficient high-pass filtering compared to the rectangular window method and avoids lobes in the response.
 }
 \note{
 If applying the default (FIR filtering) method to calculate odba, use the inputs A, sampling_rate, and fh. When applying the 'vedba' or 'wilson' method, use the inputs A, n, and method.
@@ -33,4 +33,5 @@ e <- odba(A = BW$A$data, sampling_rate = BW$A$sampling_rate, fh = 4)
 ba <- list(e = e)
 plott(ba, BW$A$sampling_rate)
 }
+
 }

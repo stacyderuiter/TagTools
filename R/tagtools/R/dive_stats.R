@@ -63,7 +63,7 @@ dive_stats <- function(P, X = NULL, dive_cues, sampling_rate = NULL,
     fs <- unlist(utils::head(sampling_rate, 1))
   }
 
-  if (is.list(X) & hasName(X, "data") & hasName(X, "sampling_rate")) {
+  if (is.list(X) & utils::hasName(X, "data") & utils::hasName(X, "sampling_rate")) {
     if (X$sampling_rate != fs) {
       xfs <- X$sampling_rate
       # stop('Sampling rates of P and X must match.')

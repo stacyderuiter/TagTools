@@ -22,15 +22,15 @@ col_line <- function(formula, x = NULL, y = NULL, c, c_lab = quote(c),
     if (missing(x) | missing(y)) {
       stop("Inputs x and y are required for col_line unless formula is provided.\n")
     }
-    formula <- as.formula(paste(y, "~", x))
+    formula <- stats::as.formula(paste(y, "~", x))
   }
 
-  color_formula <- as.formula(paste("~", quote(c)))
+  color_formula <- stats::as.formula(paste("~", quote(c)))
 
   if (interactive == TRUE) {
     fig <- plotly::plot_ly(
-      x = as.formula(paste("~", as.character(formula[3]))),
-      y = as.formula(paste("~", as.character(formula[2]))),
+      x = stats::as.formula(paste("~", as.character(formula[3]))),
+      y = stats::as.formula(paste("~", as.character(formula[2]))),
       data = data,
       type = "scatter", mode = "markers",
       color = color_formula,

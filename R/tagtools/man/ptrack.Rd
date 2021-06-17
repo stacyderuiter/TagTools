@@ -33,10 +33,12 @@ CAUTION: dead-reckoned tracks are usually very inaccurate. They are useful to ge
 \examples{
 \dontrun{
 BW <- beaked_whale
-list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, return_pe = TRUE)
+list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
+sampling_rate = BW$A$sampling_rate, fc = NULL, 
+return_pe = TRUE)
 }
 
 }
 \seealso{
-\code{\link{htrack}}, \code{\link{fit_track}}, \code{\link{track3D}}
+\code{\link[tagtools]{htrack}}, \code{\link[tagtools]{fit_track}}, \code{\link{track3D}}
 }

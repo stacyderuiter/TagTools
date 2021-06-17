@@ -16,7 +16,9 @@
 #' @examples
 #' \dontrun{
 #' BW <- beaked_whale
-#' list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, sampling_rate = BW$A$sampling_rate, fc = NULL, return_pe = TRUE)
+#' list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
+#' sampling_rate = BW$A$sampling_rate, fc = NULL, 
+#' return_pe = TRUE)
 #' }
 #'
 ptrack <- function(A, M, s, sampling_rate = NULL, fc = 0.2, return_pe = FALSE) {

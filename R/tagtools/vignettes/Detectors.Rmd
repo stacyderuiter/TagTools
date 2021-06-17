@@ -39,8 +39,10 @@ acc_test <- function(detections, events, sampling_rate, tpevents) {
     # calculate the hit rate and false alarm rate
     hits_rate <- count_hits / length(events)
     false_alarm_rate <- count_false_alarms / tpevents
-    detections_acc <- list(count_hits = count_hits, count_false_alarms = count_false_alarms,
-                           count_misses = count_misses, hits_rate = hits_rate, false_alarm_rate = false_alarm_rate)
+    detections_acc <- list(count_hits = count_hits, 
+                           count_false_alarms = count_false_alarms,
+                           count_misses = count_misses, hits_rate = hits_rate,
+                           false_alarm_rate = false_alarm_rate)
   }
   return(detections_acc)
 }
@@ -154,7 +156,9 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
   }
   
   # create a list of start times, end times, peak times, peak maxima, thresh, and bktime
-  peaks <- list(start_time = start_time, end_time = end_time, peak_time = peak_time, peak_max = peak_max, thresh = thresh, bktime = bktime)
+  peaks <- list(start_time = start_time, end_time = end_time, 
+                peak_time = peak_time, peak_max = peak_max, 
+                thresh = thresh, bktime = bktime)
   
   
   if (plot_peaks == TRUE) {
@@ -170,25 +174,32 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
     if (length(pts$x) == 3) {
       thresh <- pts$y[1]
       bktime <- max(pts$x[2:3]) - min(pts$x[2:3])
-      peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh, bktime, plot_peaks = FALSE)
+      peaks <- detect_peaks(dnew, sr, FUN = NULL, 
+                            thresh, bktime, plot_peaks = FALSE)
     } else {
       if (length(pts$x) == 1) {
         thresh <- pts$y[1]
-        peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh = thresh, plot_peaks = FALSE)
+        peaks <- detect_peaks(dnew, sr, FUN = NULL, 
+                              thresh = thresh, plot_peaks = FALSE)
       } else {
         if (length(pts$x) == 2) {
           bktime <- max(pts$x) - min(pts$x)
-          peaks <- detect_peaks(dnew, sr, FUN = NULL, bktime = bktime, plot_peaks = FALSE)
+          peaks <- detect_peaks(dnew, sr, FUN = NULL, bktime = bktime, 
+                                plot_peaks = FALSE)
         } else {
-          peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh, bktime, plot_peaks = FALSE)
+          peaks <- detect_peaks(dnew, sr, FUN = NULL, thresh, bktime, 
+                                plot_peaks = FALSE)
         }
       }
     }
-    graphics::plot(dnew, type = "l", col = "blue", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)))
+    graphics::plot(dnew, type = "l", col = "blue", 
+                   xlim = c(0, length(dnew)), ylim = c(0, max(dnew)))
     x <- peaks$peak_time
     y <- peaks$peak_max
     graphics::par(new = TRUE)
-    graphics::plot(x, y, pch = 9, type = "p", col = "orange", xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), cex = .75)
+    graphics::plot(x, y, pch = 9, type = "p", col = "orange", 
+                   xlim = c(0, length(dnew)), ylim = c(0, max(dnew)), 
+                   cex = .75)
     graphics::abline(a = thresh, b = 0, col = "red", lty=2)
   } else {
     return(peaks)
@@ -197,7 +208,9 @@ detect <- function(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peak
 }
 ```
 ```{r, echo=FALSE}
-rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests, testint = NULL, depth = NULL, depthm = NULL) {
+rates_test <- function(data, sampling_rate, FUN, bktime, 
+                       indices, events, ntests, testint = NULL, 
+                       depth = NULL, depthm = NULL) {
   dnew <- FUN(data, sampling_rate)
   if (!is.null(depth)) {
     deep <- which(depth < depthm)
@@ -216,7 +229,8 @@ rates_test <- function(data, sampling_rate, FUN, bktime, indices, events, ntests
         thresh <- max(dnew)
       }
     }
-    detections <- detect(data=dnew, sr=sr, FUN=NULL, thresh = thresh, bktime = bktime, plot_peaks = FALSE)$peak_time
+    detections <- detect(data=dnew, sr=sr, FUN=NULL, thresh = thresh, 
+                         bktime = bktime, plot_peaks = FALSE)$peak_time
     True_Positive_Rate <- acc_test(detections, events, sampling_rate, tpevents)$hits_rate
     False_Positive_Rate <- acc_test(detections, events, sampling_rate, tpevents)$false_alarm_rate
     thresh <- thresh + testint
