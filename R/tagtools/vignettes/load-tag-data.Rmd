@@ -1,0 +1,176 @@
+---
+title: "Load Tag Data"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you. 
+
+In this vignette, you will gain confidence with using the tagtools to create and load netCDF files, including editing metadata. 
+
+*Estimated time for this vignette: about 20 minutes.*
+
+These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+# Reading Tag Data and Saving in netCDF (.nc) format
+For this example, you will read in a small segment of data from a CATs tag.
+
+The code below reads in the data from its native .csv file format, saves it in a standard .nc file, and returns the file name of the new file.
+
+The code assumes that the file is stored in your current working directory, so you may need to either add more path information to the file name, or change your working directory. 
+
+```{r, eval=FALSE}
+cats_nc_fname <- read_cats(fname = '20160730-091117-Froback-11-part',
+                           depid = 'cats_test')
+```
+
+As a refresher, an easy way to check your current working directory is the command `getwd()`. When you run this (with parentheses), it should show you a path to the folder where you want the file `20160730-091117-Froback-11-part.csv` to be located. You can also use `setwd(YourPathHere)` to set the working directory to where this file is already located. 
+
+Another refresher -- if you get an error saying the function doesn't exist, make sure you have `tagtools` in your library! It won't be if you've restarted R recently. Running `library(tagtools)` does the trick as long as you've installed the package in the past. You should also run the following to make sure that all tagtools' dependencies are loaded: `library(CircStats);library(ggformula);library(graphics);library(hht);library(latex2exp);library(lubridate);library(magrittr);library(ncdf4);library(plotly);library(pracma);library(readr);library(rgl);library(signal);library(stats);library(utils);library(zoo);library(zoom)` to avoid confusing errors. Practical 1a has more details.
+
+Running `read_cats` might take a while...
+
+When the process is done, if you look in the current working directory, you should see a file called "cats_test_raw.nc". This is the newly created data file. Is it there? Congrats!
+
+# Loading an .nc File
+
+##  Load the test data set
+Next, we'd like to load in the data file that we just created using the function `load_nc()`.
+
+This code below again assumes the file is in your working directory. Again, you may have to change it to match your machine. (You may also need to escape slashes in the path specification (e.g., \\) depending on your platform.)
+
+```{r}
+MN <- load_nc('cats_test_raw')
+```
+
+This creates an animaltag list object `MN` in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
+
+```{r}
+names(MN)
+str(MN, max.level = 1)
+str(MN$A)
+```
+
+You should see that variables Acc, Gyr, Depth, Light, and info are contained within the list MN.
+
+# Explore the test dataset
+
+Now you can find out what each of the variables is by just typing their name followed by enter. For example, for info (tag-wide metadata), run
+
+```{r}
+MN$info
+```
+
+The info structure tells you where the data came from, when it was collected, on what animal, and with what type of tag. info is the general metadata store for a dataset. You can find out what is in a specific field in info, e.g., the to get the sensors\_list 
+
+```{r}
+MN$info$sensors_list
+```
+
+##  Updating and adding metadata
+There is a lot of metadata missing from this file! `read_cats()` can only auto-fill it with information that is standard for all CATS tags, or contained in the file itself.  Other metadata must be added by the user.
+
+For example, to add a field called 'data\_owner' with value 'Jeremy Goldbogen, Dave Cade', you would enter:
+
+```{r}
+MN$info$data_owner <- 'Jeremy Goldbogen, Dave Cade'
+```
+
+This is a way to add metadata to a dataset before sending it off to an archive (e.g., a dataset to accompany a journal paper). Although there are no rules for what you call each field, we are working toward establishing a set of best practices. 
+
+Entering metadata by hand by typing it into the R console is tedious, and also a recipe for inconsistencies. (Let's avoid that!) To that end, we have tried to provide a couple of other options, considered below. 
+
+## Saving Metadata with make_info
+You can use `make_info()` to create a metadata info structure with information about the researcher, tag type, and study species. This function allows the user to generate a "skeleton" info structure for a tag deployment, with some common pieces of metadata filled in. Additional information can then be added manually or using a custom script before saving this info as part of a netCDF (.nc) file.
+
+For example,
+
+```{r}
+more_info <- make_info(depid = 'cats_test', tagtype = 'CATS',
+                       species = 'mn', owner = 'jg')
+```
+
+Note that you may need to add researchers, species, and perhaps tag types to the template files. To find out where these are stored on your machine, you can run:
+
+```{r}
+system.file('extdata', 'researchers.csv', package='tagtools')
+```
+
+Then, navigate to the folder and make any edits that you would like. You may need to restart R before they will take effect.
+
+Once you have succeeded in running `make_info()`, you can view the results:
+
+```{r}
+more_info
+```
+
+## Combining info and more_info
+Now we have two different info structures -- the one we just created with `make_info()` and the one we got when we created the .nc file using `read_cats()`.
+
+We can combine the two together, keeping the fields from the original info if there are any duplicates:
+
+```{r}
+more_info[names(MN$info)] <- MN$info
+MN$info <- more_info
+```
+
+## Saving metadata with a GUI editor
+Another option for entering user-generated metadata is to use the animaltags metadata editor. This interface allows you to type your information into pre-named fields, allowing you to fully customize the information while also using standard field names.
+
+To launch the editor, run:
+
+```{r}
+metadata_editor()
+```
+
+A web browser window will open in which you can fill in metadata fields for your tag.
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics('meta_editor.png')
+```
+
+Depending on your individual platform, this editor may not have any of the tabs open. Simply click on one of the tabs (Device Information, Tag and Animal Information, etc.) to open it. 
+
+Perhaps you don't currently have metadata on hand to fill in the fields yourself. Or, at some point you might already have metadata stored in a CSV spreadsheet, *in the specific format that this reader recognizes* (it will not magically pick out metadata saved in a CSV in any order of your choosing). In either case, the function that reads metadata for you from a `.csv` file is useful. There should be a .csv spreadsheet with metadata in your workshop materials that you can use for now. Upload it with "Browse", then click "Open from CSV" to harvest the data. This will automate the data entry process for you.
+
+When you are done, scroll to the bottom of the editor, fill in a file name under which to save your work, and click "Save". *Note that there are a number of fields which we strongly suggest filling out...you will get a warning if you try to save with these left blank.*  You can choose where on your computer to save this (temporary) file, and it should confirm what the file name is.
+
+Then, once this file is in your working directory, you can load the info into R as an animaltags info structure via:
+
+```{r}
+yet_more_info <- csv2struct('the_file_you_just_saved.csv')
+```
+
+And finally, combine it with the rest as before. Try to emulate the two lines from above, changing the names as needed, without opening the chunk below. Then check your work against this:
+
+```{r}
+yet_more_info[names(MN$info)] <- MN$info
+MN$info <- yet_more_info
+```
+
+# Saving the data
+We've now made quite a few additions to the metadata in the `info` structure, and we probably want to save those to our .nc file. Here's how. 
+
+```{r}
+MN$info[is.na(MN$info)] <- NULL
+add_nc('cats_test_raw', X = MN$info, vname = 'info') 
+```
+
+That's it! If all has worked smoothly, your .nc file will contain all the additions we've been working on. 
+
+# Review
+
+What have you learned so far? More important steps that will hopefully, as you're working with data more frequently, become healthy routines of consistent, rigorous documentation. 
+
+Great work!
