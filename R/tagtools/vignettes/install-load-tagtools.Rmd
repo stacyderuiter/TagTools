@@ -20,10 +20,14 @@ Welcome to this vignette! On behalf of the team behind tagtools, thanks for taki
 
 In this vignette you will complete the first important setup steps of installing the package on your machine and making sure it is loaded in your session.
 
+*Estimated time for this vignette: 15 minutes*
+
 # Installing tagtools for R
 
 ## Prerequisites
-Before you begin, you must have R and -- recommended -- RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop). If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
+Before you begin, you must have R and -- recommended -- RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop). Alternatively, you can work in RStudio.cloud.
+
+If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
 
 These practicals assume that you have some basic experience working with R/RStudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. 
 
