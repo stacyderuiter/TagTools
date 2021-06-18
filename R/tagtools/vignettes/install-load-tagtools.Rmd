@@ -80,7 +80,7 @@ Note here that we are writing an object `dpnds`, which is a vector of these 18 (
 
 Once the `tagtools` are successfully installed, you should be able to run
 
-```{r}
+```{r, eval = FALSE}
 library(tagtools)
 ```
 

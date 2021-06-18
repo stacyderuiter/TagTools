@@ -1,0 +1,87 @@
+---
+title: "dive-stats"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dive-stats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you.
+
+In this vignette you will learn to use the function `dive-stats`.
+
+# Finding dives and summarising them
+
+Now consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. (As usual: Make sure that `zc11_267a.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `zc11_267a.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
+
+
+```{r, eval = FALSE}
+ZC <- load_nc('zc11_267a')
+```
+
+1. Make a plot of the dive profile. What do you notice?
+
+```{r, eval = FALSE}
+plott(X=list(Depth=ZC$P), r = TRUE)
+```
+
+2. You probably want to crop the data before further analysis, because there is a period at the start of the recording when the tag was not yet deployed on the whale.
+
+```{r, eval = FALSE}
+Zpc = crop(ZC$P)
+# if you want to review history/other fields
+str(Zpc, max.level = 1)
+```
+
+3. What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
+
+4. Use find dives to detect all dives deeper than your chosen depth min- depth.
+
+```{r}
+dt <- find_dives(ZC$P, mindepth=mindepth) 
+```
+
+5. Now use dive stats to compute summary statistics for all the dives
+you detected. 
+
+```{r, eval = FALSE}
+ds <- dive_stats(ZC$P, dive_cues=dt[,c('start', 'end'),]) 
+```
+
+6. Have a look at the dive stats and perhaps make a plot of some or all
+of them. Do you notice anything interesting?
+
+## Optional: choose an extra variable
+
+7. Choose an auxiliary variable (could be anything of interest - pitch, roll, heading, MSA, ODBA, njerk...). 
+
+Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable. 
+
+<!-- Example auxiliary variable: pitch. More content to come next week. -->
+
+```{r, eval = FALSE}
+ds <- dive_stats(zc$P, dive_cues=dt[,c('start', 'end'),],
+                 X=my_aux_var)
+```
+
+8. Examine and/or plot again.
+
+```{r, eval = FALSE}
+str(ds, max.level = 1)
+plott()
+
+```
+
+# Review 
+
+You've learned a couple of ways to use `dive-stats`. Well done!
