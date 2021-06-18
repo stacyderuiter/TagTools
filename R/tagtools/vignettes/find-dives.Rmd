@@ -1,10 +1,10 @@
 ---
-title: "Using find_dives and dive_stats"
+title: "Using find_dives"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{find-dives-dive-stats}
+  %\VignetteIndexEntry{find-dives}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,11 +18,13 @@ knitr::opts_chunk$set(
 
 Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know this package. We hope it is useful to you. 
 
-In this vignette you will 
+In this vignette you will learn to use `find_dives` to gain insight about a depth profile, calculate the mean dive duration and mean dive depth, and mark the beginnings and endings of dives. 
+
+*Estimated time for this vignette: 20 minutes.*
 
 # Load the test data set
 
-Load the test dataset mn12_186a. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load_nc to load a NetCDF file:
+Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load_nc to load a NetCDF file:
 
 ((As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 
@@ -93,15 +95,42 @@ plott(X = list(Pc))
 
 ```
 
-<!-- Commenting out the rest of the doc for the time being to see if this draft works.
-## Removing outliers. 
-Outliers or spikes in the data may result from errors in the tag or poor sensor performance under rapidly changing environmental conditions. For example in this data set, rapid changes in temperature and pressure as the animal surfaces cause small glitches in the data. These are not representative of the animal’s behaviour so we need to remove them. A good way to do this is with a median filter. Type:?median_filterto find out how this function works. You call it using:Pcm =median_filter(Pc,n=3)Variable Pcm now contains the median filtered, cropped depth data.Check its history to verify that the median filtering has been added.Compare it against the unfiltered data using:plott(X=list(Pc=Pc,Pcm=Pcm), r=TRUE)This plots Pc in the upper panel and Pcm in the lower one.E1.4 Correcting pressure offsets & temperature effectsThe next step is to correct the ‘0’ pressure offset of the depth sensor (so that the animal is not 10 m out ofthe water when it is really at the surface). We can also compensate for temperature at the same time. To dothis we have to first crop the temperature data to match the pressure data. You can do this using:
 
-```{r, eval = FALSE}
-Tc <- crop_to(MN$T,tcues=Pc$crop)$X
+## Removing outliers. 
+Outliers or spikes in the data may result from errors in the tag or poor sensor performance under rapidly changing environmental conditions. For example in this data set, rapid changes in temperature and pressure as the animal surfaces cause small glitches in the data. These are not representative of the animal’s  behaviour so we need to remove them. A good way to do this is with a median filter. Type:
+
+```{r}
+?median_filter
 ```
 
-This uses the crop information stored in Pc to do the same operation on T. The tag toolbox has a function to correct pressure data called ‘fix_pressure’. Type
+to find out how this function works. You call it using:
+
+```{r} 
+Pcm = median_filter(Pc,n=3)
+```
+
+Variable Pcm now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
+
+```{r} 
+plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE))
+```
+
+This plots `Pc` in the upper panel and `Pcm` in the lower one, and reverses the y-axis labeling on both plots (by setting `r` to TRUE both times).
+
+## Correcting pressure offsets & temperature effects
+The next step is to correct the ‘0’ pressure offset of the depth sensor (so that the animal is not 10 m out of the water when it is really at the surface). We can also compensate for temperature at the same time. To do this we have to first crop the temperature data to match the pressure data. You can do this using:
+
+```{r, eval = FALSE}
+Tc <- crop_to(MN$T,tcues=Pc$crop)
+```
+
+This uses the crop information stored in Pc to do the same operation on T. Plot them together to confirm that the time intervals (horizontal ticks) are the same:
+
+```{r, eval = FALSE}
+plott(X=list(Pcm=Pcm, Tc=Tc), r=c(TRUE,FALSE))
+```
+
+The tag toolbox has a function to correct pressure data called ‘fix_pressure’. Type
 
 ```{r}
 ? fix_pressure
@@ -110,37 +139,62 @@ This uses the crop information stored in Pc to do the same operation on T. The t
 to find out what it does and what assumptions it makes about the data. Use this function by calling:
 
 ```{r, eval = FALSE}
-Pcmf <-fix_pressure(Pcm,Tc)$p
+Pcmf <- fix_pressure(Pcm,Tc)
 ```
 
-Compare the compensated dive profile to the uncompensated cropped one using plott. Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
+Compare the compensated dive profile to the uncompensated cropped ones using plott. (The code below will produce three plots, which might make them a bit small. Hit "Zoom" to view them in a larger window.)
+
+```{r, eval = FALSE}
+plott(X=list(Pc=Pc, Pcm=Pcm, Pcmf=Pcmf$p), r=c(TRUE,TRUE,TRUE))
+```
+
+Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
 
 ## Finding dives & the mean dive duration
 
-To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a greatequivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called find_dives. See the help on this function to find out what itdoes and what options it has. 
+To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a great equivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called `find_dives`. See the help on this function to find out what it does and what options it has. 
+
+```{r}
+? find_dives
+```
 
 To find dives deeper than 5 m in your compensated dive data, type:
 
 ```{r, eval = FALSE}
-d <-find_dives(Pcmf,mindepth=5)
-head(d)
+d <- find_dives(Pcmf$p,mindepth=5)
+d
 ```
 
-`d` should return a data frame with the start, end, and maximum depth of about 51 dives (depending on whereyou cropped the data). How can you get the mean dive duration from this structure?
+`d` should return a data frame with the start, end, and maximum depth of about 51 dives (depending on where you cropped the data). How can you get the mean dive duration & mean (maximum) dive depth from this structure? Code below provides one possible answer.
+
+```{r, eval = FALSE}
+total_dive_duration <- matrix(0)
+for(n in 1:nrow(d)) {
+  total_dive_duration <- total_dive_duration + d[n,2] - d[n,1]
+  }
+mean_dive_duration <- total_dive_duration/nrow(d)
+mean_dive_duration
+# and mean depth
+total_dive_depth <- matrix(0)
+for(n in 1:nrow(d)) {
+  total_dive_depth <- total_dive_depth + d[n,3]
+}
+mean_dive_depth <- total_dive_depth/nrow(d)
+mean_dive_depth
+```
+
 
 When you have got the mean dive depth, try plotting the start and end of the dives on the depth plot:
 
 
 ```{r, eval = FALSE}
-plott(X=list(Pcmf=Pcmf), r=TRUE)
+plott(X=list(Pcmf=Pcmf$p), r=TRUE)
 points(d$start/(3600*24),rep(0,nrow(d)),col='green', pch=19)
 points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
 ```
 
 Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in the `points` code accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to divide them by 3600*24 to match the unit (days) automatically selected for time by `plott`.
 
---> 
-
 # Review
 
-what you've learned... 
+Great work! You've learned how to use `find_dives`.

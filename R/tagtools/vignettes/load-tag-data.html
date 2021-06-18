@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Vignette Author" />
+
+<meta name="date" content="2021-06-18" />
+
+<title>Load Tag Data</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Load Tag Data</h1>
+<h4 class="author">Vignette Author</h4>
+<h4 class="date">2021-06-18</h4>
+
+
+
+<p>Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you.</p>
+<p>In this vignette, you will gain confidence with using the tagtools to create and load netCDF files, including editing metadata.</p>
+<p><em>Estimated time for this vignette: about 20 minutes.</em></p>
+<p>These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.</p>
+<div id="reading-tag-data-and-saving-in-netcdf-.nc-format" class="section level1">
+<h1>Reading Tag Data and Saving in netCDF (.nc) format</h1>
+<p>For this example, you will read in a small segment of data from a CATs tag.</p>
+<p>The code below reads in the data from its native .csv file format, saves it in a standard .nc file, and returns the file name of the new file.</p>
+<p>The code assumes that the file is stored in your current working directory, so you may need to either add more path information to the file name, or change your working directory.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cats_nc_fname <span class="ot">&lt;-</span> <span class="fu">read_cats</span>(<span class="at">fname =</span> <span class="st">&#39;20160730-091117-Froback-11-part&#39;</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">depid =</span> <span class="st">&#39;cats_test&#39;</span>)</span></code></pre></div>
+<p>As a refresher, an easy way to check your current working directory is the command <code>getwd()</code>. When you run this (with parentheses), it should show you a path to the folder where you want the file <code>20160730-091117-Froback-11-part.csv</code> to be located. You can also use <code>setwd(YourPathHere)</code> to set the working directory to where this file is already located.</p>
+<p>Another refresher – if you get an error saying the function doesn’t exist, make sure you have <code>tagtools</code> in your library! It won’t be if you’ve restarted R recently. Running <code>library(tagtools)</code> does the trick as long as you’ve installed the package in the past. You should also run the following to make sure that all tagtools’ dependencies are loaded: <code>library(CircStats);library(ggformula);library(graphics);library(hht);library(latex2exp);library(lubridate);library(magrittr);library(ncdf4);library(plotly);library(pracma);library(readr);library(rgl);library(signal);library(stats);library(utils);library(zoo);library(zoom)</code> to avoid confusing errors. Practical 1a has more details.</p>
+<p>Running <code>read_cats</code> might take a while…</p>
+<p>When the process is done, if you look in the current working directory, you should see a file called “cats_test_raw.nc”. This is the newly created data file. Is it there? Congrats!</p>
+</div>
+<div id="loading-an-.nc-file" class="section level1">
+<h1>Loading an .nc File</h1>
+<div id="load-the-test-data-set" class="section level2">
+<h2>Load the test data set</h2>
+<p>Next, we’d like to load in the data file that we just created using the function <code>load_nc()</code>.</p>
+<p>This code below again assumes the file is in your working directory. Again, you may have to change it to match your machine. (You may also need to escape slashes in the path specification (e.g., \) depending on your platform.)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>MN <span class="ot">&lt;-</span> <span class="fu">load_nc</span>(<span class="st">&#39;cats_test_raw&#39;</span>)</span></code></pre></div>
+<p>This creates an animaltag list object <code>MN</code> in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(MN)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(MN, <span class="at">max.level =</span> <span class="dv">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(MN<span class="sc">$</span>A)</span></code></pre></div>
+<p>You should see that variables Acc, Gyr, Depth, Light, and info are contained within the list MN.</p>
+</div>
+</div>
+<div id="explore-the-test-dataset" class="section level1">
+<h1>Explore the test dataset</h1>
+<p>Now you can find out what each of the variables is by just typing their name followed by enter. For example, for info (tag-wide metadata), run</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info</span></code></pre></div>
+<p>The info structure tells you where the data came from, when it was collected, on what animal, and with what type of tag. info is the general metadata store for a dataset. You can find out what is in a specific field in info, e.g., the to get the sensors_list</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info<span class="sc">$</span>sensors_list</span></code></pre></div>
+<div id="updating-and-adding-metadata" class="section level2">
+<h2>Updating and adding metadata</h2>
+<p>There is a lot of metadata missing from this file! <code>read_cats()</code> can only auto-fill it with information that is standard for all CATS tags, or contained in the file itself. Other metadata must be added by the user.</p>
+<p>For example, to add a field called ‘data_owner’ with value ‘Jeremy Goldbogen, Dave Cade’, you would enter:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info<span class="sc">$</span>data_owner <span class="ot">&lt;-</span> <span class="st">&#39;Jeremy Goldbogen, Dave Cade&#39;</span></span></code></pre></div>
+<p>This is a way to add metadata to a dataset before sending it off to an archive (e.g., a dataset to accompany a journal paper). Although there are no rules for what you call each field, we are working toward establishing a set of best practices.</p>
+<p>Entering metadata by hand by typing it into the R console is tedious, and also a recipe for inconsistencies. (Let’s avoid that!) To that end, we have tried to provide a couple of other options, considered below.</p>
+</div>
+<div id="saving-metadata-with-make_info" class="section level2">
+<h2>Saving Metadata with make_info</h2>
+<p>You can use <code>make_info()</code> to create a metadata info structure with information about the researcher, tag type, and study species. This function allows the user to generate a “skeleton” info structure for a tag deployment, with some common pieces of metadata filled in. Additional information can then be added manually or using a custom script before saving this info as part of a netCDF (.nc) file.</p>
+<p>For example,</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>more_info <span class="ot">&lt;-</span> <span class="fu">make_info</span>(<span class="at">depid =</span> <span class="st">&#39;cats_test&#39;</span>, <span class="at">tagtype =</span> <span class="st">&#39;CATS&#39;</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">species =</span> <span class="st">&#39;mn&#39;</span>, <span class="at">owner =</span> <span class="st">&#39;jg&#39;</span>)</span></code></pre></div>
+<p>Note that you may need to add researchers, species, and perhaps tag types to the template files. To find out where these are stored on your machine, you can run:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.file</span>(<span class="st">&#39;extdata&#39;</span>, <span class="st">&#39;researchers.csv&#39;</span>, <span class="at">package=</span><span class="st">&#39;tagtools&#39;</span>)</span></code></pre></div>
+<p>Then, navigate to the folder and make any edits that you would like. You may need to restart R before they will take effect.</p>
+<p>Once you have succeeded in running <code>make_info()</code>, you can view the results:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>more_info</span></code></pre></div>
+</div>
+<div id="combining-info-and-more_info" class="section level2">
+<h2>Combining info and more_info</h2>
+<p>Now we have two different info structures – the one we just created with <code>make_info()</code> and the one we got when we created the .nc file using <code>read_cats()</code>.</p>
+<p>We can combine the two together, keeping the fields from the original info if there are any duplicates:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>more_info[<span class="fu">names</span>(MN<span class="sc">$</span>info)] <span class="ot">&lt;-</span> MN<span class="sc">$</span>info</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info <span class="ot">&lt;-</span> more_info</span></code></pre></div>
+</div>
+<div id="saving-metadata-with-a-gui-editor" class="section level2">
+<h2>Saving metadata with a GUI editor</h2>
+<p>Another option for entering user-generated metadata is to use the animaltags metadata editor. This interface allows you to type your information into pre-named fields, allowing you to fully customize the information while also using standard field names.</p>
+<p>To launch the editor, run:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata_editor</span>()</span></code></pre></div>
+<p>A web browser window will open in which you can fill in metadata fields for your tag.</p>
+<p>Depending on your individual platform, this editor may not have any of the tabs open. Simply click on one of the tabs (Device Information, Tag and Animal Information, etc.) to open it.</p>
+<p>Perhaps you don’t currently have metadata on hand to fill in the fields yourself. Or, at some point you might already have metadata stored in a CSV spreadsheet, <em>in the specific format that this reader recognizes</em> (it will not magically pick out metadata saved in a CSV in any order of your choosing). In either case, the function that reads metadata for you from a <code>.csv</code> file is useful. There should be a .csv spreadsheet with metadata in your workshop materials that you can use for now. Upload it with “Browse”, then click “Open from CSV” to harvest the data. This will automate the data entry process for you.</p>
+<p>When you are done, scroll to the bottom of the editor, fill in a file name under which to save your work, and click “Save”. <em>Note that there are a number of fields which we strongly suggest filling out…you will get a warning if you try to save with these left blank.</em> You can choose where on your computer to save this (temporary) file, and it should confirm what the file name is.</p>
+<p>Then, once this file is in your working directory, you can load the info into R as an animaltags info structure via:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>yet_more_info <span class="ot">&lt;-</span> <span class="fu">csv2struct</span>(<span class="st">&#39;the_file_you_just_saved.csv&#39;</span>)</span></code></pre></div>
+<p>And finally, combine it with the rest as before. Try to emulate the two lines from above, changing the names as needed, without opening the chunk below. Then check your work against this:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>yet_more_info[<span class="fu">names</span>(MN<span class="sc">$</span>info)] <span class="ot">&lt;-</span> MN<span class="sc">$</span>info</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info <span class="ot">&lt;-</span> yet_more_info</span></code></pre></div>
+</div>
+</div>
+<div id="saving-the-data" class="section level1">
+<h1>Saving the data</h1>
+<p>We’ve now made quite a few additions to the metadata in the <code>info</code> structure, and we probably want to save those to our .nc file. Here’s how.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>MN<span class="sc">$</span>info[<span class="fu">is.na</span>(MN<span class="sc">$</span>info)] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_nc</span>(<span class="st">&#39;cats_test_raw&#39;</span>, <span class="at">X =</span> MN<span class="sc">$</span>info, <span class="at">vname =</span> <span class="st">&#39;info&#39;</span>) </span></code></pre></div>
+<p>That’s it! If all has worked smoothly, your .nc file will contain all the additions we’ve been working on.</p>
+</div>
+<div id="review" class="section level1">
+<h1>Review</h1>
+<p>What have you learned so far? More important steps that will hopefully, as you’re working with data more frequently, become healthy routines of consistent, rigorous documentation.</p>
+<p>Great work!</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
