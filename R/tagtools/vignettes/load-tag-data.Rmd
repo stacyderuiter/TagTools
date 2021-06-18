@@ -111,7 +111,7 @@ Then, navigate to the folder and make any edits that you would like. You may nee
 
 Once you have succeeded in running `make_info()`, you can view the results:
 
-```{r}
+```{r,eval=FALSE}
 more_info
 ```
 
@@ -130,13 +130,13 @@ Another option for entering user-generated metadata is to use the animaltags met
 
 To launch the editor, run:
 
-```{r}
+```{r,eval=FALSE}
 metadata_editor()
 ```
 
 A web browser window will open in which you can fill in metadata fields for your tag.
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = FALSE}
 knitr::include_graphics('meta_editor.png')
 ```
 
