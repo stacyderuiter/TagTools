@@ -30,7 +30,7 @@ The code below reads in the data from its native .csv file format, saves it in a
 
 The code assumes that the file is stored in your current working directory, so you may need to either add more path information to the file name, or change your working directory. 
 
-```{r}
+```{r, eval=FALSE}
 cats_nc_fname <- read_cats(fname = '20160730-091117-Froback-11-part',
                            depid = 'cats_test')
 ```
