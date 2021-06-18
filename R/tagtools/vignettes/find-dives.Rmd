@@ -26,10 +26,10 @@ In this vignette you will learn to use `find_dives` to gain insight about a dept
 
 Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load_nc to load a NetCDF file:
 
-((As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
+(As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 
 ```{r, eval = FALSE} 
-setwd("/path/with/folders/in/it/foo/bar") # you may have to change this
+setwd("/path/with/folders/in/it/foo/bar") # you'll have to change this
 ```
 
 ```{r, eval = FALSE}
@@ -105,13 +105,13 @@ Outliers or spikes in the data may result from errors in the tag or poor sensor 
 
 to find out how this function works. You call it using:
 
-```{r} 
+```{r, eval = FALSE} 
 Pcm = median_filter(Pc,n=3)
 ```
 
 Variable Pcm now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
 
-```{r} 
+```{r, eval = FALSE} 
 plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE))
 ```
 
