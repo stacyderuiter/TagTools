@@ -140,7 +140,7 @@ A web browser window will open in which you can fill in metadata fields for your
 knitr::include_graphics('meta_editor.png')
 ```
 
-Depending on your individual platform, this editor may not have any of the tabs open. Simply click on one of the tabs (Device Information, Tag and Animal Information, etc.) to open it. 
+Depending on your individual platform, this editor may not have any of the tabs open. Simply click on one of the tabs (Device Information, Tag and Animal Information, etc.) to open it.
 
 Perhaps you don't currently have metadata on hand to fill in the fields yourself. Or, at some point you might already have metadata stored in a CSV spreadsheet, *in the specific format that this reader recognizes* (it will not magically pick out metadata saved in a CSV in any order of your choosing). In either case, the function that reads metadata for you from a `.csv` file is useful. There should be a .csv spreadsheet with metadata in your workshop materials that you can use for now. Upload it with "Browse", then click "Open from CSV" to harvest the data. This will automate the data entry process for you.
 
