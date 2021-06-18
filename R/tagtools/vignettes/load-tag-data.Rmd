@@ -50,13 +50,13 @@ Next, we'd like to load in the data file that we just created using the function
 
 This code below again assumes the file is in your working directory. Again, you may have to change it to match your machine. (You may also need to escape slashes in the path specification (e.g., \\) depending on your platform.)
 
-```{r}
+```{r,eval=FALSE}
 MN <- load_nc('cats_test_raw')
 ```
 
 This creates an animaltag list object `MN` in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
 
-```{r}
+```{r,eval=FALSE}
 names(MN)
 str(MN, max.level = 1)
 str(MN$A)
@@ -68,13 +68,13 @@ You should see that variables Acc, Gyr, Depth, Light, and info are contained wit
 
 Now you can find out what each of the variables is by just typing their name followed by enter. For example, for info (tag-wide metadata), run
 
-```{r}
+```{r,eval=FALSE}
 MN$info
 ```
 
 The info structure tells you where the data came from, when it was collected, on what animal, and with what type of tag. info is the general metadata store for a dataset. You can find out what is in a specific field in info, e.g., the to get the sensors\_list 
 
-```{r}
+```{r,eval=FALSE}
 MN$info$sensors_list
 ```
 
@@ -83,7 +83,7 @@ There is a lot of metadata missing from this file! `read_cats()` can only auto-f
 
 For example, to add a field called 'data\_owner' with value 'Jeremy Goldbogen, Dave Cade', you would enter:
 
-```{r}
+```{r,eval=FALSE}
 MN$info$data_owner <- 'Jeremy Goldbogen, Dave Cade'
 ```
 
@@ -96,14 +96,14 @@ You can use `make_info()` to create a metadata info structure with information a
 
 For example,
 
-```{r}
+```{r,eval=FALSE}
 more_info <- make_info(depid = 'cats_test', tagtype = 'CATS',
                        species = 'mn', owner = 'jg')
 ```
 
 Note that you may need to add researchers, species, and perhaps tag types to the template files. To find out where these are stored on your machine, you can run:
 
-```{r}
+```{r,eval=FALSE}
 system.file('extdata', 'researchers.csv', package='tagtools')
 ```
 
@@ -111,7 +111,7 @@ Then, navigate to the folder and make any edits that you would like. You may nee
 
 Once you have succeeded in running `make_info()`, you can view the results:
 
-```{r}
+```{r,eval=FALSE}
 more_info
 ```
 
@@ -120,7 +120,7 @@ Now we have two different info structures -- the one we just created with `make_
 
 We can combine the two together, keeping the fields from the original info if there are any duplicates:
 
-```{r}
+```{r,eval=FALSE}
 more_info[names(MN$info)] <- MN$info
 MN$info <- more_info
 ```
@@ -130,13 +130,13 @@ Another option for entering user-generated metadata is to use the animaltags met
 
 To launch the editor, run:
 
-```{r}
+```{r,eval=FALSE}
 metadata_editor()
 ```
 
 A web browser window will open in which you can fill in metadata fields for your tag.
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = FALSE}
 knitr::include_graphics('meta_editor.png')
 ```
 
@@ -148,13 +148,13 @@ When you are done, scroll to the bottom of the editor, fill in a file name under
 
 Then, once this file is in your working directory, you can load the info into R as an animaltags info structure via:
 
-```{r}
+```{r,eval=FALSE}
 yet_more_info <- csv2struct('the_file_you_just_saved.csv')
 ```
 
 And finally, combine it with the rest as before. Try to emulate the two lines from above, changing the names as needed, without opening the chunk below. Then check your work against this:
 
-```{r}
+```{r,eval=FALSE}
 yet_more_info[names(MN$info)] <- MN$info
 MN$info <- yet_more_info
 ```
@@ -162,7 +162,7 @@ MN$info <- yet_more_info
 # Saving the data
 We've now made quite a few additions to the metadata in the `info` structure, and we probably want to save those to our .nc file. Here's how. 
 
-```{r}
+```{r,eval=FALSE}
 MN$info[is.na(MN$info)] <- NULL
 add_nc('cats_test_raw', X = MN$info, vname = 'info') 
 ```
