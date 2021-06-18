@@ -1,0 +1,23 @@
+---
+title: "dive-stats"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dive-stats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to this vignette! On behalf of the team behind tagtools...
+
+# Review 
+
+You've learned to... 
