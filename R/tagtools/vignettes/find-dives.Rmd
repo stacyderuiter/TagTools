@@ -38,7 +38,7 @@ You may also need to escape slashes in the path specification (e.g., `\`) depend
 
 This creates an animaltag list object MN in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
 
-```{r}
+```{r, eval = FALSE}
 names(MN)
 str(MN$A)
 # not run because output is very long! see the whole STRucture of MN:
@@ -47,51 +47,81 @@ str(MN$A)
 str(MN, max.level = 1)
 ```
 
-You should see that variables A, M, P, S, T and info are contained within the list MN.
+You should see that lists `A`, `M`, `P`, `S`, `T` and `info` are contained within the list MN.
 
 # Exercise: Calculate the mean duration of dives deeper than 5m 
 
-Our goal with these data is to calculate the meanduration of dives deeper than 5 m. If you can think of a way to do this already, go ahead and try - you cancompare your answer to the step-by-step procedure below.
+Our goal with these data is to calculate the mean duration of dives deeper than 5 m. If you can think of a way to do this already, go ahead and try - you can compare your answer to the step-by-step procedure below.
 
-As with all raw depth data, there are some problems with this dive profile. See if you can find evidencefor each of these in the plot: 1. Incorrect calibration of the sensor 2. Occasional outliers 3. Coarse depthresolution 4. Temperature sensitivity
+As with all raw depth data, there are some problems with this dive profile. See if you can find evidence for each of these in the plot: 
+
+1. Incorrect calibration of the sensor 
+2. Occasional outliers 
+3. Coarse depth resolution 
+4. Temperature sensitivity
 
 ## Hints & Tips
-1. look in `info` to find what species the data come from - are the depth values reasonable for this species?
-2. Zoom in and see what size depth steps there are in the data
+1. Look in `info` to find what species the data come from. Are the depth values reasonable for this species?
+2. Zoom in and see what size depth steps there are in the data.
 3. Use `plott` to plot both the depth and temperature:
 
-```{r}
+```{r, eval = FALSE}
 plott(X=list(Depth=MN$P, Temperature=MN$T), r=c(TRUE,FALSE))
 ```
 
 ## What to do about periods of data when the tag is not on the animal
 
-Not all tags have a way to start logging as soon as the tag has been deployed on the animal. Often datalogging is started by a time trigger or alarm, and the researcher has to make a guess as to when the tag will be deployed to set its start time appropriately. Often this means that a tag is logging data before it is put on an animal. 
+Not all tags have a way to start logging as soon as the tag has been deployed on the animal. Often data logging is started by a time trigger or alarm, and the researcher has to make a guess as to when the tag will be deployed to set its start time appropriately. Often this means that a tag is logging data before it is put on an animal. 
 
-Equally, tags have no means of detecting when they release from the tagged animal. As aconsequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool crop:
+Equally, tags have no means of detecting when they release from the tagged animal. As a consequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool crop:
 
-```{r}
+```{r, eval = FALSE}
 Pc = crop(MN$P)
 ```
 
-This displays an interactive depth plot. Follow the instructions to select the obvious diving section of thedata and then click finish (actually, if you click once on your desired left limit and twice on your desired rightlimit, finish will click itself and the cropping will be complete). The function returns a new data structurewhich contains just the selected part of the dive profile. The resulting sensor data list also contains fields that document what you just did. They should look like: 
+This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish (actually, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete). The function returns a new data structure which contains just the selected part of the dive profile. The resulting sensor data list also contains fields that document what you just did. To see them::
 
-The history keeps track of the operations that you perform on a data structure. This helps with traceabilityif you make the processed data available in an archive. The crop and start_time fields show how the originaldata was changed: the start_time is with respect to the field ‘dephist_device_datetime_start’ in the infostructure which says when the tag recording started.Use plott to plot Pc to make sure you cropped it correctly.
+```{r, eval = FALSE}
+Pc$history
+str(Pc, max.level = 1)
+```
 
+The `$history` field keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The `$crop` and `$start_time` fields show how the original data was changed: the start_time is with respect to the field ‘dephist_device_datetime_start’ in the `$info` structure which says when the tag recording started. Use `plott` to plot Pc to make sure you cropped it correctly.
+
+```{r, eval = FALSE}
+plott(X = list(Pc))
+
+```
+
+<!-- Commenting out the rest of the doc for the time being to see if this draft works.
 ## Removing outliers. 
-Outliers or spikes in the data may result from errors in the tag or poor sensor performance under rapidlychanging environmental conditions. For example in this data set, rapid changes in temperature and pressureas the animal surfaces cause small glitches in the data. These are not representative of the animal’s behaviourso we need to remove them. A good way to do this is with a median filter. Type:?median_filterto find out how this function works. You call it using:Pcm =median_filter(Pc,n=3)Variable Pcm now contains the median filtered, cropped depth data.Check its history to verify that the median filtering has been added.Compare it against the unfiltered data using:plott(X=list(Pc=Pc,Pcm=Pcm), r=TRUE)This plots Pc in the upper panel and Pcm in the lower one.E1.4 Correcting pressure offsets & temperature effectsThe next step is to correct the ‘0’ pressure offset of the depth sensor (so that the animal is not 10 m out ofthe water when it is really at the surface). We can also compensate for temperature at the same time. To dothis we have to first crop the temperature data to match the pressure data. You can do this using:Tc <-crop_to(MN$T,tcues=Pc$crop)$XThis uses the crop information stored in Pc to do the same operation on T. The tag toolbox has a functionto correct pressure data called ‘fix_pressure’. Type
+Outliers or spikes in the data may result from errors in the tag or poor sensor performance under rapidly changing environmental conditions. For example in this data set, rapid changes in temperature and pressure as the animal surfaces cause small glitches in the data. These are not representative of the animal’s behaviour so we need to remove them. A good way to do this is with a median filter. Type:?median_filterto find out how this function works. You call it using:Pcm =median_filter(Pc,n=3)Variable Pcm now contains the median filtered, cropped depth data.Check its history to verify that the median filtering has been added.Compare it against the unfiltered data using:plott(X=list(Pc=Pc,Pcm=Pcm), r=TRUE)This plots Pc in the upper panel and Pcm in the lower one.E1.4 Correcting pressure offsets & temperature effectsThe next step is to correct the ‘0’ pressure offset of the depth sensor (so that the animal is not 10 m out ofthe water when it is really at the surface). We can also compensate for temperature at the same time. To dothis we have to first crop the temperature data to match the pressure data. You can do this using:
 
-?fix_pressureto find out what it does and what assumptions it makes about the data. Use this function by:Pcmf <-fix_pressure(Pcm,Tc)$p
+```{r, eval = FALSE}
+Tc <- crop_to(MN$T,tcues=Pc$crop)$X
+```
+
+This uses the crop information stored in Pc to do the same operation on T. The tag toolbox has a function to correct pressure data called ‘fix_pressure’. Type
+
+```{r}
+? fix_pressure
+```
+
+to find out what it does and what assumptions it makes about the data. Use this function by calling:
+
+```{r, eval = FALSE}
+Pcmf <-fix_pressure(Pcm,Tc)$p
+```
 
 Compare the compensated dive profile to the uncompensated cropped one using plott. Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
 
-E1.5 Finding dives & the mean dive duration
+## Finding dives & the mean dive duration
 
-To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the depthplot (ginput is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a greatequivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called find_dives. See the help on this function to find out what itdoes and what options it has. 
+To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a greatequivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called find_dives. See the help on this function to find out what itdoes and what options it has. 
 
 To find dives deeper than 5 m in your compensated dive data, type:
 
-```{r}
+```{r, eval = FALSE}
 d <-find_dives(Pcmf,mindepth=5)
 head(d)
 ```
@@ -101,10 +131,16 @@ head(d)
 When you have got the mean dive depth, try plotting the start and end of the dives on the depth plot:
 
 
-```{r}
+```{r, eval = FALSE}
 plott(X=list(Pcmf=Pcmf), r=TRUE)
 points(d$start/(3600*24),rep(0,nrow(d)),col='green', pch=19)
 points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
 ```
 
-Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in thepointscode accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to dividethem by 3600*24 to match the unit (days) automatically selected for time byplott.
+Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in the `points` code accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to divide them by 3600*24 to match the unit (days) automatically selected for time by `plott`.
+
+--> 
+
+# Review
+
+what you've learned... 
