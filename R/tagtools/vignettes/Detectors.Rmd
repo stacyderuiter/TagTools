@@ -262,7 +262,8 @@ Introduction
 Function Design
 ---
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The detect_peaks function contains 6 specified inputs and allows for additional inputs to be added at the end of the command. 
-```
+
+```{r, eval = FALSE}
 detect_peaks(data, sr, FUN = NULL, thresh = NULL, bktime = NULL, plot_peaks = NULL,...)
 ```
 

@@ -1,0 +1,42 @@
+---
+title: "Code folding and hiding figures and other output"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{code-and-figure-folding}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Hiding a figure/output
+
+Since the YAML header (at the top of the document) has `code_folding: hide` there is a little button to toggle showing/hiding the code.
+
+Since `eval = FALSE` below, the code will be shown but will not be run.
+
+
+```{r cars-figure, eval = FALSE}
+plot(mtcars$hp, mtcars$mpg)
+```
+
+Now add a little button for "showing results" (unfortunately this requires having a second "copy" of the chunk and the code to make the figure or do the calculation).  For the button, add the html code below BEFORE the R chunk. Change the block name "car_figure" so it matches in the "button" and the "div", and is unique for each instance:
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#car_figure"> Show/Hide Results </button>  
+<div id="car_figure" class="collapse">  
+
+```{r cars-figure-just-to-show-results, echo = FALSE, eval = TRUE}
+plot(mtcars$hp, mtcars$mpg)
+```
+
+</div>
+
+(don't forget that end div after the code chunk!)
+
