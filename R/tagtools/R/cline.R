@@ -23,7 +23,7 @@ cline <- function(x, y, z, color_vector) {
     for (L in 1:nlevels(z)) {
       # make a list of indices of all points that must be a given color
         pix <- unlist(mapply(FUN = function(s, e) c(s:e, NA), ps[pz == levels(z)[L]], pe[pz == levels(z)[L]]))
-      # add line segmets of the given color to the plot
+      # add line segments of the given color to the plot
         graphics::lines(x[pix], y[pix], col = color_vector[L])
     }
 }
