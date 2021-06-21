@@ -21,14 +21,14 @@ decz(x, df = NULL, Z = NULL, nf = 12, frbw = 0.8)
 A list with elements:
 \itemize{
   \item{\strong{y: }} The decimated signal vector or matrix. It has the same number of columns as x but has, on average, 1/df of the rows.
-  \item{\strong{Z: }} The state list (for internal tracking of filter internal values). Contains elements df (the decimation factor), nf (used to compute the filter length), frbw (the bandwidth of the filter relative to the new Nyquist frequency), h (the FIR filter coefficients), n (the filter length), z (padded signal used for filtering), and ov ("overflow" samples to be passed to future iterations). 
+  \item{\strong{Z: }} The state list (for internal tracking of filter internal values). Contains elements df (the decimation factor), nf (used to compute the filter length), frbw (the bandwidth of the filter relative to the new Nyquist frequency), h (the FIR filter coefficients), n (the filter length), z (padded signal used for filtering), and ov ("overflow" samples to be passed to future iterations).
 }
 }
 \description{
 Recursive sampling rate decimator. This function can be run iteratively over a long data set, e.g., to decimate an entire recording that is too large to be read into memory.
 }
 \details{
-The first time decz is called, use the following format: y = decz(x,df). The subsequent calls to decz for contiguous input data are: decz(x,Z). The final call when there is no more input data is: decz(x = NULL, Z = Z). Each output y in the above contains a segment of the decimated signal and so these need to be concatenated. 
+The first time decz is called, use the following format: y = decz(x,df). The subsequent calls to decz for contiguous input data are: decz(x,Z). The final call when there is no more input data is: decz(x = NULL, Z = Z). Each output y in the above contains a segment of the decimated signal and so these need to be concatenated.
 Decimation is performed in the same way as for \code{\link{decdc}}. The group delay of the filter is removed. For large decimation factors (e.g., df much greater than 50), it is better to perform several nested decimations with lower factors.
 }
 \examples{
@@ -37,22 +37,24 @@ Decimation is performed in the same way as for \code{\link{decdc}}. The group de
 \dontrun{
 plott(list(Accel = beaked_whale$A)) # acceleration data before decimation
 a_rows <- nrow(beaked_whale$A$data)
-a_ind <- data.frame(start=c(1, floor(a_rows/3), floor(2*a_rows/3)))
+a_ind <- data.frame(start = c(1, floor(a_rows / 3), floor(2 * a_rows / 3)))
 a_ind$end <- c(a_ind$start[2:3] - 1, a_rows)
 df <- 10
 Z <- NULL
 y <- NULL
-for (k in 1:nrow(a_ind)){
+for (k in 1:nrow(a_ind)) {
   decz_out <- decz(
-   x = beaked_whale$A$data[c(a_ind[k,1]:a_ind[k,2]), ],
-   df = df, Z = Z)
+    x = beaked_whale$A$data[c(a_ind[k, 1]:a_ind[k, 2]), ],
+    df = df, Z = Z
+  )
   df <- NULL
-  Z <- decz_out$Z 
-  y <- rbind(y,decz_out$y)
+  Z <- decz_out$Z
+  y <- rbind(y, decz_out$y)
 }
 decz_out$y$sampling_rate <- 2.5
 plott(list(DecAccel = decz_out)) # does not plot
 }
+
 }
 \seealso{
 \code{\link{decdc}}
