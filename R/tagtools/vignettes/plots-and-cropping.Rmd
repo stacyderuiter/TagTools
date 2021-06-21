@@ -32,7 +32,7 @@ The 'load-tag-data' vignette has details on installing the `tagtools` package, m
 # Exploratory data plots
 The tag toolbox has a function for plotting tag sensor data without getting it out of the structure:
 
-```{r}
+```{r, eval=FALSE}
 plott(X = list(Depth = MN$P, Acceleration = MN$A, Magnetometer = MN$M, Gyroscope = MN$G), interactive = TRUE)
 ```
 
@@ -46,7 +46,7 @@ Notice that there are two t's in this function name: `plott()`. `plott()` is a g
 
 For more features and info, run the help function `?` with plott:
 
-```{r}
+```{r,eval=FALSE}
 ?plott
 ```
 
