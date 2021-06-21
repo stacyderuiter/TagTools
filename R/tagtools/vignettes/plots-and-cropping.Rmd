@@ -32,7 +32,7 @@ The 'load-tag-data' vignette has details on installing the `tagtools` package, m
 # Exploratory data plots
 The tag toolbox has a function for plotting tag sensor data without getting it out of the structure:
 
-```{r}
+```{r, eval = FALSE}
 plott(X = list(Depth = MN$P, Acceleration = MN$A, Magnetometer = MN$M, Gyroscope = MN$G), interactive = TRUE)
 ```
 
@@ -61,7 +61,9 @@ This displays an interactive depth plot. Follow the instructions to select the o
 
 The resulting sensor data list also contains fields that document what you just did. They should look like:
 
-```{r, echo=FALSE}
+(graphic supposed to go here, can't quite run)
+
+```{r, echo=FALSE, eval = FALSE}
 Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
 ```
 
@@ -69,7 +71,7 @@ The history keeps track of the operations that you perform on a data structure. 
 
 Use plott to plot Pc to make sure you cropped it correctly. (Now would be an especially good time to try and write the code yourself, since you've used `plott` once before.)
 
-```{r, echo=FALSE, results='hide'}
+```{r, eval = FALSE, results='hide'}
 plott(X=list(Depth = Pc))
 ```
 
