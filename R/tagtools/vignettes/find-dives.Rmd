@@ -33,7 +33,7 @@ setwd("/path/with/folders/in/it/foo/bar") # you'll have to change this
 ```
 
 ```{r, eval = FALSE}
-MN <- load_nc('mn12_186a_raw')
+MN <- load_nc('mn12_186a_raw') # load the test dataset
 ```
 
 You may also need to escape slashes in the path specification (e.g., `\`) depending on your platform.
@@ -91,7 +91,7 @@ str(Pc, max.level = 1)
 The `$history` field keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The `$crop` and `$start_time` fields show how the original data was changed: the start_time is with respect to the field ‘dephist_device_datetime_start’ in the `$info` structure which says when the tag recording started. Use `plott` to plot Pc to make sure you cropped it correctly.
 
 ```{r, eval = FALSE}
-plott(X = list(Pc))
+plott(X = list(Pc), r = TRUE)
 
 ```
 
@@ -112,7 +112,7 @@ Pcm = median_filter(Pc,n=3)
 Variable Pcm now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
 
 ```{r, eval = FALSE} 
-plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE))
+plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE)) 
 ```
 
 This plots `Pc` in the upper panel and `Pcm` in the lower one, and reverses the y-axis labeling on both plots (by setting `r` to TRUE both times).
@@ -192,6 +192,8 @@ plott(X=list(Pcmf=Pcmf$p), r=TRUE)
 points(d$start/(3600*24),rep(0,nrow(d)),col='green', pch=19)
 points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
 ```
+
+Again, this plot might be rather small, so click Zoom to view it in a larger window. 
 
 Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in the `points` code accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to divide them by 3600*24 to match the unit (days) automatically selected for time by `plott`.
 

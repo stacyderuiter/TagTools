@@ -38,24 +38,25 @@ plott(X=list(Depth=ZC$P), r = TRUE)
 2. You probably want to crop the data before further analysis, because there is a period at the start of the recording when the tag was not yet deployed on the whale.
 
 ```{r, eval = FALSE}
-Zpc = crop(ZC$P)
+ZPCr = crop(ZC$P)
 # if you want to review history/other fields
-str(Zpc, max.level = 1)
+str(ZPCr, max.level = 1)
 ```
 
 3. What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
 
 4. Use find dives to detect all dives deeper than your chosen depth min- depth.
 
-```{r}
-dt <- find_dives(ZC$P, mindepth=mindepth) 
+```{r, eval = FALSE}
+mindepth <- # your chosen minimum depth here
+dt <- find_dives(ZPCr, mindepth=mindepth) 
 ```
 
 5. Now use dive stats to compute summary statistics for all the dives
 you detected. 
 
 ```{r, eval = FALSE}
-ds <- dive_stats(ZC$P, dive_cues=dt[,c('start', 'end'),]) 
+ds <- dive_stats(ZPCr, dive_cues=dt[,c('start', 'end'),]) 
 ```
 
 6. Have a look at the dive stats and perhaps make a plot of some or all
@@ -69,16 +70,46 @@ Compute the auxiliary variable, and then recompute the dive stats including the 
 
 <!-- Example auxiliary variable: pitch. More content to come next week. -->
 
+### Compute pitch
+
+The function `a2pr` will calculate pitch and roll from acceleration. To use the acceleration data, we'll want it cropped to the same time window as we've cropped the depth data. 
+
 ```{r, eval = FALSE}
-ds <- dive_stats(zc$P, dive_cues=dt[,c('start', 'end'),],
-                 X=my_aux_var)
+ZACr <- crop_to(ZC$A, tcues = ZPCr$crop)
+# plot to confirm the cropping
+
+plott(X=list(CroppedDepth=ZPCr, CroppedAccel=ZACr), 
+      r=c(TRUE,FALSE)) # and reverse the y-axis for depth, but not acceleration 
+```
+
+And now to compute pitch:
+
+```{r, eval = FALSE}
+ZPiCr <- a2pr(ZACr)$p 
+```
+
+### Recompute dive stats
+
+Use the auxiliary variable of your choice (if you were following the example above, you'll use ZPiCr) for my_aux_var.
+
+```{r, eval = FALSE}
+dsAux <- dive_stats(P = matrix(ZPCr$data), dive_cues=dt[,c('start', 'end'),], X=matrix(my_aux_var))
+# if you are using ZPiCr
+dsAux <- dive_stats(P = matrix(ZPCr$data), 
+                    dive_cues=dt[,c('start', 'end'),], 
+                    X = matrix(ZPiCr), # to avoid nrow != ncol errors
+                    angular = TRUE, # because this is pitch angle data
+                    sampling_rate = c(5, 5) # sampling rate is 5 for P & X
+                    )
 ```
 
 8. Examine and/or plot again.
 
 ```{r, eval = FALSE}
 str(ds, max.level = 1)
-plott()
+str(dsAux, max.level = 1) # should have all the things from the line above, and then some
+plott( # ... figure out what you want to plott 
+  )
 
 ```
 
