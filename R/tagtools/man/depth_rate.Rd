@@ -7,7 +7,7 @@
 depth_rate(p, fs, fc)
 }
 \arguments{
-\item{p}{A vector or depth or altitude data, or an animaltags list object containing depth or altitude data.}
+\item{p}{A vector of depth or altitude data, or an animaltags list object containing depth or altitude data.}
 
 \item{fs}{(required only if p is a vector) is the sampling rate of p in Hz.}
 

@@ -25,7 +25,7 @@ A list with 3 elements is returned if nodelay = FALSE:
 \item{\strong{opt: }} The last values, length of "p", of the matrix "X".
 }
 
-If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "overlap". The matrix starts with "opt" values if nodelay is FALSE.
+If nodelay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "overlap". The matrix starts with "opt" values if nodelay is FALSE.
 }
 \description{
 This function is used to buffer a signal vector into a matrix of data frames. If the input for nodelay is TRUE, the the signal is buffered with no delay. If nodelay is FALSE, and specifies a vector of samples to precede x[1] in an overlapping buffer.
