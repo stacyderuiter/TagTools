@@ -12,7 +12,7 @@
 #' \item{\strong{z: }}  The remainder of the vector which was not included in the matrix if the last column did not have a full number of rows.
 #' \item{\strong{opt: }} The last values, length of "p", of the matrix "X".
 #' }
-#' @return If no delay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "overlap". The matrix starts with "opt" values if nodelay is FALSE.
+#' @return If nodelay = TRUE, then a matrix of the buffered signal vector "vec" with "n" data segments and an overlap between consecutive frames specified by "overlap". The matrix starts with "opt" values if nodelay is FALSE.
 #' @export
 #' @examples x <- c(1:10)
 #' n <- 3

@@ -2,7 +2,7 @@
 #'
 #' This function is used to estimate the vertical velocity by differentiating a depth or altitude time series. A low-pass filter reduces the sensor noise that is amplified by the differentiation.
 #'
-#' @param p A vector or depth or altitude data, or an animaltags list object containing depth or altitude data.
+#' @param p A vector of depth or altitude data, or an animaltags list object containing depth or altitude data.
 #' @param fs (required only if p is a vector) is the sampling rate of p in Hz.
 #' @param fc (optional) A smoothing filter cut-off frequency in Hz. If fc is not given, a default value is used of 0.2 Hz (5 second time constant).
 #' @return v, The vertical velocity with the same sampling rate as p. v is a vector with the same dimensions as p. The unit of v depends on the unit of p. For example, if p is in meters, v is in meters/second
@@ -21,7 +21,7 @@ depth_rate <- function(p, fs, fc) {
   # input checking
   ##########################
   if (missing(p)) {
-    stop("p (depth or altitude data) is a require input to depth_rate().")
+    stop("p (depth or altitude data) is a required input to depth_rate().")
   }
 
   if (is.list(p)) {
