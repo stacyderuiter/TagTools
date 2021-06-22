@@ -32,6 +32,7 @@ Imports:
     plotly,
     pracma,
     readr,
+    rmarkdown,
     rgl,
     signal,
     stats,
