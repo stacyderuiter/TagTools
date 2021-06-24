@@ -53,7 +53,7 @@ dsf <- function(A, sampling_rate = NULL, fc = NULL, Nfft = NULL) {
   if (Nfft > nrow(Af)) {
     Nfft <- nrow(Af)
   }
-  templist <- spec_lev(Af, Nfft, sampling_rate, Nfft, Nfft / 2)
+  templist <- spectrum_level(Af, Nfft, sampling_rate, Nfft, Nfft / 2)
   S <- templist$SL
   f <- templist$f
   # sum spectral power in the three axes

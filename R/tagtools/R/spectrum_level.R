@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' BW <- beaked_whale
-#' list <- spec_lev(x = BW$P$data, nfft = 4, sampling_rate = BW$P$sampling_rate)
+#' list <- spectrum_level(x = BW$P$data, nfft = 4, sampling_rate = BW$P$sampling_rate)
 #' }
 #'
 spectrum_level <- function(x, nfft, sampling_rate, w, nov) {
