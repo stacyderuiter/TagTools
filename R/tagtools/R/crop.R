@@ -14,9 +14,9 @@
 #' }
 #' @examples data <- beaked_whale
 #' Pc <- crop(data$P) # interactively select a section of data
-#' Ydata <- list(depth = Pc$Y)
-#' plott(Ydata)
-#' # plot shows the cropped section
+#' Ydata <- Pc$data
+#' plot(-Ydata)
+#' # plot shows the cropped section, inverted so it looks like a dive profile
 #' @export
 
 crop <- function(X, sampling_rate = NULL, T = NULL) {
