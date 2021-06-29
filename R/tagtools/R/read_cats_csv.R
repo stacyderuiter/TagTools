@@ -9,11 +9,11 @@
 #' for testing. If max_samps is not given, the entire file is read.
 #' @param skip_samps Number of lines of data to skip (excluding header) before starting to read in data. Defaults to 0 (start at the beginning of the file), but can be used to read in a part of a file, or to read in and process a large file in chunks.
 #' @return A tibble data frame containing the data read from the file. The column names are
-#'     names are taken from the first line of the CSV file and include units and axis. Some columns may be empty (if for example, a tag did not record data from a certain sensor type).
+#' taken from the first line of the CSV file and include units and axis. Some columns may be empty (if for example, a tag did not record data from a certain sensor type).
 #' @export
 #' @note CATS csv files can be extremely large; perhaps too large to read the entire file into memory at once and work with it.
 #' @examples \dontrun{
-#' V <- read_cats_csv("cats_test_segment")
+#' V <- read_cats_csv("cats_test_sample")
 #' }
 read_cats_csv <- function(fname, max_samps = Inf, skip_samps = 0) {
   #****************************

@@ -17,7 +17,7 @@
 #' HS <- harbor_seal
 #' s <- ocdr(p = HS$P$data, A = HS$A$data, sampling_rate = HS$P$sampling_rate, fc = NULL, plim = NULL)
 #' speed <- list(s = s)
-#' plott(speed, testset2$P$sampling_rate)
+#' plott(speed, HS$P$sampling_rate)
 #' }
 #'
 ocdr <- function(p, A, sampling_rate, fc, plim) {
