@@ -3,7 +3,7 @@
 #' This function extracts loose data variables from tag sensor data lists.
 #' It can also be used to check two sensor data lists for compatibility (i.e., same duration and sampling rate).
 #'
-#' @param Sx A tag sensor data data structure (for example, an entry in an animaltag object returned by \code{\link{load_nc}}).
+#' @param Sx A tag sensor data structure (for example, an entry in an animaltag object returned by \code{\link{load_nc}}).
 #' @param Sy (optional) A second tag sensor data structure. Include if you want to check two tag sensor data streams for compatibility in terms of duration and sampling rate.
 #' @param regular (optional) Logical. Default is FALSE. Should \code{Sx} be checked to see whether it was regularly sampled?
 #'
