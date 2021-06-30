@@ -41,8 +41,8 @@ function     [fstr,incl] = check_AM(A,M,fs)
 %		[forward,right,up] local frame.
 %
 %		Example:
-%		 [fstr,incl] = check_AM([-0.3 0.52 0.8],[22 -22 14])
-% 	    returns: fstr=[], incl=0.20181 radians.
+%    [fstr,incl] = check_AM([-0.3 0.52 0.8], [22 -22 14], 1)
+% 	    returns: fstr=[1.002, 34.1174], incl=0.20181 radians.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

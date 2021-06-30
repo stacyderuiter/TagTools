@@ -28,7 +28,7 @@ function		[X,T] = crop_to(X,fs,tcues)
 %		 times are stored in the structure.
 %
 %		Example:
-%		 loadnc('testset3')
+%		 load_nc('testset3');
 %		 d = find_dives(P,300) ;
 %		 P2 = crop_to(P,[d.start(2) d.end(2)]);	% crop to 2nd dive
 %		 plott(P2)

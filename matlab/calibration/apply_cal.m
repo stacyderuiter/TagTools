@@ -33,14 +33,18 @@ function    X = apply_cal(X,C,T,nomap)
 %		Any other fields in cal will be ignored.
 %
 %		Example:
-%		 TBD
+%		cats = load_nc(cats_test_raw);
+%   catsSpher = spherical_cal(cats.A.data);
+%   cats.ACal = apply_cal(cats.A, catsSpher);
+%   % Might not totally work, but pretty close
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: March 2018
+%     Last modified: June 2021
 %     - cal fields can be in upper or lower case
 %		- added comments and nomap support
 %     - fixed errors in temperature compensation
+%     - added example
 
 if nargin<2,
    help apply_cal
