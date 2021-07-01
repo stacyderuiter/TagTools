@@ -20,7 +20,7 @@ ptrack(A, M, s, sampling_rate = NULL, fc = 0.2, return_pe = FALSE)
 \item{return_pe}{Logical. If return_pe is TRUE, the estimated depth or altitude predicted will be returned with the estimated track. Default is FALSE.}
 }
 \value{
-The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (variables 'northing' and 'easting' in the output data frame) relative to the animal'sposition at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/sampling_rate,2/sampling_rate,... relative to the start time of the measurements. OR, if return_pe = TRUE, this function returns the above value and the estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
+The estimated track in a local level frame. The track is defined as meters of northward and eastward movement (variables 'northing' and 'easting' in the output data frame) relative to the animal's position at the start of the measurements  (which is defined as [0,0]). The track sampling rate is the same as for the input data and so each row of T defines the track coordinates at times 0,1/sampling_rate,2/sampling_rate,... relative to the start time of the measurements. OR, if return_pe = TRUE, this function returns the above value and the estimated depth or altitude predicted from the speed and pitch angle. This can be compared against the measured depth/altitude to assess errors in the dead-reckoned track. Note that even if pe matches the observed depth, this does not guarantee that the track is accurate.
 }
 \description{
 This function is used to estimate the simple dead-reckoned track (pseudo-track) based on speed and bodypointing angle.
@@ -36,6 +36,7 @@ BW <- beaked_whale
 list <- ptrack(A = BW$A$data, M = BW$M$data, s = 3, 
 sampling_rate = BW$A$sampling_rate, fc = NULL, 
 return_pe = TRUE)
+plot(list$T$easting, list$T$northing, xlab = "Easting, m", ylab = "Northing, m")
 }
 
 }

@@ -18,7 +18,7 @@ for testing. If max_samps is not given, the entire file is read.}
 }
 \value{
 A tibble data frame containing the data read from the file. The column names are
-    names are taken from the first line of the CSV file and include units and axis. Some columns may be empty (if for example, a tag did not record data from a certain sensor type).
+taken from the first line of the CSV file and include units and axis. Some columns may be empty (if for example, a tag did not record data from a certain sensor type).
 }
 \description{
 Read in data from a CATS tag deployment (stored in a .csv file). This function is usable by itself but is more normally
@@ -29,6 +29,6 @@ CATS csv files can be extremely large; perhaps too large to read the entire file
 }
 \examples{
 \dontrun{
-V <- read_cats_csv("cats_test_segment")
+V <- read_cats_csv("cats_test_sample")
 }
 }

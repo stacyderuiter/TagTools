@@ -4,7 +4,8 @@
 \alias{hilbert_env}
 \title{Compute the envelope of X using Hilbert transform.
  
-Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.}
+Compute the envelope of the signal matrix X using the Hilbert transform. 
+To avoid long transforms, this function uses the overlap and add method.}
 \usage{
 hilbert_env(X, N = 1024)
 }
@@ -12,16 +13,19 @@ hilbert_env(X, N = 1024)
 \item{X}{a vector or matrix of signals. If X is a matrix, each column is treated as a separate signal.
 The signals must be regularly sampled for the result to be correctly interpretable as the envelope.}
 
-\item{N}{(optional) specifies the transform length used. The default value is 1024 and this may be fine for most situations.}
+\item{N}{(optional) specifies the transform length used. 
+The default value is 1024 and this may be fine for most situations.}
 }
 \value{
-E, the envelope of X. E is the same size as X: it has the same number of columns and the same number of samples per signal. It has the same units as
+E, the envelope of X. E is the same size as X: it has the same number of columns 
+and the same number of samples per signal. It has the same units as
 X but being an envelope, all values are >=0.
 }
 \description{
 Compute the envelope of X using Hilbert transform.
  
-Compute the envelope of the signal matrix X using the Hilbert transform. To avoid long transforms, this function uses the overlap and add method.
+Compute the envelope of the signal matrix X using the Hilbert transform. 
+To avoid long transforms, this function uses the overlap and add method.
 }
 \examples{
 \dontrun{

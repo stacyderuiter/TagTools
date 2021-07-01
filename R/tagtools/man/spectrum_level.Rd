@@ -33,7 +33,7 @@ The spectrum is single-sided and extends to sampling_rate/2. The reference level
 \examples{
 \dontrun{
 BW <- beaked_whale
-list <- spec_lev(x = BW$P$data, nfft = 4, sampling_rate = BW$P$sampling_rate)
+list <- spectrum_level(x = BW$P$data, nfft = 4, sampling_rate = BW$P$sampling_rate)
 }
 
 }

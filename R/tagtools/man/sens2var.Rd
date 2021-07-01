@@ -7,7 +7,7 @@
 sens2var(Sx, Sy = NULL, regular = NULL)
 }
 \arguments{
-\item{Sx}{A tag sensor data data structure (for example, an entry in an animaltag object returned by \code{\link{load_nc}}).}
+\item{Sx}{A tag sensor data structure (for example, an entry in an animaltag object returned by \code{\link{load_nc}}).}
 
 \item{Sy}{(optional) A second tag sensor data structure. Include if you want to check two tag sensor data streams for compatibility in terms of duration and sampling rate.}
 

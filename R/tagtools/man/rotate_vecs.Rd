@@ -9,7 +9,7 @@ rotate_vecs(V, Q)
 \arguments{
 \item{V}{is a tag data structure, a 3-element vector or a 3-column matrix of vector measurements for example V could be from an accelerometer or magnetometer.}
 
-\item{Q}{is the rotation matrix. If Q is a single 3x3 matrix, the same rotation is appled to all vectors in V. If Q is a 3x3xn matrix where n is the number of rows in V, a different transformation given by Q[,, k] is applied to each row of V.}
+\item{Q}{is the rotation matrix. If Q is a single 3x3 matrix, the same rotation is applied to all vectors in V. If Q is a 3x3xn matrix where n is the number of rows in V, a different transformation given by Q[,, k] is applied to each row of V.}
 }
 \value{
 The rotated vector or matrix with the same size as the input V.

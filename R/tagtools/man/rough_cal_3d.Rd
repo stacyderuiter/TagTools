@@ -27,10 +27,12 @@ This function requires a lot of data as it is looking for extreme values in each
 \examples{
 \dontrun{
 BW <- beaked_whale
+plot(x = c(1:length(BW$M$data)), y = BW$M$data)
+# see what the data looks like first
 rcal <- rough_cal_3d(BW$M$data, fstr = 38.2)
 # fstr matches records for field strength in
 # El Hierro when the tag was used
-cal <- list(rcal = rcal$X)
-plott(cal, BW$sampling_rate)
+cal <- list(x = c(1:length(rcal$X)), y = rcal$X)
+plot(cal)
 }
 }
