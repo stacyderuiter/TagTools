@@ -83,7 +83,8 @@ Pc = crop(MN$Depth)
 <button class="btn btn-primary" data-toggle="collapse" data-target="#crop1"> Show/Hide Results </button>  
 <div id="crop1" class="collapse"> 
 ```{r, echo = FALSE, eval = TRUE}
-Pc = crop(MN$Depth)
+knitr::include_graphics("crop_1.png")
+print("Position your cursor and then click once followed by clicking FINISH to change the start, or click twice in the same spot followed by clicking FINISH to change the end. If you wish to change both the start and end click once at the start time desired and twice at the end time desired.")
 ```
 
 </div>
@@ -99,6 +100,8 @@ plott(X=list(Depth = Pc))
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott2"> Show/Hide Results </button>  
 <div id="plott2" class="collapse"> 
 ```{r, eval = TRUE, echo = FALSE}
+data <- MN$Depth
+Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
 plott(X=list(Depth = Pc))
 ```
 
@@ -114,9 +117,6 @@ Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
 
 The resulting sensor data list also contains fields that document what you just did. They should look like:
 
-```{r, echo=FALSE, eval = TRUE}
-Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
-```
 
 ```{r, echo = TRUE, eval = TRUE}
 Pc$history
