@@ -130,4 +130,4 @@ You've learned how to make plots using the `tagtools` function `plott`, as well 
 
 Congratulations! You've completed this vignette. 
 
-*If you'd like to continue working through these vignettes, *
+*If you'd like to continue working through these vignettes, data-quality-error-correction is probably a good option.*
