@@ -1,0 +1,320 @@
+---
+title: "Data quality & error correction"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{data-quality-error-correction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+require(tagtools)
+```
+
+Welcome to the `data-quality-error-correction` vignette! Thanks for taking some time to get to know our package; we hope it is useful to you.
+
+This vignette deals with how to check data quality for accelerometers and magnetometers, as well as how to make corrections for some common sources of error. 
+
+*Estimated time for this practical: 25 minutes* 
+
+These practicals assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+# Checking accelerometer and magnetometer data
+
+Biologging data are not always ready-to-use when you read them off the tag. Some corrections may be needed. Quality checking is fairly easy for pressure data from aquatic mammals because we know they will breathe at the surface. Data from accelerometers and magnetometers are more difficult not only because there are three axes but also because we don't have such an intuitive feel for what they should look like. However, there are some quality checks we can do with `A` and `M` data that help to catch and correct problems. 
+
+Our objective here is to estimate the orientation of an animal (its pitch, roll and heading) as a function of time. To do so we first need to check and correct errors in `A` and `M`.
+
+## Data quality checks
+For this practical we will use data from a tag attached to the back of a sperm whale. The data is in: `rawtestset3.nc`. 
+
+(As usual: Make sure that `rawtestset3.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder, or if you can't find it, you can download it from animaltags.org. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
+
+```{r, echo = TRUE, eval = FALSE}
+sw <- load_nc('rawtestset3')
+```
+
+```{r, echo = FALSE, eval = TRUE}
+sw_file_path <- system.file("extdata", "rawtestset3.nc", package = "tagtools", mustWork = TRUE)
+sw <- load_nc(sw_file_path)
+```
+
+*Note that the code above assumes that the file is saved in your current working directory. `getwd()` will quickly show you what your current working directory is. You may need to use `setwd("yourPathInQuotes")` to change the working directory, or alternatively specify a full or relative path for the nc file.*
+
+Look at the overall structure to get an idea of how the data are stored, and check out the info structure to see where the data came from. 
+
+```{r, echo = TRUE, eval = FALSE}
+str(sw, max.level = 1)
+sw$info
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#inspect_sw"> Show/Hide Results </button>  
+<div id="inspect_sw" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+print("results for str(sw, max.level = 1):")
+print("-----------------------------------")
+str(sw, max.level = 1)
+print("-----------------------------------")
+print("and results for sw$info:")
+print("-----------------------------------")
+sw$info
+```
+
+</div>
+
+Inspect the depth, acceleration and magnetometer data:
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(depth = sw$P, acc = sw$A, mag = sw$M))
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_sw"> Show/Hide Results </button>  
+<div id="plott_sw" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(depth = sw$P, acc = sw$A, mag = sw$M))
+```
+
+</div>
+
+Depth, `sw$P`, seems fine--it looks like a depth versus time plot for a diving whale. However, it is hard to see whether there are any problems with accelerometer and magnetometer data, `sw$A` and `sw$M`, from their respective plots. Two things can often go wrong with raw tag data: 
+
+- the sensors may not be well-calibrated, and 
+- the axes of `A` and `M` may not be aligned with the animal's axes. 
+
+Luckily, we can check both of these from the data.
+
+When there is not much specific acceleration, the vector magnitude of each acceleration measurement should be close to the magnitude of the gravity vector, i.e., 9.8 $\frac{m}{s^2}$. 
+
+The magnetometer data should also have fairly constant vector magnitude equal to the field strength where the data came from. It should be about 48 $\mu$T in this case since the tag was deployed at $28.48^{\circ}$, $-89.052^{\circ}$ latitude/longitude. 
+
+*(A useful website to find the geomagnetic field parameters, based on where your tag is deployed from, is: <https://www.ngdc.noaa.gov/geomag-web/#igrfwmm>.)* 
+
+Finally, the angle between `A` and `M` should be close to the magnetic inclination angle, which is also locally constant, $59^{\circ}$ in this case. 
+
+Use `check_AM()` to compute the field strength of `A` and `M` and their inclination angle. Recall that A is stored as `sw$A` and M is stored as `sw$M`, and write the result to a new object `AMcheck` or another similar name. Then check out what this object contains.
+
+```{r, eval = FALSE, echo = TRUE}
+AMcheck <- check_AM(sw$A, sw$M)
+str(AMcheck, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_AMcheck"> Show/Hide Results </button>  
+<div id="str_AMcheck" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+AMcheck <- check_AM(sw$A, sw$M)
+str(AMcheck, max.level = 1)
+```
+
+</div>
+
+You should be able to tell AMcheck is a list containing two vectors, `AMcheck$fstr` (field strength) and `AMcheck$incl` (inclination). Open the next code to see how we plott these. 
+
+```{r, eval = FALSE, echo = TRUE}
+fs <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
+# plott fstr, and incl (converting from radians to degrees)
+plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = fs)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_AMcheck"> Show/Hide Results </button>  
+<div id="plott_AMcheck" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+fs <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
+# plott fstr, and incl (converting from radians to degrees)
+plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = fs)
+```
+
+</div>
+
+The top plot shows the field strength of `A` and `M`. These should be close to 9.8 and 48, respectively, with little variation. If not, the acceleration or magnetometer data need re-calibration. Usually, the problem is with `M` and is due to stray magnetic fields in the tag. Fix this by doing a 'hard-iron correction', which the function `fix_offset_3d` can do. Again, recall that `M` is stored within `sw` as `sw$M`, and write the result as an object `Mf`. Then look at what `Mf` contains.
+
+```{r, eval = FALSE, echo = TRUE}
+Mf <- fix_offset_3d(sw$M)
+str(Mf, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_Mf"> Show/Hide Results </button>  
+<div id="str_Mf" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+Mf <- fix_offset_3d(sw$M)
+str(Mf, max.level = 1)
+```
+
+</div>
+
+This should show you that Mf is itself a list with two elements, `Mf$X` and `Mf$G`. Comparing `Mf$G` and `Mf$X` with `sw$A`, 
+
+```{r, eval = FALSE, echo = TRUE}
+str(Mf$G, max.level = 1)
+str(Mf$X, max.level = 1)
+str(sw$A, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_MfGXswA"> Show/Hide Results </button>  
+<div id="str_MfGXswA" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+print("results for Mf$G")
+print("----------------")
+str(Mf$G, max.level = 1)
+print("results for Mf$X")
+print("----------------")
+str(Mf$X, max.level = 1)
+print("results for sw$A")
+print("----------------")
+str(sw$A, max.level = 1)
+```
+
+</div>
+
+you'll notice that `Mf$X` and `sw$A` structures contain the same kind of data. Hence `Mf$X` can stand in for `sw$M` (`Mf` by itself cannot). So, try and re-run `check_AM()` with `sw$A` and `Mf$X` to see if the field strength has improved. 
+
+```{r, eval = FALSE, echo = TRUE}
+AMcheck2 <- check_AM(sw$A, Mf$X)
+plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = fs)
+
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_AMcheck2"> Show/Hide Results </button>  
+<div id="plott_AMcheck2" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+AMcheck2 <- check_AM(sw$A, Mf$X)
+plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = fs)
+
+```
+
+</div>
+
+If all has gone well, your field strength should be pretty constant at right around 48 $\mu$T. Is it? Great work!
+
+Now look again at the inclination angle (bottom plot). Chances are, it doesn't look consistently close to $59^{\circ}$. Therefore, we need to do the next step...
+
+## Correcting the axes of triaxial sensor data
+If the field strength is okay for `A` and `M` but the inclination angle is wrong, this is a strong indication that the magnetometer and accelerometer axes don't match. Assuming that the accelerometer axes are correct, I found by trial and error that the magnetometer axes are mapped as follows:
+
+```{r, echo = FALSE, eval = TRUE}
+axis_table <- tibble::tibble(`Sensor axis` = c('x', 'y', 'z'),
+                         `Tag axis` = c('-x', 'z', 'y'))
+pander::pander(axis_table)
+```
+
+
+You could make these corrections to `Mf` one-by-one, but it is probably more convenient to do them all at once. To make this happen, define a 'map' matrix that summarizes the changes:
+
+```{r, eval = FALSE, echo = TRUE}
+Map <- matrix(c(-1, 0, 0,
+                0, 0, 1,
+                0, 1, 0),
+              nrow = 3, ncol = 3, byrow = TRUE)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Map_matrix"> Show/Hide Results </button>  
+<div id="Map_matrix" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+Map <- matrix(c(-1, 0, 0,
+                0, 0, 1,
+                0, 1, 0),
+              nrow = 3, ncol = 3, byrow = TRUE)
+Map
+```
+
+</div>
+
+Use function `rotate_vecs()` to apply `Map` to `Mf$X` and make a new 'tag frame' data structure:
+
+```{r, eval = TRUE, echo = TRUE}
+Mt <- rotate_vecs(Mf$X,Map)
+```
+
+`Mt` is now oriented in the tag's frame of reference. Add this important information about `Mt` into the structure `Mt`:
+
+```{r, eval = FALSE, echo = TRUE}
+Mt$frame <- 'tag'
+Mt$sensor_map <- Map		# save the Map matrix too
+str(Mt, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Mt_frameNmap"> Show/Hide Results </button>  
+<div id="Mt_frameNmap" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+Mt$frame <- 'tag'
+Mt$sensor_map <- Map		# save the Map matrix too
+str(Mt, max.level = 1)
+```
+
+</div>
+
+Check the field strength and inclination of `sw$A` and `Mt` once more. Try and do this on your own, then check your work with the code below: write a new object, perhaps `AMcheck3`, with the result of check_AM on `sw$A` and `Mt`. Then use your new object `AMcheck3` in place of `AMcheck2` to get the same two plots, but with the newly corrected data.
+
+```{r, eval = FALSE, echo = TRUE}
+AMcheck3 <- check_AM(sw$A, Mt)
+plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = fs)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_AMcheck3"> Show/Hide Results </button>  
+<div id="plott_AMcheck3" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+AMcheck3 <- check_AM(sw$A, Mt)
+plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = fs)
+```
+
+</div>
+
+Are we good? Bear in mind that the inferred inclination angle from accelerometer and magnetometer data is usually a bit noisy so don't expect `incl` to be exactly on the expected inclination angle. It should get pretty close, though (around $59^{\circ}$).
+
+When you are comfortable that the data pass the quality checks, save them to a new NetCDF file:
+
+```{r, echo = TRUE, eval = FALSE}
+save_nc('testset3_tag_frame', X = list(sw$A, Mt, sw$P, sw$info))
+```
+
+<!--Sam: this is the one part that still really doesn't work. Screenshot June 2, 10:33am. -->
+
+The corrections that you made to get `Mt` are stored in its structure so this information will also be saved automatically in your nc file - verify this by showing the contents of `Mt`.
+
+```{r, echo = TRUE, eval = FALSE}
+str(Mt)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_Mt"> Show/Hide Results </button>  
+<div id="str_Mt" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+str(Mt)
+```
+
+</div>
+
+Your processing steps are listed in the 'history' field and so are traceable as you would expect in a professional archive. 
+
+# Review 
+
+What have you learned? A few powerful tools for detecting and correcting common errors in raw data. 
+
+Great work! You've completed this vignette. 
+
+*If you'd like to continue working through these vignettes, you now have a couple of different options for how to estimate and use animal orientation. Select one or both as best fits your data or interests.*
+
+**Pitch, roll, and Heading: Inferring seal behaviour from orientation**
+
+*Estimating pitch roll and heading angles and using them to make ethograms. This vignette will use tag data that is aligned with the animal's body axes (this could be either because the tag was glued in place or because the orientation of the tag on the animal has already been corrected).*
+
+**Tag orientation, From tag to sperm whale frame**
+
+*Estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
