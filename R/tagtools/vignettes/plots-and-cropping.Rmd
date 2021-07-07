@@ -41,6 +41,7 @@ If you don't see cats_test_raw.nc, see the load-tag-data vignette for more detai
 ```{r, echo = FALSE, eval = TRUE}
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
+print(cats_file_path)
 ```
 
 # Exploratory data plots
@@ -100,7 +101,6 @@ plott(X=list(Depth = Pc))
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott2"> Show/Hide Results </button>  
 <div id="plott2" class="collapse"> 
 ```{r, eval = TRUE, echo = FALSE}
-data <- MN$Depth
 Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
 plott(X=list(Depth = Pc))
 ```
@@ -123,7 +123,6 @@ Pc$history
 ```
 
 The history keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The crop and start_time fields show how the original data was changed: the `start_time` is with respect to the field `dephist_device_datetime_start` in the info structure which says when the tag recording started.
-
 
 # Review 
 
