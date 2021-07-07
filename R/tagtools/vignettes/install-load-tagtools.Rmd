@@ -2,7 +2,9 @@
 title: "Setting up tagtools"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    code_folding: hide
 vignette: >
   %\VignetteIndexEntry{install-load-tagtools}
   %\VignetteEngine{knitr::rmarkdown}
@@ -101,3 +103,5 @@ If the command `?` pulls up a help file for the function `load_nc` like it shoul
 What have you learned so far? Important setup steps that will help avoid confusion and delay moving forward.
 
 Congrats!
+
+*If you'd like to continue working through these vignettes, `load-tag-data` is probably a good option.*
