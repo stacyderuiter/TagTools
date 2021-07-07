@@ -1,0 +1,20 @@
+name,type,abbrev,description,axes,def_units,def_unit_name,def_label,def_frame,def_axes,def_cols
+Pressure,press,P,dive depth,1,m H2O,metres H2O (salt),metres,,D,
+Depth,press,P,dive depth,1,m H2O,metres H2O (salt),metres,,D,
+Altitude,press,P,altitude above sea-level,1,m,metres above sea-level,metres,,U,
+Acceleration,acc,A,triaxial acceleration,3,m/s2,metres per second squared,m/s^2,tag,FRU,"x,y,z"
+Magnetometer,mag,M,triaxial magnetometer,3,uT,micro Tesla,\muT,tag,FRU,"x,y,z"
+Gyroscope,gyr,G,triaxial gyroscope,3,rads/s,radians per second,rads/s,tag,FRU,"x,y,z"
+Speed,spd,S,speed with respect to medium,1,m/s,metres per second,m/s,,F,
+Position,pos,POS,GPS position,2,degrees,decimal degrees,degrees,WGS84,NE,"lat,long"
+Temperature,temp,T,temperature,1,degrees C,degrees Celsius,degrees,,,
+Light,light,LL,light level,1,rel,rel,rel,,,
+SPL,audio,SPL,sound pressure level,1,dB re uPa,decibels re micro Pascal,dB re \muPa,,,
+Jerk,jerk,J,RMS norm-jerk,1,m/s3,metres per second cubed,m/s^3,,,
+Stereo,audio,aud,stereo sound,2,U,amplitude re 1.0,U,,,
+Mono,audio,aud,mono sound,1,U,amplitude re 1.0,U,,,
+Audio,audio,aud,sound data,2,U,amplitude re 1.0,U,,,
+Audit,cue,cue,Sound audit cues,1,s,seconds,s,,,
+AFA,acc,Aa,triaxial acceleration,3,m/s2,metres per second squared,m/s^2,animal,FRU,"x,y,z"
+AFM,mag,Ma,triaxial magnetometer,3,uT,micro Tesla,\muT,animal,FRU,"x,y,z"
+ECG,ecg,E,skin surface potential,1,V,Volts,V,,,
