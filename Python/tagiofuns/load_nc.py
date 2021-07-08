@@ -68,6 +68,7 @@ def load_nc(fname=None, vname=None):
 
         if not fname:
             help(load_nc)
+            return X
             return
 
         pth = '\\'.join(fname.split('/')[:-1]) + '\\'
@@ -80,6 +81,7 @@ def load_nc(fname=None, vname=None):
 
     if not os.path.exists(fname):
         print(f' File {fname} not found\n')
+        return X
         return
 
     ds = nc.Dataset(fname)
@@ -95,7 +97,10 @@ def load_nc(fname=None, vname=None):
             continue
 
         v = ds.variables[fn][:]
-        if len(v.data.shape)>1 and v.data.shape[1]!=len(ds.variables[fn].column_name.split(',')):
+        tmp = ds.variables[fn].__dict__.copy()
+        if 'column_names' in tmp.keys():
+            tmp['column_name'] = tmp.pop('column_names')
+        if len(v.data.shape)>1 and v.data.shape[1]!=len(tmp['column_name'].split(',')):
             X[fn] = {'data': v.data.transpose()}
         else:
             X[fn] = {'data': v.data}
@@ -103,11 +108,12 @@ def load_nc(fname=None, vname=None):
         if (X[fn]['data'].shape[0]==1) & any(np.repeat(X[fn]['data'][0],2) == v.fill_value):
             X[fn]['data'] = np.array([])
 
-        if ds.variables[fn].__dict__:
+        if ds.variables[fn].__dict__: # if 'column_name' wanted for variables with 'column_names', this dictionary should be replaced with tmp
             X[fn] = {**X[fn],**ds.variables[fn].__dict__}
             len(X[fn].keys())
 
     if not X:
+        return X
         return
     
     return X 
