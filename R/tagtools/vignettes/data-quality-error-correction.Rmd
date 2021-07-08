@@ -309,12 +309,4 @@ What have you learned? A few powerful tools for detecting and correcting common 
 
 Great work! You've completed this vignette. 
 
-*If you'd like to continue working through these vignettes, you now have a couple of different options for how to estimate and use animal orientation. Select one or both as best fits your data or interests.*
-
-**Pitch, roll, and Heading: Inferring seal behaviour from orientation**
-
-*Estimating pitch roll and heading angles and using them to make ethograms. This vignette will use tag data that is aligned with the animal's body axes (this could be either because the tag was glued in place or because the orientation of the tag on the animal has already been corrected).*
-
-**Tag orientation, From tag to sperm whale frame**
-
-*Estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
+*If you'd like to continue working through these vignettes, `Tag orientation, from tag to sperm whale frame` is probably a good option. It deals with estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
