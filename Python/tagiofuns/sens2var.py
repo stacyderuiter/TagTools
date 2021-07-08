@@ -35,11 +35,13 @@ def sens2var(Sx=None, Sy=None, r=None):
     Last modified: 08 July 2021
 
     """
+
+    import numpy as np
     
     X, Y, fs = ([] for i in range(3))
 
     if not Sx:
-        help(sens2var)
+        print(help(sens2var))
         return (X,Y,fs)
         return
     
