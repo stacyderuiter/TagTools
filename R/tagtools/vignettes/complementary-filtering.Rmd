@@ -1,0 +1,209 @@
+---
+title: "Complementary filtering: low & high-frequency, acceleration style"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{complementary-filtering}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+require(tagtools)
+```
+
+Welcome to the `complementary-filtering` vignette! Thanks for taking some time to learn our package; we hope it's, thus far, all you've dreamed it would be. 
+
+In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you'll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and locomotion (high frequency), in order to gain insight about the movements of a beaked whale. 
+
+*Estimated time for this practical: 20 minutes.*
+
+These vignettes all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+#	Setup
+For this vignette we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
+
+Write `testset1` to the object `bw`, for "beaked whale". Then use `plott()` to inspect it.
+
+```{r, echo = TRUE, eval = FALSE}
+bw <- load_nc('testset1')
+plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_bw"> Show/Hide Results </button>  
+<div id="plott_bw" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+bw_file_path <- system.file("extdata", "testset1.nc", package = "tagtools", mustWork = TRUE)
+bw <- load_nc(bw_file_path)
+plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
+```
+
+</div>
+
+This dataset contains a deep dive followed by a shallow dive. We want to infer the function of these by looking for locomotion effort and sudden changes in acceleration that could be indicative of prey capture attempts. We are also going to look for changes in swimming gait.
+
+# Complementary filtering
+To separate slow orientation changes from postural dynamics in locomotion, we need to choose a filter cut-off frequency below the stroke frequency. We can estimate the dominant stroke frequency using `dsf()`. There is a bout of steady swimming between minutes 35 and 42 in the data. Use `crop_to()` to pick out the accelerometer data in that interval:
+
+```{r, echo = TRUE, eval = TRUE}
+Aseg <- crop_to(X = bw$A, tcues = c(35*60, 42*60))
+```
+
+Mimic the previous code to similarly crop the pressure (depth) and magnetometer data:
+
+```{r, echo = TRUE, eval = TRUE}
+Dseg <- crop_to(X = bw$P, tcues = c(35*60, 42*60))
+Mseg <- crop_to(X = bw$M, tcues = c(35*60, 42*60))
+```
+
+Plot the three of them together to make sure you got it right. 
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Depth = Dseg, Acc = Aseg, Mag = Mseg), interactive = TRUE)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_seg"> Show/Hide Results </button>  
+<div id="plott_seg" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(Depth = Dseg, Acc = Aseg, Mag = Mseg), interactive = FALSE)
+```
+
+</div>
+
+Then, run `dsf()` on `Aseg` to get the mean stroking rate:
+
+```{r, eval = TRUE, echo = TRUE}
+dsfa <- dsf(Aseg)$fpk	# estimated stroking rate in Hz
+```
+
+Try doing the same with the magnetometer data:
+
+```{r, eval = TRUE, echo = TRUE}
+dsfm <- dsf(Mseg)$fpk # another estimate
+```
+
+Are the estimated stroke rates similar? The magnetometer is not sensitive to specific acceleration, so why do stroking motions show up in `Mseg`? Refer to your plots of `Mseg` and `Dseg` to try and figure out which axis the stroking motions show up in. Any idea what kind of movement it might represent?
+
+A good starting choice for the filter cut-off frequency is 70% of the stroking rate (pick one of the estimates, or average the two). Call this value `fc`. Run a complementary filter on `A` to separate the slow and fast time-scales. Recall that `A` is stored under `bw` as `bw$A`:
+
+```{r, eval = FALSE, echo = TRUE}
+fc <- 'YourValueHere'   		# your value for fc in Hz, a number, without quotes
+Af <- comp_filt(bw$A, fc = fc) 
+str(Af, max.level = 1) 
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Af"> Show/Hide Results </button>  
+<div id="Af" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+fc <- 0.3814753   		# your value for fc in Hz, a number, without quotes
+Af <- comp_filt(bw$A, fc = fc) 
+str(Af, max.level = 1)
+```
+
+</div>
+
+The complementary filter returns a list containing two data matrices: the low-pass filtered data and the high-pass filtered data. Each of these is a three-column matrix because the filter is run on each column of the input data. So it is like you now have two accelerometers in the tag - one is only sensitive to low frequencies and the other is only sensitive to high frequencies. If you would like to get each matrix out of the cell array, do:
+
+```{r, eval = TRUE, echo = TRUE}
+Alow <- Af[[1]]		# low frequency A data
+Ahigh <- Af[[2]]	  # high frequency A data
+```
+
+The sampling rate of these is the same as for the original data. For simplicity, make a variable `fs` equal to the sampling rate and use `plott()` to plot the two filtered accelerations along with the dive profile:
+
+```{r, eval = FALSE, echo = TRUE}
+fs <- bw$A$sampling_rate
+plott(X = list(`Depth (m)` = bw$P$data,
+               `LF Accel` = Alow, 
+               `HF Accel` = Ahigh),
+      fsx = fs)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_lowNhigh"> Show/Hide Results </button>  
+<div id="plott_lowNhigh" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+fs <- bw$A$sampling_rate
+plott(X = list(`Depth (m)` = bw$P$data,
+               `LF Accel` = Alow, 
+               `HF Accel` = Ahigh),
+      fsx = fs)
+```
+
+</div>
+
+These two versions of acceleration are sometimes called 'static' and 'dynamic' acceleration. If the filtering worked, you should see that `Alow` has large, relatively slow changes in acceleration which are mostly to do with orientation. These are missing in `Ahigh`, which has the high frequency specific acceleration, having to do with propulsion and strikes or flinches. 
+
+If you like, zoom in to the section of steady stroking that you used for `dsf` - you should only see the stroking in `Ahigh`, not in `Alow`. 
+
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(`Depth (m)` = bw$P$data,
+               `LF Accel` = Alow, 
+               `HF Accel` = Ahigh),
+      fsx = fs, xlim = c(35*60, 42*60)/3600)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_lowNhigh_zoomd"> Show/Hide Results </button>  
+<div id="plott_lowNhigh_zoomd" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(`Depth (m)` = bw$P$data,
+               `LF Accel` = Alow, 
+               `HF Accel` = Ahigh),
+      fsx = fs, xlim = c(35*60, 42*60)/3600)
+```
+
+</div>
+
+# Locomotion style
+
+We want to characterise the locomotion style of the animal during the deep-dive ascent. Using the plot you made above, zoom in on the ascent and see if you can identify intervals in which the animal appears to be just swimming steadily (hint: look for when `Alow` is fairly constant indicating a steady orientation). 
+
+Do you see any changes in swimming style throughout the ascent? In particular, check out the swimming styles in time intervals (1) 36-38 minutes and (2) 56-58 minutes. Write two objects (say, `intvl1` and `intvl2`) that contain these intervals in seconds, using `c(YourStartTime, YourEndTime)`. Then, crop out the high frequency acceleration data in each of these intervals using `crop_to(...)`. (Try and write the code yourself!)
+
+```{r echo = TRUE, eval = TRUE}
+intvl1 <- c(36*60, 38*60)
+intvl2 <- c(56*60, 58*60)
+Ah1 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl1)
+Ah2 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl2)
+```
+
+Now plott these with the same y-scale so you can easily compare them. 
+
+<!-- Sam speaks again: this doesn't necessarily put them on the same y-scale. Not sure how to fix. -->
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Ah1,Ah2), fsx = fs)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_Ah1Ah2"> Show/Hide Results </button>  
+<div id="plott_Ah1Ah2" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(Ah1,Ah2), fsx = fs)
+```
+
+</div>
+
+Comparing these two intervals of swimming, what do you conclude about the swimming styles? Look at the magnitude of the acceleration (the units are in $m/s^2$). Does one swimming style seem more energetic than the other?
+
+Finally go back and plot the full high frequency acceleration data, `Ahigh`, to see whether there is active swimming in the shallow dive and, if so, which swimming gait is used there.
+
+# Review
+
+You've learned how to separate low- and high-frequency acceleration data with a complementary filter, and done some interpretation of these two sets of data.
+
+Aaaaand... congrats! You've aced this vignette. 
+
+*If you'd like to continue working through these vignettes, `jerk-transients` is probably a pretty logical choice.*
