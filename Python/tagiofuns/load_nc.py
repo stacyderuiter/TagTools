@@ -68,6 +68,7 @@ def load_nc(fname=None, vname=None):
 
         if not fname:
             help(load_nc)
+            return X
             return
 
         pth = '\\'.join(fname.split('/')[:-1]) + '\\'
@@ -80,6 +81,7 @@ def load_nc(fname=None, vname=None):
 
     if not os.path.exists(fname):
         print(f' File {fname} not found\n')
+        return X
         return
 
     ds = nc.Dataset(fname)
@@ -111,6 +113,7 @@ def load_nc(fname=None, vname=None):
             len(X[fn].keys())
 
     if not X:
+        return X
         return
     
     return X 
