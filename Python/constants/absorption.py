@@ -1,4 +1,4 @@
-def absorption(f, T, d):
+def absorption(f=None, T=None, d=None):
     """Calculates the absorption coefficient for sound in seawater. 
     After Kinsler and Frey pp. 159-160.
 
@@ -10,18 +10,28 @@ def absorption(f, T, d):
     :type: scalar or vector
     Input arguments can be scalars, or a mixture of vectors and scalars as long as each argument is either a vector of length nx1 (with n being the same for all vector arguments) or a scalar.
 
-    :raises: missing inputs: if you input less than three arguments, the function will not accept it. All three are required.
+    :raises NameError: if you input less than three arguments, the function will not accept it. 
+        All three are required.
 
-    :return: The sound absorption in db per meter
+    :returns: absp: The sound absorption in db per meter
     :rtype: scalar, if all inputs were scalars. If one or more were vectors, return is a vector.
 
     Example: absorption(140000, 13, 10) 
-    # returns 0.04354982 dB/m
+    returns: 0.04354982 dB/m
 
+    Valid: Python
+    markjohnson@st-andrews.ac.uk; dmwisniewska@gmail.com
+    Last modified: 09 July 2021
     """
-    if (d == None):
+    absp = []
+    if not f:
+        print(help(absorption))
+        return absp
+        return
+    if not d:
         print("Error: all inputs are required")
-        return None
+        return absp
+        return
     from math import exp
     Ta = T + 273.0
     Pa = 1.0 + d / 10.0
@@ -32,5 +42,6 @@ def absorption(f, T, d):
     C = .000000000000476 * (1.0 - .040 * T + .00059 * T**2) * (1.0 - .00038 * Pa)
     absp = A * f1 * f**2 / (f1**2 + f**2) + B * f2 * f**2 / (f2**2 + f**2) + C * f**2
     return absp
+    return
 
-print(absorption(140000.0, 13.0, 10.0))
+absorption()
