@@ -1,0 +1,344 @@
+---
+title: "Fine-scale tracking"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{fine-scale-tracking}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+require(tagtools)
+```
+
+Welcome to the `fine-scale-tracking` vignette! Thanks for taking some time to get to know our package; we hope it sparks joy. 
+
+This practical covers how to compute a dead-reckoned track from accelerometer and magnetemeter data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high resolution track with lower error and try visualizing the track coloured by another parameter.
+
+**Estimated time for this vignette: 30 minutes.**
+
+# Load and Explore Data
+Load the data set `testset7.nc` and check the contents of the data structures to answer the following questions:
+
+- What species did the data come from and where?
+- What is the sampling rate of the accelerometer data?
+- What processing steps have already been applied to the magnetometer data?
+- What is in the 3 columns in the POS (GPS position) data?
+- In what frame is the accelerometer and magnetometer data? 
+
+Plot the pressure and accelerometer data with `plott()` to get a sense for what the animal might be doing in this data segment. Note that the code example below assumes you have called the data set `d7`:
+
+```{r, eval = FALSE, echo = TRUE}
+d7 <- load_nc('testset7')
+fs <- d7$P$sampling_rate
+plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = fs, interactive = TRUE)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_d7"> Show/Hide Results </button>  
+<div id="plott_d7" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
+d7 <- load_nc(d7_file_path)
+fs <- d7$P$sampling_rate
+plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = fs, interactive = FALSE)
+```
+
+</div>
+
+Then, plot the GPS positions:
+
+```{r, echo = TRUE, eval = FALSE}
+plot(d7$POS$data[,3], d7$POS$data[,2], type = 'b', pch = 20)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_d7_POS"> Show/Hide Results </button>  
+<div id="plott_d7_POS" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plot(d7$POS$data[,3], d7$POS$data[,2], type = 'b', pch = 20)
+```
+
+</div>
+
+# Dead Reckoning
+
+## What is Dead Reckoning?
+The plot shows a mix of intensive and extensive movements, but the constraint of only getting positions when the animal is at the surface means we cannot infer much about the movement behaviour within dives. Dead-reckoning from accelerometer and magnetometer data is the only way to estimate movement within dives without requiring external tracking infrastructure. 
+
+## Estimating Animal Speed
+Dead-reckoning uses the accelerometer and magnetometer to calculate the direction of travel. In what frame do these data need to be? An estimate of the forward speed is also required. We don't have a speed sensor but we can compute the vertical speed (i.e., the differential of the depth) during descents and ascents, which might be a good starting guess:
+
+```{r, echo = TRUE, eval = FALSE}
+v <- depth_rate(d7$P)
+plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
+      fsx = d7$P$sampling_rate)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_v"> Show/Hide Results </button>  
+<div id="plott_v" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+v <- depth_rate(d7$P)
+plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
+      fsx = d7$P$sampling_rate)
+```
+
+</div>
+
+Set `interactive = TRUE` and zoom in to individual dives on this plot to get a rough idea of the descent and ascent speed of the whale. 
+
+Or, if the interactive figure drives you a bit crazy, just set the axis limits:
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
+       fsx = d7$P$sampling_rate, xl = c(0,0.1))
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_v2"> Show/Hide Results </button>  
+<div id="plott_v2" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
+       fsx = d7$P$sampling_rate, xl = c(0,0.1))
+```
+
+</div>
+
+## Computing a Dead-Reckoned Track
+Call your speed estimate speed `spd` and use it in the following line to compute the dead-reckoned track:
+
+```{r, echo = TRUE, eval = FALSE}
+spd <- #???? (fill in your estimate here)
+DR <- ptrack(A = d7$Aa, M = d7$Ma, s = spd)
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track')
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_deadreckon1"> Show/Hide Results </button>  
+<div id="plott_deadreckon1" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+spd <- 1.7
+DR <- ptrack(A = d7$Aa, M = d7$Ma, s = spd)
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track')
+```
+
+</div>
+
+A dead-reckoned track is a series of distances north (or south if negative) and east (or west if negative) of the starting point which is position 0,0 in the plot. The first two columns of DR are these 'northing' and 'easting' values. The DR track is defined in a Local Level Frame (LLF) as opposed to latitude and longitude. An LLF is like a map - a region that is small enough that we can assume the earth is flat - centered on the starting point. 
+
+**How does the spatial resolution of the dead-reckoned track look compared to the surface GPS positions?**
+
+## Adding GPS positions
+To plot the GPS positions on the same plot, we need to first convert them into the same LLF. The first GPS position is only 0.8s into the dataset (this is `\$d7\$POS\$data[1,1]`) so we can say that the dead-reckoned track starts from this point. To convert latitude and longitude into the LLF use:
+
+```{r, echo = TRUE, eval = FALSE}
+POSLLF <- lalo2llf(trk = d7$POS$data[,c(2:3)])
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track',
+     yl = c(-1000, 5000))
+lines(POSLLF$easting, POSLLF$northing, type = 'b', col = 'red', pch = 20)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_posllf"> Show/Hide Results </button>  
+<div id="plott_posllf" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+POSLLF <- lalo2llf(trk = d7$POS$data[,c(2:3)])
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track',
+     yl = c(-1000, 5000))
+lines(POSLLF$easting, POSLLF$northing, type = 'b', col = 'red', pch = 20)
+```
+
+</div>
+
+How well does the dead-reckoned track match up to the GPS positions? The dead-reckoned track is always computed with respect to the water, not the ground, but we are plotting it here with respect to the ground. A more accurate track would take into account the water current. Can you imagine what current direction would be needed to make the dead-reckoned track more closely match the GPS positions?
+
+There are a number of ways to combine the GPS positions and the dead-reckoned track into a single track which has both the absolute accuracy of GPS and the high temporal resolution of dead-reckoning. A simple method is to force the dead-reckoned track to meet the GPS positions at each surfacing by adding a constant 'current' to each track point in the preceding dive. This is done by fit_tracks:
+
+```{r, eval = FALSE, echo = TRUE}
+FT <- fit_tracks(P = POSLLF, T = d7$POS$data[,1],
+                D = DR[,c(1:2)],
+                sampling_rate = d7$Aa$sampling_rate)
+# add to plot
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track',
+     yl = c(-1000, 5000))
+lines(POSLLF$easting, POSLLF$northing, type = 'b', col = 'red', pch = 20)
+
+lines(FT$easting, FT$northing, col = 'darkgreen')		
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#fit_tracks"> Show/Hide Results </button>  
+<div id="fit_tracks" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+FT <- fit_tracks(P = POSLLF, T = d7$POS$data[,1],
+                D = DR[,c(1:2)],
+                sampling_rate = d7$Aa$sampling_rate)
+# add to plot
+plot(DR$easting, DR$northing, type = 'l',
+     xlab = 'Easting, m', ylab = 'Northing, m',
+     main = 'Dead-Reckoned Track',
+     yl = c(-1000, 5000))
+lines(POSLLF$easting, POSLLF$northing, type = 'b', col = 'red', pch = 20)
+
+lines(FT$easting, FT$northing, col = 'darkgreen')		
+```
+
+</div>
+
+## A digression about graphics
+
+**Skip to the next section if you're not interested in improving the plots.**
+
+If you are interested in a nicer, zoom-able plot and either have, or are willing to install, packages `ggformula` and `plotly`, give the following a try!
+
+```{r, echo = TRUE, eval = FALSE}
+# if you need to install:
+# install.packages(pkgs = c('ggformula', 'plotly'))
+library(ggformula)
+library(plotly)
+theme_set(theme_bw(base_size = 12))
+
+track_fig <- gf_path(northing ~ easting, data = DR,
+         xlab = 'Easting, m', ylab = 'Northing, m') %>%
+  gf_path(northing ~ easting, data = POSLLF, color = 'darkred') %>%
+  gf_point(northing ~ easting, data = POSLLF, color = 'darkred') %>%
+  gf_path(northing ~ easting, data = FT, color = 'darkgreen')
+
+track_fig
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#track_fig"> Show/Hide Results </button>  
+<div id="track_fig" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+# if you need to install:
+# install.packages(pkgs = c('ggformula', 'plotly'))
+library(ggformula)
+library(plotly)
+theme_set(theme_bw(base_size = 12))
+
+track_fig <- gf_path(northing ~ easting, data = DR,
+         xlab = 'Easting, m', ylab = 'Northing, m') %>%
+  gf_path(northing ~ easting, data = POSLLF, color = 'darkred') %>%
+  gf_point(northing ~ easting, data = POSLLF, color = 'darkred') %>%
+  gf_path(northing ~ easting, data = FT, color = 'darkgreen')
+
+track_fig
+```
+
+</div>
+
+OK, that's the track figure. What about zooming and interaction?
+
+```{r, echo = TRUE, eval = FALSE}
+track_fig %>% ggplotly()
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#track_fig_ggplotly"> Show/Hide Results </button>  
+<div id="track_fig_ggplotly" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+track_fig %>% ggplotly()
+```
+
+</div>
+
+Ahhh, so much nicer! But do note that `plotly()` figures render only in interactive R sessions or, if using Rmarkdown, in html output (not PDF).
+
+This figure is also nicer in that we can update it by chaining. For example, to change the axis limits:
+
+```{r, echo = TRUE, eval = FALSE}
+track_fig_zoom <- track_fig %>%
+  gf_lims(x = c(-500, 1500), y = c(-1100, 100))
+track_fig_zoom
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#track_fig_zoom"> Show/Hide Results </button>  
+<div id="track_fig_zoom" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+track_fig_zoom <- track_fig %>%
+  gf_lims(x = c(-500, 1500), y = c(-1100, 100))
+track_fig_zoom
+```
+
+</div>
+
+## Interpreting the Tracks
+
+**Now, back to the main tutorial...**
+
+Examine the plot to see how the green fitted track interpolates the red GPS positions. If the green track is to be believed, how effectively do the surface positions capture the movement of the animal?
+
+# Tracks Colored by a Variable
+
+We often want to plot a track colored proportional to another variable of interest. For example, it can be useful to see where the animal is diving along the track. To colour the track by depth, use `col_line()` with `P` as the colour information:
+
+```{r, echo = TRUE, eval = FALSE}
+CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
+CF
+```
+
+<!-- <button class="btn btn-primary" data-toggle="collapse" data-target="#col_line_static"> Show/Hide Results </button>  
+<div id="col_line_static" class="collapse"> -->
+
+<!--```{r, echo = FALSE, eval = TRUE}
+CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
+CF
+```
+
+</div>
+-->
+What about an interactive version?
+
+```{r, echo = TRUE, eval = FALSE}
+col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth', interactive = TRUE)
+```
+
+Zoom in to see what the scale is of the track tortuosity: Is there tortuousity within individual dives, or is the tortuousity occuring across dives?
+
+If you are done and want a challenge, try colouring the track by the absolute roll angle instead of the depth. You could use col_line3 to plot the 3-d positions (i.e.,  `FT[,2]`, `FT[,1]`, and `d7\$P\$data`), and then colour the plot by absolute roll angle remembering to convert from radians to degrees.
+
+```{r, echo = TRUE, eval = FALSE}
+pitch_roll <- a2pr(d7$Aa)
+roll_deg <- pitch_roll$r/pi*180
+col_line3(x = FT$easting, y = FT$northing, 
+          z = d7$P$data, c = roll_deg)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#col_line3"> Show/Hide Results </button>  
+<div id="col_line3" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+pitch_roll <- a2pr(d7$Aa)
+roll_deg <- pitch_roll$r/pi*180
+col_line3(x = FT$easting, y = FT$northing, 
+          z = d7$P$data, c = roll_deg)
+```
+
+# Review
+
+What have you learned? What you can get out of--and what problems can arise from--dead-reckoning.
+
+And that's it! Fantastic work with this vignette.
+
+*If you'd like to continue working through these vignettes, you could take a stab at `find-dives` or `dive-stats`.*

@@ -206,4 +206,4 @@ You've learned how to separate low- and high-frequency acceleration data with a 
 
 Aaaaand... congrats! You've aced this vignette. 
 
-*If you'd like to continue working through these vignettes, `jerk-transients` is probably a pretty logical choice.*
+*If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `more-filtering`.*
