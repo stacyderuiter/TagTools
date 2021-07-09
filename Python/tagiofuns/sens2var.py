@@ -1,8 +1,16 @@
 def sens2var(Sx=None, Sy=None, r=None):
     
-    """
-    Extract data from a sensor dictionary.
+    """Extract data from a sensor dictionary.
     
+    :param Sx: dictionary you want data from
+    :type: must be a dictionary
+    :param Sy: dictionary you want data from
+    :type: must be a dictionary
+    :param r: can stand in for fs or T:
+        fs: sampling rate, a scalar
+        T: sample times, a vector
+    
+    Ways to call the function:
        X,fs = sens2var(Sx)     % regularly sampled data
        or
        X,T = sens2var(Sx)      % irregularly sampled data
@@ -15,15 +23,15 @@ def sens2var(Sx=None, Sy=None, r=None):
     Can also be called with a trailing string 'regular' to check if the sensor dictionaries are regularly sampled. If not, X will be
     returned empty.
     
-    Inputs:
+    :raises TypeError: 
     Sx, Sy must be sensor dictionaries. If not X will be returned empty.
     
-    Returns:
-    A tuple where:
-        X, Y are arrays of sensor data. These are in the unit and frame as stored in the input sensor dictionaries.
-        fs is the sampling rate of the sensor data in Hz (samples per second).
-        T is the time in seconds of each measurement in data for irregularly sampled data. The time reference (i.e., the 0 time) is with
-        respect to the start time of the data in the sensor dictionary.
+    :returns:
+        A tuple where:
+            X, Y are arrays of sensor data. These are in the unit and frame as stored in the input sensor dictionaries.
+            fs is the sampling rate of the sensor data in Hz (samples per second).
+            T is the time in seconds of each measurement in data for irregularly sampled data. The time reference (i.e., the 0 time) is with
+            respect to the start time of the data in the sensor dictionary.
     
     
     Example:

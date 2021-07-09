@@ -13,8 +13,7 @@
 #' }
 #' @export
 
-njerk <- function(A, sampling_rate) { +
-  if (is.list(A)) {
+njerk <- function(A, sampling_rate) {if (is.list(A)) {
     sampling_rate <- A$sampling_rate
     a <- A$data
     j <- A
