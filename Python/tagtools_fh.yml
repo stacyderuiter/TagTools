@@ -1,0 +1,16 @@
+name: tagtools
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - pandas
+  - matplotlib
+  - h5py
+  - seaborn
+  - netcdf4
+  - jupyterlab
+  - pep8
+  - pylint
+prefix: C:\Users\Lab\.conda\envs\tagtools
+
