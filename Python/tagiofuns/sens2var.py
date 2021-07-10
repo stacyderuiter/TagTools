@@ -54,7 +54,7 @@ def sens2var(Sx=None, Sy=None, r=None):
         return
     
     if not (isinstance(Sx,dict) and ('data' in Sx.keys()) and ('sampling' in Sx.keys())):
-        print(' Error: input argument must be a sensor structure\n')
+        print(' Error: input argument must be a sensor dictionary\n')
         return (X,Y,fs)
         return
     
@@ -65,7 +65,7 @@ def sens2var(Sx=None, Sy=None, r=None):
     
     if Sy:
         if not isinstance(Sy,dict) or 'data' not in Sy.keys() or 'sampling' not in Sy.keys():
-            print(' Error: input argument must be a sensor structure\n')
+            print(' Error: input argument must be a sensor dictionary\n')
             return
     
     R = [Sx['sampling']=='regular']*2
