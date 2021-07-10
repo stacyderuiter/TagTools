@@ -51,7 +51,7 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
     X = {}
         
     if not data or not fs or not depid:
-        help(sens_struct)
+        print(help(sens_struct))
         S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'sensor_names.csv'))
         print('Predefined sensor types:\n')
         for sens in S.name:
