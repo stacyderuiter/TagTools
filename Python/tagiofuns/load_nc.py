@@ -67,7 +67,7 @@ def load_nc(fname=None, vname=None):
             os.chdir(udir)
 
         if not fname:
-            help(load_nc)
+            print(help(load_nc))
             return X
             return
 
@@ -77,7 +77,7 @@ def load_nc(fname=None, vname=None):
 
     # append .nc suffix to file name if needed
     if len(fname)<3 or fname[-3:]!='.nc':
-            fname += '.nc'
+        fname += '.nc'
 
     if not os.path.exists(fname):
         print(f' File {fname} not found\n')
@@ -91,10 +91,8 @@ def load_nc(fname=None, vname=None):
 
     # load the variables from the file
     for fn in ds.variables.keys():
-        if fn[0]=='_': 
-            continue # skip place-holder variable
-        if vname and fn not in vname:
-            continue
+        if fn[0]=='_': continue # skip place-holder variable  
+        if vname and fn not in vname: continue
 
         v = ds.variables[fn][:]
         tmp = ds.variables[fn].__dict__.copy()
@@ -111,13 +109,13 @@ def load_nc(fname=None, vname=None):
         if ds.variables[fn].__dict__: # if 'column_name' wanted for variables with 'column_names', this dictionary should be replaced with tmp
             X[fn] = {**X[fn],**ds.variables[fn].__dict__}
             len(X[fn].keys())
+    ds.close()
 
     if not X:
         return X
         return
     
     return X 
-
 
         
 if __name__ == "__main__": # true when running the module as a script, i.e. directly
