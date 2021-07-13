@@ -3,6 +3,8 @@ def get_researcher(initial=None):
     s = get_researcher(initial)
     
     initial is a string specifying a researcher's initials
+
+    s is a dictionary containing the researcher's details
     
     """
     
@@ -39,5 +41,5 @@ def get_researcher(initial=None):
     else:
         k = k[0] 
         
-    s = S.iloc[k]
+    s = S.iloc[k].to_dict()
     return s
