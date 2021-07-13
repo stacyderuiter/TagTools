@@ -11,7 +11,7 @@ def get_researcher(initial=None):
     import pandas as pd
     import os
     
-    s = list()
+    s = {}
     S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'researchers.csv'))
     if not initial:
         for k, init in enumerate(S.Initial):
