@@ -95,6 +95,7 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
         print(f" Warning: unknown sensor type {sens_type}. Set metadata manually\n")
         X['name'] = sens_type
         X['type'] = sens_type
+        return X
         return
     
     if len(k)>1:
@@ -106,6 +107,7 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
         import math
         if not n or math.isnan(n) or n<0 or n>len(k)-1:
             X = {}
+            return X
             return
         k = k[n]
     else:
