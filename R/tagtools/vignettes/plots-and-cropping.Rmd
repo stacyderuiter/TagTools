@@ -41,7 +41,6 @@ If you don't see cats_test_raw.nc, see the load-tag-data vignette for more detai
 ```{r, echo = FALSE, eval = TRUE}
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
-print(cats_file_path)
 ```
 
 # Exploratory data plots

@@ -2,7 +2,9 @@
 title: "Using find_dives"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    code_folding: hide
 vignette: >
   %\VignetteIndexEntry{find-dives}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,6 +16,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(tagtools)
 ```
 
 Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know this package. We hope it is useful to you. 
@@ -28,19 +31,24 @@ Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converte
 
 (As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `mn12_186a_raw.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 
-```{r, eval = FALSE} 
+```{r, echo = TRUE, eval = FALSE} 
 setwd("/path/with/folders/in/it/foo/bar") # you'll have to change this
 ```
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 MN <- load_nc('mn12_186a_raw') # load the test dataset
+```
+
+```{r, echo = FALSE, eval = TRUE}
+MN_file_path <- system.file("extdata", "mn12_186a_raw.nc", package = "tagtools", mustWork = TRUE)
+MN <- load_nc(MN_file_path)
 ```
 
 You may also need to escape slashes in the path specification (e.g., `\`) depending on your platform.
 
 This creates an animaltag list object MN in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 names(MN)
 str(MN$A)
 # not run because output is very long! see the whole STRucture of MN:
@@ -49,11 +57,29 @@ str(MN$A)
 str(MN, max.level = 1)
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#inspect_MN"> Show/Hide Results </button>  
+<div id="inspect_MN" class="collapse"> 
+```{r, eval = TRUE, echo = FALSE}
+print("Results for `names(MN)`:")
+print("------------------------")
+names(MN)
+print("Results for `str(MN$A)`:")
+print("------------------------")
+str(MN$A)
+# not run because output is very long! see the whole STRucture of MN:
+# str(MN)
+# shorter outline version:
+print("Results for `str(MN$A)`:")
+print("------------------------")
+str(MN, max.level = 1)
+```
+</div>
+
 You should see that lists `A`, `M`, `P`, `S`, `T` and `info` are contained within the list MN.
 
 # Exercise: Calculate the mean duration of dives deeper than 5m 
 
-Our goal with these data is to calculate the mean duration of dives deeper than 5 m. If you can think of a way to do this already, go ahead and try - you can compare your answer to the step-by-step procedure below.
+Our goal with these data is to calculate the mean duration of dives deeper than 5 m. If you can think of a way to do this already, please go ahead and try! You can then compare your answer to the step-by-step procedure below.
 
 As with all raw depth data, there are some problems with this dive profile. See if you can find evidence for each of these in the plot: 
 
@@ -67,9 +93,19 @@ As with all raw depth data, there are some problems with this dive profile. See 
 2. Zoom in and see what size depth steps there are in the data.
 3. Use `plott` to plot both the depth and temperature:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
+plott(X=list(Depth=MN$P, Temperature=MN$T), r=c(TRUE,FALSE))
+# r=c(TRUE,FALSE) tells plot to reverse the y-axis for the Depth data (so that it looks like a dive profile), but not for the Temperature data (which would be silly). 
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_MN"> Show/Hide Results </button>  
+<div id="plott_MN" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
 plott(X=list(Depth=MN$P, Temperature=MN$T), r=c(TRUE,FALSE))
 ```
+
+</div>
 
 ## What to do about periods of data when the tag is not on the animal
 
@@ -77,76 +113,134 @@ Not all tags have a way to start logging as soon as the tag has been deployed on
 
 Equally, tags have no means of detecting when they release from the tagged animal. As a consequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool crop:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 Pc = crop(MN$P)
 ```
 
-This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish (actually, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete). The function returns a new data structure which contains just the selected part of the dive profile. The resulting sensor data list also contains fields that document what you just did. To see them::
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc"> Show/Hide Results </button>  
+<div id="Pc" class="collapse"> 
 
-```{r, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
+Pc = crop(MN$P)
+```
+
+</div>
+
+```{r, echo = FALSE, eval = TRUE}
+Pc = crop_to(X = MN$P, sampling_rate = 1, tcues = c(0, 25306), T = NULL)
+```
+
+This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish. The function returns a new data structure which contains just the selected part of the dive profile. The resulting sensor data list also contains fields that document what you just did. To see them:
+
+```{r, echo = TRUE, eval = FALSE}
 Pc$history
 str(Pc, max.level = 1)
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#PcHistory"> Show/Hide Results </button>  
+<div id="PcHistory" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+print("Results for `Pc$history`:")
+print("-------------------------------------")
+Pc$history
+print("Results for `str(Pc, max.level = 1)`:")
+print("-------------------------------------")
+str(Pc, max.level = 1)
+```
+
+</div>
+
 The `$history` field keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The `$crop` and `$start_time` fields show how the original data was changed: the start_time is with respect to the field ‘dephist_device_datetime_start’ in the `$info` structure which says when the tag recording started. Use `plott` to plot Pc to make sure you cropped it correctly.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 plott(X = list(Pc), r = TRUE)
 
 ```
 
+Note that the results from here on out will look a little different depending on where exactly you've cropped your data, but it should come to essentially the same thing.
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_plott"> Show/Hide Results </button>  
+<div id="Pc_plott" class="collapse"> 
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Pc), r = TRUE)
+```
+</div>
 
 ## Removing outliers. 
 Outliers or spikes in the data may result from errors in the tag or poor sensor performance under rapidly changing environmental conditions. For example in this data set, rapid changes in temperature and pressure as the animal surfaces cause small glitches in the data. These are not representative of the animal’s  behaviour so we need to remove them. A good way to do this is with a median filter. Type:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 ?median_filter
 ```
 
 to find out how this function works. You call it using:
 
-```{r, eval = FALSE} 
+```{r, echo = TRUE, eval = TRUE} 
 Pcm = median_filter(Pc,n=3)
 ```
 
 Variable Pcm now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
 
-```{r, eval = FALSE} 
+```{r, echo = TRUE, eval = FALSE} 
 plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE)) 
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_pcm_plott"> Show/Hide Results </button>  
+<div id="Pc_pcm_plott" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE} 
+plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE)) 
+```
+</div>
 
 This plots `Pc` in the upper panel and `Pcm` in the lower one, and reverses the y-axis labeling on both plots (by setting `r` to TRUE both times).
 
 ## Correcting pressure offsets & temperature effects
 The next step is to correct the ‘0’ pressure offset of the depth sensor (so that the animal is not 10 m out of the water when it is really at the surface). We can also compensate for temperature at the same time. To do this we have to first crop the temperature data to match the pressure data. You can do this using:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 Tc <- crop_to(MN$T,tcues=Pc$crop)
 ```
 
 This uses the crop information stored in Pc to do the same operation on T. Plot them together to confirm that the time intervals (horizontal ticks) are the same:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 plott(X=list(Pcm=Pcm, Tc=Tc), r=c(TRUE,FALSE))
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_Tc_plott"> Show/Hide Results </button>  
+<div id="Pc_Tc_plott" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+plott(X=list(Pcm=Pcm, Tc=Tc), r=c(TRUE,FALSE))
+```
+</div>
+
 The tag toolbox has a function to correct pressure data called ‘fix_pressure’. Type
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 ? fix_pressure
 ```
 
 to find out what it does and what assumptions it makes about the data. Use this function by calling:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 Pcmf <- fix_pressure(Pcm,Tc)
 ```
 
 Compare the compensated dive profile to the uncompensated cropped ones using plott. (The code below will produce three plots, which might make them a bit small. Hit "Zoom" to view them in a larger window.)
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 plott(X=list(Pc=Pc, Pcm=Pcm, Pcmf=Pcmf$p), r=c(TRUE,TRUE,TRUE))
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_Pcm_Pcmf_plott"> Show/Hide Results </button>  
+<div id="Pc_Pcm_Pcmf_plott" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X=list(Pc=Pc, Pcm=Pcm, Pcmf=Pcmf$p), r=c(TRUE,TRUE,TRUE))
+```
+
+</div>
 
 Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
 
@@ -154,20 +248,28 @@ Which of the problems that we listed above have been taken care of? Any ideas wh
 
 To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a great equivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called `find_dives`. See the help on this function to find out what it does and what options it has. 
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 ? find_dives
 ```
 
 To find dives deeper than 5 m in your compensated dive data, type:
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 d <- find_dives(Pcmf$p,mindepth=5)
-d
+str(d, max.level = 1)
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#find_dives_d"> Show/Hide Results </button>  
+<div id="find_dives_d" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+d <- find_dives(Pcmf$p,mindepth=5)
+str(d, max.level = 1)
+```
+</div>
 
 `d` should return a data frame with the start, end, and maximum depth of about 51 dives (depending on where you cropped the data). How can you get the mean dive duration & mean (maximum) dive depth from this structure? Code below provides one possible answer.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 total_dive_duration <- matrix(0)
 for(n in 1:nrow(d)) {
   total_dive_duration <- total_dive_duration + d[n,2] - d[n,1]
@@ -183,20 +285,29 @@ mean_dive_depth <- total_dive_depth/nrow(d)
 mean_dive_depth
 ```
 
-
 When you have got the mean dive depth, try plotting the start and end of the dives on the depth plot:
 
-
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 plott(X=list(Pcmf=Pcmf$p), r=TRUE)
 points(d$start/(3600*24),rep(0,nrow(d)),col='green', pch=19)
 points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
 ```
 
-Again, this plot might be rather small, so click Zoom to view it in a larger window. 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#start_end_dives"> Show/Hide Results </button>  
+<div id="start_end_dives" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+plott(X=list(Pcmf=Pcmf$p), r=TRUE)
+points(d$start/(3600*24),rep(0,nrow(d)),col='green', pch=19)
+points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
+```
+</div>
+
+Again, this plot might be rather small, making the markers that designate the starts and ends of dives tricky to make sense of. You should be able to click Zoom to view it in a larger window. 
 
 Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in the `points` code accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to divide them by 3600*24 to match the unit (days) automatically selected for time by `plott`.
 
 # Review
 
-Great work! You've learned how to use `find_dives`.
+Great work! You've learned how to use `find_dives`. 
+
+*If you'd like to continue working through these practicals, `dive-stats` might be a good option if you're especially interested in analyzing individual dives. Otherwise, consider `fine-scale-tracking` or `Detectors`.* 

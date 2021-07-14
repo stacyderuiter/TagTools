@@ -2,7 +2,9 @@
 title: "dive-stats"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    code_folding: hide
 vignette: >
   %\VignetteIndexEntry{dive-stats}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,50 +16,92 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(tagtools)
 ```
 
-Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you.
+Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it sparks joy.
 
 In this vignette you will learn to use the function `dive-stats`.
 
 # Finding dives and summarising them
 
-Now consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. (As usual: Make sure that `zc11_267a.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `zc11_267a.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
+Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. (As usual: Make sure that `zc11_267a.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `zc11_267a.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 ZC <- load_nc('zc11_267a')
+```
+
+```{r, eval = TRUE, echo = FALSE}
+ZC_file_path <- system.file("extdata", "zc11_267a.nc", package = "tagtools", mustWork = TRUE)
+ZC <- load_nc(ZC_file_path)
 ```
 
 1. Make a plot of the dive profile. What do you notice?
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 plott(X=list(Depth=ZC$P), r = TRUE)
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_zc"> Show/Hide Results </button>  
+<div id="plott_zc" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X=list(Depth=ZC$P), r = TRUE)
+```
+
+</div>
+
 2. You probably want to crop the data before further analysis, because there is a period at the start of the recording when the tag was not yet deployed on the whale.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 ZPCr = crop(ZC$P)
 # if you want to review history/other fields
 str(ZPCr, max.level = 1)
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#crop_zc"> Show/Hide Results </button>  
+<div id="crop_zc" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+ZPCr = crop(ZC$P)
+# if you want to review history/other fields
+str(ZPCr, max.level = 1)
+```
+</div>
+
+```{r, echo = FALSE, eval = TRUE}
+ZPCr = crop_to(ZC$P, sampling_rate = ZC$P$sampling_rate, tcues = c(9424, 64027), T = NULL)
+```
+
 3. What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
 
-4. Use find dives to detect all dives deeper than your chosen depth min- depth.
+4. Use find dives to detect all dives deeper than your chosen minimum depth `mindepth`.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 mindepth <- # your chosen minimum depth here
+dt <- find_dives(ZPCr, mindepth=mindepth) 
+```
+
+```{r, echo = FALSE, eval = TRUE}
+mindepth <- 50 
 dt <- find_dives(ZPCr, mindepth=mindepth) 
 ```
 
 5. Now use dive stats to compute summary statistics for all the dives
 you detected. 
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 ds <- dive_stats(ZPCr, dive_cues=dt[,c('start', 'end'),]) 
+str(ds)
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#crop_zc"> Show/Hide Results </button>  
+<div id="crop_zc" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+ds <- dive_stats(ZPCr, dive_cues=dt[,c('start', 'end'),]) 
+str(ds)
+```
+</div>
 
 6. Have a look at the dive stats and perhaps make a plot of some or all
 of them. Do you notice anything interesting?
@@ -66,7 +110,7 @@ of them. Do you notice anything interesting?
 
 7. Choose an auxiliary variable (could be anything of interest - pitch, roll, heading, MSA, ODBA, njerk...). 
 
-Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable. 
+Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable. One example auxiliary variable - pitch - is given below.
 
 <!-- Example auxiliary variable: pitch. More content to come next week. -->
 
@@ -74,7 +118,7 @@ Compute the auxiliary variable, and then recompute the dive stats including the 
 
 The function `a2pr` will calculate pitch and roll from acceleration. To use the acceleration data, we'll want it cropped to the same time window as we've cropped the depth data. 
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 ZACr <- crop_to(ZC$A, tcues = ZPCr$crop)
 # plot to confirm the cropping
 
@@ -82,10 +126,21 @@ plott(X=list(CroppedDepth=ZPCr, CroppedAccel=ZACr),
       r=c(TRUE,FALSE)) # and reverse the y-axis for depth, but not acceleration 
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_ZPCr_ZACr"> Show/Hide Results </button>  
+<div id="plott_ZPCr_ZACr" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+ZACr <- crop_to(ZC$A, tcues = ZPCr$crop)
+# plot to confirm the cropping
+
+plott(X=list(CroppedDepth=ZPCr, CroppedAccel=ZACr), 
+      r=c(TRUE,FALSE)) # and reverse the y-axis for depth, but not acceleration 
+```
+</div>
+
 And now to compute pitch:
 
-```{r, eval = FALSE}
-ZPiCr <- a2pr(ZACr)$p 
+```{r, echo = TRUE, eval = TRUE}
+ZPiCr <- a2pr(ZACr)$p # this is the variable you'll want to use later
 ```
 
 ### Recompute dive stats
@@ -93,7 +148,7 @@ ZPiCr <- a2pr(ZACr)$p
 Use the auxiliary variable of your choice (if you were following the example above, you'll use ZPiCr) for my_aux_var.
 
 ```{r, eval = FALSE}
-dsAux <- dive_stats(P = matrix(ZPCr$data), dive_cues=dt[,c('start', 'end'),], X=matrix(my_aux_var))
+dsAux <- dive_stats(P = matrix(ZPCr$data), sampling_rate = ZPCr$sampling_rate, dive_cues=dt[,c('start', 'end'),], X=matrix(my_aux_var))
 # if you are using ZPiCr
 dsAux <- dive_stats(P = matrix(ZPCr$data), 
                     dive_cues=dt[,c('start', 'end'),], 

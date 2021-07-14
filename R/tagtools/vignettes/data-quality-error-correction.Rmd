@@ -60,18 +60,18 @@ sw$info
 <div id="inspect_sw" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
-print("results for str(sw, max.level = 1):")
+print("results for `str(sw, max.level = 1)`:")
 print("-----------------------------------")
 str(sw, max.level = 1)
 print("-----------------------------------")
-print("and results for sw$info:")
+print("and results for `sw$info`:")
 print("-----------------------------------")
 sw$info
 ```
 
 </div>
 
-Inspect the depth, acceleration and magnetometer data:
+Inspect the depth, acceleration and magnetometer data with `plott`:
 
 ```{r, echo = TRUE, eval = FALSE}
 plott(X = list(depth = sw$P, acc = sw$A, mag = sw$M))

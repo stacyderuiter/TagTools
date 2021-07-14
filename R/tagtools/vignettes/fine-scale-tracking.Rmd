@@ -23,7 +23,7 @@ Welcome to the `fine-scale-tracking` vignette! Thanks for taking some time to ge
 
 This practical covers how to compute a dead-reckoned track from accelerometer and magnetemeter data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high resolution track with lower error and try visualizing the track coloured by another parameter.
 
-**Estimated time for this vignette: 30 minutes.**
+*Estimated time for this vignette: 30 minutes.*
 
 # Load and Explore Data
 Load the data set `testset7.nc` and check the contents of the data structures to answer the following questions:
@@ -230,8 +230,8 @@ track_fig
 <div id="track_fig" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-# if you need to install:
-# install.packages(pkgs = c('ggformula', 'plotly'))
+# in case the average user needs to install:
+install.packages(pkgs = c('ggformula', 'plotly'))
 library(ggformula)
 library(plotly)
 theme_set(theme_bw(base_size = 12))
@@ -298,12 +298,15 @@ CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
 CF
 ```
 
-<!-- <button class="btn btn-primary" data-toggle="collapse" data-target="#col_line_static"> Show/Hide Results </button>  
+<!-- Despacito, play Alexa. This, so sad, is. Why work does it not? 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#col_line_static"> Show/Hide Results </button>  
 <div id="col_line_static" class="collapse"> -->
 
 <!--```{r, echo = FALSE, eval = TRUE}
 CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
 CF
+# Error in col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = "Depth") : 
+#   argument "y" is missing, with no default
 ```
 
 </div>
@@ -334,6 +337,8 @@ roll_deg <- pitch_roll$r/pi*180
 col_line3(x = FT$easting, y = FT$northing, 
           z = d7$P$data, c = roll_deg)
 ```
+
+</div>
 
 # Review
 
