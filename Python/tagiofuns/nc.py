@@ -44,6 +44,7 @@ def load_nc(fname=None, vname=None):
     import numpy as np
     import os
     import netCDF4 as nc
+    import platform
 
 
     X = {}
@@ -74,7 +75,13 @@ def load_nc(fname=None, vname=None):
             return X
             return
 
-        pth = '\\'.join(fname.split('/')[:-1]) + '\\'
+        if platform.system()=='Windows':
+            if fname.find('/')>0:
+                pth = '\\'.join(os.path.dirname(fname).split('/'))+'\\'
+            else:
+                pth = os.path.dirname(fname) + '\\'
+        else:
+            pth = os.path.dirname(fname) + '/'
         pascii = np.array([ord(c) for c in list(pth)])
         np.savetxt('_loadnctemp.txt',pascii.reshape(1,pascii.size),delimiter=' ')
 
