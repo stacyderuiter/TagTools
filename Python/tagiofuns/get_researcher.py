@@ -17,7 +17,6 @@ def get_researcher(initial=None):
         for k, init in enumerate(S.Initial):
             print(init, S.Name[k])
         return s
-        return
     
     # look for S.Initial that matches researcher initial
     k = [i for i,x in enumerate(S.Initial) if x.lower() == initial.lower()]
@@ -25,7 +24,6 @@ def get_researcher(initial=None):
     if not k:
         print(f" No entry matching {initial} in researchers file - edit file and retry\n")
         return s
-        return
     
     if len(k)>1:
         print(f" Multiple entries matching {initial} in researchers file:\n")
@@ -36,7 +34,6 @@ def get_researcher(initial=None):
         import math
         if not n or math.isnan(n) or n<0 or n>len(k)-1:
             return s
-            return
         k = k[n]
     else:
         k = k[0] 

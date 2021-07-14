@@ -40,7 +40,7 @@ def csv2struct(dirpath=None, fname=None):
     S = {}
     if not fname and not dirpath:
         help(csv2struct)
-        return
+        return S
     elif not fname:
         fname = dirpath
         dirpath = []
@@ -56,7 +56,7 @@ def csv2struct(dirpath=None, fname=None):
     # Check to see if there is a header field
     if not os.path.exists(fname):
         print(f"Error: cannot find file {fname}\n")
-        return
+        return S
     
     C = np.loadtxt(fname,dtype=str,delimiter=',',max_rows=1)
     if 'depid' in C:

@@ -71,10 +71,11 @@ def plott(*varargin):
     def indices(a, func):
         return [i for (i, val) in enumerate(a) if func(val)]
 
+    fig, axes, h = ([] for i in range(3))
 
     if not varargin:
         help(plott)
-        return
+        return (fig,axes,h)
  
 
     brk = [0,2e3,2e4,5e5] 		# break points for plots in seconds, mins, hours, days
@@ -122,7 +123,7 @@ def plott(*varargin):
 
             else:
                 print('Error: sensor structure must have data and sampling fields\n')
-                return
+                return (fig,axes,h)
 
         elif x.shape[0]>1 or x.size/x.shape[0]>1: # this input is a vector or a matrix
             X.append(x)
@@ -152,7 +153,7 @@ def plott(*varargin):
     if any(fsrt[:,0]==0):
         inds = indices(fsrt[:,0], lambda x: x == 0)
         print(f"Error: sampling rate undefined for data object {inds[0]}\n")
-        return
+        return (fig,axes,h)
 
     fig, axes = plt.subplots(len(X), 1, sharex=True, figsize=(12,8), squeeze=False)
 

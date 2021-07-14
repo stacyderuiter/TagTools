@@ -9,10 +9,10 @@ def strip_quotes(s=None):
     last modified: 07 July 2021
 
     """
-    
+
     if not s:
         help(strip_quotes)
-        return
+        return []
         
     if isinstance(s,str):
         s = s.strip()

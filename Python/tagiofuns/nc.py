@@ -73,7 +73,6 @@ def load_nc(fname=None, vname=None):
         if not fname:
             print(help(load_nc))
             return X
-            return
 
         if platform.system()=='Windows':
             if fname.find('/')>0:
@@ -92,7 +91,6 @@ def load_nc(fname=None, vname=None):
     if not os.path.exists(fname):
         print(f' File {fname} not found\n')
         return X
-        return
 
     ds = nc.Dataset(fname)
     if ds.__dict__.keys():
@@ -123,7 +121,6 @@ def load_nc(fname=None, vname=None):
 
     if not X:
         return X
-        return
     
     return X 
 

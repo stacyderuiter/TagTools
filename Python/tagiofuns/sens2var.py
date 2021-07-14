@@ -51,12 +51,10 @@ def sens2var(Sx=None, Sy=None, r=None):
     if not Sx:
         print(help(sens2var))
         return (X,Y,fs)
-        return
     
     if not (isinstance(Sx,dict) and ('data' in Sx.keys()) and ('sampling' in Sx.keys())):
         print(' Error: input argument must be a sensor dictionary\n')
         return (X,Y,fs)
-        return
     
     if Sy:
         if isinstance(Sy,str):
@@ -66,7 +64,7 @@ def sens2var(Sx=None, Sy=None, r=None):
     if Sy:
         if not isinstance(Sy,dict) or 'data' not in Sy.keys() or 'sampling' not in Sy.keys():
             print(' Error: input argument must be a sensor dictionary\n')
-            return
+            return (X,Y,fs)
     
     R = [Sx['sampling']=='regular']*2
     if Sy:
@@ -76,13 +74,12 @@ def sens2var(Sx=None, Sy=None, r=None):
         if Sy:
             return (X,Y,fs)
         else:
-            return X
+            return (X,fs)
         return
     
     if sum(R)==1:
         print(' Error: input arguments must both be sampled in the same way\n')
         return (X,Y,fs)
-        return
     
     if R[0]:
         X = Sx['data']
@@ -96,7 +93,6 @@ def sens2var(Sx=None, Sy=None, r=None):
 
     if not Sy:
         return (X,fs)
-        return
     
     # here on for two input variables
     if R[1]:
@@ -104,7 +100,6 @@ def sens2var(Sx=None, Sy=None, r=None):
             print(' Error: input arguments must both have the same sampling rate\n')
             X, Y, fs = ([] for i in range(3))
             return (X,Y,fs)
-            return
         Y = Sy['data']
 
     else:
@@ -116,7 +111,6 @@ def sens2var(Sx=None, Sy=None, r=None):
     if X.shape[0] != Y.shape[0]:
         print(' Error: input arguments must both have the same number of samples\n')
         X, Y, fs = ([] for i in range(3))
-        return (X,Y,fs)
-        return   
+        return (X,Y,fs)  
     
     return (X,Y,fs)

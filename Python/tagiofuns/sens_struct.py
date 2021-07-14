@@ -57,7 +57,6 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
         for sens in S.name:
             print(sens)
         return X
-        return
 
     # elif all((data, fs, depid)) and not sens_type:
     #     sens_type = None
@@ -70,7 +69,7 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
     else:                          # irregular data
         if len(fs) != len(data):
             print(' Error: number of sampling times does not match number of samples\n')
-            return     
+            return X  
         X['data'] = np.hstack((fs,data))
         X['sampling'] = 'irregular'
         X['sampling_rate'] = 'column 1' 
@@ -96,7 +95,6 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
         X['name'] = sens_type
         X['type'] = sens_type
         return X
-        return
     
     if len(k)>1:
         print(f" Multiple sensor types match {sens_type}:\n")  
@@ -108,7 +106,6 @@ def sens_struct(data=None,fs=None,depid=None,sens_type=None,name=None,ordered=Fa
         if not n or math.isnan(n) or n<0 or n>len(k)-1:
             X = {}
             return X
-            return
         k = k[n]
     else:
         k = k[0] 
