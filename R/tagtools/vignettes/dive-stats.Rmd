@@ -21,7 +21,9 @@ library(tagtools)
 
 Welcome to this vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it sparks joy.
 
-In this vignette you will learn to use the function `dive-stats`.
+In this vignette you will learn to use the function `dive-stats` to compute summary statistics for a given dataset containing dives, including adding an auxiliary variable.
+
+*Estimated time for this vignette: 25 minutes.*
 
 # Finding dives and summarising them
 
@@ -63,8 +65,12 @@ str(ZPCr, max.level = 1)
 <button class="btn btn-primary" data-toggle="collapse" data-target="#crop_zc"> Show/Hide Results </button>  
 <div id="crop_zc" class="collapse"> 
 ```{r, echo = FALSE, eval = TRUE}
+print("Results for `crop(ZC$P)`:")
+print("---------------------------------------")
 ZPCr = crop(ZC$P)
 # if you want to review history/other fields
+print("Results for `str(ZPCr, max.level = 1)`:")
+print("---------------------------------------")
 str(ZPCr, max.level = 1)
 ```
 </div>
@@ -75,7 +81,7 @@ ZPCr = crop_to(ZC$P, sampling_rate = ZC$P$sampling_rate, tcues = c(9424, 64027),
 
 3. What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
 
-4. Use find dives to detect all dives deeper than your chosen minimum depth `mindepth`.
+4. Use `find_dives` to detect all dives deeper than your chosen minimum depth `mindepth`.
 
 ```{r, echo = TRUE, eval = FALSE}
 mindepth <- # your chosen minimum depth here
@@ -87,7 +93,7 @@ mindepth <- 50
 dt <- find_dives(ZPCr, mindepth=mindepth) 
 ```
 
-5. Now use dive stats to compute summary statistics for all the dives
+5. Now use `dive_stats` to compute summary statistics for all the dives
 you detected. 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -95,8 +101,8 @@ ds <- dive_stats(ZPCr, dive_cues=dt[,c('start', 'end'),])
 str(ds)
 ```
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#crop_zc"> Show/Hide Results </button>  
-<div id="crop_zc" class="collapse"> 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_ds"> Show/Hide Results </button>  
+<div id="str_ds" class="collapse"> 
 ```{r, echo = FALSE, eval = TRUE}
 ds <- dive_stats(ZPCr, dive_cues=dt[,c('start', 'end'),]) 
 str(ds)
@@ -147,7 +153,7 @@ ZPiCr <- a2pr(ZACr)$p # this is the variable you'll want to use later
 
 Use the auxiliary variable of your choice (if you were following the example above, you'll use ZPiCr) for my_aux_var.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 dsAux <- dive_stats(P = matrix(ZPCr$data), sampling_rate = ZPCr$sampling_rate, dive_cues=dt[,c('start', 'end'),], X=matrix(my_aux_var))
 # if you are using ZPiCr
 dsAux <- dive_stats(P = matrix(ZPCr$data), 
@@ -158,16 +164,41 @@ dsAux <- dive_stats(P = matrix(ZPCr$data),
                     )
 ```
 
+```{r, echo = FALSE, eval = TRUE}
+dsAux <- dive_stats(P = matrix(ZPCr$data), 
+                    dive_cues=dt[,c('start', 'end'),], 
+                    X = matrix(ZPiCr), # to avoid nrow != ncol errors
+                    angular = TRUE, # because this is pitch angle data
+                    sampling_rate = c(5, 5) # sampling rate is 5 for P & X
+                    )
+```
+
 8. Examine and/or plot again.
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 str(ds, max.level = 1)
-str(dsAux, max.level = 1) # should have all the things from the line above, and then some
-plott( # ... figure out what you want to plott 
+str(dsAux, max.level = 1) 
+plott( # ... figure out what you want to plott; results not shown for this part
   )
 
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#str_ds_dsAux"> Show/Hide Results </button>  
+<div id="str_ds_dsAux" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+print("Results for `str(ds, max.level = 1):`")
+print("-----------------------------------------")
+str(ds, max.level = 1)
+print("Results for `str(dsAux, max.level = 1):`")
+print("-----------------------------------------")
+str(dsAux, max.level = 1) 
+```
+
+</div>
+
 # Review 
 
 You've learned a couple of ways to use `dive-stats`. Well done!
+
+*If you'd like to continue working through these practicals, consider `Detectors` or `fine-scale-tracking`.*
