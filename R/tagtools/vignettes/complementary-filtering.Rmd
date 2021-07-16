@@ -28,7 +28,9 @@ In this vignette, you will explore postural dynamics and specific acceleration i
 These vignettes all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
 #	Setup
-For this vignette we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
+For this vignette we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1.nc`. You can find it on the animal tags website: http://animaltags.org/ or https://animaltags.netlify.app/ . 
+
+Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
 
 Write `testset1` to the object `bw`, for "beaked whale". Then use `plott()` to inspect it.
 
@@ -119,25 +121,25 @@ Alow <- Af[[1]]		# low frequency A data
 Ahigh <- Af[[2]]	  # high frequency A data
 ```
 
-The sampling rate of these is the same as for the original data. For simplicity, make a variable `fs` equal to the sampling rate and use `plott()` to plot the two filtered accelerations along with the dive profile:
+The sampling rate of these is the same as for the original data. For simplicity, make a variable `sampling_rate` equal to the sampling rate and use `plott()` to plot the two filtered accelerations along with the dive profile:
 
 ```{r, eval = FALSE, echo = TRUE}
-fs <- bw$A$sampling_rate
+sampling_rate <- bw$A$sampling_rate
 plott(X = list(`Depth (m)` = bw$P$data,
                `LF Accel` = Alow, 
                `HF Accel` = Ahigh),
-      fsx = fs)
+      fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_lowNhigh"> Show/Hide Results </button>  
 <div id="plott_lowNhigh" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-fs <- bw$A$sampling_rate
-plott(X = list(`Depth (m)` = bw$P$data,
+sampling_rate <- bw$A$sampling_rate
+plott(X = list(`Depth` = bw$P$data,
                `LF Accel` = Alow, 
                `HF Accel` = Ahigh),
-      fsx = fs)
+      fsx = sampling_rate)
 ```
 
 </div>
@@ -148,20 +150,20 @@ If you like, zoom in to the section of steady stroking that you used for `dsf` -
 
 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(`Depth (m)` = bw$P$data,
+plott(X = list(`Depth` = bw$P$data,
                `LF Accel` = Alow, 
                `HF Accel` = Ahigh),
-      fsx = fs, xlim = c(35*60, 42*60)/3600)
+      fsx = sampling_rate, xlim = c(35*60, 42*60)/3600)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_lowNhigh_zoomd"> Show/Hide Results </button>  
 <div id="plott_lowNhigh_zoomd" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
-plott(X = list(`Depth (m)` = bw$P$data,
+plott(X = list(`Depth` = bw$P$data,
                `LF Accel` = Alow, 
                `HF Accel` = Ahigh),
-      fsx = fs, xlim = c(35*60, 42*60)/3600)
+      fsx = sampling_rate, xlim = c(35*60, 42*60)/3600)
 ```
 
 </div>
@@ -175,8 +177,8 @@ Do you see any changes in swimming style throughout the ascent? In particular, c
 ```{r echo = TRUE, eval = TRUE}
 intvl1 <- c(36*60, 38*60)
 intvl2 <- c(56*60, 58*60)
-Ah1 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl1)
-Ah2 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl2)
+Ah1 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl1)
+Ah2 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl2)
 ```
 
 Now plott these with the same y-scale so you can easily compare them. 
@@ -184,14 +186,14 @@ Now plott these with the same y-scale so you can easily compare them.
 <!-- Sam speaks again: this doesn't necessarily put them on the same y-scale. Not sure how to fix. -->
 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(Ah1,Ah2), fsx = fs)
+plott(X = list(Ah1,Ah2), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_Ah1Ah2"> Show/Hide Results </button>  
 <div id="plott_Ah1Ah2" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
-plott(X = list(Ah1,Ah2), fsx = fs)
+plott(X = list(Ah1,Ah2), fsx = sampling_rate)
 ```
 
 </div>
@@ -206,4 +208,4 @@ You've learned how to separate low- and high-frequency acceleration data with a 
 
 Aaaaand... congrats! You've aced this vignette. 
 
-*If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `more-filtering`.*
+*If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `more-filtering`. These three vignettes all go together. Perhaps the most logical ordering is `complementary-filtering`, then `jerk-transients`, then `more-filtering`. But, you do what suits your fancy/data!*

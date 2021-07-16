@@ -35,7 +35,7 @@ For tags placed on free-swimming animals, the tag axes will not generally coinci
 
 ## Estimate the tag orientations on the whale
 
-Use `load_nc()` to read `testset5.nc`, which is from a pilot whale in the Canary Islands. Write it to the object `sw` to follow along with the code in this vignette.
+Use `load_nc()` to read `testset5.nc`, which is from a pilot whale in the Canary Islands. Write it to the object `sw` to follow along with the code in this vignette. If you need to download this dataset, it is available from the animal tags website, either at http://animaltags.org/ or https://animaltags.netlify.app/ . 
 
 (One more reminder... make sure you have `testset5.nc` in your working directory, making use of `getwd` and/or `setwd()`, and `tagtools` in your library, by simply running `library(tagtools)`.)
 
@@ -281,6 +281,6 @@ If `Aa` is done right, there should be a fairly good negative correlation betwee
 
 You've learned how to estimate tag orientation over time, as well as how to correct for it when these estimates are problematic. 
 
-Congrats! You made it through Practical 2c. 
+Congrats! You made it through this vignette. 
 
-*If you'd like to continue working through these vignettes,* 
+*If you'd like to continue working through these vignettes, consider `complementary-filtering`.* 

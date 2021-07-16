@@ -1,7 +1,7 @@
 #' Convert between dates and Julian day numbers.
 #'
 #' This function is used to convert between dates and Julian day numbers. 
-#' There are three different input arrangements, each of which returns a different output. For a discription of the different input arrangements, see below.
+#' There are three different input arrangements, each of which returns a different output. For a description of the different input arrangements, see below.
 #'
 #' Possible input combinations: 
 #' (n <- julian_day()) returns the Julian day number for today. 

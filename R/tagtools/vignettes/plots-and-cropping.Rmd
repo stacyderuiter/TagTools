@@ -28,7 +28,7 @@ In this vignette, you will start to create some beautiful plots from the data we
 These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way. We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
 # Setup: write "cats_test_raw.nc", and load it as a large list, `MN`
-For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw'.
+For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. The data is available at the animal tags website, http://animaltags.org/ or https://animaltags.netlify.app/ .
 
 The 'load-tag-data' vignette has details on installing the `tagtools` package, making sure it is loaded in your library (`library(tagtools)`), and loading a .nc data file. If you've just finished one of those within the same R session, great work--move on to [Exploratory data plots]. If not, then we'll get you up to speed on the details you need to move forward from there. Check your working directory (`getwd`). Do you see your .nc file in there? If you do, you're almost all set! Just run the following to load it: 
 
@@ -38,7 +38,7 @@ MN <- load_nc('cats_test_raw')
 
 If you don't see cats_test_raw.nc, see the load-tag-data vignette for more details.
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE, results='hide'}
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
 ```
@@ -91,7 +91,9 @@ print("Position your cursor and then click once followed by clicking FINISH to c
 
 This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish. Alternatively, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete. The function returns a new data structure which contains just the selected part of the dive profile. 
 
-Use plott to plot Pc to make sure you cropped it correctly. (Now would be an especially good time to try and write the code yourself, since you've used `plott` once before.)
+Once you've cropped the depth data to the relevant segment, this will be stored as Pc. Now, use plott to plot Pc to make sure you cropped it correctly.
+
+(*Now would be an especially good time to try and write the code yourself, since you've used `plott` once before. Hint: remember that the input to X should be a list.*)
 
 ```{r, eval = FALSE, echo = TRUE}
 plott(X=list(Depth = Pc))
@@ -129,4 +131,4 @@ You've learned how to make plots using the `tagtools` function `plott`, as well 
 
 Congratulations! You've completed this vignette. 
 
-*If you'd like to continue working through these vignettes, data-quality-error-correction is probably a good option.*
+*If you'd like to continue working through these vignettes, `data-quality-error-correction` is probably a good option.*

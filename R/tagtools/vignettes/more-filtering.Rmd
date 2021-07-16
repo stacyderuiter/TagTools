@@ -30,7 +30,9 @@ These practicals all assume that you have R/Rstudio installed on your machine, s
 # Setup
 If you've done Practical 3a *or* Practical 3b **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
 
-For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
+For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. If you need to download this dataset, you can find it on the animal tags website:  http://animaltags.org/ or https://animaltags.netlify.app/ . 
+
+Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
 
 Write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
 

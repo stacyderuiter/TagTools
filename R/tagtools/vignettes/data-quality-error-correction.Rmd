@@ -29,12 +29,12 @@ These practicals assume that you have R/Rstudio installed on your machine, some 
 
 # Checking accelerometer and magnetometer data
 
-Biologging data are not always ready-to-use when you read them off the tag. Some corrections may be needed. Quality checking is fairly easy for pressure data from aquatic mammals because we know they will breathe at the surface. Data from accelerometers and magnetometers are more difficult not only because there are three axes but also because we don't have such an intuitive feel for what they should look like. However, there are some quality checks we can do with `A` and `M` data that help to catch and correct problems. 
+Biologging data are not always ready-to-use when you read them off the tag. Some corrections may be needed. Quality checking is fairly easy for pressure data from aquatic mammals because we know they will breathe at the surface. Data from accelerometers and magnetometers are more difficult. For one thing, there are three axes, and also we don't have such an intuitive feel for what they should look like. However, fortunately, there are some quality checks we can do with `A` and `M` data that help to catch and correct problems. 
 
 Our objective here is to estimate the orientation of an animal (its pitch, roll and heading) as a function of time. To do so we first need to check and correct errors in `A` and `M`.
 
 ## Data quality checks
-For this practical we will use data from a tag attached to the back of a sperm whale. The data is in: `rawtestset3.nc`. 
+For this practical we will use data from a tag attached to the back of a sperm whale. The data is in: `rawtestset3.nc`. If you need to download it, it is available from the animal tags website, either at http://animaltags.org/ or https://animaltags.netlify.app/ . 
 
 (As usual: Make sure that `rawtestset3.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder, or if you can't find it, you can download it from animaltags.org. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 
@@ -95,7 +95,7 @@ Luckily, we can check both of these from the data.
 
 When there is not much specific acceleration, the vector magnitude of each acceleration measurement should be close to the magnitude of the gravity vector, i.e., 9.8 $\frac{m}{s^2}$. 
 
-The magnetometer data should also have fairly constant vector magnitude equal to the field strength where the data came from. It should be about 48 $\mu$T in this case since the tag was deployed at $28.48^{\circ}$, $-89.052^{\circ}$ latitude/longitude. 
+The magnetometer data should also have fairly constant vector magnitude equal to the field strength where the data came from. It should be about 48 $\mu$T in this case since the tag was deployed at $28.48^{\circ}$, $-89.052^{\circ}$ latitude/longitude. (That is, 28.48 north latitude, 89.052 west longitude.)
 
 *(A useful website to find the geomagnetic field parameters, based on where your tag is deployed from, is: <https://www.ngdc.noaa.gov/geomag-web/#igrfwmm>.)* 
 
@@ -309,4 +309,4 @@ What have you learned? A few powerful tools for detecting and correcting common 
 
 Great work! You've completed this vignette. 
 
-*If you'd like to continue working through these vignettes, `Tag orientation, from tag to sperm whale frame` is probably a good option. It deals with estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
+*If you'd like to continue working through these vignettes, `tag-to-whale-frame` is probably a good option. It deals with estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that *are not *aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*

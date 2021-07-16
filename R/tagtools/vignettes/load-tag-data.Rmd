@@ -30,7 +30,7 @@ These vignettes assume that you have some basic experience working with R/Rstudi
 # Loading an .nc File
 
 ##  Load the test data set
-For this example, you will load in the data file from a CATs tag.The data file is already stored in a .nc file called 'cats_test_raw'. The function we will be using to achieve this is called `load_nc()`.
+For this example, you will load in the data file from a CATs tag.The data file is already stored in a .nc file called 'cats_test_raw.nc'. The data is available on the animal tags website: http://animaltags.org/ or https://animaltags.netlify.app/ . The function we will be using to achieve this is called `load_nc()`.
 
 This code below assumes the file is in your working directory. Again, you may have to change it to match your machine. (You may also need to escape slashes in the path specification (e.g., \\) depending on your platform.)
 
@@ -61,11 +61,14 @@ str(MN$A)
 <div id="MN_struct" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
-print("First the results for names(MN)")
+print("First the results for names(MN):")
+print("--------------------------------------------")
 names(MN)
-print("Then the results for str(MN, max.level = 1)")
+print("Then the results for str(MN, max.level = 1):")
+print("--------------------------------------------")
 str(MN, max.level = 1)
-print("and finally the results for str(MN$A)")
+print("and finally the results for str(MN$A):")
+print("--------------------------------------------")
 str(MN$A)
 ```
 
@@ -221,7 +224,7 @@ Then, once this file is in your working directory, you can load the info into R 
 
 ```{r, eval = FALSE}
 yet_more_info <- csv2struct('the_file_you_just_saved.csv')
-# results from here on not included, will depend on your individual file
+# results not included, will depend on your individual file
 ```
 
 And finally, combine it with the rest as before. Try to emulate the two lines from above, changing the names as needed, without opening the chunk below. Then check your work against this:
@@ -246,3 +249,5 @@ That's it! If all has worked smoothly, your .nc file will contain all the additi
 What have you learned so far? More important steps that will hopefully, as you're working with data more frequently, become healthy routines of consistent, rigorous documentation. 
 
 Great work!
+
+*If you'd like to continue working through these practicals, `plots-and-cropping` would be one good choice. In it, you'll get to start visualizing some data of the types you've been learning to load.* 

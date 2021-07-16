@@ -26,7 +26,9 @@ This practical covers how to compute a dead-reckoned track from accelerometer an
 *Estimated time for this vignette: 30 minutes.*
 
 # Load and Explore Data
-Load the data set `testset7.nc` and check the contents of the data structures to answer the following questions:
+Load the data set `testset7.nc`. This dataset is available on the animal tags website if you need it, either http://animaltags.org/ or https://animaltags.netlify.app/ . 
+
+Then, check the contents of the data structures to answer the following questions:
 
 - What species did the data come from and where?
 - What is the sampling rate of the accelerometer data?

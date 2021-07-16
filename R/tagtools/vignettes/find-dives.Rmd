@@ -27,7 +27,9 @@ In this vignette you will learn to use `find_dives` to gain insight about a dept
 
 # Load the test data set
 
-Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. Use load_nc to load a NetCDF file:
+Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. This dataset is available on the animal tags website if you need it, either http://animaltags.org/ or https://animaltags.netlify.app/ . 
+
+Use load_nc to load a NetCDF file:
 
 (As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `mn12_186a_raw.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
 

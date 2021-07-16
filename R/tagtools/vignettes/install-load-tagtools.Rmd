@@ -27,7 +27,7 @@ In this vignette you will complete the first important setup steps of installing
 # Installing tagtools for R
 
 ## Prerequisites
-Before you begin, you must have R and -- recommended -- RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop). Alternatively, you can work in RStudio.cloud.
+Before you begin, you must have R and -- recommended -- RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop) (you only need the free one). Alternatively, you can work in [RStudio.cloud](https://rstudio.cloud).
 
 If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
 
@@ -38,13 +38,17 @@ If you have `devtools` installed on your computer, you can use it to install the
 
 If you want or need to install `devtools`, or want more information about it, see the [online installation guide at r-project.org](https://www.r-project.org/nosvn/pandoc/devtools.html).
 
+The code below gives the devtools command to install. Click "Code" at the right to open the chunk.
+
 ```{r, eval = FALSE}
 devtools::install_github('stacyderuiter/TagTools/R/tagtools',
                          build_vignettes = TRUE)
 ```
 
 ## Install tagtools from zip archive
-If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials. *Note: in this case you will probably also have to manually install all the packages `tagtools` depends on; if you use the `devtools` method above, you will not.*
+If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials, or available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 
+
+*Note: if you choose to install from archive files (.zip or .tgz), you will probably also have to manually install all the packages `tagtools` depends on. If you use the `devtools` method above, you will not.*
 
 - **Windows** users will want to use the **.zip** archive
 - **Mac** or **Linux** users will want to use the **.tgz** archive
@@ -54,7 +58,7 @@ Save the appropriate archive to a known location on your computer.
 Then, run:
 
 ```{r, eval = FALSE}
-install.packages('YourPath/YourFilename')
+install.packages('YourPath/YourFilename') # you'll have to edit this appropriately
 ```
 
 (fill in the absolute or relative path to the archive file, and the archive file name). For example, on a Mac, if the file is saved to Downloads, your path might look like this: 
@@ -82,13 +86,24 @@ Note here that we are writing an object `dpnds`, which is a vector of these 18 (
 
 Once the `tagtools` are successfully installed, you should be able to run
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(tagtools)
 ```
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#library_tagtools"> Show/Hide Results </button>  
+<div id="library_tagtools" class="collapse"> 
+
+```{r, eval = TRUE, echo = FALSE}
+library(tagtools)
+```
+
+</div>
+
+You will often get this message: "The following object is masked from 'package:stats': smooth"—this means you have loaded it properly! 
+
 Another check is to make sure that function help files are accessible; for example,
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 ?load_nc
 ```
 
@@ -96,7 +111,7 @@ Now or at any point in the future, you might get an error saying the function do
 
 Having fewer packages loaded is kinder to your computer's memory, so it is good that R doesn't automatically load everything. However, it does mean that every time you restart RStudio, you must reload the packages you need, such as `tagtools`, yourself. 
 
-If the command `?` pulls up a help file for the function `load_nc` like it should, you're all set. 
+If the command `? load_nc` pulls up a help file for the function `load_nc` like it should, you're all set. 
 
 # Review
 
@@ -104,4 +119,4 @@ What have you learned so far? Important setup steps that will help avoid confusi
 
 Congrats!
 
-*If you'd like to continue working through these vignettes, `load-tag-data` is probably a good option.*
+*If you'd like to continue working through these vignettes, `load-tag-data` and `plots-and-cropping` are good options to help you get started with the tools you've just installed and loaded.*
