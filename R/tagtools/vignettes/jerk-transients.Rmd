@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the jerk-transients vignette! Thanks for getting some time to know our package; we hope it's, thus far, all you've dreamed it would be.
+Welcome to the jerk-transients vignette! Thanks for getting some time to know our package. We hope it's, thus far, all you've dreamed it would be.
 
 In this practical, you will use jerk to identify prey capture attempts. 
 
@@ -27,17 +27,18 @@ In this practical, you will use jerk to identify prey capture attempts.
 
 These practicals all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
 # Setup
 If you've finished `complementary-filtering` within the same R session, skip to [Acceleration transients, jerk and dynamic acceleration]. If not, you'll want to do this first section. 
 
-For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. If you need to download this dataset, you can find it on the animal tags website:  http://animaltags.org/ or https://animaltags.netlify.app/ . 
-
-Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
+For this practical we will use data from a suction cup tag attached to the back of a beaked whale. This dataset is built into the `tagtools` package, so you can access it using `system.file`.  
 
 Write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
 
 ```{r, echo = TRUE, eval = FALSE}
-bw <- load_nc('testset1')
+bw_file_path <- system.file("extdata", "testset1.nc", package = 'tagtools', mustWork = TRUE)
+bw <- load_nc(bw_file_path)
 plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
 ```
 
@@ -57,7 +58,7 @@ This dataset contains a deep dive followed by a shallow dive. We want to infer t
 # Acceleration transients, jerk and dynamic acceleration
 We want to look for indications of foraging during the two dives. Sudden changes (transients) in acceleration are often associated with prey capture attempts. One way to emphasise rapid changes in acceleration is by differentiating it to produce the jerk. 
 
-This is effectively high-pass filtering acceleration with a constantly-sloping filter - the higher the frequency, the more it is emphasised. Because we don't know what kind of movement is involved in a prey capture attempt, we don't know which axis of acceleration will be most relevant. It is safer then to just compute the magnitude of the jerk in all three axes to get a single vector. That way, a peak in any or all axes will show up. `njerk` computes this from acceleration. Try running `njerk` on our acceleration data (where is it stored?) and writing it to `J`. Then, once you also grab the sampling rate, you can plot this jerk data. 
+This is effectively high-pass filtering acceleration with a constantly-sloping filter---the higher the frequency, the more it is emphasised. Because we don't know what kind of movement is involved in a prey capture attempt, we don't know which axis of acceleration will be most relevant. It is safer then to just compute the magnitude of the jerk in all three axes to get a single vector. That way, a peak in any or all axes will show up. `njerk` computes this from acceleration. Try running `njerk` on our acceleration data (where is it stored?) and writing it to `J`. Then, once you also grab the sampling rate, you can plot this jerk data. 
 
 ```{r, eval = FALSE, echo = TRUE}
 J <- njerk(bw$A)
@@ -176,3 +177,6 @@ And with that, congrats! You bounced through this vignette.
 
 *If you'd like to continue working through these vignettes, `complementary-filtering` and `more-filtering` are very logical choices. You'll gain more insight into the same dataset, and other ways of analysing locomotion, by doing these.*
 
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

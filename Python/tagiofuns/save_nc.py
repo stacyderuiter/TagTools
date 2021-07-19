@@ -1,20 +1,20 @@
 def save_nc(fname=None, X=None, verbose=0, *varargin):
     
-    """
-    Save one or more variables to a NetCDF archive file.
+    """Save one or more variables to a NetCDF archive file.
+    
     Warning, this will overwrite any previous NetCDF file with the same name.
 	The file is assumed to be in the current working directory unless a pathname is added to the beginning of fname.
     
     save_nc(fname,X,verbose,...)
     
-    Inputs:
-	fname is the name of the metadata file. If the name does not include a .nc suffix, this will be added automatically.
-	X (and any subsequent inputs) is a sensor or metadata dictionary, or a set of sensor dictionaries. 
+    :param fname: The name of the metadata file. If the name does not include a .nc suffix, this will be added automatically.
+	:param X: (and any subsequent inputs) A sensor or metadata dictionary, or a set of sensor dictionaries. 
         Only these kind of variables can be saved in a NetCDF file because the supporting information in these dictionaries
         is needed to describe the contents of the file. For non-archive and non-portable storage of variables, consider using the 
         'save' function in Python's numpy package.
-    if verbose is 1, information on which dictionaries are added to the file will be displayed in the terminal, if verbose is 0 or 
-        not provided - no information will be displayed.
+    :param verbose: If this is set to 1, information on which dictionaries are added to the file will be displayed in the terminal. 
+        If verbose is 0 or not provided, no information will be displayed.
+    :raises TypeError: if sensor or metadata dictionaries are not input, save_nc cannot save them.
 
 	Example:
 	save_nc('dog17_124a',A,M,P,info)

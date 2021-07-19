@@ -19,26 +19,20 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the plot and cropping vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you. 
+Welcome to the plot and cropping vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it makes your life a little easier. 
 
 In this vignette, you will start to create some beautiful plots from the data we've been working with, as well as crop these to remove irrelevant data (e.g. before or after a tag was deployed on an animal).
 
 *Estimated time for this practical: 25 minutes.*
 
-These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way. We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way. We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. 
 
-# Setup: write "cats_test_raw.nc", and load it as a large list, `MN`
-For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. The data is available at the animal tags website, http://animaltags.org/ or https://animaltags.netlify.app/ .
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
-The 'load-tag-data' vignette has details on installing the `tagtools` package, making sure it is loaded in your library (`library(tagtools)`), and loading a .nc data file. If you've just finished one of those within the same R session, great work--move on to [Exploratory data plots]. If not, then we'll get you up to speed on the details you need to move forward from there. Check your working directory (`getwd`). Do you see your .nc file in there? If you do, you're almost all set! Just run the following to load it: 
+# Setup: load "cats_test_raw.nc" as a large list, `MN`
+If you've already completed `load-tag-data` within the same R session, you can skip down a bit to [Exploratory data plots]. If not, you're just a couple of lines behind. For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
-```{r, echo = TRUE, eval = FALSE}
-MN <- load_nc('cats_test_raw')
-```
-
-If you don't see cats_test_raw.nc, see the load-tag-data vignette for more details.
-
-```{r, echo = FALSE, eval = TRUE, results='hide'}
+```{r, echo = TRUE, eval = TRUE, results='hide'}
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
 ```
@@ -74,7 +68,7 @@ For more features and info, run the help function `?` with plott:
 ```
 
 # Cropping data from a plot
-Not all tags have a way to start logging as soon as the tag has been deployed on the animal. Often data logging is started by a time trigger or alarm, and the researcher has to make a guess as to when the tag will be deployed to set its start time appropriately.  Often this means that a tag is logging data before it is put on an animal. Equally tags have no means of detecting when they release from the tagged  animal and as a consequence may continue to log data after they release. In most cases the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool `crop()`:
+Not all tags have a way to start logging as soon as the tag has been deployed on the animal. Often data logging is started by a time trigger or alarm, and the researcher has to make a guess as to when the tag will be deployed to set its start time appropriately.  Often this means that a tag is logging data before it is put on an animal. By the same token, tags have no means of detecting when they release from the tagged  animal. As a consequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool `crop()`:
 
 ```{r, echo = TRUE, eval=FALSE}
 Pc = crop(MN$Depth)
@@ -91,12 +85,12 @@ print("Position your cursor and then click once followed by clicking FINISH to c
 
 This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish. Alternatively, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete. The function returns a new data structure which contains just the selected part of the dive profile. 
 
-Once you've cropped the depth data to the relevant segment, this will be stored as Pc. Now, use plott to plot Pc to make sure you cropped it correctly.
+Once you've cropped the depth data to the relevant segment, this will be stored as Pc. Now, use `plott` to plot Pc to make sure you cropped it correctly.
 
 (*Now would be an especially good time to try and write the code yourself, since you've used `plott` once before. Hint: remember that the input to X should be a list.*)
 
 ```{r, eval = FALSE, echo = TRUE}
-plott(X=list(Depth = Pc))
+plott(X = list(Depth = Pc))
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott2"> Show/Hide Results </button>  
@@ -131,4 +125,8 @@ You've learned how to make plots using the `tagtools` function `plott`, as well 
 
 Congratulations! You've completed this vignette. 
 
-*If you'd like to continue working through these vignettes, `data-quality-error-correction` is probably a good option.*
+*If you'd like to continue working through these vignettes, `data-quality-error-correction` is probably a good option. In it, you'll start to use some unique data processing tools that `tagtools` provides.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

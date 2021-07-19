@@ -27,15 +27,16 @@ In this vignette, you will explore postural dynamics and specific acceleration i
 
 These vignettes all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
-#	Setup
-For this vignette we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1.nc`. You can find it on the animal tags website: http://animaltags.org/ or https://animaltags.netlify.app/ . 
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
-Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
+#	Setup
+For this vignette we will use data from a suction cup tag attached to the back of a beaked whale. This dataset is built into the `tagtools` package, so you can access it using `system.file`.  
 
 Write `testset1` to the object `bw`, for "beaked whale". Then use `plott()` to inspect it.
 
 ```{r, echo = TRUE, eval = FALSE}
-bw <- load_nc('testset1')
+bw_file_path <- system.file("extdata", "testset1.nc", package = "tagtools", mustWork = TRUE)
+bw <- load_nc(bw_file_path)
 plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
 ```
 
@@ -114,7 +115,7 @@ str(Af, max.level = 1)
 
 </div>
 
-The complementary filter returns a list containing two data matrices: the low-pass filtered data and the high-pass filtered data. Each of these is a three-column matrix because the filter is run on each column of the input data. So it is like you now have two accelerometers in the tag - one is only sensitive to low frequencies and the other is only sensitive to high frequencies. If you would like to get each matrix out of the cell array, do:
+The complementary filter returns a list containing two data matrices: the low-pass filtered data and the high-pass filtered data. Each of these is a three-column matrix because the filter is run on each column of the input data. So it is like you now have two accelerometers in the tag---one is only sensitive to low frequencies and the other is only sensitive to high frequencies. If you would like to get each matrix out of the cell array, do:
 
 ```{r, eval = TRUE, echo = TRUE}
 Alow <- Af[[1]]		# low frequency A data
@@ -146,7 +147,7 @@ plott(X = list(`Depth` = bw$P$data,
 
 These two versions of acceleration are sometimes called 'static' and 'dynamic' acceleration. If the filtering worked, you should see that `Alow` has large, relatively slow changes in acceleration which are mostly to do with orientation. These are missing in `Ahigh`, which has the high frequency specific acceleration, having to do with propulsion and strikes or flinches. 
 
-If you like, zoom in to the section of steady stroking that you used for `dsf` - you should only see the stroking in `Ahigh`, not in `Alow`. 
+If you like, zoom in to the section of steady stroking that you used for `dsf`---you should only see the stroking in `Ahigh`, not in `Alow`. 
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -170,7 +171,7 @@ plott(X = list(`Depth` = bw$P$data,
 
 # Locomotion style
 
-We want to characterise the locomotion style of the animal during the deep-dive ascent. Using the plot you made above, zoom in on the ascent and see if you can identify intervals in which the animal appears to be just swimming steadily (hint: look for when `Alow` is fairly constant indicating a steady orientation). 
+We want to characterise the locomotion style of the animal during the deep-dive ascent. Using the plot you made above, zoom in on the ascent and see if you can identify intervals in which the animal appears to be just swimming steadily (hint: look for when `Alow` is fairly constant, indicating a steady orientation). 
 
 Do you see any changes in swimming style throughout the ascent? In particular, check out the swimming styles in time intervals (1) 36-38 minutes and (2) 56-58 minutes. Write two objects (say, `intvl1` and `intvl2`) that contain these intervals in seconds, using `c(YourStartTime, YourEndTime)`. Then, crop out the high frequency acceleration data in each of these intervals using `crop_to(...)`. (Try and write the code yourself!)
 
@@ -209,3 +210,7 @@ You've learned how to separate low- and high-frequency acceleration data with a 
 Aaaaand... congrats! You've aced this vignette. 
 
 *If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `more-filtering`. These three vignettes all go together. Perhaps the most logical ordering is `complementary-filtering`, then `jerk-transients`, then `more-filtering`. But, you do what suits your fancy/data!*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

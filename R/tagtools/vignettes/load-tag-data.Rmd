@@ -18,38 +18,54 @@ knitr::opts_chunk$set(
 )
 library(tagtools)
 ```
-Welcome to this load tag data vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it is useful to you. 
+Welcome to this load tag data vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it facilitates your work. 
 
 In this vignette, you will gain confidence with using the tagtools to create and load netCDF files, including editing metadata. 
 
 *Estimated time for this vignette: about 20 minutes.*
 
-These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
-
+These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. Additionally, be careful when copy-pasting special characters such as \_underscores\_, and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and 'straight quotes', whether 'single' or "double" (rather than “smart quotes”). 
 
 # Loading an .nc File
 
 ##  Load the test data set
-For this example, you will load in the data file from a CATs tag.The data file is already stored in a .nc file called 'cats_test_raw.nc'. The data is available on the animal tags website: http://animaltags.org/ or https://animaltags.netlify.app/ . The function we will be using to achieve this is called `load_nc()`.
+For this example, you will load in the data file from a CATs tag. The data file is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. Click Code at the right to see how.
 
-This code below assumes the file is in your working directory. Again, you may have to change it to match your machine. (You may also need to escape slashes in the path specification (e.g., \\) depending on your platform.)
-
-As a refresher, an easy way to check your current working directory is the command `getwd()`. When you run this (with parentheses), it should show you a path to the folder where you want the file `cats_test_raw.nc` to be located. You can also use `setwd(YourPathHere)` to set the working directory to where this file is already located. 
-
-Another refresher -- if you get an error saying the function doesn't exist, make sure you have `tagtools` in your library! It won't be if you've restarted R recently. Running `library(tagtools)` does the trick as long as you've installed the package in the past. 
-
-All right, finally time to get out `load_nc`! Here we go:
-
-```{r,eval=FALSE}
-MN <- load_nc('cats_test_raw')
-```
-
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=TRUE}
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
 ```
 
-This creates an animaltag list object `MN` in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
+This especially concise two-line method should always work with the installation of `tagtools` that we support, for all eight built-in datasets that come with the package. We will make frequent use of this method in these vignettes. It is especially nice because it saves you some annoying hassle (of tracking down where the dataset is saved and setting your working directory there, or of figuring out what your working directory is and moving your dataset there). 
+
+**However**, it is worth your while to understand how to do these steps manually, though this requires its own separate mental task, because you will have to do this in the real world when you get your own data from somewhere else. You should keep track of what your working directory is for other reasons, too. So, familiarize yourself with the following commands:
+
+```{r, echo = TRUE, eval = FALSE}
+getwd() # prints your current working directory. Often this will not be a tidy folder, but contain other things. So, to avoid that... 
+setwd("/Path/To/Working/Directory/In/Quotes") # on Mac or Linux, paths look like this, with forward slashes between folders. For instance:
+setwd("/Library/Frameworks/R.framework/Versions/4.1/Resources/library/tagtools/extdata/") # depending on your system, this may set your working directory to the folder containing the built-in datasets
+setwd("C:\Users\Sam Fynewever\Program Files") # on Windows, paths look like this, with a letter and colon at the beginning, then backslashes between folders
+```
+
+Additionally, your working directory should be visible at the top of the console: 
+
+```{r, echo = FALSE}
+knitr::include_graphics('working_dir.png')
+```
+
+Now, if you have navigated to your working directory in your file finder and/or ensured that the dataset file, `cats_test_raw.nc`, is located there (whether by changing your working directory or copy-pasting the file into your working directory), you can run load_nc "by hand"---see code:
+
+```{r, echo = TRUE, eval = FALSE}
+MN <- load_nc("cats_test_raw") # no .nc required this way!
+```
+
+All right! Whichever way you have just run `MN <- load_nc(...)`, this creates an animaltag list object `MN` in your workspace. You can view it in the Environment tab if working in RStudio. 
+
+```{r, echo = FALSE}
+knitr::include_graphics("MN_in_environment.png")
+```
+
+Or in the command line/console, type:
 
 ```{r, echo = TRUE, eval=FALSE}
 names(MN)
@@ -178,7 +194,7 @@ more_info
 </div>
 
 ## Combining info and more_info
-Now we have two different info structures -- the one we just created with `make_info()` and the one we got when we created the .nc file using `read_cats()`.
+Now we have two different info structures---the one we just created with `make_info()` and the one we got when we created the .nc file using `read_cats()`.
 
 We can combine the two together, keeping the fields from the original info if there are any duplicates:
 
@@ -251,3 +267,7 @@ What have you learned so far? More important steps that will hopefully, as you'r
 Great work!
 
 *If you'd like to continue working through these practicals, `plots-and-cropping` would be one good choice. In it, you'll get to start visualizing some data of the types you've been learning to load.* 
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

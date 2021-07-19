@@ -19,13 +19,15 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the `data-quality-error-correction` vignette! Thanks for taking some time to get to know our package; we hope it is useful to you.
+Welcome to the `data-quality-error-correction` vignette! Thanks for taking some time to get to know our package. We hope you're enjoying yourself. 
 
 This vignette deals with how to check data quality for accelerometers and magnetometers, as well as how to make corrections for some common sources of error. 
 
 *Estimated time for this practical: 25 minutes* 
 
 These practicals assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 # Checking accelerometer and magnetometer data
 
@@ -34,20 +36,12 @@ Biologging data are not always ready-to-use when you read them off the tag. Some
 Our objective here is to estimate the orientation of an animal (its pitch, roll and heading) as a function of time. To do so we first need to check and correct errors in `A` and `M`.
 
 ## Data quality checks
-For this practical we will use data from a tag attached to the back of a sperm whale. The data is in: `rawtestset3.nc`. If you need to download it, it is available from the animal tags website, either at http://animaltags.org/ or https://animaltags.netlify.app/ . 
+For this practical we will use data from a tag attached to the back of a sperm whale. This dataset is built into the `tagtools` package, so you can access it using `system.file`.  
 
-(As usual: Make sure that `rawtestset3.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset6.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder, or if you can't find it, you can download it from animaltags.org. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
-
-```{r, echo = TRUE, eval = FALSE}
-sw <- load_nc('rawtestset3')
-```
-
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = TRUE, eval = TRUE}
 sw_file_path <- system.file("extdata", "rawtestset3.nc", package = "tagtools", mustWork = TRUE)
 sw <- load_nc(sw_file_path)
 ```
-
-*Note that the code above assumes that the file is saved in your current working directory. `getwd()` will quickly show you what your current working directory is. You may need to use `setwd("yourPathInQuotes")` to change the working directory, or alternatively specify a full or relative path for the nc file.*
 
 Look at the overall structure to get an idea of how the data are stored, and check out the info structure to see where the data came from. 
 
@@ -86,7 +80,7 @@ plott(X = list(depth = sw$P, acc = sw$A, mag = sw$M))
 
 </div>
 
-Depth, `sw$P`, seems fine--it looks like a depth versus time plot for a diving whale. However, it is hard to see whether there are any problems with accelerometer and magnetometer data, `sw$A` and `sw$M`, from their respective plots. Two things can often go wrong with raw tag data: 
+Depth, `sw$P`, seems fine---it looks like a depth versus time plot for a diving whale. However, it is hard to see whether there are any problems with accelerometer and magnetometer data, `sw$A` and `sw$M`, from their respective plots. Two things can often go wrong with raw tag data: 
 
 - the sensors may not be well-calibrated, and 
 - the axes of `A` and `M` may not be aligned with the animal's axes. 
@@ -95,7 +89,7 @@ Luckily, we can check both of these from the data.
 
 When there is not much specific acceleration, the vector magnitude of each acceleration measurement should be close to the magnitude of the gravity vector, i.e., 9.8 $\frac{m}{s^2}$. 
 
-The magnetometer data should also have fairly constant vector magnitude equal to the field strength where the data came from. It should be about 48 $\mu$T in this case since the tag was deployed at $28.48^{\circ}$, $-89.052^{\circ}$ latitude/longitude. (That is, 28.48 north latitude, 89.052 west longitude.)
+The magnetometer data should also have fairly constant vector magnitude equal to the field strength where the data came from. It should be about 48 $\mu$T in this case since the tag was deployed at $28.48^{\circ}$, $-89.052^{\circ}$ latitude/longitude. (That is, $28.48^{\circ}$ north latitude, $89.052^{\circ}$ west longitude.)
 
 *(A useful website to find the geomagnetic field parameters, based on where your tag is deployed from, is: <https://www.ngdc.noaa.gov/geomag-web/#igrfwmm>.)* 
 
@@ -211,7 +205,6 @@ axis_table <- tibble::tibble(`Sensor axis` = c('x', 'y', 'z'),
 pander::pander(axis_table)
 ```
 
-
 You could make these corrections to `Mf` one-by-one, but it is probably more convenient to do them all at once. To make this happen, define a 'map' matrix that summarizes the changes:
 
 ```{r, eval = FALSE, echo = TRUE}
@@ -310,3 +303,7 @@ What have you learned? A few powerful tools for detecting and correcting common 
 Great work! You've completed this vignette. 
 
 *If you'd like to continue working through these vignettes, `tag-to-whale-frame` is probably a good option. It deals with estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that *are not *aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

@@ -21,27 +21,32 @@ require(tagtools)
 
 Welcome to the `fine-scale-tracking` vignette! Thanks for taking some time to get to know our package; we hope it sparks joy. 
 
-This practical covers how to compute a dead-reckoned track from accelerometer and magnetemeter data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high resolution track with lower error and try visualizing the track coloured by another parameter.
+This practical covers how to compute a dead-reckoned track from accelerometer and magnetemeter data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high-resolution track with lower error and try visualizing the track coloured by another parameter.
 
 *Estimated time for this vignette: 30 minutes.*
 
+These practicals all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just single, simple underscores, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
 # Load and Explore Data
-Load the data set `testset7.nc`. This dataset is available on the animal tags website if you need it, either http://animaltags.org/ or https://animaltags.netlify.app/ . 
+Load the data set `testset7.nc`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 Then, check the contents of the data structures to answer the following questions:
 
-- What species did the data come from and where?
+- What species did the data come from, and where did the data come from?
 - What is the sampling rate of the accelerometer data?
 - What processing steps have already been applied to the magnetometer data?
 - What is in the 3 columns in the POS (GPS position) data?
-- In what frame is the accelerometer and magnetometer data? 
+- Which frame is the accelerometer data in? Which frame is the magnetometer data in? 
 
 Plot the pressure and accelerometer data with `plott()` to get a sense for what the animal might be doing in this data segment. Note that the code example below assumes you have called the data set `d7`:
 
 ```{r, eval = FALSE, echo = TRUE}
-d7 <- load_nc('testset7')
-fs <- d7$P$sampling_rate
-plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = fs, interactive = TRUE)
+d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
+d7 <- load_nc(d7_file_path)
+sampling_rate <- d7$P$sampling_rate
+plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = sampling_rate, interactive = TRUE)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_d7"> Show/Hide Results </button>  
@@ -50,8 +55,8 @@ plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = fs, interactive = TRUE
 ```{r, eval = TRUE, echo = FALSE}
 d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
 d7 <- load_nc(d7_file_path)
-fs <- d7$P$sampling_rate
-plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = fs, interactive = FALSE)
+sampling_rate <- d7$P$sampling_rate
+plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = sampling_rate, interactive = FALSE)
 ```
 
 </div>
@@ -71,9 +76,9 @@ plot(d7$POS$data[,3], d7$POS$data[,2], type = 'b', pch = 20)
 
 </div>
 
-# Dead Reckoning
+# Dead-reckoning
 
-## What is Dead Reckoning?
+## What is Dead-reckoning?
 The plot shows a mix of intensive and extensive movements, but the constraint of only getting positions when the animal is at the surface means we cannot infer much about the movement behaviour within dives. Dead-reckoning from accelerometer and magnetometer data is the only way to estimate movement within dives without requiring external tracking infrastructure. 
 
 ## Estimating Animal Speed
@@ -82,7 +87,7 @@ Dead-reckoning uses the accelerometer and magnetometer to calculate the directio
 ```{r, echo = TRUE, eval = FALSE}
 v <- depth_rate(d7$P)
 plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
-      fsx = d7$P$sampling_rate)
+      fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_v"> Show/Hide Results </button>  
@@ -91,7 +96,7 @@ plott(X = list(Depth = d7$P$data, `Vertical Speed` = v),
 ```{r, echo = FALSE, eval = TRUE}
 v <- depth_rate(d7$P)
 plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
-      fsx = d7$P$sampling_rate)
+      fsx = sampling_rate)
 ```
 
 </div>
@@ -102,7 +107,7 @@ Or, if the interactive figure drives you a bit crazy, just set the axis limits:
 
 ```{r, echo = TRUE, eval = FALSE}
 plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
-       fsx = d7$P$sampling_rate, xl = c(0,0.1))
+       fsx = sampling_rate, xl = c(0,0.1))
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_v2"> Show/Hide Results </button>  
@@ -110,7 +115,7 @@ plott(X = list(Depth = d7$P$data, `Vertical Speed` = v),
 
 ```{r, echo = FALSE, eval = TRUE}
 plott(X = list(Depth = d7$P$data, `Vertical Speed` = v), 
-       fsx = d7$P$sampling_rate, xl = c(0,0.1))
+       fsx = sampling_rate, xl = c(0,0.1))
 ```
 
 </div>
@@ -139,7 +144,7 @@ plot(DR$easting, DR$northing, type = 'l',
 
 </div>
 
-A dead-reckoned track is a series of distances north (or south if negative) and east (or west if negative) of the starting point which is position 0,0 in the plot. The first two columns of DR are these 'northing' and 'easting' values. The DR track is defined in a Local Level Frame (LLF) as opposed to latitude and longitude. An LLF is like a map - a region that is small enough that we can assume the earth is flat - centered on the starting point. 
+A dead-reckoned track is a series of distances north (or south if negative) and east (or west if negative) of the starting point which is position 0,0 in the plot. The first two columns of DR are these 'northing' and 'easting' values. The DR track is defined in a Local Level Frame (LLF) as opposed to latitude and longitude. An LLF is like a map---a region that is small enough that we can assume the earth is flat---centered on the starting point. 
 
 **How does the spatial resolution of the dead-reckoned track look compared to the surface GPS positions?**
 
@@ -171,7 +176,7 @@ lines(POSLLF$easting, POSLLF$northing, type = 'b', col = 'red', pch = 20)
 
 How well does the dead-reckoned track match up to the GPS positions? The dead-reckoned track is always computed with respect to the water, not the ground, but we are plotting it here with respect to the ground. A more accurate track would take into account the water current. Can you imagine what current direction would be needed to make the dead-reckoned track more closely match the GPS positions?
 
-There are a number of ways to combine the GPS positions and the dead-reckoned track into a single track which has both the absolute accuracy of GPS and the high temporal resolution of dead-reckoning. A simple method is to force the dead-reckoned track to meet the GPS positions at each surfacing by adding a constant 'current' to each track point in the preceding dive. This is done by fit_tracks:
+There are a number of ways to combine the GPS positions and the dead-reckoned track into a single track which has both the absolute accuracy of GPS and the high temporal resolution of dead-reckoning. A simple method is to force the dead-reckoned track to meet the GPS positions at each surfacing by adding a constant 'current' to each track point in the preceding dive. This is done by `fit_tracks`:
 
 ```{r, eval = FALSE, echo = TRUE}
 FT <- fit_tracks(P = POSLLF, T = d7$POS$data[,1],
@@ -210,7 +215,7 @@ lines(FT$easting, FT$northing, col = 'darkgreen')
 
 **Skip to the next section if you're not interested in improving the plots.**
 
-If you are interested in a nicer, zoom-able plot and either have, or are willing to install, packages `ggformula` and `plotly`, give the following a try!
+If you are interested in a nicer, zoomable plot and either have, or are willing to install, packages `ggformula` and `plotly`, give the following a try!
 
 ```{r, echo = TRUE, eval = FALSE}
 # if you need to install:
@@ -232,8 +237,6 @@ track_fig
 <div id="track_fig" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-# in case the average user needs to install:
-install.packages(pkgs = c('ggformula', 'plotly'))
 library(ggformula)
 library(plotly)
 theme_set(theme_bw(base_size = 12))
@@ -344,8 +347,12 @@ col_line3(x = FT$easting, y = FT$northing,
 
 # Review
 
-What have you learned? What you can get out of--and what problems can arise from--dead-reckoning.
+What have you learned? What you can get out of---and what problems can arise from---dead-reckoning.
 
 And that's it! Fantastic work with this vignette.
 
-*If you'd like to continue working through these vignettes, you could take a stab at `find-dives` or `dive-stats`.*
+*If you'd like to continue working through these vignettes, you could take a stab at `find-dives` or `dive-stats`. These deal with the functions find\_dives and dive\_stats, respectively.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

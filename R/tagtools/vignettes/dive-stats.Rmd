@@ -25,15 +25,17 @@ In this vignette you will learn to use the function `dive-stats` to compute summ
 
 *Estimated time for this vignette: 25 minutes.*
 
+These practicals all assume that you have R/Rstudio, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
 # Finding dives and summarising them
 
-Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. This dataset is available on the animal tags website if you need it, either http://animaltags.org/ or https://animaltags.netlify.app/ . 
-
-(As usual: Make sure that `zc11_267a.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `zc11_267a.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
-
+Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. This dataset is built into the `tagtools` package, so you can access it using `system.file`.
 
 ```{r, echo = TRUE, eval = FALSE}
-ZC <- load_nc('zc11_267a')
+ZC_file_path <- system.file("extdata", "zc11_267a.nc", package = "tagtools", mustWork = TRUE)
+ZC <- load_nc(ZC_file_path)
 ```
 
 ```{r, eval = TRUE, echo = FALSE}
@@ -204,3 +206,7 @@ str(dsAux, max.level = 1)
 You've learned a couple of ways to use `dive-stats`. Well done!
 
 *If you'd like to continue working through these practicals, consider `Detectors` or `fine-scale-tracking`.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

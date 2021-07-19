@@ -25,28 +25,25 @@ In this vignette you will learn to use `find_dives` to gain insight about a dept
 
 *Estimated time for this vignette: 20 minutes.*
 
+These practicals all assume that you have R/Rstudio, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
 # Load the test data set
 
-Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. This dataset is available on the animal tags website if you need it, either http://animaltags.org/ or https://animaltags.netlify.app/ . 
+Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converted from the source file that was offloaded from the tag into a NetCDF file. In doing so, some metadata was gleaned from the file and added to the data. Other metadata was added by hand. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 Use load_nc to load a NetCDF file:
 
-(As usual: Make sure that `mn12_186a_raw.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `mn12_186a_raw.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends.)  
-
-```{r, echo = TRUE, eval = FALSE} 
-setwd("/path/with/folders/in/it/foo/bar") # you'll have to change this
-```
-
 ```{r, echo = TRUE, eval = FALSE}
-MN <- load_nc('mn12_186a_raw') # load the test dataset
+MN_file_path <- system.file("extdata", "mn12_186a_raw.nc", package = "tagtools", mustWork = TRUE)
+MN <- load_nc(MN_file_path)
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
 MN_file_path <- system.file("extdata", "mn12_186a_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(MN_file_path)
 ```
-
-You may also need to escape slashes in the path specification (e.g., `\`) depending on your platform.
 
 This creates an animaltag list object MN in your workspace. You can view it in the Environment tab if working in RStudio, or in the command line type:
 
@@ -113,7 +110,7 @@ plott(X=list(Depth=MN$P, Temperature=MN$T), r=c(TRUE,FALSE))
 
 Not all tags have a way to start logging as soon as the tag has been deployed on the animal. Often data logging is started by a time trigger or alarm, and the researcher has to make a guess as to when the tag will be deployed to set its start time appropriately. Often this means that a tag is logging data before it is put on an animal. 
 
-Equally, tags have no means of detecting when they release from the tagged animal. As a consequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool crop:
+Equally, tags have no means of detecting when they release from the tagged animal. As a consequence, they may continue to log data after they release. In most cases, the logged data from before and after deployment has no use. To reduce the data to just the periods when the tag is on the animal, use the tool `crop`:
 
 ```{r, echo = TRUE, eval = FALSE}
 Pc = crop(MN$P)
@@ -182,7 +179,7 @@ to find out how this function works. You call it using:
 Pcm = median_filter(Pc,n=3)
 ```
 
-Variable Pcm now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
+Your variable `Pcm` now contains the median-filtered, cropped depth data. Check its history to verify that the median filtering has been added. Compare it against the unfiltered data using:
 
 ```{r, echo = TRUE, eval = FALSE} 
 plott(X=list(Pc=Pc, Pcm=Pcm), r=c(TRUE,TRUE)) 
@@ -226,7 +223,7 @@ The tag toolbox has a function to correct pressure data called ‘fix_pressure�
 to find out what it does and what assumptions it makes about the data. Use this function by calling:
 
 ```{r, echo = TRUE, eval = TRUE}
-Pcmf <- fix_pressure(Pcm,Tc)
+Pcmf <- fix_pressure(Pcm, Tc)
 ```
 
 Compare the compensated dive profile to the uncompensated cropped ones using plott. (The code below will produce three plots, which might make them a bit small. Hit "Zoom" to view them in a larger window.)
@@ -248,7 +245,7 @@ Which of the problems that we listed above have been taken care of? Any ideas wh
 
 ## Finding dives & the mean dive duration
 
-To find the mean dive duration for dives over 5 m depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a great equivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called `find_dives`. See the help on this function to find out what it does and what options it has. 
+To find the mean dive duration for dives over 5 m in depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a great equivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called `find_dives`. See the help on this function to find out what it does and what options it has. 
 
 ```{r, echo = TRUE, eval = FALSE}
 ? find_dives
@@ -304,7 +301,7 @@ points(d$end/(3600*24),rep(0,nrow(d)),col='red', pch=17)
 ```
 </div>
 
-Again, this plot might be rather small, making the markers that designate the starts and ends of dives tricky to make sense of. You should be able to click Zoom to view it in a larger window. 
+Again, this plot might be rather small. As a result it might be tricky to make sense of the markers that designate the starts and ends of dives. You should be able to click Zoom to view the plot in a larger window. 
 
 Note: if you cropped the time such that the units of the x-axis are not in days, you will have to adjust the multipliers in the `points` code accordingly. In the example above, the start and end times returned by find_dives are in seconds so we needed to divide them by 3600*24 to match the unit (days) automatically selected for time by `plott`.
 
@@ -313,3 +310,7 @@ Note: if you cropped the time such that the units of the x-axis are not in days,
 Great work! You've learned how to use `find_dives`. 
 
 *If you'd like to continue working through these practicals, `dive-stats` might be a good option if you're especially interested in analyzing individual dives. Otherwise, consider `fine-scale-tracking` or `Detectors`.* 
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

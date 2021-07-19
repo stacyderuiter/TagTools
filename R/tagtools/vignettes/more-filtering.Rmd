@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the `more-filtering` vignette! Thanks for getting some time to know our package; we hope it's, thus far, all you've dreamed it would be.
+Welcome to the `more-filtering` vignette! Thanks for getting some time to know our package---we hope it's, thus far, all you've dreamed it would be.
 
 This vignette will probably be more insightful if you complete it after `complementary-filtering` and/or `jerk-transients`, but you are welcome to try it regardless. In this vignette, you will use a complementary filter to separate magnetometer data into low and high frequencies. This is similar to what we do in `complementary-filtering` with acceleration data. 
 
@@ -27,17 +27,18 @@ This vignette will probably be more insightful if you complete it after `complem
 
 These practicals all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
 # Setup
 If you've done Practical 3a *or* Practical 3b **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
 
-For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. If you need to download this dataset, you can find it on the animal tags website:  http://animaltags.org/ or https://animaltags.netlify.app/ . 
+For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
-Use `load_nc()` to read it in, making sure that `testset1.nc` is in your working directory. Is `load_nc()` not in the mood to exist? Then `library(tagtools)` is your friend. How about if `testset1.nc` decides to actually be `no such file or directory`? Well, search for it in your file finder. After that, `getwd()` and `setwd("PathToWorkingDirectoryInQuotes")` are your friends. 
-
-Write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
+Use `load_nc()` to read it in---write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
 
 ```{r, echo = TRUE, eval = FALSE}
-bw <- load_nc('testset1')
+bw_file_path <- system.file("extdata", "testset1.nc", package = 'tagtools', mustWork = TRUE)
+bw <- load_nc(bw_file_path)
 plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
 ```
 
@@ -63,11 +64,11 @@ fc = 0.267032715030423 # filter cut-off frequency
 Af <- comp_filt(bw$A, fc = fc) # filtering acceleration data
 Alow <- Af[[1]] # low-frequency acceleration
 Ahigh <- Af[[2]] # high-frequency acceleration
-fs <- bw$A$sampling_rate # sampling rate for this data
+sampling_rate <- bw$A$sampling_rate # sampling rate for this data
 intvl1 <- c(36*60, 38*60) 
 intvl2 <- c(56*60, 58*60) # two interesting time intervals: 36-38 and 56-58 minutes
-Ah1 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl1) # high-frequency acceleration data in the first interval
-Ah2 <- crop_to(Ahigh, sampling_rate = fs, tcues = intvl2) # high-frequency acceleration data in the first interval
+Ah1 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl1) # high-frequency acceleration data in the first interval
+Ah2 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl2) # high-frequency acceleration data in the first interval
 
 # stuff from jerk-transients (might depend on stuff from complementary-filtering, just paste it all)
 J <- njerk(bw$A) # get jerk
@@ -83,21 +84,21 @@ Let's get started! Try applying the complementary filter to the magnetometer dat
 ```{r, echo = TRUE, eval = TRUE}
 Mf <- comp_filt(bw$M, fc = fc) 
 Mhigh <- Mf[[2]]	# high frequency M data
-Mh1 <- crop_to(Mhigh, sampling_rate = fs, tcues = intvl1)
-Mh2 = crop_to(Mhigh, sampling_rate = fs, tcues = intvl2)
+Mh1 <- crop_to(Mhigh, sampling_rate = sampling_rate, tcues = intvl1)
+Mh2 = crop_to(Mhigh, sampling_rate = sampling_rate, tcues = intvl2)
 ```
 
 Make a new figure and plot these for comparison.
 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = fs)
+plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_Mh1Mh2"> Show/Hide Results </button>  
 <div id="plott_Mh1Mh2" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
-plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = fs)
+plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = sampling_rate)
 ```
 
 </div>
@@ -106,7 +107,7 @@ How do the magnetometer signals compare to the same intervals in the acceleromet
 
 ```{r, echo = TRUE, eval = FALSE}
 # Spoilers from complementary-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
-plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = fs)
+plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_Ah1Ah2"> Show/Hide Results </button>  
@@ -114,7 +115,7 @@ plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = fs)
 
 ```{r, echo = FALSE, eval = TRUE}
 # Spoilers from complementary-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
-plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = fs)
+plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rate)
 ```
 
 </div>
@@ -137,14 +138,14 @@ DA <- norm2(Ahigh)
 Plot `DA` and `J` to compare them:
 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(`Dyn. Acc` = DA, Jerk = J), fsx = fs)
+plott(X = list(`Dyn. Acc` = DA, Jerk = J), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_DAJ"> Show/Hide Results </button>  
 <div id="plott_DAJ" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
-plott(X = list(`Dyn. Acc` = DA, Jerk = J), fsx = fs)
+plott(X = list(`Dyn. Acc` = DA, Jerk = J), fsx = sampling_rate)
 ```
 
 </div>
@@ -159,5 +160,8 @@ You've learned how to separate low- and high-frequency magnetometer data with a 
 
 Fabulous work! You pranced all the way through this vignette.
 
-*If you'd like to continue working through these vignettes, Practical 4 is a fairly logical option. You should always feel free to search for whichever practical best suits your data or interests.*
+*If you'd like to continue working through these vignettes, `fine-scale-tracking` is a fairly logical option. In it, you'll consider dead-reckoned paths as a way to visualize how an animal might move, why this can lead to large errors, and how to correct for some of those errors.*
 
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

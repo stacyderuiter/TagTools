@@ -21,9 +21,11 @@ require(tagtools)
 
 Welcome to the tag orientation vignette!
 
-Thanks for taking some time to work with our package; we hope it is useful to you. 
+Thanks for taking some time to work with our package. We hope you're having a great day!
 
-This vignette deals with estimating and correcting the orientation of a tag on an animal. It will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.
+This vignette deals with estimating and correcting the orientation of a tag on an animal. It will use tag data that are not aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale. Your task will be to align the data to the animal's body axes. 
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 *Estimated time for this vignette: 25 minutes.*
 
@@ -35,9 +37,7 @@ For tags placed on free-swimming animals, the tag axes will not generally coinci
 
 ## Estimate the tag orientations on the whale
 
-Use `load_nc()` to read `testset5.nc`, which is from a pilot whale in the Canary Islands. Write it to the object `sw` to follow along with the code in this vignette. If you need to download this dataset, it is available from the animal tags website, either at http://animaltags.org/ or https://animaltags.netlify.app/ . 
-
-(One more reminder... make sure you have `testset5.nc` in your working directory, making use of `getwd` and/or `setwd()`, and `tagtools` in your library, by simply running `library(tagtools)`.)
+Use `load_nc()` to read `testset5.nc`, which is from a pilot whale in the Canary Islands. Write it to the object `sw` to follow along with the code in this vignette. This dataset is built into the `tagtools` package, so you can access it using `system.file`.   
 
 ```{r, eval = FALSE, echo = TRUE}
 sw <- load_nc('testset5')
@@ -48,12 +48,12 @@ sw_file_path <- system.file("extdata", "testset5.nc", package = "tagtools", must
 sw <- load_nc(sw_file_path)
 ```
 
-We will use `prh_predictor1()` to infer the tag-to-animal orientation. This function is for animals like pilot whales that log (more-or-less) at the surface before diving steeply. It assumes two things:
+We will use `prh_predictor1()` to infer the tag-to-animal orientation. This function is for animals like pilot whales that log (more or less) at the surface before diving steeply. It assumes two things:
 
 - that the animal rests horizontally at the surface (at least on average).
 - that it dives steeply away from the surface without rolling, at least initially.
 
-If these are not good assumptions for your animal, `prh_predictor2()` may work. It is suitable for whales such as beaked whales that make short dives between breaths at the surface. Both tools try to predict the tag orientation on the whale parameterized by its pitch, roll and yaw (which we shall call `p0`, `r0`, and `h0`). To use `prh_predictor1()`, we need to define a minimum dive depth to analyse - let's say 400 m. Then call the tool like this:
+If these are not good assumptions for your animal, `prh_predictor2()` may work. It is suitable for whales such as beaked whales that make short dives between breaths at the surface. Both tools try to predict the tag orientation on the whale parameterized by its pitch, roll and yaw (which we shall call `p0`, `r0`, and `h0`). To use `prh_predictor1()`, we need to define a minimum dive depth to analyse---let's say 400 m. Then call the tool like this:
 
 ```{r, eval = FALSE, echo = TRUE}
 PRH = prh_predictor1(sw$P, sw$A, TH = 400)
@@ -82,15 +82,17 @@ A quality measure of <0.05 in the bottom panel indicates that the data fit well 
 
 If the tag does not move on the animal from dive to dive, then `p0`, `r0` and `h0` should be fairly constant across dives. If they are not constant it can be due to a sudden change (e.g., the tag gets hit) or a slow movement of the tag on the animal. In this case it seems that there is a change in orientation between dives 6 and 7.
 
-The function automatically picks segments of data to analyse, and you should check that it did this well, especially if the 'quality' number is >0.05. The 3rd dive has a slightly bad quality: type `e` on the main figure to "edit" and then click on one of the 3rd dive orientation points. *Note that prompts will appear at the very top of the figure window(s), which will update based on the most recent user actions.*
+The function automatically picks segments of data to analyse, and you should check that it did this well, especially if the 'quality' number is > 0.05. The third dive has a slightly bad quality: type `e` on the main figure to "edit" and then click on one of the third dive orientation points. *Note that prompts will appear at the very top of the figure window(s), which will update based on the most recent user actions.*
 
-A new plot will be drawn in the second figure window (pull it up if it does not automatically come to the front) in which the top panel shows the acceleration data in the tag frame for the current dive edge. Blue, orange or red (depending on Matlab/octave version) and yellow represent the x, y and z axes, respectively.
+A new plot will be drawn in the second figure window (pull it up if it does not automatically come to the front) in which the top panel shows the acceleration data in the tag frame for the current dive edge. Blue, orange or red (depending on your Matlab/Octave version) and yellow represent the x, y and z axes, respectively.
+
 The bottom panel shows the acceleration data after correction using the `p0`, `r0` and `h0` estimates printed above the panel. 
 
-Two black rectangles show the data segments that have been chosen for analysis and these may need to be moved. 
+Two black rectangles show the data segments that have been chosen for analysis and these may need to be moved: 
 
 - The left-hand or 'surface' segment should be positioned just before the start of the dive. 
-- The right-hand or 'dive' segment should be just after the start of the dive. - The surface segment should cover an interval of consistent surfacing behaviour (either logging or shallow diving). 
+- The right-hand or 'dive' segment should be just after the start of the dive. 
+- The surface segment should cover an interval of consistent surfacing behaviour (either logging or shallow diving). 
 - The dive segment should contain only roll-free steep diving, i.e., the blue and red lines (the x- and y-axes) should be close to -9.8 m/s2 and 0, respectively, in the lower panel.
 
 The segment edges are numbered 1 to 4 from the left. To change a segment, hover the mouse over the plot and type the relevant number, then click the mouse where you want the newly-drawn box edge to be. The segment will move and the `p0`, `r0`, `h0` and quality will be re-calculated. When you are satisfied with the estimate quality, type q and then return to the first figure.
@@ -283,4 +285,8 @@ You've learned how to estimate tag orientation over time, as well as how to corr
 
 Congrats! You made it through this vignette. 
 
-*If you'd like to continue working through these vignettes, consider `complementary-filtering`.* 
+*If you'd like to continue working through these vignettes, consider `complementary-filtering`. In it, you'll look at acceleration data, and consider quick changes in acceleration (high-frequency acceleration) versus slower changes (low-frequency acceleration) to interpret an animal's behavior.* 
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
