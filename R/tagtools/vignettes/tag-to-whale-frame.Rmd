@@ -40,7 +40,9 @@ For tags placed on free-swimming animals, the tag axes will not generally coinci
 Use `load_nc()` to read `testset5.nc`, which is from a pilot whale in the Canary Islands. Write it to the object `sw` to follow along with the code in this vignette. This dataset is built into the `tagtools` package, so you can access it using `system.file`.   
 
 ```{r, eval = FALSE, echo = TRUE}
-sw <- load_nc('testset5')
+library(tagtools)
+sw_file_path <- system.file("extdata", "testset5.nc", package = "tagtools", mustWork = TRUE)
+sw <- load_nc(sw_file_path)
 ```
 
 ```{r, eval = TRUE, echo = FALSE}

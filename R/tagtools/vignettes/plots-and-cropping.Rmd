@@ -33,6 +33,7 @@ Additionally, be careful when copy-pasting special characters such as \_undersco
 If you've already completed `load-tag-data` within the same R session, you can skip down a bit to [Exploratory data plots]. If not, you're just a couple of lines behind. For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 ```{r, echo = TRUE, eval = TRUE, results='hide'}
+library(tagtools)
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
 ```
@@ -64,7 +65,7 @@ Notice that there are two t's in this function name: `plott()`. `plott()` is a g
 For more features and info, run the help function `?` with plott:
 
 ```{r, echo = TRUE, eval = FALSE}
-?plott
+? plott
 ```
 
 # Cropping data from a plot
@@ -116,6 +117,15 @@ The resulting sensor data list also contains fields that document what you just 
 ```{r, echo = TRUE, eval = TRUE}
 Pc$history
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_history"> Show/Hide Results </button>  
+<div id="Pc_history" class="collapse"> 
+
+```{r, echo = TRUE, eval = TRUE}
+Pc$history
+```
+
+</div>
 
 The history keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The crop and start_time fields show how the original data was changed: the `start_time` is with respect to the field `dephist_device_datetime_start` in the info structure which says when the tag recording started.
 

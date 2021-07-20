@@ -1,0 +1,93 @@
+---
+title: "Vectors and scalars versus structures"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{vectors-vs-structures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+require(tagtools)
+```
+
+Welcome to the `vectors-vs-structures` vignette! Thanks for taking some time to get to know our package; we hope it is useful to you. In this quick vignette, you will distinguish between vectors and structures. 
+
+*Estimated time for this practical: 15 minutes.*
+
+These vignettes assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+# Setup: write "cats_test_raw.nc", and load it as a large list, `MN`
+
+For this vignette we will use the NetCDF file `cats_test_raw.nc`. 
+
+```{r}
+library(tagtools)
+cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
+MN <- load_nc(cats_file_path)
+```
+
+This will write the file "cats_test_raw.nc", and load it into your current R session as a list object called `MN`. Looks good? Good work! Confused? See `load-tag-data`.
+
+# Sensor data structures & extracting data vectors
+
+Having caught up, we return to sensor data structures. Like `$info`:
+```{r}
+MN$info
+```
+
+these are structures that contain both the data and some information about it. Typing any of the variable names followed by enter will show what is in it. For example, try this for Acceleration:
+
+```{r, echo = TRUE, eval = FALSE}
+MN$A
+```
+
+In Matlab, Octave and R it will look a little different, but will have all the same information. Specifically, we are after the variable `A`, which is contained within the large list MN. `MN$A` is how we access it, in R.
+
+This tells you that the acceleration data were sampled at a nominal rate of 400 Hz (400 samples per second) and are in units of meters per second squared. If you are more familiar with data vectors than with structures, you can easily get the data out of the structure, and into its own standalone object, using:
+
+```{r, echo = TRUE, eval = FALSE}
+A <- MN$A$data
+sampling_rate <- MN$A$sampling_rate
+str(A, max.level = 1)
+sampling_rate
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#data_out"> Show/Hide Results </button>  
+<div id="data_out" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
+A <- MN$A$data
+sampling_rate <- MN$A$sampling_rate
+print("Results for str(A, max.level = 1):")
+print("----------------------------------")
+str(A, max.level = 1)
+print("----------------------------------")
+print("Result for sampling_rate:")
+print("----------------------------------")
+sampling_rate
+```
+
+</div>
+
+This makes a vector A with the acceleration data and a scalar fs with the sampling rate, which in this case is 400. You can also just keep everything stored in the list object, if you like (in R there is not a clear reason to pull them out). If you do this, you'd just have to keep typing `MN$A$data` and `MN$A$sampling_rate` instead of `A` or `sampling_rate`. If you move forward to `plots-and-cropping`, you will still use the animaltag list `MN`, pulling data directly from it. 
+
+# Review
+
+You've learned to distinguish between vectors and structures, and go from a structure to a vector (or scalar). 
+
+Nice work! You're all set on `vectors-vs-structures`.
+
+*If you'd like to keep working through these practicals, `plots-and-cropping` is a fairly logical continuation. You should always feel free to search for whichever practical seems most logical or relevant for your data or interests.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

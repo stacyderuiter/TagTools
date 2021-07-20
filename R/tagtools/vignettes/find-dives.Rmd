@@ -36,6 +36,7 @@ Load the test dataset `mn12_186a_raw.nc`. This dataset has already been converte
 Use load_nc to load a NetCDF file:
 
 ```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
 MN_file_path <- system.file("extdata", "mn12_186a_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(MN_file_path)
 ```

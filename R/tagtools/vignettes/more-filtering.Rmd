@@ -30,13 +30,14 @@ These practicals all assume that you have R/Rstudio installed on your machine, s
 Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 # Setup
-If you've done Practical 3a *or* Practical 3b **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
+If you've done `complementary-filtering` *or* `jerk-transients` **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
 
 For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 Use `load_nc()` to read it in---write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
 
 ```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
 bw_file_path <- system.file("extdata", "testset1.nc", package = 'tagtools', mustWork = TRUE)
 bw <- load_nc(bw_file_path)
 plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
@@ -56,7 +57,7 @@ plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
 This dataset contains a deep dive followed by a shallow dive. We want to infer the function of these by looking for locomotion effort and sudden changes in acceleration that could be indicative of prey capture attempts. We are also going to look for changes in swimming gait.
 
 # Spoilers
-If you've done both complementary-filtering AND jerk-transients in the same R session, skip down to [Complementary Filter for Magnetometer]. If not, you'll want to do this section. We'll do a bunch of spoilers from these two vignettes so that we have the objects we need. Paste all this code in, and it shouldn't mess with what you already had, whether you've done one or the other.
+If you've done both `complementary-filtering` AND `jerk-transients` in the same R session, skip down to [Complementary Filter for Magnetometer]. If not, you'll want to do this section. We'll do a bunch of spoilers from these two vignettes so that we have the objects we need. Paste all this code in, and it shouldn't mess with what you already had, whether you've done one or the other.
 
 ```{r, echo = TRUE, eval = TRUE}
 # stuff from complementary-filtering
@@ -76,7 +77,6 @@ Ad <- decdc(bw$A, 5) # decimate accel data by a factor of 5
 Jd <- njerk(Ad) # decimated jerk 
 
 ```
-
 
 # Complementary Filter for Magnetometer
 Let's get started! Try applying the complementary filter to the magnetometer data, `bw$M`, and then plot the high frequency magnetometer data for the two intervals of swimming that you might have looked at in the Locomotion style section of `complementary-filtering`.

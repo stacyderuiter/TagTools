@@ -32,6 +32,7 @@ These vignettes assume that you have some basic experience working with R/Rstudi
 For this example, you will load in the data file from a CATs tag. The data file is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. Click Code at the right to see how.
 
 ```{r, eval=TRUE, echo=TRUE}
+library(tagtools)
 cats_file_path <- system.file("extdata", "cats_test_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(cats_file_path)
 ```

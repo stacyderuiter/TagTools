@@ -1,5 +1,5 @@
 ---
-title: "dive-stats"
+title: "Using dive_stats"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: 
@@ -34,6 +34,7 @@ Additionally, be careful when copy-pasting special characters such as \_undersco
 Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. This dataset is built into the `tagtools` package, so you can access it using `system.file`.
 
 ```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
 ZC_file_path <- system.file("extdata", "zc11_267a.nc", package = "tagtools", mustWork = TRUE)
 ZC <- load_nc(ZC_file_path)
 ```

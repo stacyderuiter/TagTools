@@ -27,7 +27,7 @@ In this vignette you will complete the first important setup steps of installing
 # Installing tagtools for R
 
 ## Prerequisites
-Before you begin, you must have R and---recommended---RStudio installed on your computer. You can download [this software at RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop) (you only need the free one). Alternatively, you *can* work in [RStudio.cloud](https://rstudio.cloud). This is free too, and it is nice that no download is required. The drawback is that, with your free RStudio.cloud account, you are limited at a certain number of project-hours per month, RAM, and CPU. One who does a lot of work in RStudio, several hours a day, will run out of hours within a week or two. The desktop version has fewer restraints. 
+Before you begin, you must have R and---recommended---RStudio installed on your computer. You can download this software at [RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop) (you only need the free one). Alternatively, you *can* work in [RStudio.cloud](https://rstudio.cloud). This is free too, and it is nice that no download is required. The drawback is that, with your free RStudio.cloud account, you are limited at a certain number of project-hours per month, RAM, and CPU. One who does a lot of work in RStudio, several hours a day, will run out of hours within a week or two. The desktop version has fewer restraints. 
 
 If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
 

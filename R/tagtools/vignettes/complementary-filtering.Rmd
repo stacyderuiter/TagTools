@@ -35,6 +35,7 @@ For this vignette we will use data from a suction cup tag attached to the back o
 Write `testset1` to the object `bw`, for "beaked whale". Then use `plott()` to inspect it.
 
 ```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
 bw_file_path <- system.file("extdata", "testset1.nc", package = "tagtools", mustWork = TRUE)
 bw <- load_nc(bw_file_path)
 plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))

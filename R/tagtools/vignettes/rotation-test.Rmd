@@ -1,12 +1,12 @@
 ---
-title: "Rotation test with some very interesting data"
+title: "Rotation test"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: 
   html_document:
     code_folding: hide
 vignette: >
-  %\VignetteIndexEntry{more-filtering}
+  %\VignetteIndexEntry{rotation-test}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -33,37 +33,52 @@ We were very fortunate to obtain a number of test datasets from different source
 
 Unfortunately several of the tag sensors malfunctioned, but we were able to salvage some dive depth data to be used in this example. The dataset is called `nessie.nc`. It is built into the `tagtools` package, so you can access it using `system.file`.
 
-1. Read in the data and make a plot of the dive profile (because of course you want to see it).
+1. Read in the data: 
 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
 nessie_file_path <- system.file("extdata", "nessie.nc", package = "tagtools", mustWork = TRUE)
 nessie <- load_nc(nessie_file_path)
 str(nessie, max.level = 1)
-plott(X = list(Depth = nessie$P), interactive = TRUE)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#load_nessie_nc"> Show/Hide Results </button>  
-<div id="load_nessie_nc class="collapse">
+<div id="load_nessie_nc" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
 nessie_file_path <- system.file("extdata", "nessie.nc", package = "tagtools", mustWork = TRUE)
 nessie <- load_nc(nessie_file_path)
 str(nessie, max.level = 1)
+```
+
+</div>
+
+And make a plot of the dive profile (because of course you want to see it):
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Depth = nessie$P), interactive = TRUE)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plot_nessie_profile"> Show/Hide Results </button>  
+<div id="plot_nessie_profile" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
 plott(X = list(Depth = nessie$P), interactive = FALSE)
 ```
 
 </div>
 
-2. According to some Scottish lore, Nessie surfaces more often in the hour around noon than during the rest of the day (because the glare on the water, and the lure of lunch, make it more difficult for people to spot her then). But does she really? Use find_dives to find start times for all her submergences, which we will use as a proxy for breath times. In this case, you will want to use a threshold that is as shallow as practicable. 
+2. According to some Scottish lore, Nessie surfaces more often in the hour around noon than during the rest of the day (because the glare on the water, and the lure of lunch, make it more difficult for people to spot her then). But does she really? Use find\_dives to find start times for all her submergences, which we will use as a proxy for breath times. In this case, you will want to use a threshold that is as shallow as practicable. 
 
 ```{r, echo = TRUE, eval = FALSE}
 th <- # ??? set a very shallow threshold
 #find dives
 dt <- find_dives(nessie$P, mindepth = th)
+str(dt, max.level = 1)
 ```
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#load_nessie_nc"> Show/Hide Results </button>  
-<div id="load_nessie_nc class="collapse">
+<button class="btn btn-primary" data-toggle="collapse" data-target="#find_dives_nessie"> Show/Hide Results </button>  
+<div id="find_dives_nessie" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
 th <- 0.6
@@ -91,8 +106,8 @@ noon <- noon/nessie$P$sampling_rate
 RTR <- rotation_test(event_times = dt$start, exp_period = noon, full_period = c(0,length(nessie$P$data)/nessie$P$sampling_rate), n_rot = 10000, ts_fun = length)
 ```
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#load_nessie_nc"> Show/Hide Results </button>  
-<div id="load_nessie_nc class="collapse">
+<button class="btn btn-primary" data-toggle="collapse" data-target="#RTR"> Show/Hide Results </button>  
+<div id="RTR" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
 # make time variables
@@ -105,29 +120,31 @@ noon <- range(which(t < e & t > s))
 noon <- noon/nessie$P$sampling_rate
 #do test
 RTR <- rotation_test(event_times = dt$start, exp_period = noon, full_period = c(0,length(nessie$P$data)/nessie$P$sampling_rate), n_rot = 10000, ts_fun = length)
+RTR
 ```
 
 </div>
 
 <!-- In Matlab: -->
 <!--```
-nessie =load_nc( nessie.nc );
+nessie = load_nc('nessie.nc');
 
-%make time variable
-st =datenum(info.dephist_device_datetime_start) + ...[1:length(P.data)]./P.sampling_rate/3600/24 ;
-%find data times between 11:30 and 12:30
-s =datenum( 2017-01-13 11:30:00 );
-e =datenum( 2017-01-13 12:30:00 );
-[st,et] =bounds(find(t < e & t > s));
-%convert to seconds
+% make time variable
+st = datenum(info.dephist_device_datetime_start) + ...[1:length(P.data)]./P.sampling_rate/3600/24 ;
+% find data times between 11:30 and 12:30
+s = datenum( 2017-01-13 11:30:00 );
+e = datenum( 2017-01-13 12:30:00 );
+[st,et] = bounds(find(t < e & t > s));
+% convert to seconds
 st = st/P.sampling_rate;
 et = et/P.sampling_rate;
-%find divesdt =find_dives(P, th);
-%do test
-RTR =rotation_test(dt.start,[st,et], ...[0,length(P.data)/P.sampling_rate],...100000, length , [],[],[]);
+% find dives
+dt = find_dives(P, th);
+% do test
+RTR = rotation_test(dt.start,[st,et], ...[0,length(P.data)/P.sampling_rate],...100000, length , [],[],[]);
 ``` -->
 
-5.What can you conclude?
+5. What can you conclude?
 
 And with that, great work! Now some of the mystery is forever gone... but knowledge is power!
 

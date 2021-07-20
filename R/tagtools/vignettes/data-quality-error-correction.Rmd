@@ -25,7 +25,7 @@ This vignette deals with how to check data quality for accelerometers and magnet
 
 *Estimated time for this practical: 25 minutes* 
 
-These practicals assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+These vignettes assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
 
 Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
@@ -39,6 +39,7 @@ Our objective here is to estimate the orientation of an animal (its pitch, roll 
 For this practical we will use data from a tag attached to the back of a sperm whale. This dataset is built into the `tagtools` package, so you can access it using `system.file`.  
 
 ```{r, echo = TRUE, eval = TRUE}
+library(tagtools)
 sw_file_path <- system.file("extdata", "rawtestset3.nc", package = "tagtools", mustWork = TRUE)
 sw <- load_nc(sw_file_path)
 ```
@@ -55,11 +56,11 @@ sw$info
 
 ```{r, echo = FALSE, eval = TRUE}
 print("results for `str(sw, max.level = 1)`:")
-print("-----------------------------------")
+print("-------------------------------------")
 str(sw, max.level = 1)
-print("-----------------------------------")
+print("-------------------------------------")
 print("and results for `sw$info`:")
-print("-----------------------------------")
+print("-------------------------------------")
 sw$info
 ```
 
@@ -160,12 +161,15 @@ str(sw$A, max.level = 1)
 <div id="str_MfGXswA" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
+print("----------------")
 print("results for Mf$G")
 print("----------------")
 str(Mf$G, max.level = 1)
+print("----------------")
 print("results for Mf$X")
 print("----------------")
 str(Mf$X, max.level = 1)
+print("----------------")
 print("results for sw$A")
 print("----------------")
 str(sw$A, max.level = 1)

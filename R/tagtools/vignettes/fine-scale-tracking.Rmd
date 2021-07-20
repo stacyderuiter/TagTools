@@ -43,6 +43,7 @@ Then, check the contents of the data structures to answer the following question
 Plot the pressure and accelerometer data with `plott()` to get a sense for what the animal might be doing in this data segment. Note that the code example below assumes you have called the data set `d7`:
 
 ```{r, eval = FALSE, echo = TRUE}
+library(tagtools)
 d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
 d7 <- load_nc(d7_file_path)
 sampling_rate <- d7$P$sampling_rate
