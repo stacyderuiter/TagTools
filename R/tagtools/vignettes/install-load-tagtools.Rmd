@@ -113,6 +113,22 @@ Having fewer packages loaded is kinder to your computer's memory, so it is good 
 
 If the command `? load_nc` pulls up a help file for the function `load_nc` like it should, you're all set. 
 
+# Accessing other vignettes through R directly
+
+If you've run the `devtools` command, you can read these vignettes directly in your local RStudio without needing to click through the website! The syntax is very straightforward. To see the list of vignettes in just this package, simply type: 
+
+```{r, echo = TRUE, eval = FALSE}
+vignette(package = "tagtools")
+```
+
+For instance, in order to see this vignette, you can run:
+
+```{r, echo = TRUE, eval = FALSE}
+vignette("install-load-tagtools", package = "tagtools")
+```
+
+The `package = "tagtools"` argument at the end is optional. However, it is a good addition because it clarifies which package you are working in. So, if there happened to be, say, another `vectors-vs-structures` vignette in some other package, you could load the one that is specific to this package with `vignette("vectors-vs-structures")
+
 # Review
 
 What have you learned so far? Important setup steps that will help avoid confusion and delay moving forward.
@@ -120,6 +136,11 @@ What have you learned so far? Important setup steps that will help avoid confusi
 Congrats!
 
 *If you'd like to continue working through these vignettes, `load-tag-data` and `plots-and-cropping` are good options to help you get started with the tools you've just installed and loaded.*
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('load-tag-data', package = 'tagtools')
+vignette('plots-and-cropping', package = 'tagtools')
+```
 
 ***
 

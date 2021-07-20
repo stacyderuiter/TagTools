@@ -1,12 +1,12 @@
 ---
-title: "Detectors"
+title: "detectors draft"
 author: "David Sweeney"
 date: "`r Sys.Date()`"
 output: 
   html_document:
     code_folding: hide
 vignette: >
-  %\VignetteIndexEntry{Detectors}
+  %\VignetteIndexEntry{detectors-draft}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -250,6 +250,11 @@ rates_test <- function(data, sampling_rate, FUN, bktime,
 }
 ```
 
+<!--
+
+This vignette has started to be edited by Sam Fynewever for consistency with the others (e.g. folding in results of code using <div>). Hopefully, what is changed makes good sense. 
+
+-->
 
 Introduction
 ---

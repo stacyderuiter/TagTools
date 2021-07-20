@@ -267,7 +267,19 @@ What have you learned so far? More important steps that will hopefully, as you'r
 
 Great work!
 
-*If you'd like to continue working through these practicals, `plots-and-cropping` would be one good choice. In it, you'll get to start visualizing some data of the types you've been learning to load.* 
+*If you'd like to continue working through these practicals, `vectors-vs-structures` and `plots-and-cropping` are two good choices.* 
+
+*`vectors-vs-structures` is a quick overview of the way R stores data in structures, and how these can be extracted to individual vectors/scalars.* 
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('vectors-vs-structures', package = 'tagtools')
+```
+
+*In `plots-and-cropping`, you'll get to start visualizing some data of the types you've been learning to load.* 
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('plots-and-cropping', package = 'tagtools')
+```
 
 ***
 
