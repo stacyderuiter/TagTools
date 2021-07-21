@@ -21,7 +21,7 @@ require(tagtools)
 
 Welcome to the jerk-transients vignette! Thanks for getting some time to know our package. We hope it's, thus far, all you've dreamed it would be.
 
-In this practical, you will use jerk to identify prey capture attempts. 
+In this vignette, you will use jerk to identify prey capture attempts. 
 
 *Estimated time for this vignette: 20 minutes.*
 
@@ -59,7 +59,7 @@ This dataset contains a deep dive followed by a shallow dive. We want to infer t
 # Acceleration transients, jerk and dynamic acceleration
 We want to look for indications of foraging during the two dives. Sudden changes (transients) in acceleration are often associated with prey capture attempts. One way to emphasise rapid changes in acceleration is by differentiating it to produce the jerk. 
 
-This is effectively high-pass filtering acceleration with a constantly-sloping filter---the higher the frequency, the more it is emphasised. Because we don't know what kind of movement is involved in a prey capture attempt, we don't know which axis of acceleration will be most relevant. It is safer then to just compute the magnitude of the jerk in all three axes to get a single vector. That way, a peak in any or all axes will show up. `njerk` computes this from acceleration. Try running `njerk` on our acceleration data (where is it stored?) and writing it to `J`. Then, once you also grab the sampling rate, you can plot this jerk data. 
+This is effectively high-pass filtering acceleration with a constantly-sloping filter---the higher the frequency, the more it is emphasised. Because we don't know what kind of movement is involved in a prey capture attempt, we don't know which axis of acceleration will be most relevant. It is safer then to just compute the magnitude of the jerk in all three axes to get a single vector (also called "norm-jerk"). That way, a peak in any or all axes will show up. `njerk` computes this from acceleration. Try running `njerk` on our acceleration data (where is it stored?) and writing the result to `J`. Then, once you also grab the sampling rate, you can plot this jerk data. 
 
 ```{r, eval = FALSE, echo = TRUE}
 J <- njerk(bw$A)
@@ -123,7 +123,7 @@ plott(X = list(Depth = bw$P$data, `25 Hz Jerk` = J, `5Hz Jerk` = Jd),
 
 Check out some of the obvious peaks around minute 20 to minute 30 to have a look at the 'signal-to-noise' in the jerk transients. How clear are the jerk transients in the decimated signal compared to the original data rate? What does this tell you about the frequency content in the transients?
 
-<!-- Sam opines that this is technical and not super clear. But he also doesn't understand the content itself, so he'll leave it untouched for the moment. Please explain at some point. :) -->
+<!-- AGHH I need to understand this.  -->
 
 ## Detecting Jerk Peaks
 To find potential prey capture attempts, we need to run a detector on the norm-jerk signal. Although it is easy to see peaks by eye in the data, detectors require some information to do a good job: they need to know the threshold above which a peak is really a peak and the blanking time, i.e., the minimum time that must elapse after a detection before another detection can happen. 
@@ -145,7 +145,7 @@ pks <- detect_peaks(J, fs, bktime = 5)	# 5s blanking time, threshold is interact
 
 Follow the instructions in the console to change the threshold. You need to pick a threshold that excludes most of the jerk transients during the strong propulsion locomotion in the ascent but that still detects most of the jerk transients during the bottom part of the deep dive. (Balancing false detections and missed detections is often not easy in a detector and is a matter of finding a trade-off that works for your application.)
 
-This function returns a list of information about the detected peaks. For each detection, the start and end times are reported, in seconds, and the time and height of the peak. Finally, the selected threshold and blanking time are reported. You can plot the height and time of each detection along with the dive profile as follows:
+This function returns a list of information about the detected peaks. For each detection, the start and end times are reported (in seconds), along with the time at which the peak occurred and the height of the peak. Finally, the selected threshold and blanking time are reported. You can plot the height and time of each detection along with the dive profile as follows:
 
 ```{r, echo = TRUE, eval = FALSE}
 plott(X = list(Depth = bw$P))
@@ -166,9 +166,19 @@ points(pks$peak_time/fs/3600, bw$P$data[round(pks$peak_time)], pch = 8)
 
 </div>
 
-Bearing in mind that some of the jerk peaks might come from strong locomotory strokes, is there strong evidence for foraging in the deep dive? In the shallow dive?
+Bearing in mind that some of the jerk peaks might come from strong locomotory strokes, is there strong evidence for foraging in the deep dive? Is there strong evidence for foraging in the shallow dive?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_foraging_shallow_dive"> _Show/Hide Answers_ </button>  
+<div id="ans_foraging_shallow_dive" class="collapse">
+*Answer text...*
+</div>
 
 Now, if you have done `complementary-filtering` recently, here is one more question for you. Adding your inference from `complementary-filtering` about locomotion in the shallow dive, what can you conclude about the behaviour of the animal in the shallow dive? Is it resting, traveling or foraging? Write down your marvelous thoughts.
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_behav_shallow_dive"> _Show/Hide Answers_ </button>  
+<div id="ans_behav_shallow_dive" class="collapse">
+*Answer text...*
+</div>
 
 # Review
 

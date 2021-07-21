@@ -116,23 +116,25 @@ str(AMcheck, max.level = 1)
 You should be able to tell AMcheck is a list containing two vectors, `AMcheck$fstr` (field strength) and `AMcheck$incl` (inclination). Open the next code to see how we plott these. 
 
 ```{r, eval = FALSE, echo = TRUE}
-fs <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
+sampling_rate <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
 # plott fstr, and incl (converting from radians to degrees)
-plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_AMcheck"> Show/Hide Results </button>  
 <div id="plott_AMcheck" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-fs <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
+sampling_rate <- sw$A$sampling_rate # get the sampling rate of A and M for plotting
 # plott fstr, and incl (converting from radians to degrees)
-plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck$fstr, incl = AMcheck$incl*180/pi), fsx = sampling_rate)
 ```
 
 </div>
 
-The top plot shows the field strength of `A` and `M`. These should be close to 9.8 and 48, respectively, with little variation. If not, the acceleration or magnetometer data need re-calibration. Usually, the problem is with `M` and is due to stray magnetic fields in the tag. Fix this by doing a 'hard-iron correction', which the function `fix_offset_3d` can do. Again, recall that `M` is stored within `sw` as `sw$M`, and write the result as an object `Mf`. Then look at what `Mf` contains.
+The top plot shows the field strength of `A` and `M`. These should be close to 9.8 and 48, respectively, with little variation. If not, the acceleration or magnetometer data need re-calibration. Usually, the problem is with `M` and is due to stray magnetic fields in the tag. Fix this by doing a 'hard-iron correction', which the function `fix_offset_3d` can do. 
+
+Again, recall that `M` is stored within `sw` as `sw$M`. Write the result as an object `Mf`, then look at what `Mf` contains.
 
 ```{r, eval = FALSE, echo = TRUE}
 Mf <- fix_offset_3d(sw$M)
@@ -181,7 +183,7 @@ you'll notice that `Mf$X` and `sw$A` structures contain the same kind of data. H
 
 ```{r, eval = FALSE, echo = TRUE}
 AMcheck2 <- check_AM(sw$A, Mf$X)
-plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = sampling_rate)
 
 ```
 
@@ -190,7 +192,7 @@ plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = fs)
 
 ```{r, eval = TRUE, echo = FALSE}
 AMcheck2 <- check_AM(sw$A, Mf$X)
-plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck2$fstr, incl = AMcheck2$incl*180/pi), fsx = sampling_rate)
 
 ```
 
@@ -260,7 +262,7 @@ Check the field strength and inclination of `sw$A` and `Mt` once more. Try and d
 
 ```{r, eval = FALSE, echo = TRUE}
 AMcheck3 <- check_AM(sw$A, Mt)
-plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = sampling_rate)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_AMcheck3"> Show/Hide Results </button>  
@@ -268,7 +270,7 @@ plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = fs)
 
 ```{r, eval = TRUE, echo = FALSE}
 AMcheck3 <- check_AM(sw$A, Mt)
-plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = fs)
+plott(X = list(fstr = AMcheck3$fstr, incl = AMcheck3$incl*180/pi), fsx = sampling_rate)
 ```
 
 </div>
