@@ -1,2 +1,8 @@
 /doc/
 /Meta/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+
