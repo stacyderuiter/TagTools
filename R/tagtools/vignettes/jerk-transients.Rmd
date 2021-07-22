@@ -170,14 +170,14 @@ Bearing in mind that some of the jerk peaks might come from strong locomotory st
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_foraging_shallow_dive"> _Show/Hide Answers_ </button>  
 <div id="ans_foraging_shallow_dive" class="collapse">
-*Answer text...*
+*Yes, there is strong evidence for foraging in the deep dive, since with all the jerk peaks present there, there are likely some strong locomotory strokes in it. These strong locomotory strokes are, in turn, evidence of foraging. However, there is almost no evidence for foraging in the shallow dive, since there are no jerk peaks there.*
 </div>
 
 Now, if you have done `complementary-filtering` recently, here is one more question for you. Adding your inference from `complementary-filtering` about locomotion in the shallow dive, what can you conclude about the behaviour of the animal in the shallow dive? Is it resting, traveling or foraging? Write down your marvelous thoughts.
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_behav_shallow_dive"> _Show/Hide Answers_ </button>  
 <div id="ans_behav_shallow_dive" class="collapse">
-*Answer text...*
+*We know now that the whale is likely not foraging in the shallow dive. However, it is still moving quite a bit, so resting seems unlikely too. Thus we can classify this shallow dive as most likely a traveling dive.*
 </div>
 
 # Review

@@ -45,8 +45,12 @@ devtools::install_github('stacyderuiter/TagTools/R/tagtools',
                          build_vignettes = TRUE)
 ```
 
+If you are asked soomething like "These packages have more recent versions available", it is no harm to update them all, and to "install from sources the packages which need compilation". 
+
+With the package as of July 2021, the overall process should take ten to fifteen minutes, depending on the speed of your internet and machine, some eight minutes of which are spent building vignettes. 
+
 ## Install tagtools from zip archive
-If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials, or available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 
+If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials (in the folder created by unzipping wmmc-2019-workshop-materials.zip). These archive files are also available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 
 
 *Note: if you choose to install from archive files (.zip or .tgz), you will probably also have to manually install all the packages `tagtools` depends on. If you use the `devtools` method above, you will not.*
 
@@ -67,7 +71,7 @@ install.packages('YourPath/YourFilename') # you'll have to edit this appropriate
 install.packages('/Users/YourUsernameHere/Downloads/FileName.tgz')
 ```
 
-You can also use the "install packages" GUI in RStudio---go to the "Packages" tab, click "Install", choose "Package Archive File" from the "Install From" pulldown menu, and then navigate to the archive file. Then just follow the prompts.
+You can also use the "install packages" GUI in RStudio---go to the "Packages" tab, click "Install", choose "Package Archive File" from the "Install From" pulldown menu, and then navigate to the archive file. Then follow the prompts.
 
 You must also make sure you have installed all the packages that `tagtools` depends on:
 
@@ -99,7 +103,7 @@ library(tagtools)
 
 </div>
 
-You will often get this message: "The following object is masked from 'package:stats': smooth"---this means you have loaded it properly! 
+You will often get this message: "The following object is masked from 'package:stats': smooth"---this means you have loaded it properly; congratulations! 
 
 Another check is to make sure that function help files are accessible; for example,
 
@@ -107,9 +111,9 @@ Another check is to make sure that function help files are accessible; for examp
 ?load_nc
 ```
 
-Now or at any point in the future, you might get an error saying the function doesn't exist. When this happens, make sure you have tagtools loaded in your library. While you won't have to reinstall these packages with `install.packages()` unless you start working on a different machine, you will have to run `library(tagtools)` or `require(tagtools)` every time you restart RStudio. 
+Now or at any point in the future when doing a check like this, you might get an error saying the function doesn't exist. When this happens, make sure you have tagtools loaded in your library. While you won't have to reinstall the package with `install.packages()` unless you start working on a different machine, you will have to run `library(tagtools)` or `require(tagtools)` every time you restart RStudio. 
 
-Having fewer packages loaded is kinder to your computer's memory, so it is good that R doesn't automatically load everything. However, it does mean that every time you restart RStudio, you must reload the packages you need, such as `tagtools`, yourself. 
+Having fewer packages loaded is kinder to your computer's memory, so it is good that R doesn't automatically load everything. However, it does mean that every time you restart RStudio, you must reload the packages you need, such as `tagtools`, yourself. Thus at the beginning of each vignette after this one you'll be reminded to run `library(tagtools)`. 
 
 If the command `? load_nc` pulls up a help file for the function `load_nc` like it should, you're all set. 
 
@@ -121,13 +125,37 @@ If you've run the `devtools` command, you can read these vignettes directly in y
 vignette(package = "tagtools")
 ```
 
-For instance, in order to see this vignette, you can run:
+<button class="btn btn-primary" data-toggle="collapse" data-target="#vignettes_in_tagtools"> Show/Hide Results </button>  
+<div id="vignettes_in_tagtools" class="collapse"> 
+```{r, echo = FALSE, eval = TRUE}
+print("Vignettes in package ‘tagtools’:")
+print("")
+print("complementary-filtering         complementary-filtering (source, html)")
+print("data-quality-error-correction   data-quality-error-correction (source, html)")
+print("Detectors                       Detectors (source, html)")
+print("detectors-draft                 detectors-draft (source, html)")
+print("dive-stats                      dive-stats (source, html)")
+print("find-dives                      find-dives (source, html)")
+print("fine-scale-tracking             fine-scale-tracking (source, html)")
+print("install-load-tagtools           install-load-tagtools (source, html)")
+print("jerk-transients                 jerk-transients (source, html)")
+print("load-tag-data                   load-tag-data (source, html)")
+print("mahalanobis-distance            mahalanobis-distance (source, html)")
+print("more-filtering                  more-filtering (source, html)")
+print("plots-and-cropping              plots-and-cropping (source, html)")
+print("rotation-test                   rotation-test (source, html)")
+print("tag-to-whale-frame              tag-to-whale-frame (source, html)")
+print("vectors-vs-structures           vectors-vs-structures (source, html)")
+```
+</div>
+
+Then you can run any vignette with `vignette('package-index', package = 'tagtools')`. For instance, in order to see this vignette, you can run:
 
 ```{r, echo = TRUE, eval = FALSE}
 vignette("install-load-tagtools", package = "tagtools")
 ```
 
-The `package = "tagtools"` argument at the end is optional. However, it is a good addition because it clarifies which package you are working in. So, if there happened to be, say, another `vectors-vs-structures` vignette in some other package, you could load the one that is specific to this package with `vignette("vectors-vs-structures")
+The `package = "tagtools"` argument at the end is optional. However, it is a good addition because it clarifies which package you are working in. So, if there happened to be, say, another `vectors-vs-structures` vignette in some other package, you could load the one that is specific to this package with `vignette("vectors-vs-structures")`. 
 
 # Review
 

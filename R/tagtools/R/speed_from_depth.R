@@ -3,7 +3,7 @@
 #' This function is used to estimate the forward speed of a diving animal by first computing the depth-rate (i.e., the first differential of the depth) and then correcting for the pitch angle.
 #'
 #' @param p The depth vector (a regularly sampled time series) in meters. sampled at sampling_rate Hz. This can either be an animaltags sensor list, or a vector.
-#' @param A (optional) A matrix or animaltags sensor data list containing acceleration data. If A is not provided then only vertical velocity is returend (same output as depth_rate()). Acceleration can be in any consistent unit, e.g., g or m/s^2. Acceleration data must have the same number of rows as p.
+#' @param A (optional) A matrix or animaltags sensor data list containing acceleration data. If A is not provided then only vertical velocity is returned (same output as depth_rate()). Acceleration can be in any consistent unit, e.g., g or m/s^2. Acceleration data must have the same number of rows as p.
 #' @param fs_p (optional) The sampling rate of p in Hz (samples per second). Required only if p is vector rather than sensor data list.
 #' @param fs_A (optional) The sampling rate of A in Hz (samples per second). Required only if A is vector rather than sensor data list.
 #' @param fc (optional) Specifies the cut-off frequency of a low-pass filter to apply to p after computing depth-rate and to A before computing pitch. The filter cut-off frequency is in Hz. The filter length is 4*sampling_rate/fc. Filtering adds no group delay. If fc is empty or not given, the default value of 0.2 Hz (i.e., a 5 second time constant) is used.
