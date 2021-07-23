@@ -43,7 +43,7 @@ This especially concise two-line method should always work with the installation
 
 ```{r, echo = TRUE, eval = FALSE}
 getwd() # prints your current working directory. Often this will not be a tidy folder, but contain other things. So, to avoid that... 
-setwd("/Path/To/Working/Directory/In/Quotes") # on Mac or Linux, paths look like this, with forward slashes between folders. For instance:
+setwd("/Path/To/Tidy/Working/Directory/In/Quotes") # on Mac or Linux, paths look like this, with forward slashes between folders. For instance:
 setwd("/Library/Frameworks/R.framework/Versions/4.1/Resources/library/tagtools/extdata/") # depending on your system, this may set your working directory to the folder containing the built-in datasets
 setwd("C:\Users\Sam Fynewever\Program Files") # on Windows, paths look like this, with a letter and colon at the beginning, then backslashes between folders
 ```

@@ -30,6 +30,12 @@ These practicals all assume that you have R/Rstudio installed on your machine, s
 Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just single, simple underscores, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 # Load and Explore Data
+
+```{r, echo = FALSE, eval = TRUE}
+d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
+d7 <- load_nc(d7_file_path)
+```
+
 Load the data set `testset7.nc`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 Then, check the contents of the data structures to answer the following questions. (See the code below if and only if you need a hint.)
@@ -84,8 +90,6 @@ plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = sampling_rate, interac
 <div id="plott_d7" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-d7_file_path <- system.file("extdata", "testset7.nc", package = "tagtools", mustWork = TRUE)
-d7 <- load_nc(d7_file_path)
 sampling_rate <- d7$P$sampling_rate
 plott(X = list(Depth = d7$P, Acceleration = d7$Aa), fsx = sampling_rate, interactive = FALSE)
 ```
