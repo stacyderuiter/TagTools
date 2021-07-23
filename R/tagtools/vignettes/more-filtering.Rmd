@@ -32,7 +32,7 @@ Additionally, be careful when copy-pasting special characters such as \_undersco
 # Setup
 If you've done `complementary-filtering` *or* `jerk-transients` **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
 
-For this practical we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
+For these vignettes we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 Use `load_nc()` to read it in---write `testset1.nc` to the object `bw`, for "beaked whale". Then use `plott()` to get a look at it.
 
@@ -103,7 +103,7 @@ plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = sampling_rat
 
 </div>
 
-How do the magnetometer signals compare to the same intervals in the accelerometer (`Ah1` and `Ah2`)? Either hearken back to complementary-filtering or open the following:
+How do the magnetometer signals compare to the same intervals in the accelerometer (`Ah1` and `Ah2`)? Either hearken back to `complementary-filtering` or open the following:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Spoilers from complementary-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
@@ -122,7 +122,17 @@ plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rat
 
 Do you see a similar increase in magnitude in the magnetometer data in interval 2 as you did with acceleration? 
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_similar_mag_increase_mag"> _Show/Hide Answers_ </button>  
+<div id="ans_similar_mag_increase_mag" class="collapse">
+*Yes! Whereas in the first interval the magnitude of the peaks is usually between* $-1$ *and* $+1.5$ $\mu T$ *, in the second interval the magnitude of the peaks is between* $-3$ *and* $+4$ $\mu T$*. *
+</div>
+
 Remember that the magnetometer is sensitive to postural dynamics but not specific acceleration. Can you conclude whether the difference between the swimming styles is a result of larger amplitude swimming strokes (i.e., a larger orientation dynamic due to body undulations) or a larger specific acceleration, or a bit of both?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_why_swim_diff"> _Show/Hide Answers_ </button>  
+<div id="ans_why_swim_diff" class="collapse">
+*Please... what is this question asking... ?*
+</div>
 
 # Jerk vs. Dynamic Acceleration
 As you may know, any high-pass filter will emphasize rapid changes in acceleration. 
@@ -152,7 +162,10 @@ plott(X = list(`Dyn. Acc` = DA, Jerk = J), fsx = sampling_rate)
 
 Check out the obvious peaks around minute 20 to minute 30 to see how clear they look in `DA` and `J`. Which signal gives the lowest noise between the peaks, i.e., the best signal-to-noise ratio? What does that suggest about the frequency content in the acceleration transients? Give some thought to your answers--you're so close.
 
-<!-- Again, Sam is no expert, but is at a loss for how to interpret these last few pieces of data. -->
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_freq_content_accel_transients"> _Show/Hide Answers_ </button>  
+<div id="ans_freq_content_accel_transients" class="collapse">
+*Jerk gives a better signal-to-noise ratio than dynamic acceleration. This suggests that the acceleration transients happen so quickly, so it is important to have high-resolution data.* **Is this right?**
+</div>
 
 # Review
 

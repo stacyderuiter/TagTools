@@ -202,20 +202,20 @@ Ah1 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl1)
 Ah2 <- crop_to(Ahigh, sampling_rate = sampling_rate, tcues = intvl2)
 ```
 
-Now plott these with the same y-scale so you can easily compare them. 
-
-<!-- Sam speaks again: this doesn't necessarily put them on the same y-scale. Not sure how to fix. -->
+Now plott these together---be careful when comparing, since plott puts them on different y-scales automatically to fit the data to the window! 
 
 ```{r, echo = TRUE, eval = FALSE}
 plot.window(xlim = c(0, 2), ylim = c(-4, 4))
-plott(X = list(Ah1 = Ah1, Ah2 = Ah2), fsx = sampling_rate, xlim = c(0, 2))
+plott(X = list(Ah1 = Ah1, Ah2 = Ah2), fsx = sampling_rate, xl = c(0, 1))
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_Ah1Ah2"> Show/Hide Results </button>  
 <div id="plott_Ah1Ah2" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
-plott(X = list(Ah1,Ah2), fsx = sampling_rate)
+yl <- c(0, 4)
+plott(X = list(Ah1 = Ah1, Ah2 = Ah2), fsx = sampling_rate, xl = c(0, 1), yl = yl)
+
 ```
 
 </div>

@@ -6,3 +6,5 @@ vignettes/*.html
 vignettes/*.pdf
 
 
+/sbf5calvin/*
+sbf5calvin/*

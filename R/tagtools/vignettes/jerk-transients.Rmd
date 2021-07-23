@@ -78,7 +78,14 @@ plott(X = list(Depth = bw$P$data, Jerk = J), fsx = fs)
 
 </div>
 
-Where in the dive profile do the largest jerk transients (peaks) appear? Check out some of the biggest peaks to see how short they are.
+Where in the dive profile do the largest jerk transients (peaks) appear?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_foraging_shallow_dive"> _Show/Hide Answers_ </button>  
+<div id="ans_foraging_shallow_dive" class="collapse">
+*The largest jerk transients appear mostly at the bottom of the deeper dive.*
+</div>
+
+Check out some of the biggest peaks to see how short they are.
 
 ## Effects of Sampling Rate on jerk
 The size and clarity of the jerk peaks depends on the sampling rate. We are using 25 Hz data. To see what you would get with 5 Hz data, try decimating the acceleration before computing the jerk:
@@ -123,7 +130,10 @@ plott(X = list(Depth = bw$P$data, `25 Hz Jerk` = J, `5Hz Jerk` = Jd),
 
 Check out some of the obvious peaks around minute 20 to minute 30 to have a look at the 'signal-to-noise' in the jerk transients. How clear are the jerk transients in the decimated signal compared to the original data rate? What does this tell you about the frequency content in the transients?
 
-<!-- AGHH I need to understand this.  -->
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_freq_content_in_transients"> _Show/Hide Answers_ </button>  
+<div id="ans_foraging_shallow_dive" class="collapse">
+*The jerk transients are definitely less clear in the decimated signal compared to the original data rate. Consider the peak near 0.75 hours in the original (*25 Hz*)signal: there is no corresponding peak near 0.75 hours in the decimated signal. Similarly, consider the two peaks near 1.5 hours in the original. Though the jerk is higher around this area in the decimated signal, the peaks are quite unclear. This tells us that it is important to have high-resolution data---since the acceleration is changing so quickly, it is possible to stop observing for just 0.2 seconds (as is true of* 5 Hz *data), and miss an important event.*
+</div>
 
 ## Detecting Jerk Peaks
 To find potential prey capture attempts, we need to run a detector on the norm-jerk signal. Although it is easy to see peaks by eye in the data, detectors require some information to do a good job: they need to know the threshold above which a peak is really a peak and the blanking time, i.e., the minimum time that must elapse after a detection before another detection can happen. 
