@@ -124,14 +124,14 @@ Do you see a similar increase in magnitude in the magnetometer data in interval 
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_similar_mag_increase_mag"> _Show/Hide Answers_ </button>  
 <div id="ans_similar_mag_increase_mag" class="collapse">
-*Yes! Whereas in the first interval the magnitude of the peaks is usually between* $-1$ *and* $+1.5$ $\mu T$ *, in the second interval the magnitude of the peaks is between* $-3$ *and* $+4$ $\mu T$*. *
+*Actually, no. In the case of acceleration, in first interval the magnitude of the peaks is usually between* $-1$ *and* $+1.5$ $m/s^2$ *, whereas in the second interval the magnitude of the peaks is between* $-3$ and $+4$ $m/s^2$*. By contrast, in the case of the magnetometer data, the magnitude of the peaks is between *$-4$ *and* $+4$ $\mu T$*in both interval 1 and interval 2.*
 </div>
 
 Remember that the magnetometer is sensitive to postural dynamics but not specific acceleration. Can you conclude whether the difference between the swimming styles is a result of larger amplitude swimming strokes (i.e., a larger orientation dynamic due to body undulations) or a larger specific acceleration, or a bit of both?
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_why_swim_diff"> _Show/Hide Answers_ </button>  
 <div id="ans_why_swim_diff" class="collapse">
-*Please... what is this question asking... ?*
+*The magnetometer is not reporting a difference, but the accelerometer is. So the difference between swimming styles must be due to a larger specific acceleration, not postural dynamics.*
 </div>
 
 # Jerk vs. Dynamic Acceleration

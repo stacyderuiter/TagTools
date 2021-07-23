@@ -81,12 +81,20 @@ You should see that lists `A`, `M`, `P`, `S`, `T` and `info` are contained withi
 
 Our goal with these data is to calculate the mean duration of dives deeper than 5 m. If you can think of a way to do this already, please go ahead and try! You can then compare your answer to the step-by-step procedure below.
 
-As with all raw depth data, there are some problems with this dive profile. See if you can find evidence for each of these in the plot: 
+As with all raw depth data, there are some problems with this dive profile. Try and plot the depth profile and the temperature. Then, see if you can find evidence for each of these in the plot: 
 
 1. Incorrect calibration of the sensor 
 2. Occasional outliers 
 3. Coarse depth resolution 
 4. Temperature sensitivity
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_prob_with_prof"> _Show/Hide Answers_ </button>  
+<div id="ans_prob_with_prof" class="collapse">
+*1. Pay attention to the depths reported... While it looks like a dive profile, mostly, what looks like the "surface" is actually around some *$-10$ m *(that is, ten meters high in the air)! We know that humpback whales do not, in fact, go ten meters in the sky routinely. This suggests the sensor has not been well-calibrated.*
+*2. Occasionally, there are some peaks that go higher yet than these ten meters high in the sky momentarily (more like 15 meters). These are outliers.*
+*3.* **Help. The resolution looks fine...?**
+*4. The temperature gradually rises as the recording nears the end, then spikes down and up. This is accompanied by a gradually decreasing depth from ten meters in the sky to the surface. Together, the two trends strongly suggest that the depth data has been affected by the changing temperature as the tag sits near the surface. *
+</div>
 
 ## Hints & Tips
 1. Look in `info` to find what species the data come from. Are the depth values reasonable for this species?
@@ -154,7 +162,7 @@ str(Pc, max.level = 1)
 The `$history` field keeps track of the operations that you perform on a data structure. This helps with traceability if you make the processed data available in an archive. The `$crop` and `$start_time` fields show how the original data was changed: the start_time is with respect to the field ‘dephist_device_datetime_start’ in the `$info` structure which says when the tag recording started. Use `plott` to plot Pc to make sure you cropped it correctly.
 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(Pc), r = TRUE)
+plott(X = list(DepthCropped=Pc), r = TRUE)
 
 ```
 
@@ -163,7 +171,7 @@ Note that the results from here on out will look a little different depending on
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_plott"> Show/Hide Results </button>  
 <div id="Pc_plott" class="collapse"> 
 ```{r, echo = TRUE, eval = FALSE}
-plott(X = list(Pc), r = TRUE)
+plott(X = list(DepthCropped=Pc), r = TRUE)
 ```
 </div>
 
@@ -244,6 +252,15 @@ plott(X=list(Pc=Pc, Pcm=Pcm, Pcmf=Pcmf$p), r=c(TRUE,TRUE,TRUE))
 
 Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
 
+
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_probs_addressed_or_naw"> _Show/Hide Answers_ </button>  
+<div id="ans_probs_addressed_or_naw" class="collapse">
+*1. Incorrect calibration of the sensor and temperature sensitivity have both been addressed by now, since the whale is actually resting and breathing at the surface, rather than ten mebers in the air. Additionally, some of the occasional outliers have been removed by the median filter.* 
+
+*However, none of this has increased the resolution of the depth data. In order to resolve this last issue, while you could interpolate linearly, this will be just an approximation of actual high-resolution data. Ultimately, new data would have to be taken at higher resolution to truly address this.* 
+</div>
+
 ## Finding dives & the mean dive duration
 
 To find the mean dive duration for dives over 5 m in depth, you could measure each dive by hand on the `depth` plot (`ginput` is a useful function in Matlab and Octave for measuring data on a plot – there isn’t a great equivalent in R, where interactive plots are not really commonly used). But there is a toolbox function for this called `find_dives`. See the help on this function to find out what it does and what options it has. 
@@ -276,6 +293,7 @@ for(n in 1:nrow(d)) {
   }
 mean_dive_duration <- total_dive_duration/nrow(d)
 mean_dive_duration
+# since this is using data from find_dives, the mean duration is in seconds
 # and mean depth
 total_dive_depth <- matrix(0)
 for(n in 1:nrow(d)) {
@@ -310,7 +328,7 @@ Note: if you cropped the time such that the units of the x-axis are not in days,
 
 Great work! You've learned how to use `find_dives`. 
 
-*If you'd like to continue working through these practicals, `dive-stats` might be a good option if you're especially interested in analyzing individual dives. Otherwise, consider `fine-scale-tracking` or `Detectors`.* 
+*If you'd like to continue working through these practicals, `dive-stats` might be a good option if you're especially interested in analyzing individual dives. Otherwise, consider `fine-scale-tracking` or `mahalanobis-distance`.* 
 
 ***
 
