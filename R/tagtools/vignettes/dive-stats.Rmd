@@ -50,12 +50,14 @@ ZC <- load_nc(ZC_file_path)
 plott(X=list(Depth=ZC$P), r = TRUE)
 ```
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_zc"> Show/Hide Results </button>  
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plott_zc"> Show/Hide Results/*Answers* </button>  
 <div id="plott_zc" class="collapse"> 
 
 ```{r, echo = FALSE, eval = TRUE}
 plott(X=list(Depth=ZC$P), r = TRUE)
 ```
+
+*There are some very deep dives in this profile! This is perhaps to be expected for Cuvier's beaked whales, with their reputation for mysteriously extreme excursions.*
 
 </div>
 
@@ -84,7 +86,12 @@ str(ZPCr, max.level = 1)
 ZPCr = crop_to(ZC$P, sampling_rate = ZC$P$sampling_rate, tcues = c(9424, 64027), T = NULL)
 ```
 
-3. What minimum depth threshold do you think you would use to detect dives by this animal? Consider how you would justify your choice.
+3. What minimum depth threshold do you think you would use to detect dives this animal's dives? Consider how you would justify your choice.
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_depth_thresh"> *Show/Hide Answers* </button>  
+<div id="ans_depth_thresh" class="collapse"> 
+*No less than fifty meters seems like a reasonable choice to detect this animal's dives. After all, most of the dives this animal performs are more than 100 meters in depth.*
+</div>
 
 4. Use `find_dives` to detect all dives deeper than your chosen minimum depth `mindepth`.
 
@@ -115,15 +122,30 @@ str(ds)
 </div>
 
 6. Have a look at the dive stats and perhaps make a plot of some or all
-of them. Do you notice anything interesting?
+of them. Do you notice anything interesting? Code for a basic example plot (plotting the max depth of each against the to_rate of each dive) is shown below.
+
+```{r, echo = TRUE, eval = FALSE}
+plot(x = ds$max, y = ds$from_rate)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ds_basic_plot"> Show/Hide Results/*Answers* </button>  
+<div id="ds_basic_plot" class="collapse"> 
+
+```{r, echo = FALSE, eval = TRUE}
+plot(x = ds$max, y = ds$to_rate)
+```
+
+*There appears to be little, if any, correlation between the to-rate and the maximum depth. ¯\\_(ツ)_/¯ *
+
+</div>
 
 ## Optional: choose an extra variable
 
 7. Choose an auxiliary variable (could be anything of interest - pitch, roll, heading, MSA, ODBA, njerk...). 
 
-Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable. One example auxiliary variable - pitch - is given below.
+Compute the auxiliary variable, and then recompute the dive stats including the auxiliary variable. 
 
-<!-- Example auxiliary variable: pitch. More content to come next week. -->
+*One example auxiliary variable---pitch---is given below.*
 
 ### Compute pitch
 
@@ -206,7 +228,7 @@ str(dsAux, max.level = 1)
 
 You've learned a couple of ways to use `dive-stats`. Well done!
 
-*If you'd like to continue working through these practicals, consider `Detectors` or `fine-scale-tracking`.*
+*If you'd like to continue working through these practicals, consider `rotation-test` or `fine-scale-tracking`.*
 
 ***
 

@@ -29,6 +29,16 @@ These practicals all assume that you have R/Rstudio, some basic experience worki
 
 Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
+# What is Mahalanobis distance?
+
+Put concisely, Mahalanobis distance is a way of comparing how different some data is to what we would expect it to be like. By plotting more than one variable and seeing what the distribution is like graphically, we can determine more accurately how out-of-the-ordinary something is by computing the distance from that point to the centroid of the points. The picture below is taken from Schwarz et al. 2012, J. Neuroscience Methods 206(2): 120-131 and appears in the "Statistics for "Tag Data" lecture on the animaltags website. 
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics('mahalanobis-dist-illus.png')
+```
+
+See [this blog post](https://blogs.sas.com/content/iml/2012/02/15/what-is-mahalanobis-distance.html) for another explanation of Mahalanobis distance. You can also consult slides on this topic in the "Statistics for Tag Data" lecture on the animaltags website, http://animaltags.org/ or https://animaltags.netlify.app .
+
 # Load & inspect data
 
 Consider again the dataset zc11_267a. It is built into the `tagtools` package, so you can access it using `system.file`.
@@ -85,6 +95,10 @@ plott(X=list(MahalanobisDist = MD$dist), fsx = zc$A$sampling_rate)
 5. If you wanted to set a threshold for detecting a "change", how would you do it?
 
 # Review
+
+You've learned to use `m_dist` to calculate Mahalanobis distance with some real-world data. Well done!
+
+*If you'd like to continue working through these vignettes, consider `Detectors`, `rotation-test`, or `fine-scale-tracking`.* 
 
 *** 
 
