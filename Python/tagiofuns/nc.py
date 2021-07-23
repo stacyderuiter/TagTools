@@ -153,7 +153,6 @@ def add_nc(fname=None, X=None):
     
     import os
     import netCDF4 as nc
-    from .remove_nc import remove_nc
     import numpy as np
     from datetime import datetime
 
@@ -285,8 +284,7 @@ def save_nc(fname=None, X=None, verbose=0, *varargin):
     
     """
     import os
-    from .add_nc import add_nc
-    
+        
     if not fname or not X:
         print(help(add_nc))
         return
@@ -347,10 +345,7 @@ def remove_nc(fname=None, vname=None):
     """
     import netCDF4 as nc
     import os
-    from .load_nc import load_nc
-    from .add_nc import add_nc
-    from .save_nc import save_nc
-    
+        
     if not fname or not vname:
         print(help(remove_nc))
         
