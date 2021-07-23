@@ -31,7 +31,7 @@ Additionally, be careful when copy-pasting special characters such as \_undersco
 
 # Finding dives and summarising them
 
-Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, Ziphius cavirostris. Load the data from file zc11_267a.nc. This dataset is built into the `tagtools` package, so you can access it using `system.file`.
+Consider a dataset from a DTAG attached to a Cuvier’s beaked whale, *Ziphius cavirostris*. Load the data from file zc11_267a.nc. This dataset is built into the `tagtools` package, so you can access it using `system.file`.
 
 ```{r, echo = TRUE, eval = FALSE}
 library(tagtools)
@@ -228,7 +228,7 @@ str(dsAux, max.level = 1)
 
 You've learned a couple of ways to use `dive-stats`. Well done!
 
-*If you'd like to continue working through these practicals, consider `rotation-test` or `fine-scale-tracking`.*
+*If you'd like to continue working through these practicals, consider `rotation-test` or `fine-scale-tracking` .*
 
 ***
 

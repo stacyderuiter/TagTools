@@ -91,6 +91,11 @@ str(dt, max.level = 1)
 
 3. Do you think you could just use a regression model for surfacing rate to answer this question? Why or why not?
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_noregr_nessie"> *Show/Hide Answers* </button>  
+<div id="ans_noregr_nessie" class="collapse">
+*No, because the data is autocorrelated? Uh,... because it's just more complicated?* **help pls**
+</div>
+
 4. Use a rotation test to test whether the number of surfacings between 11:30 and 12:30 is actually higher than you'd expect.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -145,6 +150,11 @@ RTR = rotation_test(dt.start,[st,et], ...[0,length(P.data)/P.sampling_rate],...1
 ``` -->
 
 5. What can you conclude?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_byebye_nessie"> *Show/Hide Answers* </button>  
+<div id="ans_byebye_nessie" class="collapse">
+*Since the p-value is so high, it appears that Nessie does not, contrary to popular belief, actually surface (significantly) more in the hour between 11:30am and 12:30pm.*
+</div>
 
 And with that, great work! Now some of the mystery is forever gone... but knowledge is power!
 
