@@ -193,7 +193,7 @@ A dead-reckoned track is a series of distances north (or south if negative) and 
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_spatial_rez"> _Show/Hide Answers_ </button>  
 <div id="ans_spatial_rez" class="collapse">
-*The spatial resolution looks much, much better!*
+*At first glance, the shape is quite similar, so this might not concern us yet. Also, the spatial resolution looks much, much better! So, making this track seems like a good idea.*
 </div>
 
 ## Adding GPS positions
@@ -233,7 +233,7 @@ The dead-reckoned track is always computed with respect to the water, not the gr
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_SOUTHCURRENT"> _Show/Hide Answers_ </button>  
 <div id="ans_SOUTHCURRENT" class="collapse">
-*The current would need to be moving quite a bit south, and also some distance west, in order to compensate.*
+*The current would need to be moving quite a bit south, and also some distance west, in order to compensate for the large errors we are seeing.*
 </div>
 
 There are a number of ways to combine the GPS positions and the dead-reckoned track into a single track which has both the absolute accuracy of GPS and the high temporal resolution of dead-reckoning. A simple method is to force the dead-reckoned track to meet the GPS positions at each surfacing by adding a constant 'current' to each track point in the preceding dive. This is done by `fit_tracks`:
@@ -356,7 +356,7 @@ Examine the plot to see how the green fitted track interpolates the red GPS posi
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_stillNotWell"> _Show/Hide Answers_ </button>  
 <div id="ans_stillNotWell" class="collapse">
-*They don't capture the movement of the animal very well. So much happens between the positions that we're able to collect at the surface.*
+*They don't capture the movement of the animal very well. So much happens between the positions that we're able to collect at the surface, so we are missing out if surface positions is all we collect/show.*
 </div>
 
 # Tracks Colored by a Variable
@@ -387,9 +387,15 @@ What about an interactive version?
 col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth', interactive = TRUE)
 ```
 
-Zoom in to see what the scale is of the track tortuosity: Is there tortuousity within individual dives, or is the tortuousity occuring across dives?
+Zoom in to see what the scale is of the track [tortuosity](https://en.wikipedia.org/wiki/Tortuosity): Is there tortuosity within individual dives, or is the tortuosity occurring across dives?
 
-
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_tortuous_errywher"> _Show/Hide Answers_ </button>  
+<div id="ans_tortuous_errywher" class="collapse">
+*While most of the tortuosity occurs across dives, there is some tortuosity within dives as well. The following picture comes from the next chunk of code.*
+```{r, echo=FALSE, eval = TRUE}
+knitr::include_graphics('tortuosity-within-dive.png')
+```
+</div>
 
 If you are done and want a challenge, try colouring the track by the absolute roll angle instead of the depth. You could use col_line3 to plot the 3-d positions (i.e.,  `FT[,2]`, `FT[,1]`, and `d7\$P\$data`), and then colour the plot by absolute roll angle remembering to convert from radians to degrees.
 
@@ -414,7 +420,7 @@ col_line3(x = FT$easting, y = FT$northing,
 
 # Review
 
-What have you learned? What you can get out of---and what problems can arise from---dead-reckoning.
+What have you learned? What you can get out of---despite what problems can arise from---dead-reckoning.
 
 And that's it! Fantastic work with this vignette.
 
