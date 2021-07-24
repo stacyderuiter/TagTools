@@ -12,7 +12,10 @@ def get_species(initial=None):
     import os
     
     s = {}
-    S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'species.csv'))
+    try:
+        S = pd.read_csv('./user/species.csv')
+    except:
+        S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'species.csv'))
     if not initial:
         for k, init in enumerate(S.Initial):
             print(init, S.Common_name[k])
