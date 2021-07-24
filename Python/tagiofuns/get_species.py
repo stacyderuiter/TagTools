@@ -1,6 +1,6 @@
 def get_species(initial=None):
     """
-    s = get_researcher(initial)
+    s = get_species(initial)
     
     initial is a string specifying species initials
     
