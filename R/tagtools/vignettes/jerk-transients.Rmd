@@ -124,7 +124,7 @@ plott(X = list(Depth = bw$P$data, `25 Hz Jerk` = J, `5Hz Jerk` = Jd),
 ```{r, echo = FALSE, eval = TRUE}
 Jd <- njerk(Ad)
 plott(X = list(Depth = bw$P$data, `25 Hz Jerk` = J, `5Hz Jerk` = Jd),
-      fsx = c(fs, fs, fs/5))
+      fsx = c(fs, fs, fs/5), r=c(TRUE, FALSE, FALSE))
 ```
 </div>
 
@@ -133,6 +133,8 @@ Check out some of the obvious peaks around minute 20 to minute 30 to have a look
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_freq_content_in_transients"> _Show/Hide Answers_ </button>  
 <div id="ans_foraging_shallow_dive" class="collapse">
 *The jerk transients are definitely less clear in the decimated signal compared to the original data rate. Consider the peak near 0.75 hours in the original (*25 Hz*)signal: there is no corresponding peak near 0.75 hours in the decimated signal. Similarly, consider the two peaks near 1.5 hours in the original. Though the jerk is higher around this area in the decimated signal, the peaks are quite unclear. This tells us that it is important to have high-resolution data---since the acceleration is changing so quickly, it is possible to stop observing for just 0.2 seconds (as is true of* 5 Hz *data), and miss an important event.*
+
+*Put concisely, the jerk signal has a lot of high frequency content.* 
 </div>
 
 ## Detecting Jerk Peaks
@@ -148,12 +150,12 @@ pks <- detect_peaks(J, fs, bktime = 5)	# 5s blanking time, threshold is interact
 <div id="detect_peaks" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
-pks <- detect_peaks(J, fs, bktime = 5)	# 5s blanking time, threshold is interactive
+pks <- detect_peaks(J, fs, bktime = 5, thresh = 100)	# 5s blanking time, threshold is interactive
 ```
 
 </div>
 
-Follow the instructions in the console to change the threshold. You need to pick a threshold that excludes most of the jerk transients during the strong propulsion locomotion in the ascent but that still detects most of the jerk transients during the bottom part of the deep dive. (Balancing false detections and missed detections is often not easy in a detector and is a matter of finding a trade-off that works for your application.)
+Follow the instructions in the console to change the threshold. You need to pick a threshold that excludes most of the jerk transients during the strong propulsion locomotion in the ascent but that still detects most of the jerk transients during the bottom part of the deep dive. (Balancing false detections and missed detections is often not easy in a detector and is a matter of finding a trade-off that works for your application.) In the figure given, we've set the threshold to 100. 
 
 This function returns a list of information about the detected peaks. For each detection, the start and end times are reported (in seconds), along with the time at which the peak occurred and the height of the peak. Finally, the selected threshold and blanking time are reported. You can plot the height and time of each detection along with the dive profile as follows:
 
@@ -183,11 +185,11 @@ Bearing in mind that some of the jerk peaks might come from strong locomotory st
 *Yes, there is strong evidence for foraging in the deep dive, since with all the jerk peaks present there, there are likely some strong locomotory strokes in it. These strong locomotory strokes are, in turn, evidence of foraging. However, there is almost no evidence for foraging in the shallow dive, since there are no jerk peaks there.*
 </div>
 
-Now, if you have done `complementary-filtering` recently, here is one more question for you. Adding your inference from `complementary-filtering` about locomotion in the shallow dive, what can you conclude about the behaviour of the animal in the shallow dive? Is it resting, traveling or foraging? Write down your marvelous thoughts.
+Now, if you have done `complementary-filtering` recently, here is one more question for you. Adding your inference from `complementary-filtering` about locomotion in the shallow dive, what can you conclude about the general behaviour of the animal in the shallow dive? Namely, is it resting, traveling or foraging? Write down your marvelous thoughts.
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_behav_shallow_dive"> _Show/Hide Answers_ </button>  
 <div id="ans_behav_shallow_dive" class="collapse">
-*We know now that the whale is likely not foraging in the shallow dive. However, it is still moving quite a bit, so resting seems unlikely too. Thus we can classify this shallow dive as most likely a traveling dive.*
+*We know now that the whale is likely not foraging in the shallow dive, since the sudden movements (jerk peaks) are happening only in the earlier dive. Additionally, though the animal is not accelerating quickly (striking/flinching), it is still moving (locomotion/propulsion). So it seems more likely to be traveling than resting. *
 </div>
 
 # Review

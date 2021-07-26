@@ -102,19 +102,18 @@ Are the estimated stroke rates similar?
 *Yes, they should be. The acceleration-based estimate is .3821574, and the magnetometer-based estimate is .3807932.* 
 </div>
 
-The magnetometer is not sensitive to specific acceleration, so why do stroking motions show up in `Mseg`? Refer to your plots of `Mseg` and `Dseg` to try and figure out which axis the stroking motions show up in. 
+The magnetometer is not sensitive to specific acceleration, so why do stroking motions show up in `Mseg`? 
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_axis_of_stroking"> _Show/Hide Answer_ </button>
 <div id="ans_axis_of_stroking" class="collapse">
-*The black line is altitude, because it, along with depth, trends gradually upwards over the course of the seven minutes. So most of the movement is in this vertical axis.*
+
+*The animal is changing its position, so the magnetometer reading will change.*
+
 </div>
 
-Any idea what kind of movement it might represent?
+Refer to your plots of `Mseg` and `Dseg` to try and figure out which axis the stroking motions show up in. 
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_kind_of_movement"> _Show/Hide Answer_ </button>
-<div id="ans_kind_of_movement" class="collapse">
-*Our whale moving towards the surface?*
-</div>
+<!-- *Probably Z? Maybe X? Whichever one is moving up and down. Could be X. Need to figure out color scheme in R.* --> 
 
 A good starting choice for the filter cut-off frequency is 70% of the stroking rate (pick one of the estimates, or average the two). Call this value `fc`. Run a complementary filter on `A` to separate the slow and fast time-scales. Recall that `A` is stored under `bw` as `bw$A`:
 
@@ -231,8 +230,8 @@ plot(x = (1:length(D2)), y = (-D2), xlab = "samples", ylab = "Depth") # so we'll
 ```{r, echo = FALSE, eval = TRUE}
 D1 <- crop_to(bw$P$data, sampling_rate = sampling_rate, tcues = intvl1)
 D2 <- crop_to(bw$P$data, sampling_rate = sampling_rate, tcues = intvl2)
-plot(x = (1:length(D1)), y = (-D1), xlab = "samples", ylab = "Depth") # plott doesn't make it very clear
-plot(x = (1:length(D2)), y = (-D2), xlab = "samples", ylab = "Depth") # so we'll just use plot
+plot(x = (1:length(D1)), y = (-D1), xlab = "samples", ylab = "Depth (interval 1)") # plott doesn't make it very clear
+plot(x = (1:length(D2)), y = (-D2), xlab = "samples", ylab = "Depth (interval 2)") # so we'll just use plot
 ```
 </div>
 
@@ -240,7 +239,7 @@ Does one swimming style seem more energetic than the other?
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#answers_energeticRnaw"> _Show/Hide Answers_ </button>  
 <div id="answers_energeticRnaw" class="collapse"> 
-*The magnitude of acceleration in each peak is lower in the first interval (between* $-0.5$ *and* $+1$ $m/s^2$*), and this time interval is a time when the animal is swimming steadily upwards. However, the acceleration is changing quickly back and forth: the peaks come much more frequently, so that there are 46 of them within the two minutes. The second time interval is different, with higher magnitudes of acceleration (between* $-3$ *and* $+4$ $m/s^2$*). This time interval is also a time when the animal is swimming slightly upwards, but there are more visually obvious "bumps" in the path upwards, which actually correspond to the individual acceleration peaks. Probably, rather than just ascending to the surface, the whale is exerting itself, accelerating very quickly, to try to catch prey. Thus, this second swimming style seems more energetic than the first.*
+*The magnitude of acceleration in each peak is lower in the first interval (between* $-0.5$ *and* $+1$ $m/s^2$*), and this time interval is a time when the animal is swimming steadily upwards. However, the acceleration is changing quickly back and forth: the peaks come much more frequently, so that there are 46 of them within the two minutes. The second time interval is different, with higher magnitudes of acceleration (between* $-3$ *and* $+4$ $m/s^2$*). This time interval is also a time when the animal is swimming slightly upwards, but there are more visually obvious "bumps" in the path upwards, which actually correspond to the individual acceleration peaks. Possibly, rather than just ascending to the surface, the whale is exerting itself, accelerating very quickly, to try to catch prey. Overall, this second swimming style seems more energetic than the first.*
 </div>
 
 Finally go back and plot the full high frequency acceleration data, `Ahigh`, then a portion of it cropped to the shallow dive. Use this to see whether there is active swimming in the shallow dive and, if so, which swimming gait is used there.
@@ -263,7 +262,7 @@ plott(X = list(Depth = D3, HfAccel3 = Ah3), fsx = sampling_rate, interactive = T
 plot(x = (1:length(D4)), y = D4)
 plott(X = list(HfAccel4 = Ah4), fsx = sampling_rate, interactive = TRUE)
 plot(x = (1:length(D5)), y = D5)
-plott(X = list(HfAccel4 = Ah5), fsx = sampling_rate, interactive = TRUE)
+plott(X = list(HfAccel5 = Ah5), fsx = sampling_rate, interactive = TRUE)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#plott_34"> Show/Hide Results </button>  
@@ -287,7 +286,7 @@ plott(X = list(Depth = D3, HfAccel3 = Ah3), fsx = sampling_rate, interactive = F
 plot(x = (1:length(D4)), y = (-D4), xlab = "samples", ylab = "Depth on intvl4")
 plott(X = list(HfAccel4 = Ah4), fsx = sampling_rate, interactive = FALSE)
 plot(x = (1:length(D5)), y = (-D5), xlab = "samples", ylab = "Depth on intvl5")
-plott(X = list(HfAccel4 = Ah5), fsx = sampling_rate, interactive = FALSE)
+plott(X = list(HfAccel5 = Ah5), fsx = sampling_rate, interactive = FALSE)
 ```
 
 </div>

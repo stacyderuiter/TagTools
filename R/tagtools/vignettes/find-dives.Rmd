@@ -92,7 +92,8 @@ As with all raw depth data, there are some problems with this dive profile. Try 
 <div id="ans_prob_with_prof" class="collapse">
 *1. Pay attention to the depths reported... While it looks like a dive profile, mostly, what looks like the "surface" is actually around some *$-10$ m *(that is, ten meters high in the air)! We know that humpback whales do not, in fact, go ten meters in the sky routinely. This suggests the sensor has not been well-calibrated.*
 *2. Occasionally, there are some peaks that go higher yet than these ten meters high in the sky momentarily (more like 15 meters). These are outliers.*
-*3.* **Help. The resolution looks fine...?**
+*3. Zoom in to the shallow part of the dive to notice this. The individual measurements are only precise to the meter; thus it will appear to jump back and forth more suddenly than we would expect for a relaxed whale at the surface.* 
+<!-- When y-axis limits in plott work: demonstrate with shallow depth. -->
 *4. The temperature gradually rises as the recording nears the end, then spikes down and up. This is accompanied by a gradually decreasing depth from ten meters in the sky to the surface. Together, the two trends strongly suggest that the depth data has been affected by the changing temperature as the tag sits near the surface. *
 </div>
 
@@ -252,13 +253,11 @@ plott(X=list(Pc=Pc, Pcm=Pcm, Pcmf=Pcmf$p), r=c(TRUE,TRUE,TRUE))
 
 Which of the problems that we listed above have been taken care of? Any ideas what you could do about the remaining one(s)?
 
-
-
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_probs_addressed_or_naw"> _Show/Hide Answers_ </button>  
 <div id="ans_probs_addressed_or_naw" class="collapse">
-*1. Incorrect calibration of the sensor and temperature sensitivity have both been addressed by now, since the whale is actually resting and breathing at the surface, rather than ten mebers in the air. Additionally, some of the occasional outliers have been removed by the median filter.* 
+*1. Incorrect calibration of the sensor and temperature sensitivity have both been addressed by now, since the whale is actually resting and breathing at the surface, rather than ten meters in the air. Additionally, some of the occasional outliers have been removed by the median filter.* 
 
-*However, none of this has increased the resolution of the depth data. In order to resolve this last issue, while you could interpolate linearly, this will be just an approximation of actual high-resolution data. Ultimately, new data would have to be taken at higher resolution to truly address this.* 
+*However, none of this has increased the resolution of the depth data. In order to resolve this last issue, ultimately, new data would have to be taken at higher resolution.* 
 </div>
 
 ## Finding dives & the mean dive duration

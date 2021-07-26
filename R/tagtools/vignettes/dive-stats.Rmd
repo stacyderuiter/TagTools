@@ -122,22 +122,7 @@ str(ds)
 </div>
 
 6. Have a look at the dive stats and perhaps make a plot of some or all
-of them. Do you notice anything interesting? Code for a basic example plot (plotting the max depth of each against the to_rate of each dive) is shown below.
-
-```{r, echo = TRUE, eval = FALSE}
-plot(x = ds$max, y = ds$from_rate)
-```
-
-<button class="btn btn-primary" data-toggle="collapse" data-target="#ds_basic_plot"> Show/Hide Results/*Answers* </button>  
-<div id="ds_basic_plot" class="collapse"> 
-
-```{r, echo = FALSE, eval = TRUE}
-plot(x = ds$max, y = ds$to_rate)
-```
-
-*There appears to be little, if any, correlation between the to-rate and the maximum depth. ¯\\_(ツ)_/¯ *
-
-</div>
+of them. Do you notice anything interesting? 
 
 ## Optional: choose an extra variable
 

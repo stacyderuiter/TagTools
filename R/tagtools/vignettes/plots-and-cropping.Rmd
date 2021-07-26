@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the plot and cropping vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it makes your life a little easier. 
+Welcome to the plots and cropping vignette! On behalf of the team behind tagtools, thanks for taking some time to get to know our package. We hope it makes your life a little easier. 
 
 In this vignette, you will start to create some beautiful plots from the data we've been working with, as well as crop these to remove irrelevant data (e.g. before or after a tag was deployed on an animal).
 
@@ -27,10 +27,12 @@ In this vignette, you will start to create some beautiful plots from the data we
 
 These vignettes assume that you have some basic experience working with R/Rstudio, and can execute provided code, making some user-specific changes along the way. We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. 
 
-Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just single, simple underscores, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 # Setup: load "cats_test_raw.nc" as a large list, `MN`
-If you've already completed `load-tag-data` within the same R session, you can skip down a bit to [Exploratory data plots]. If not, you're just a couple of lines behind. For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
+If you've already completed `load-tag-data` within the same R session, you can skip down a bit to [Exploratory data plots]. If not, don't worry! We'll catch you up with code below. 
+
+For this example, we will make use of a CATS tag data file that is already stored in a .nc file called 'cats_test_raw.nc'. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
 ```{r, echo = TRUE, eval = TRUE, results='hide'}
 library(tagtools)
@@ -84,7 +86,7 @@ print("Position your cursor and then click once followed by clicking FINISH to c
 
 </div>
 
-This displays an interactive depth plot. Follow the instructions to select the obvious diving section of the data and then click finish. Alternatively, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete. The function returns a new data structure which contains just the selected part of the dive profile. 
+This displays an interactive depth plot. (It does not know to reverse the y-axis, so that's why it looks upside down.) Follow the instructions to select the obvious diving section of the data and then click finish. Alternatively, if you click once on your desired left limit and twice on your desired right limit, finish will click itself and the cropping will be complete. The function returns a new data structure which contains just the selected part of the dive profile. 
 
 Once you've cropped the depth data to the relevant segment, this will be stored as Pc. Now, use `plott` to plot Pc to make sure you cropped it correctly.
 
@@ -114,14 +116,14 @@ Pc <- crop_to(X=MN$Depth, tcues=c(111195040, 155520000))
 The resulting sensor data list also contains fields that document what you just did. They should look like:
 
 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 Pc$history
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Pc_history"> Show/Hide Results </button>  
 <div id="Pc_history" class="collapse"> 
 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE}
 Pc$history
 ```
 
@@ -136,6 +138,16 @@ You've learned how to make plots using the `tagtools` function `plott`, as well 
 Congratulations! You've completed this vignette. 
 
 *If you'd like to continue working through these vignettes, `data-quality-error-correction` is probably a good option. In it, you'll start to use some unique data processing tools that `tagtools` provides.*
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('data-quality-error-correction', package = 'tagtools')
+```
+
+*Or, you might consider `tag-to-whale-frame`. This vignette deals with one specific problem in error correction: orienting the data in the animal's frame of reference (when, for various reasons, it may have been oriented in a different frame of reference).*
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('tag-to-whale-frame', package = 'tagtools')
+```
 
 ***
 

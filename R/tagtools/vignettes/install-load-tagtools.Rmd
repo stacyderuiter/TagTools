@@ -1,5 +1,5 @@
 ---
-title: "Setting up tagtools"
+title: "Installing and loading tagtools"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: 
@@ -27,11 +27,13 @@ In this vignette you will complete the first important setup steps of installing
 # Installing tagtools for R
 
 ## Prerequisites
-Before you begin, you must have R and---recommended---RStudio installed on your computer. You can download this software at [RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop) (you only need the free one). Alternatively, you *can* work in [RStudio.cloud](https://rstudio.cloud). This is free too, and it is nice that no download is required. The drawback is that, with your free RStudio.cloud account, you are limited at a certain number of project-hours per month, RAM, and CPU. One who does a lot of work in RStudio, several hours a day, will run out of hours within a week or two. The desktop version has fewer restraints. 
+Before you begin, you must have R and---recommended---RStudio installed on your computer. You can download this software at [RStudio.com](https://www.rstudio.com/products/rstudio/#rstudio-desktop) (you only need the free one). 
 
-If you happen to be new to R also, here are two very nice standalone tutorials: [#1](https://rsconnect.calvin.edu:3939/content/141) and [#2](https://rstudio.cloud/learn/primers/1.2).
+Alternatively, you *can* work in [RStudio.cloud](https://rstudio.cloud). This is free too, and it is nice that no download is required. The drawback is that, with your free RStudio.cloud account, you are limited at a certain number of project-hours per month, RAM, and CPU. One who does a lot of work in RStudio, several hours a day, will run out of hours within a week or two. The desktop version has fewer restraints. 
 
-These practicals assume that you have some basic experience working with R/RStudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work. 
+If you happen to be new to R also, [here](https://rstudio.cloud/learn/primers/1.2) is a very nice standalone tutorial.
+
+These practicals assume that you have some basic experience working with R/RStudio, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded).
 
 ## Install tagtools from github
 If you have `devtools` installed on your computer, you can use it to install the `tagtools` package directly from github.
@@ -45,12 +47,12 @@ devtools::install_github('stacyderuiter/TagTools/R/tagtools',
                          build_vignettes = TRUE)
 ```
 
-If you are asked soomething like "These packages have more recent versions available", it is no harm to update them all, and to "install from sources the packages which need compilation". 
+If you are asked something like "These packages have more recent versions available", it is no harm to update them all, and to "install from sources the packages which need compilation". 
 
 With the package as of July 2021, the overall process should take ten to fifteen minutes, depending on the speed of your internet and machine, some eight minutes of which are spent building vignettes. 
 
 ## Install tagtools from zip archive
-If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with your workshop materials (in the folder created by unzipping wmmc-2019-workshop-materials.zip). These archive files are also available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 
+If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with materials from the WMMC 2019 workshop (in the folder created by unzipping wmmc-2019-workshop-materials.zip). These archive files are also available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 
 
 *Note: if you choose to install from archive files (.zip or .tgz), you will probably also have to manually install all the packages `tagtools` depends on. If you use the `devtools` method above, you will not.*
 
@@ -93,15 +95,6 @@ Once the `tagtools` are successfully installed, you should be able to run
 ```{r, eval = FALSE, echo = TRUE}
 library(tagtools)
 ```
-
-<button class="btn btn-primary" data-toggle="collapse" data-target="#library_tagtools"> Show/Hide Results </button>  
-<div id="library_tagtools" class="collapse"> 
-
-```{r, eval = TRUE, echo = FALSE}
-library(tagtools)
-```
-
-</div>
 
 You will often get this message: "The following object is masked from 'package:stats': smooth"---this means you have loaded it properly; congratulations! 
 
@@ -155,7 +148,7 @@ Then you can run any vignette with `vignette('package-index', package = 'tagtool
 vignette("install-load-tagtools", package = "tagtools")
 ```
 
-The `package = "tagtools"` argument at the end is optional. However, it is a good addition because it clarifies which package you are working in. So, if there happened to be, say, another `vectors-vs-structures` vignette in some other package, you could load the one that is specific to this package with `vignette("vectors-vs-structures")`. 
+The `package = "tagtools"` argument at the end is optional. However, it is a good addition because it clarifies which package you are working in. So, if there happened to be, say, another `vectors-vs-structures` vignette in some other package, you could load the one that is specific to this package with `vignette("vectors-vs-structures", package = "tagtools")`. 
 
 # Review
 
@@ -165,11 +158,24 @@ Congrats!
 
 *If you'd like to continue working through these vignettes, `load-tag-data` and `plots-and-cropping` are good options to help you get started with the tools you've just installed and loaded.*
 
+*Perhaps your best starting option is 'load-tag-data', helpful for familiarizing yourself with the process of loading in data, as well as making sure that important metadata is included in the data.*
+
 ```{r, echo = TRUE, eval = FALSE}
 vignette('load-tag-data', package = 'tagtools')
+```
+
+*`vectors-vs-structures` is a quick review of the way R stores data in structures, and how these can be extracted to individual vectors/scalars.* 
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('vectors-vs-structures', package = 'tagtools')
+```
+
+*If you already feel confident with setup and structures in R, try `plots-and-cropping`---you'll get to start visualizing some data of the types you've been learning to load.* 
+
+```{r, echo = TRUE, eval = FALSE}
 vignette('plots-and-cropping', package = 'tagtools')
 ```
 
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code)
