@@ -41,6 +41,7 @@ def load_nc(fname=None, vname=None):
     import numpy as np
     import os
     import netCDF4 as nc
+    import platform
 
 
     X = {}
@@ -67,20 +68,26 @@ def load_nc(fname=None, vname=None):
             os.chdir(udir)
 
         if not fname:
-            help(load_nc)
-            return
+            print(help(load_nc))
+            return X
 
-        pth = '\\'.join(fname.split('/')[:-1]) + '\\'
+        if platform.system()=='Windows':
+            if fname.find('/')>0:
+                pth = '\\'.join(os.path.dirname(fname).split('/'))+'\\'
+            else:
+                pth = os.path.dirname(fname) + '\\'
+        else:
+            pth = os.path.dirname(fname) + '/'
         pascii = np.array([ord(c) for c in list(pth)])
         np.savetxt('_loadnctemp.txt',pascii.reshape(1,pascii.size),delimiter=' ')
 
     # append .nc suffix to file name if needed
     if len(fname)<3 or fname[-3:]!='.nc':
-            fname += '.nc'
+        fname += '.nc'
 
     if not os.path.exists(fname):
         print(f' File {fname} not found\n')
-        return
+        return X
 
     ds = nc.Dataset(fname)
     if ds.__dict__.keys():
@@ -89,13 +96,14 @@ def load_nc(fname=None, vname=None):
 
     # load the variables from the file
     for fn in ds.variables.keys():
-        if fn[0]=='_': 
-            continue # skip place-holder variable
-        if vname and fn not in vname:
-            continue
+        if fn[0]=='_': continue # skip place-holder variable  
+        if vname and fn not in vname: continue
 
         v = ds.variables[fn][:]
-        if len(v.data.shape)>1 and v.data.shape[1]!=len(ds.variables[fn].column_name.split(',')):
+        tmp = ds.variables[fn].__dict__.copy()
+        if 'column_names' in tmp.keys():
+            tmp['column_name'] = tmp.pop('column_names')
+        if len(v.data.shape)>1 and v.data.shape[1]!=len(tmp['column_name'].split(',')):
             X[fn] = {'data': v.data.transpose()}
         else:
             X[fn] = {'data': v.data}
@@ -103,15 +111,15 @@ def load_nc(fname=None, vname=None):
         if (X[fn]['data'].shape[0]==1) & any(np.repeat(X[fn]['data'][0],2) == v.fill_value):
             X[fn]['data'] = np.array([])
 
-        if ds.variables[fn].__dict__:
+        if ds.variables[fn].__dict__: # if 'column_name' wanted for variables with 'column_names', this dictionary should be replaced with tmp
             X[fn] = {**X[fn],**ds.variables[fn].__dict__}
             len(X[fn].keys())
+    ds.close()
 
     if not X:
-        return
+        return X
     
     return X 
-
 
         
 if __name__ == "__main__": # true when running the module as a script, i.e. directly

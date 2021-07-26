@@ -55,13 +55,14 @@ add_nc <- function(file, X, vname) {
       }
 
       prev_vars <- names(nc_conn$var)
-      # if (vname != 'info') {
-      if (vname %in% prev_vars) {
-        e_msg <- paste("Variable ", vname,
-          " already exists in file. Choose a different name.\n",
-          sep = ""
-        )
-        stop(e_msg)
+      if (vname != "info") {
+        if (vname %in% prev_vars) {
+          e_msg <- paste("Variable ", vname,
+            " already exists in file. Choose a different name.\n",
+            sep = ""
+          )
+          stop(e_msg)
+        }
       }
     }
   } # end of "if file already exists" checks

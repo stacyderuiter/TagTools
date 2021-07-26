@@ -1,0 +1,165 @@
+---
+title: "Rotation test"
+author: "tagtools project team"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{rotation-test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+require(tagtools)
+```
+
+Welcome to the `rotation-test` vignette! Thanks for getting to know our package. We hope this dataset revives a sense of wonder somewhere in your soul. In this vignette, you will use a rotation test to test whether a certain hypothesis is actually meaningfully true. 
+
+*Estimated time for this vignette: 20 minutes.*
+
+These practicals all assume that you have R/Rstudio, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.
+
+Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
+
+# Rotation test
+
+We were very fortunate to obtain a number of test datasets from different sources that we have permission to make publicly available with the tag tool kit. One dataset (obtained from anonymous Scottish contacts) is particularly exciting and possibly unique in the world: a fragment of tag data obtained from a high-resolution movement tag deployed on Nessie, the Loch Ness Monster. 
+
+Unfortunately several of the tag sensors malfunctioned, but we were able to salvage some dive depth data to be used in this example. The dataset is called `nessie.nc`. It is built into the `tagtools` package, so you can access it using `system.file`.
+
+1. Read in the data: 
+
+```{r, echo = TRUE, eval = FALSE}
+library(tagtools)
+nessie_file_path <- system.file("extdata", "nessie.nc", package = "tagtools", mustWork = TRUE)
+nessie <- load_nc(nessie_file_path)
+str(nessie, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#load_nessie_nc"> Show/Hide Results </button>  
+<div id="load_nessie_nc" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
+nessie_file_path <- system.file("extdata", "nessie.nc", package = "tagtools", mustWork = TRUE)
+nessie <- load_nc(nessie_file_path)
+str(nessie, max.level = 1)
+```
+
+</div>
+
+And make a plot of the dive profile (because of course you want to see it):
+
+```{r, echo = TRUE, eval = FALSE}
+plott(X = list(Depth = nessie$P), interactive = TRUE)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#plot_nessie_profile"> Show/Hide Results </button>  
+<div id="plot_nessie_profile" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
+plott(X = list(Depth = nessie$P), interactive = FALSE)
+```
+
+</div>
+
+2. According to some Scottish lore, Nessie surfaces more often in the hour around noon than during the rest of the day (because the glare on the water, and the lure of lunch, make it more difficult for people to spot her then). But does she really? Use find\_dives to find start times for all her submergences, which we will use as a proxy for breath times. In this case, you will want to use a threshold that is as shallow as practicable. 
+
+```{r, echo = TRUE, eval = FALSE}
+th <- # ??? set a very shallow threshold
+#find dives
+dt <- find_dives(nessie$P, mindepth = th)
+str(dt, max.level = 1)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#find_dives_nessie"> Show/Hide Results </button>  
+<div id="find_dives_nessie" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
+th <- 0.6
+#find dives
+dt <- find_dives(nessie$P, mindepth = th)
+str(dt, max.level = 1)
+```
+
+</div>
+
+3. Do you think you could just use a regression model for surfacing rate to answer this question? Why or why not?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_noregr_nessie"> *Show/Hide Answers* </button>  
+<div id="ans_noregr_nessie" class="collapse">
+*No, because the data is autocorrelated? Uh,... because it's just more complicated?* **help pls**
+</div>
+
+4. Use a rotation test to test whether the number of surfacings between 11:30 and 12:30 is actually higher than you'd expect.
+
+```{r, echo = TRUE, eval = FALSE}
+# make time variables
+t <- as.POSIXct(nessie$info$dephist_device_datetime_start, tz = 'GMT') + c(1:nrow(nessie$P$data))/nessie$P$sampling_rate
+# find data times between 11:30 and 12:30
+s <- as.POSIXct('2017-01-13 11:30:00', tz = 'GMT')
+e <- as.POSIXct('2017-01-13 12:30:00', tz = 'GMT')
+noon <- range(which(t < e & t > s)) 
+#convert to seconds
+noon <- noon/nessie$P$sampling_rate
+#do test
+RTR <- rotation_test(event_times = dt$start, exp_period = noon, full_period = c(0,length(nessie$P$data)/nessie$P$sampling_rate), n_rot = 10000, ts_fun = length)
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#RTR"> Show/Hide Results </button>  
+<div id="RTR" class="collapse">
+
+```{r, echo = FALSE, eval = TRUE}
+# make time variables
+t <- as.POSIXct(nessie$info$dephist_device_datetime_start, tz = 'GMT') + c(1:nrow(nessie$P$data))/nessie$P$sampling_rate
+# find data times between 11:30 and 12:30
+s <- as.POSIXct('2017-01-13 11:30:00', tz = 'GMT')
+e <- as.POSIXct('2017-01-13 12:30:00', tz = 'GMT')
+noon <- range(which(t < e & t > s)) 
+#convert to seconds
+noon <- noon/nessie$P$sampling_rate
+#do test
+RTR <- rotation_test(event_times = dt$start, exp_period = noon, full_period = c(0,length(nessie$P$data)/nessie$P$sampling_rate), n_rot = 10000, ts_fun = length)
+RTR
+```
+
+</div>
+
+<!-- In Matlab: -->
+<!--```
+nessie = load_nc('nessie.nc');
+
+% make time variable
+st = datenum(info.dephist_device_datetime_start) + ...[1:length(P.data)]./P.sampling_rate/3600/24 ;
+% find data times between 11:30 and 12:30
+s = datenum( 2017-01-13 11:30:00 );
+e = datenum( 2017-01-13 12:30:00 );
+[st,et] = bounds(find(t < e & t > s));
+% convert to seconds
+st = st/P.sampling_rate;
+et = et/P.sampling_rate;
+% find dives
+dt = find_dives(P, th);
+% do test
+RTR = rotation_test(dt.start,[st,et], ...[0,length(P.data)/P.sampling_rate],...100000, length , [],[],[]);
+``` -->
+
+5. What can you conclude?
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ans_byebye_nessie"> *Show/Hide Answers* </button>  
+<div id="ans_byebye_nessie" class="collapse">
+*Since the p-value is so high, it appears that Nessie does not, contrary to popular belief, actually surface (significantly) more in the hour between 11:30am and 12:30pm.*
+</div>
+
+And with that, great work! Now some of the mystery is forever gone... but knowledge is power!
+
+*If you'd like to continue working through these practicals, consider `dive-stats`.*
+
+***
+
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

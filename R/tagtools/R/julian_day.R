@@ -1,8 +1,14 @@
 #' Convert between dates and Julian day numbers.
 #'
-#' This function is used to convert between dates and Julian day numbers. There are three different input arrangements, each of which returns a different output. For a discription of the different input arrangements, see below.
+#' This function is used to convert between dates and Julian day numbers. 
+#' There are three different input arrangements, each of which returns a different output. For a description of the different input arrangements, see below.
 #'
-#' Possible input combinations: (n <- julianday) returns the Julian day number for today. (n = julianday(y,d)) where y is a single year or a vector of years and d is a single day number or a vector of daynumbers, returns the date vector [year,month,day] for each year, day pair. (n = julianday(y,m,d)) where y is a single year or a vector of years, m is a single month or vector of months, and d is a single month day or a vector of month days, returns the Julian day number for each year, month, day.
+#' Possible input combinations: 
+#' (n <- julian_day()) returns the Julian day number for today. 
+#' (n = julian_day(y,d)) where y is a single year or a vector of years and d is a single day number or a vector of daynumbers, 
+#' returns the date vector [year,month,day] for each year, day pair. 
+#' (n = julian_day(y,m,d)) where y is a single year or a vector of years, m is a single month or vector of months, and d is a single month day or a vector of month days, 
+#' returns the Julian day number for each year, month, day.
 #' @param y A single year or vector of years
 #' @param d A single day or vector of days
 #' @param m A single month or vector of months

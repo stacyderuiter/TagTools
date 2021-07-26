@@ -17,3 +17,4 @@ SMMWorkshop/
 TagTools_Workshop_Final/
 *.zip
 *.gz
+**/__pycache__
