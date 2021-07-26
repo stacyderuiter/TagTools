@@ -6,8 +6,8 @@
 #' @param z A vector or matrix of points on the third (z) axis.
 #' @param c A vector or matrix of values representing the colour to draw at each point.
 #' @param col_lab A string to use as the label for the color legend
-#' @param interactive logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)
 #' @param ... Additional inputs for plot_ly()
+#' @result a plot_ly() graphics object
 #' @examples 
 #' col_line3(1:20, 1:20, 1:20, 1:20)
 #' @export

@@ -4,7 +4,7 @@
 \alias{col_line3}
 \title{Plot coloured line(s) in 3 dimensions}
 \usage{
-col_line3(x, y, z = 0, c, col_lab = quote(c), interactive = FALSE, ...)
+col_line3(x, y, z = 0, c)
 }
 \arguments{
 \item{x}{a vector or matrix of points on the horizontal (x) axis.}
@@ -16,8 +16,6 @@ col_line3(x, y, z = 0, c, col_lab = quote(c), interactive = FALSE, ...)
 \item{c}{A vector or matrix of values representing the colour to draw at each point.}
 
 \item{col_lab}{A string to use as the label for the color legend}
-
-\item{interactive}{logical. Plot interactive or static figure? Note: For some reason it is much faster to plot a static figure and then call ggplotly() outside this function, e.g., F <- col_line(y~x, c = z); ggplotly(F)}
 
 \item{...}{Additional inputs for plot_ly()}
 }
