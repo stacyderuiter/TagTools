@@ -10,5 +10,5 @@
 
 col_line <- function(formula, color, data = NULL, ...) {
   ggformula::gf_path(formula, color = color, 
-                     data = data, group = color)
+                     data = data)
 }

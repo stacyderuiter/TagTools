@@ -368,7 +368,7 @@ Examine the plot to see how the green fitted track interpolates the red GPS posi
 We often want to plot a track colored proportional to another variable of interest. For example, it can be useful to see where the animal is diving along the track. To colour the track by depth, use `col_line()` with `P` as the colour information:
 
 ```{r, echo = TRUE, eval = FALSE}
-CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
+CF <- col_line(northing ~ easting, data = FT, c = ~d7$P$data)
 CF
 ```
 
@@ -388,7 +388,7 @@ CF
 What about an interactive version?
 
 ```{r, echo = TRUE, eval = FALSE}
-col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth', interactive = TRUE)
+col_line(x = FT$easting, y = FT$northing, c = d7$P$data)
 ```
 
 Zoom in to see what the scale is of the track [tortuosity](https://en.wikipedia.org/wiki/Tortuosity): Is there tortuosity within individual dives, or is the tortuosity occurring across dives?
