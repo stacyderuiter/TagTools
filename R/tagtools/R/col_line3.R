@@ -14,16 +14,35 @@
 #' @seealso \code{\link{col_line}}, \code{\link{cline}}
 #' @note x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))).
 
-col_line3 <- function(x, y, z = 0, c, col_lab = quote(c),
-                      interactive = FALSE, ...) {
+col_line3 <- function(x, y, z = 0, c) {
   if (missing(x) | missing(y)) {
     stop("Inputs x and y are required for col_line3 unless formula is provided.\n")
   }
-  x_formula <- stats::as.formula(paste("~", quote(x)))
-  y_formula <- stats::as.formula(paste("~", quote(y)))
-  z_formula <- stats::as.formula(paste("~ -", quote(z)))
-
-  color_formula <- stats::as.formula(paste("~", quote(c)))
+  
+  if (!plyr::is.formula(x)){
+    x_formula <- stats::as.formula(paste("~", quote(x)))  
+  }else{
+    x_formula <- x
+  }
+  
+  if (!plyr::is.formula(y)){
+    y_formula <- stats::as.formula(paste("~", quote(y)))  
+  }else{
+    y_formula <- y
+  }
+  
+  if (!plyr::is.formula(z)){
+    z_formula <- stats::as.formula(paste("~ -", quote(z)))  
+  }else{
+    z_formula <- z
+  }
+  
+ if (!plyr::is.formula(c)){
+   color_formula <- stats::as.formula(paste("~", quote(c))) 
+ }else{
+   color_formula <- c
+ }
+  
 
   plotly::plot_ly(
     x = x_formula, y = y_formula, z = z_formula,
