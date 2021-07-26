@@ -12,7 +12,10 @@ def get_researcher(initial=None):
     import os
     
     s = {}
-    S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'researchers.csv'))
+    try:
+        S = pd.read_csv('./user/researchers.csv')
+    except:
+        S = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'researchers.csv'))
     if not initial:
         for k, init in enumerate(S.Initial):
             print(init, S.Name[k])
