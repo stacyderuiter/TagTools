@@ -1,11 +1,10 @@
-#' Plot coloured line(s) in 3 dimensions
+#' Plot coloured line(s) in 3 dimensions with plot_ly
 #'
-#' This function is used to plot three dimensional lines with each individual line possessing a different color.
-#' @param x a vector or matrix of points on the horizontal (x) axis.
-#' @param y A vector or matrix of points on the vertical (y) axis.
-#' @param z A vector or matrix of points on the third (z) axis.
-#' @param c A vector or matrix of values representing the colour to draw at each point.
-#' @param col_lab A string to use as the label for the color legend
+#' This function is used to plot three dimensional lines with segments colored. It may be just as simple to use plotly::plot_ly() directly.
+#' @param x name of object or variable containing data for x axis
+#' @param y name of object or variable containing data for y axis
+#' @param z name of object or variable containing data for z axis
+#' @param c name of object or variable by which to color 
 #' @param ... Additional inputs for plot_ly()
 #' @result a plot_ly() graphics object
 #' @examples 

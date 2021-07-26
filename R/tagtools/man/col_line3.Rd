@@ -2,25 +2,23 @@
 % Please edit documentation in R/col_line3.R
 \name{col_line3}
 \alias{col_line3}
-\title{Plot coloured line(s) in 3 dimensions}
+\title{Plot coloured line(s) in 3 dimensions with plot_ly}
 \usage{
 col_line3(x, y, z = 0, c)
 }
 \arguments{
-\item{x}{a vector or matrix of points on the horizontal (x) axis.}
+\item{x}{name of object or variable containing data for x axis}
 
-\item{y}{A vector or matrix of points on the vertical (y) axis.}
+\item{y}{name of object or variable containing data for y axis}
 
-\item{z}{A vector or matrix of points on the third (z) axis.}
+\item{z}{name of object or variable containing data for z axis}
 
-\item{c}{A vector or matrix of values representing the colour to draw at each point.}
-
-\item{col_lab}{A string to use as the label for the color legend}
+\item{c}{name of object or variable by which to color}
 
 \item{...}{Additional inputs for plot_ly()}
 }
 \description{
-This function is used to plot three dimensional lines with each individual line possessing a different color.
+This function is used to plot three dimensional lines with segments colored. It may be just as simple to use plotly::plot_ly() directly.
 }
 \note{
 x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))).
