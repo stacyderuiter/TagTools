@@ -4,20 +4,21 @@
 \alias{col_line}
 \title{Plot coloured line(s) in 2 dimensions}
 \usage{
-col_line(x, y, c, ...)
+col_line(formula, color, data = NULL, ...)
 }
 \arguments{
-\item{x}{A vector or matrix of points on the horizontal axis.}
+\item{formula}{formula of the form y ~ x where y and x are the (unquoted) names of the variables to put on the x and y axes of the plot}
 
-\item{y}{A vector or matrix of points on the vertical axis.}
+\item{color}{one-sided formula of the form ~ c giving the (unquoted) name of the variable by which to color. Ideally c should be a factor or character variable.}
 
-\item{c}{A vector or matrix of values representing the colour to draw at each point.}
+\item{data}{data.frame or tibble in which variables x, y, and c are found.}
 
-\item{...}{Additional inputs for plot()}
+\item{...}{Additional inputs to be passed to gf_path()}
+}
+\value{
+a ggplot object with the requested plot
+#' @export
 }
 \description{
 This function is used to plot two dimensional lines with each individual line possessing a different color.
-}
-\note{
-x, y and c must all be the same size. If x, y, and c are matrices, one line is drawn for each column. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))). This can be changed by calling caxis after colline.
 }

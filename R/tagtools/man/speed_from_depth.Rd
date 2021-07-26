@@ -16,7 +16,7 @@ speed_from_depth(
 \arguments{
 \item{p}{The depth vector (a regularly sampled time series) in meters. sampled at sampling_rate Hz. This can either be an animaltags sensor list, or a vector.}
 
-\item{A}{(optional) A matrix or animaltags sensor data list containing acceleration data. If A is not provided then only vertical velocity is returend (same output as depth_rate()). Acceleration can be in any consistent unit, e.g., g or m/s^2. Acceleration data must have the same number of rows as p.}
+\item{A}{(optional) A matrix or animaltags sensor data list containing acceleration data. If A is not provided then only vertical velocity is returned (same output as depth_rate()). Acceleration can be in any consistent unit, e.g., g or m/s^2. Acceleration data must have the same number of rows as p.}
 
 \item{fs_p}{(optional) The sampling rate of p in Hz (samples per second). Required only if p is vector rather than sensor data list.}
 
