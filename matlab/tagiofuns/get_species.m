@@ -3,7 +3,15 @@ function		s = get_species(initial)
 %		s = get_species(initial)
 
 s = [] ;
-S = read_csv('species.csv') ;
+
+sp_file = which('species.csv');
+
+if isempty(sp_file)
+    fprintf(' Unable to find species.csv file on Matlab path.') ;
+	return ;
+end
+    
+S = read_csv(sp_file) ;
 if nargin==0,
 	for k=1:length(S),
 		fprintf(' %s %s\n',S(k).Initial,S(k).Common_name) ;

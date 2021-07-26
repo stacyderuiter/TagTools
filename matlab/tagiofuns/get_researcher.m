@@ -3,7 +3,7 @@ function		s = get_researcher(initial)
 %		s = get_researcher(initial)
 
 s = [] ;
-S = read_csv('researchers.csv') ;
+S = read_csv(which('researchers.csv')) ;
 if nargin==0,
 	for k=1:length(S),
 		fprintf(' %s %s\n',S(k).Initial,S(k).Name) ;

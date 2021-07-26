@@ -15,7 +15,7 @@ find_dives(p, mindepth, sampling_rate = NULL, surface = 1, findall = 0)
 
 \item{surface}{(optional) The threshold in meters at which the animal is presumed to have reached the surface. Default value is 1. A smaller value can be used if the dive/altitude data are very accurate and you need to detect shallow dives/flights.}
 
-\item{findall}{(optional) When 1, forces the algorithm to include incomplete dives at the start and end of the record. Default is 0 which only recognizes complete dives.}
+\item{findall}{(optional) When TRUE, forces the algorithm to include incomplete dives at the start and end of the record. Default is FALSE which only recognizes complete dives.}
 }
 \value{
 T is a data frame with one row for each dive/flight found. The columns of T are: start (time in seconds of the start of each dive/flight), end (time in seconds of the start of each dive/flight), max (maximum depth/altitude reached in each dive/flight), tmax	(time in seconds at which the animal reaches the max depth/altitude).
@@ -28,5 +28,5 @@ BW <- beaked_whale
 T <- find_dives(p = BW$P$data, 
 sampling_rate = BW$P$sampling_rate, 
 mindepth = 5, surface = 2, 
-findall = NULL)
+findall = FALSE)
 }
