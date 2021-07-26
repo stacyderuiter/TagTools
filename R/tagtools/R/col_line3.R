@@ -19,19 +19,19 @@ col_line3 <- function(x, y, z = 0, c) {
     stop("Inputs x and y are required for col_line3 unless formula is provided.\n")
   }
   
-  if (!plyr::is.formula(x)){
+  if (!inherits(x, 'formula')){
     x_formula <- stats::as.formula(paste("~", quote(x)))  
   }else{
     x_formula <- x
   }
   
-  if (!plyr::is.formula(y)){
+  if (!inherits(y, 'formula')){
     y_formula <- stats::as.formula(paste("~", quote(y)))  
   }else{
     y_formula <- y
   }
   
-  if (!plyr::is.formula(z)){
+  if (!inherits(z, 'formula')){
     z_formula <- stats::as.formula(paste("~ -", quote(z)))  
   }else{
     z_formula <- z
