@@ -54,7 +54,7 @@ MN$info
 these are structures that contain both the data and some information about it. Typing any of the variable names followed by enter will show what is in it. For example, try this for Acceleration:
 
 ```{r, echo = TRUE, eval = TRUE}
-MN$A
+str(MN$A, max.level = 1) # display the STRucture of MN$A
 ```
 
 In Matlab, Octave and R it will look a little different, but will have all the same information. Specifically, we are after the variable `A`, which is contained within the large list MN. `MN$A` is how we access it, in R.

@@ -49,7 +49,7 @@ devtools::install_github('stacyderuiter/TagTools/R/tagtools',
 
 If you are asked something like "These packages have more recent versions available", it is no harm to update them all, and to "install from sources the packages which need compilation". 
 
-With the package as of July 2021, the overall process should take ten to fifteen minutes, depending on the speed of your internet and machine, some eight minutes of which are spent building vignettes. 
+With the package as of July 2021, the overall process should take ten to fifteen minutes, depending on the speed of your internet and machine, some eight minutes of which are spent building vignettes. Receiving an abundance of red messages is not the end of the world---this is just how R shows that a package is being installed. If it ends with the message `"* DONE (tagtools)"`, you're all set!
 
 ## Install tagtools from zip archive
 If you do not want to use the `devtools` option, you can install the `tagtools` package from the archive files provided with materials from the WMMC 2019 workshop (in the folder created by unzipping wmmc-2019-workshop-materials.zip). These archive files are also available at the TagTools website. Try http://animaltags.org , or https://animaltags.netlify.app . 

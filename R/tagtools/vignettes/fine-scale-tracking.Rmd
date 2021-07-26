@@ -372,15 +372,13 @@ CF <- col_line(northing ~ easting, data = FT, c = ~d7$P$data)
 CF
 ```
 
-<!-- Despacito, play Alexa. This, so sad, is. Why work does it not? 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#col_line_static"> Show/Hide Results </button>  
-<div id="col_line_static" class="collapse"> -->
 
-<!--```{r, echo = FALSE, eval = TRUE}
-CF <- col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = 'Depth')
+<button class="btn btn-primary" data-toggle="collapse" data-target="#col_line_static"> Show/Hide Results </button>  
+<div id="col_line_static" class="collapse"> 
+
+```{r, echo = TRUE, eval = FALSE}
+CF <- col_line(northing ~ easting, data = FT, c = ~d7$P$data)
 CF
-# Error in col_line(northing ~ easting, data = FT, c = d7$P$data, c_lab = "Depth") : 
-#   argument "y" is missing, with no default
 ```
 
 </div>
