@@ -21,7 +21,7 @@ require(tagtools)
 
 Welcome to the `fine-scale-tracking` vignette! Thanks for taking some time to get to know our package; we hope it sparks joy. 
 
-This practical covers how to compute a dead-reckoned track from accelerometer and magnetemeter data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high-resolution track with lower error and try visualizing the track coloured by another parameter.
+This practical covers how to compute a dead-reckoned track from accelerometer and magnetometer data and compares this track estimate to GPS positions that were taken by the tag. This illustrates both the high resolution of dead-reckoned tracks and the **very** large errors that can accumulate. You will then explore how to merge the GPS and dead-reckoned tracks to produce a high-resolution track with lower error and try visualizing the track coloured by another parameter.
 
 *Estimated time for this vignette: 40 minutes.*
 
