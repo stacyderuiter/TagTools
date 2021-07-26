@@ -245,7 +245,7 @@ function    C = read_d3_chan_names(ch)
 %
 %
 C = struct ;
-S = read_csv('d3_sensor_defs.csv',1) ;		% read the sensor definitions file
+S = read_csv('d3_sensor_defs.csv') ;		% read the sensor definitions file
 S(end+1).number = '-1' ;
 S(end).name = 'unknown' ;
 cn = str2num(strvcat(S(:).number)) ;		% get the channel numbers
