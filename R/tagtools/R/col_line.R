@@ -5,7 +5,8 @@
 #' @param color one-sided formula of the form ~ c giving the (unquoted) name of the variable by which to color. Ideally c should be a factor or character variable.
 #' @param data data.frame or tibble in which variables x, y, and c are found.
 #' @param ... Additional inputs to be passed to gf_path()
-#' @export
+#' @return a ggplot object with the requested plot
+#' #' @export
 
 col_line <- function(formula, color, data = NULL, ...) {
   ggformula::gf_path(formula, color = color, 
