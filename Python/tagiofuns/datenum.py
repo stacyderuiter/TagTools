@@ -1,4 +1,4 @@
-def datenum(datestr=None,formatMat=None,formatPy=None):
+def datenum(datestr=None, formatMat=None, formatPy=None):
     
     """
     Convert date-time string to Matlab's serial date number.
