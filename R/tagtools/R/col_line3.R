@@ -13,7 +13,7 @@
 #' @seealso \code{\link{col_line}}, \code{\link{cline}}
 #' @note x, y, z and c must all be the same size vectors. The color axis will by default span the range of values in c, i.e., caxis will be c(min(min(c)), max(max(c))).
 
-col_line3 <- function(x, y, z = 0, c) {
+col_line3 <- function(x, y, z = 0, c, ...) {
   if (missing(x) | missing(y)) {
     stop("Inputs x and y are required for col_line3 unless formula is provided.\n")
   }

@@ -4,7 +4,7 @@
 \alias{col_line3}
 \title{Plot coloured line(s) in 3 dimensions with plot_ly}
 \usage{
-col_line3(x, y, z = 0, c)
+col_line3(x, y, z = 0, c, ...)
 }
 \arguments{
 \item{x}{name of object or variable containing data for x axis}
