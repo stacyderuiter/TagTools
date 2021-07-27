@@ -287,7 +287,7 @@ You've learned how to estimate tag orientation over time, as well as how to corr
 
 Congrats! You made it through this vignette. 
 
-*If you'd like to continue working through these vignettes, consider `complementary-filtering`. In it, you'll look at acceleration data, and consider quick changes in acceleration (high-frequency acceleration) versus slower changes (low-frequency acceleration) to interpret an animal's behavior.* 
+*If you'd like to continue working through these vignettes, consider `acceleration-filtering`. In it, you'll look at acceleration data, and consider quick changes in acceleration (high-frequency acceleration) versus slower changes (low-frequency acceleration) to interpret an animal's behavior.* 
 
 ***
 

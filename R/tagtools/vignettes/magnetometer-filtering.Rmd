@@ -6,7 +6,7 @@ output:
   html_document:
     code_folding: hide
 vignette: >
-  %\VignetteIndexEntry{more-filtering}
+  %\VignetteIndexEntry{magnetometer-filtering}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the `more-filtering` vignette! Thanks for getting some time to know our package---we hope it's, thus far, all you've dreamed it would be.
+Welcome to the `magnetometer-filtering` vignette! Thanks for getting some time to know our package---we hope it's, thus far, all you've dreamed it would be.
 
 This vignette will probably be more insightful if you complete it after `complementary-filtering` and/or `jerk-transients`, but you are welcome to try it regardless. In this vignette, you will use a complementary filter to separate magnetometer data into low and high frequencies. This is similar to what we do in `complementary-filtering` with acceleration data. 
 
@@ -30,7 +30,7 @@ These practicals all assume that you have R/Rstudio installed on your machine, s
 Additionally, be careful when copy-pasting special characters such as \_underscores\_ and 'quotes'. If you get an error, one thing to check is that you have just a single, simple underscore, and `'straight quotes'`, whether `'single'` or `"double"` (rather than “smart quotes”). 
 
 # Setup
-If you've done `complementary-filtering` *or* `jerk-transients` **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
+If you've done `acceleration-filtering` *or* `jerk-transients` **within the same R session**, skip down to [Spoilers]. If, within the same R session, you've done *both*, skip to [Complementary Filter for Magnetometer]. If not, you'll want to do this section to load the necessary data, and take a look at it. 
 
 For these vignettes we will use data from a suction cup tag attached to the back of a beaked whale. The data is in `testset1`. This dataset is built into the `tagtools` package, so you can access it using `system.file`. 
 
@@ -57,10 +57,10 @@ plott(X = list(Depth = bw$P, Acc = bw$A, Mag = bw$M))
 This dataset contains a deep dive followed by a shallow dive. We want to infer the function of these by looking for locomotion effort and sudden changes in acceleration that could be indicative of prey capture attempts. We are also going to look for changes in swimming gait.
 
 # Spoilers
-If you've done both `complementary-filtering` AND `jerk-transients` in the same R session, skip down to [Complementary Filter for Magnetometer]. If not, you'll want to do this section. We'll do a bunch of spoilers from these two vignettes so that we have the objects we need. Paste all this code in, and it shouldn't mess with what you already had, whether you've done one or the other.
+If you've done both `acceleration-filtering` AND `jerk-transients` in the same R session, skip down to [Complementary Filter for Magnetometer]. If not, you'll want to do this section. We'll do a bunch of spoilers from these two vignettes so that we have the objects we need. Paste all this code in, and it shouldn't mess with what you already had, whether you've done one or the other.
 
 ```{r, echo = TRUE, eval = TRUE}
-# stuff from complementary-filtering
+# stuff from acceleration-filtering
 fc = 0.267032715030423 # filter cut-off frequency
 Af <- comp_filt(bw$A, fc = fc) # filtering acceleration data
 Alow <- Af[[1]] # low-frequency acceleration
@@ -79,7 +79,7 @@ Jd <- njerk(Ad) # decimated jerk
 ```
 
 # Complementary Filter for Magnetometer
-Let's get started! Try applying the complementary filter to the magnetometer data, `bw$M`, and then plot the high frequency magnetometer data for the two intervals of swimming that you might have looked at in the Locomotion style section of `complementary-filtering`.
+Let's get started! Try applying the complementary filter to the magnetometer data, `bw$M`, and then plot the high frequency magnetometer data for the two intervals of swimming that you might have looked at in the Locomotion style section of `acceleration-filtering`.
 
 ```{r, echo = TRUE, eval = TRUE}
 Mf <- comp_filt(bw$M, fc = fc) 
@@ -103,10 +103,10 @@ plott(X = list(`Mh Interval 1` = Mh1, `Mh interval 2` = Mh2), fsx = sampling_rat
 
 </div>
 
-How do the magnetometer signals compare to the same intervals in the accelerometer (`Ah1` and `Ah2`)? Either hearken back to `complementary-filtering` or open the following:
+How do the magnetometer signals compare to the same intervals in the accelerometer (`Ah1` and `Ah2`)? Either hearken back to `acceleration-filtering` or open the following:
 
 ```{r, echo = TRUE, eval = FALSE}
-# Spoilers from complementary-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
+# Spoilers from acceleration-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
 plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rate)
 ```
 
@@ -114,7 +114,7 @@ plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rat
 <div id="plott_Ah1Ah2" class="collapse">
 
 ```{r, echo = FALSE, eval = TRUE}
-# Spoilers from complementary-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
+# Spoilers from acceleration-filtering. If you want to see how the accelerometer signals in these time intervals look, here's the code. 
 plott(X = list(`Ah Interval 1` = Ah1, `Ah interval 2` = Ah2), fsx = sampling_rate)
 ```
 

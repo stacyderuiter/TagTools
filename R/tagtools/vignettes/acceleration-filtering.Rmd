@@ -1,12 +1,12 @@
 ---
-title: "Complementary filtering: low & high-frequency, acceleration style"
+title: "Complementary filtering for acceleration: low- & high-frequency"
 author: "tagtools project team"
 date: "`r Sys.Date()`"
 output: 
   html_document:
     code_folding: hide
 vignette: >
-  %\VignetteIndexEntry{complementary-filtering}
+  %\VignetteIndexEntry{acceleration-filtering}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 require(tagtools)
 ```
 
-Welcome to the `complementary-filtering` vignette! Thanks for taking some time to learn our package; we hope it's, thus far, all you've dreamed it would be. 
+Welcome to the `acceleration-filtering` vignette! Thanks for taking some time to learn our package; we hope it's, thus far, all you've dreamed it would be. 
 
 In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you'll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and locomotion (high frequency), in order to gain insight about the movements of a beaked whale. 
 
@@ -304,7 +304,7 @@ You've learned how to separate low- and high-frequency acceleration data with a 
 
 Aaaaand... congrats! You've aced this vignette. 
 
-*If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `more-filtering`. These three vignettes all go together. Perhaps the most logical ordering is `complementary-filtering`, then `jerk-transients`, then `more-filtering`. But, you do what suits your fancy/data!*
+*If you'd like to continue working through these vignettes, `jerk-transients` is a very logical choice. So is `magnetometer-filtering`. These three vignettes all go together. Perhaps the most logical ordering is `acceleration-filtering`, then `jerk-transients`, then `magnetometer-filtering`. But, you do what suits your fancy/data!*
 
 ***
 

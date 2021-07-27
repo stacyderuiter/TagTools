@@ -189,7 +189,7 @@ Now, if you have done `complementary-filtering` recently, here is one more quest
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_behav_shallow_dive"> _Show/Hide Answers_ </button>  
 <div id="ans_behav_shallow_dive" class="collapse">
-*We know now that the whale is likely not foraging in the shallow dive, since the sudden movements (jerk peaks) are happening only in the earlier dive. Additionally, though the animal is not accelerating quickly (striking/flinching), it is still moving (locomotion/propulsion). So it seems more likely to be traveling than resting. *
+*We know now that the whale is likely not foraging in the shallow dive, since the sudden movements (jerk peaks) are happening only in the earlier dive. Additionally, though the animal is not accelerating quickly (striking/flinching), it is still moving (locomotion). So it seems more likely to be traveling than resting. *
 </div>
 
 # Review
@@ -198,7 +198,7 @@ You've learned how to accentuate quick movements of an animal using jerk, and us
 
 And with that, congrats! You bounced through this vignette. 
 
-*If you'd like to continue working through these vignettes, `complementary-filtering` and `more-filtering` are very logical choices. You'll gain more insight into the same dataset, and other ways of analysing locomotion, by doing these.*
+*If you'd like to continue working through these vignettes, `acceleration-filtering` and `magnetometer-filtering` are very logical choices. You'll gain more insight into the same dataset, and other ways of analysing locomotion, by doing these.*
 
 ***
 
