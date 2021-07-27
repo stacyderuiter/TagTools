@@ -28,7 +28,7 @@ def datenum(datestr=None, formatMat=None, formatPy=None):
         return dn
     
     if formatMat and isinstance(formatMat, str):
-        from datestrformat import m2py
+        from tagiofuns.datestrformat import m2py
         formatPy = m2py(formatMat)
         
     if formatPy and isinstance(formatPy, str):
