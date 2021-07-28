@@ -29,6 +29,7 @@ Imports:
     magrittr,
     matlab,
     ncdf4,
+    pander,
     plotly,
     pracma,
     readr,
