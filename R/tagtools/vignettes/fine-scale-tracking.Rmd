@@ -41,30 +41,35 @@ Load the data set `testset7.nc`. This dataset is built into the `tagtools` packa
 Then, check the contents of the data structures to answer the following questions. (See the code below if and only if you need a hint.)
 
 - What species did the data come from, and where did the data come from?
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_quickie1"> _Show/Hide Answers_ </button>  
 <div id="ans_quickie1" class="collapse">
 *A humpback whale, *Megaptera novaeangliae*.*
 </div>
 
 - What is the sampling rate of the accelerometer data?
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_quickie2"> _Show/Hide Answers_ </button>  
 <div id="ans_quickie2" class="collapse">
 *1 Hz.*
 </div>
 
 - What processing steps have already been applied to the magnetometer data?
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_quickie3"> _Show/Hide Answers_ </button>  
 <div id="ans_quickie3" class="collapse">
 *sens_struct, do_cal, tag2animal, crop_to, decdc(5)... So, it has been converted to a sensor structure, calibrated, put into the animal frame, cropped to a certain segment of data, and decimated by a factor of five (as a result, the sampling rate is now the same as the acceleration data, 1 Hz).*
 </div>
 
 - What is in the 3 columns in the POS (GPS position) data?
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_quickie4"> _Show/Hide Answers_ </button>  
 <div id="ans_quickie4" class="collapse">
 *The three columns are the time, the latitude, and the longitude.*
 </div>
 
 - Which frame is the accelerometer data in? Which frame is the magnetometer data in? 
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#ans_quickie5"> _Show/Hide Answers_ </button>  
 <div id="ans_quickie5" class="collapse">
 *The accelerometer data is oriented in the animal frame, and so is the magnetometer data.*
@@ -399,7 +404,7 @@ knitr::include_graphics('tortuosity-within-dive.png')
 ```
 </div>
 
-If you are done and want a challenge, try colouring the track by the absolute roll angle instead of the depth. You could use col_line3 to plot the 3-d positions (i.e.,  `FT[,2]`, `FT[,1]`, and `d7\$P\$data`), and then colour the plot by absolute roll angle remembering to convert from radians to degrees.
+If you are done and want a challenge, try colouring the track by the absolute roll angle instead of the depth. You could use col_line3 to plot the 3-d positions (i.e.,  `FT$easting`, `FT$northing`, and `d7\$P\$data`), and then colour the plot by absolute roll angle remembering to convert from radians to degrees.
 
 ```{r, echo = TRUE, eval = FALSE}
 pitch_roll <- a2pr(d7$Aa)
