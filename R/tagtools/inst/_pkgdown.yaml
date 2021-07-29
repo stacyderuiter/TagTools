@@ -1,0 +1,20 @@
+template:
+  params:
+    bootswatch: flatly
+reference:
+- title: "Tools for high-resolution movement-sensor tags"
+  desc: >
+    Functions for working with data from biologging tags with high-resolution movement sensors
+articles:
+- title: Practicals & Examples
+destination: ../../docs
+authors:
+  Stacy DeRuiter:
+  Mark Johnson:
+  Samuel Fynewever:
+  Racheal Tejevbo:
+  David Sweeney:
+  Ye Joo McNamara-Oh:
+  Tiago Marques:
+  Danuta Wisniewska:
+url: https://stacyderuiter.github.io/TagTools

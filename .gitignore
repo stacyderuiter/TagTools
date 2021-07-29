@@ -56,8 +56,9 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/
-_pkgdown.yaml
+# list these files/dirs here IF we move to using gh-pages branch later
+# docs/
+# _pkgdown.yaml
 
 # translation temp files
 po/*~
