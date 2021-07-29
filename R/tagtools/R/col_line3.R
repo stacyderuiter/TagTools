@@ -6,7 +6,7 @@
 #' @param z name of object or variable containing data for z axis
 #' @param c name of object or variable by which to color 
 #' @param ... Additional inputs for plot_ly()
-#' @result a plot_ly() graphics object
+#' @return a plot_ly() graphics object
 #' @examples 
 #' col_line3(1:20, 1:20, 1:20, 1:20)
 #' @export

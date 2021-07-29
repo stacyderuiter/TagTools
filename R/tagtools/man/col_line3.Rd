@@ -17,6 +17,9 @@ col_line3(x, y, z = 0, c, ...)
 
 \item{...}{Additional inputs for plot_ly()}
 }
+\value{
+a plot_ly() graphics object
+}
 \description{
 This function is used to plot three dimensional lines with segments colored. It may be just as simple to use plotly::plot_ly() directly.
 }
