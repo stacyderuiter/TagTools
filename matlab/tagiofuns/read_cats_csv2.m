@@ -32,7 +32,9 @@ function    [V,HDR,EMPTY] = read_cats_csv(fname,maxsamps)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     last modified: 21 July 2017
+%     last modified: 29 July 2021 by dmw: changed the way empty fields are
+%     handled to accommodate sparse GPS data
+%
 
 CHNK = 1e7 ;
 MAXSIZE = 30e6 ;
