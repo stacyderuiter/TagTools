@@ -1,7 +1,21 @@
 Package: tagtools
 Title: Tools for Working with Data from High-Resolution Biologging Tags
 Version: 0.0.0.9000
-Authors@R: person("Stacy", "DeRuiter", email = "sld33@calvin.edu", role = c("aut", "cre"))
+Authors@R: c(person("Stacy", "DeRuiter", 
+            email = "sld33@calvin.edu", 
+            role = c("aut", "cre")),
+            person("Mark", "Johnson",
+            role = c("aut", "cre")),
+            person("David", "Sweeney",
+            role = "aut"),
+            person("Ye Joo", "McNamara-Oh",
+            role = "aut"),
+            person("Samuel", "Fynewever",
+            rolw = "aut"),
+            person("(Oghenkevwe) Racheal", "Tejevbo",
+            role = "aut"),
+            person("Tiago", "Marques",
+            role = "aut"))
 Description: High-resolution movement-sensor tags typically include accelerometers 
     to measure body posture and sudden movements or changes in speed, 
     magnetometers to measure direction of travel, and pressure sensors
