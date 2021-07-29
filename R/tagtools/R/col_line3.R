@@ -36,7 +36,7 @@ col_line3 <- function(x, y, z = 0, c, ...) {
     z_formula <- z
   }
   
- if (!plyr::is.formula(c)){
+ if (!inherits(c, 'formula')){
    color_formula <- stats::as.formula(paste("~", quote(c))) 
  }else{
    color_formula <- c
