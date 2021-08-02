@@ -105,6 +105,8 @@ mindepth <- 50
 dt <- find_dives(ZPCr, mindepth=mindepth) 
 ```
 
+Going forward, the code will have assumed a minimum depth of $50 m$.
+
 5. Now use `dive_stats` to compute summary statistics for all the dives
 you detected. 
 

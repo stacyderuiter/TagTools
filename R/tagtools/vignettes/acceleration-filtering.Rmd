@@ -21,7 +21,7 @@ require(tagtools)
 
 Welcome to the `acceleration-filtering` vignette! Thanks for taking some time to learn our package; we hope it's, thus far, all you've dreamed it would be. 
 
-In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you'll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and locomotion (high frequency), in order to gain insight about the movements of a beaked whale. 
+In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you'll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and strikes/flinches (high frequency), in order to gain insight about the movements of a beaked whale. 
 
 *Estimated time for this practical: 20 minutes.*
 
