@@ -1,0 +1,5 @@
+template:
+  params:
+    bootswatch: flatly
+destination: ../../docs
+url: https://stacyderuiter.github.io/TagTools

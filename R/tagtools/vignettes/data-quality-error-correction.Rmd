@@ -206,7 +206,7 @@ Now look again at the inclination angle (bottom plot). Chances are, it doesn't l
 If the field strength is okay for `A` and `M` but the inclination angle is wrong, this is a strong indication that the magnetometer and accelerometer axes don't match. Assuming that the accelerometer axes are correct, I found by trial and error that the magnetometer axes are mapped as follows:
 
 ```{r, echo = FALSE, eval = TRUE}
-axis_table <- tibble::tibble(`Sensor axis` = c('x', 'y', 'z'),
+axis_table <- data.frame(`Sensor axis` = c('x', 'y', 'z'),
                          `Tag axis` = c('-x', 'z', 'y'))
 pander::pander(axis_table)
 ```
