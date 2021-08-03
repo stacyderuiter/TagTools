@@ -94,12 +94,7 @@ end
 if nargin<3,
     txtfields = '^System error$|^Flags$|^GPS$|^CC Status$' ;
 else
-    tf = [];
-    for i = 1:length(txtfields)
-        tf = [tf,'^',txtfields{i},'$|'];
-    end
-    tf(end)=[];
-    txtfields = tf;
+    txtfields = ['^',strjoin(txtfields,'$|^'),'$'];
 end
 
 ktx = find(~cellfun(@isempty,regexpi(HDR,txtfields))) ;
