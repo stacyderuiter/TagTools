@@ -127,7 +127,7 @@ str(Af, max.level = 1)
 <div id="Af" class="collapse"> 
 
 ```{r, eval = TRUE, echo = FALSE}
-fc <- 0.3814753   		# your value for fc in Hz, a number, without quotes
+fc <- 0.3814753*.7   		# your value for fc in Hz, a number, without quotes
 Af <- comp_filt(bw$A, fc = fc) 
 str(Af, max.level = 1)
 ```

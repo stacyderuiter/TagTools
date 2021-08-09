@@ -7,9 +7,10 @@
 Meta
 
 # produced vignettes
-vignettes/*.html
-vignettes/*.pdf
-vignettes/*.R
+R/tagtools/doc/*
+R/tagtools/vignettes/*.html
+R/tagtools/vignettes/*.pdf
+R/tagtools/vignettes/*.R
 
 /sbf5calvin/*
 sbf5calvin/*
@@ -35,10 +36,6 @@ sbf5calvin/*
 
 # RStudio files
 .Rproj.user/
-
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
