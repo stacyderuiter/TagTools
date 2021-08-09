@@ -63,7 +63,7 @@ devtools::install_github('stacyderuiter/TagTools/R/tagtools', build_vignettes = 
 ```
 
 # Introductory vignettes
-If you're new to the package, these vignettes are for you! Anyone could benefit from reviewing some of the basics of loading data,  
+If you're new to the package, these vignettes are for you! Anyone could benefit from reviewing some of the basics of making sure the package is loaded correctly, loading data, converting between (sensor) data structures and vectors, and using our plotter function, `plott`. 
 
 ## *0. Overview (this vignette!)*
 
@@ -274,7 +274,7 @@ col_line3(x = FT$easting, y = FT$northing,
 
 This vignette starts with a quick review, where you'll find and correct for a few different sources of error in some depth data. Then, you'll locate the beginnings and endings of dives, and plot these beginnings and endings on a depth profile using the function `find_dives`. You'll also do some simple analysis, like calculating the mean dive depth.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 MN_file_path <- system.file("extdata", "mn12_186a_raw.nc", package = "tagtools", mustWork = TRUE)
 MN <- load_nc(MN_file_path)
 Pc = crop_to(X = MN$P, sampling_rate = 1, tcues = c(0, 25306), T = NULL)
