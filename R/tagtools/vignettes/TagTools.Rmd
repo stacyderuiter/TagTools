@@ -6,7 +6,7 @@ output:
   html_document:
     code_folding: hide
 vignette: >
-  %\VignetteIndexEntry{overview}
+  %\VignetteIndexEntry{TagTools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
