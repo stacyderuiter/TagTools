@@ -329,6 +329,12 @@ Great work! You've learned how to use `find_dives`.
 
 *If you'd like to continue working through these practicals, `dive-stats` might be a good option if you're especially interested in analyzing individual dives. Otherwise, consider `fine-scale-tracking` or `mahalanobis-distance`.* 
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('dive-stats')
+vignette('fine-scale-tracking')
+vignette('mahalanobis-distance')
+```
+
 ***
 
 Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)

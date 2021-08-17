@@ -289,6 +289,10 @@ Congrats! You made it through this vignette.
 
 *If you'd like to continue working through these vignettes, consider `acceleration-filtering`. In it, you'll look at acceleration data, and consider quick changes in acceleration (high-frequency acceleration) versus slower changes (low-frequency acceleration) to interpret an animal's behavior.* 
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('acceleration-filtering')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

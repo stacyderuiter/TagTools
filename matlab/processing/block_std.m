@@ -15,7 +15,9 @@ function    [Y,t] = block_std(X,n,nov)
 %     i.e., n+(p-1)*(n-nov) < m
 %
 %		Example:
-%		 TBD 
+%		 sampleMatrix = [1 2 3; 4 5 6; 7 8 9]
+%        block_std(sampleMatrix, 3, 1)
+%        % ans = [3 3 3]
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

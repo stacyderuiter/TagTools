@@ -217,6 +217,11 @@ You've learned a couple of ways to use `dive-stats`. Well done!
 
 *If you'd like to continue working through these practicals, consider `rotation-test` or `fine-scale-tracking` .*
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('rotation-test')
+vignette('fine-scale-tracking')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

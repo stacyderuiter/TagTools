@@ -310,6 +310,10 @@ Great work! You've completed this vignette.
 
 *If you'd like to continue working through these vignettes, `tag-to-whale-frame` is probably a good option. It deals with estimating and correcting the orientation of a tag on an animal. This vignette will use tag data that *are not *aligned to the animal's body axes, e.g., because the tag was applied to a free-moving whale.*
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('tag-to-whale-frame')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

@@ -433,6 +433,11 @@ And that's it! Fantastic work with this vignette.
 
 *If you'd like to continue working through these vignettes, you could take a stab at `find-dives` or `dive-stats`. These deal with the functions find\_dives and dive\_stats, respectively.*
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('find-dives')
+vignette('dive-stats')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

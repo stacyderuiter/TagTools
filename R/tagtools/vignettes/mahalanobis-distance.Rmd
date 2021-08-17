@@ -98,8 +98,13 @@ plott(X=list(MahalanobisDist = MD$dist), fsx = zc$A$sampling_rate)
 
 You've learned to use `m_dist` to calculate Mahalanobis distance with some real-world data. Well done!
 
-*If you'd like to continue working through these vignettes, consider `Detectors`, `rotation-test`, or `fine-scale-tracking`.* 
+*If you'd like to continue working through these vignettes, consider `rotation-test` or `fine-scale-tracking`.* 
+
+```{r, echo = TRUE, eval = FALSE}
+vignette('rotation-test')
+vignette('fine-scale-tracking')
+```
 
 *** 
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

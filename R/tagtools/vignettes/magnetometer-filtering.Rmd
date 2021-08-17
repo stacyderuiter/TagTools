@@ -175,6 +175,10 @@ Fabulous work! You pranced all the way through this vignette.
 
 *If you'd like to continue working through these vignettes, `fine-scale-tracking` is a fairly logical option. In it, you'll consider dead-reckoned paths as a way to visualize how an animal might move, why this can lead to large errors, and how to correct for some of those errors.*
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('fine-scale-tracking')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

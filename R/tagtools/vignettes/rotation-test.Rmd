@@ -160,6 +160,10 @@ And with that, great work! Now some of the mystery is forever gone... but knowle
 
 *If you'd like to continue working through these practicals, consider `dive-stats`.*
 
+```{r, echo = TRUE, eval = FALSE}
+vignette('dive-stats')
+```
+
 ***
 
-Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for source code)
+Animaltags home pages: http://animaltags.org/ (old), https://animaltags.netlify.app/ (new), https://github.com/stacyderuiter/TagTools (for latest beta source code), https://stacyderuiter.github.io/TagTools/articles/TagTools (vignettes overview)

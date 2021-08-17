@@ -13,7 +13,9 @@ function    [Y,t] = block_rms(X,n,nov)
 %		mxn matrix, Y is pxn where p is the number of complete n-length blocks with 
 %		nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 %		Example:
-%		 TBD 
+%		 sampleMatrix = [1 2 3; 4 5 6; 7 8 9]
+%        block_rms(sampleMatrix, 3, 1)
+%        % ans = [4.9604 5.5678 5.4807]
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
