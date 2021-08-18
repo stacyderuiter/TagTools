@@ -1,11 +1,12 @@
-pandoc: 2.11.4
+pandoc: 2.11.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  Detectors: Detectors.html
+  TagTools: TagTools.html
   acceleration-filtering: acceleration-filtering.html
   data-quality-error-correction: data-quality-error-correction.html
   detectors-draft: detectors-draft.html
-  Detectors: Detectors.html
   dive-stats: dive-stats.html
   find-dives: find-dives.html
   fine-scale-tracking: fine-scale-tracking.html
@@ -14,10 +15,9 @@ articles:
   load-tag-data: load-tag-data.html
   magnetometer-filtering: magnetometer-filtering.html
   mahalanobis-distance: mahalanobis-distance.html
-  overview: overview.html
   plots-and-cropping: plots-and-cropping.html
   rotation-test: rotation-test.html
   tag-to-whale-frame: tag-to-whale-frame.html
   vectors-vs-structures: vectors-vs-structures.html
-last_built: 2021-07-29T18:52Z
+last_built: 2021-08-18T14:14Z
 

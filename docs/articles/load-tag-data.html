@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Detectors.html">Detectors</a>
+    </li>
+    <li>
+      <a href="../articles/TagTools.html">Tagtools vignettes: overview and introduction</a>
+    </li>
+    <li>
       <a href="../articles/acceleration-filtering.html">Complementary filtering for acceleration: low- &amp; high-frequency</a>
     </li>
     <li>
@@ -61,9 +67,6 @@
     </li>
     <li>
       <a href="../articles/detectors-draft.html">detectors draft</a>
-    </li>
-    <li>
-      <a href="../articles/Detectors.html">Detectors</a>
     </li>
     <li>
       <a href="../articles/dive-stats.html">Using dive_stats</a>
@@ -90,9 +93,6 @@
       <a href="../articles/mahalanobis-distance.html">Mahalanobis distance</a>
     </li>
     <li>
-      <a href="../articles/overview.html">Tagtools vignettes: overview and introduction</a>
-    </li>
-    <li>
       <a href="../articles/plots-and-cropping.html">Plots and cropping</a>
     </li>
     <li>
@@ -117,13 +117,13 @@
 
       
 
-      </header><script src="load-tag-data_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="load-tag-data_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Load tag data</h1>
                         <h4 class="author">tagtools project team</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 class="date">2021-08-18</h4>
       
       
       <div class="hidden name"><code>load-tag-data.Rmd</code></div>
@@ -154,12 +154,12 @@
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/Library/Frameworks/R.framework/Versions/4.1/Resources/library/tagtools/extdata/"</span>) <span class="co"># depending on your system, this may set your working directory to the folder containing the built-in datasets</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:\Users\Sam Fynewever\Program Files"</span>) <span class="co"># on Windows, paths look like this, with a letter and colon at the beginning, then backslashes between folders</span></span></code></pre></div>
 <p>Additionally, your working directory should be visible at the top of the console:</p>
-<p><img src="../../../../../../Stacy%20DeRuiter/Dropbox/TagTools/R/tagtools/vignettes/working_dir.png" width="948"></p>
+<p><img src="working_dir.png" width="948"></p>
 <p>Now, if you have navigated to your working directory in your file finder and/or ensured that the dataset file, <code>cats_test_raw.nc</code>, is located there (whether by changing your working directory or copy-pasting the file into your working directory), you can run load_nc “by hand”—see code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">MN</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_nc.html">load_nc</a></span><span class="op">(</span><span class="st">"cats_test_raw"</span><span class="op">)</span> <span class="co"># no .nc required this way!</span></code></pre></div>
 <p>All right! Whichever way you have just run <code>MN &lt;- load_nc(...)</code>, this creates an animaltag list object <code>MN</code> in your workspace. You can view it in the Environment tab if working in RStudio.</p>
-<p><img src="../../../../../../Stacy%20DeRuiter/Dropbox/TagTools/R/tagtools/vignettes/MN_in_environment.png" width="485"></p>
+<p><img src="MN_in_environment.png" width="485"></p>
 <p>Or in the command line/console, type:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">MN</span><span class="op">)</span>
@@ -373,7 +373,7 @@ Show/Hide Results
 Show/Hide Results
 </button>
 <div id="system_file_researchers" class="collapse">
-<pre><code>#&gt; [1] "C:/Users/Stacy DeRuiter/Documents/R/win-library/4.1/tagtools/extdata/researchers.csv"</code></pre>
+<pre><code>#&gt; [1] "/private/var/folders/q4/k126wrt15cn2f1c8fmkthng80000gp/T/RtmpPlXhU2/temp_libpath1246ba3cb04f/tagtools/extdata/researchers.csv"</code></pre>
 </div>
 <p>Then, navigate to the folder and make any edits that you would like. You may need to restart R before they will take effect.</p>
 <p>Once you have succeeded in running <code><a href="../reference/make_info.html">make_info()</a></code>, you can view the results:</p>
@@ -438,7 +438,7 @@ Show/Hide Results
 #&gt; [1] "http://www.cats.is/"
 #&gt; 
 #&gt; $dtype_datetime_made
-#&gt; [1] "2021-07-29 18:55:24"
+#&gt; [1] "2021-08-18 14:18:02"
 #&gt; 
 #&gt; $dtype_format
 #&gt; [1] ".csv"
@@ -625,7 +625,7 @@ Show/Hide Results
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/metadata_editor.html">metadata_editor</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>A web browser window will open in which you can fill in metadata fields for your tag.</p>
-<p><img src="../../../../../../Stacy%20DeRuiter/Dropbox/TagTools/R/tagtools/vignettes/meta_editor.png" width="630"></p>
+<p><img src="meta_editor.png" width="630"></p>
 <p>Depending on your individual platform, this editor may not have any of the tabs open. Simply click on one of the tabs (Device Information, Tag and Animal Information, etc.) to open it.</p>
 <p>Perhaps you don’t currently have metadata on hand to fill in the fields yourself. Or, at some point you might already have metadata stored in a CSV spreadsheet, <em>in the specific format that this reader recognizes</em> (it will not magically pick out metadata saved in a CSV in any order of your choosing). In either case, the function that reads metadata for you from a <code>.csv</code> file is useful. There should be a .csv spreadsheet with metadata in your workshop materials that you can use for now. Upload it with “Browse”, then click “Open from CSV” to harvest the data. This will automate the data entry process for you.</p>
 <p>When you are done, scroll to the bottom of the editor, fill in a file name under which to save your work, and click “Save”.</p>
@@ -662,7 +662,7 @@ Show/Hide Results
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">'plots-and-cropping'</span>, package <span class="op">=</span> <span class="st">'tagtools'</span><span class="op">)</span></code></pre></div>
 <hr>
-<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for latest beta source code)</p>
+<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for latest beta source code), <a href="https://stacyderuiter.github.io/TagTools/articles/TagTools" class="uri">https://stacyderuiter.github.io/TagTools/articles/TagTools</a> (vignettes overview)</p>
 </div>
   </div>
 
