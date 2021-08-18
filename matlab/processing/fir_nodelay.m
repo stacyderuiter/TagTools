@@ -49,7 +49,7 @@ function    [y,h] = fir_nodelay(x,n,fp,qual)
 %		Example:
 %		 % make a waveform with two harmonics - one at 1/20 and another at 1/4 of the sampling rate.
 %		 x = sin(2*pi*0.05*(1:100)')+cos(2*pi*0.25*(1:100)');
-%		 y = fir_nodelay(x,30,0.2)
+%		 y = fir_nodelay(x,30,0.2);
 %		 plot([x,y])
 % 	    returns: The input signal has the first and fifth harmonic. Applying the low-pass filter
 %		 removes most of the fifth harmonic so the output appears as a sinewave except for the first

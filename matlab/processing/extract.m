@@ -19,7 +19,11 @@ function  X = extract(x,fs,tst,ted)
 %		be replaced with NaN in X. 
 %
 %		Example:
-%		 X = extract(x,fs,tintvl)
+%        load_nc('testset1')
+%        fs = P.sampling_rate
+%        tst = 0
+%        ted = 5
+%		 X = extract(P,fs,tst,ted)
 % 	    returns: X=.
 %
 %     Valid: Matlab, Octave

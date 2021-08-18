@@ -30,14 +30,14 @@ function     v = depth_rate(p,fs,fc)
 %		The group delay of the filters is removed.
 %
 %		Example:
-%		 loadnc('testset1')
+%		 load_nc('testset1')
 %		 v = depth_rate(P);
 %		 plott(v,P.sampling_rate)
 % 	    % plots the vertical speed for the example dive profile.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 10 May 2017
+%     Last modified: 18 August 2021
 
 v = [] ;
 if nargin<1,

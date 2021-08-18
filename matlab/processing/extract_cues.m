@@ -2,7 +2,7 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 
 %     [X,cues] = extract_cues(x,cues,len) % x is sensor structure
 %     or
-%     [X,cues] = extract_cues(x,fs,cues,len) % x is a vecotr or matrix
+%     [X,cues] = extract_cues(x,fs,cues,len) % x is a vector or matrix
 %
 %     Extract multiple sub-samples of data from a vector or matrix. 
 %
@@ -11,7 +11,9 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 %      If x (or the data inside x) is a matrix, each column is treated as 
 %      a separate measurement vector.
 %     fs is the sampling rate in Hz of the data in x. fs is only needed if
-%      x is not a sensor structure.
+%      x is not a sensor structure. In fact, if x is a sensor structure and
+%      fs is input anyway, this will not work. So, DO NOT input fs if
+%      you're inputting data from a sensor structure for x.
 %     cues defines the start time in seconds of the intervals to be extracted from x.
 %     len is the length of the interval to extract in seconds. This should be a scalar.
 %
@@ -26,7 +28,12 @@ function  [X,cues] = extract_cues(x,fs,cues,len)
 %		Output sampling rate is the same as the input sampling rate.
 %
 %		Example:
-%		 X = extract_cues()
+%
+%        load_nc('testset1')
+%        sampling_rate = P.sampling_rate
+%        timecues = [0 120 300 600]
+%        length = 30
+%		 X = extract_cues(P, sampling_rate, timecues, length)
 % 	    returns: TBD
 %
 %     Valid: Matlab, Octave

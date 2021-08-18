@@ -25,13 +25,13 @@ function    Xf = comp_filt(X,fs,fc)
 %
 %	  Example:
 %		loadnc('testset1')
-%		Xf = comp_filt(A,[0.18 0.8])
-%		plott(P,'r',Xf{1},A.fs,,Xf{2},A.fs,Xf{3},A.fs)
+%		Xf = comp_filt(A,[0.18 0.8]);
+%		plott(P,'r',Xf{1},A.sampling_rate,Xf{2},A.sampling_rate,Xf{3},A.sampling_rate)
 % 	   % plots a dive profile and three filtered versions of A: low, mid and high frequency.
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
-%    Last modified: 2 July 2017
+%    Last modified: 18 August 2021
 
 Xf = [] ;
 if nargin<2,

@@ -17,7 +17,7 @@ function    T = find_dives(p,varargin)
 %     fs is the sampling rate of the sensor data in Hz (samples per second). This is
 %		 only needed if p is not a sensor structure.
 %     mindepth is the threshold in meters at which to recognize a dive or flight.
-%		 Dives shallow or flights lower than mindepth will be ignored.
+%		 Dives shallower or flights lower than mindepth will be ignored.
 %     surface is the threshold in meters at which the animal is presumed to have
 %	    reached the surface. Default value is 1. A smaller value can be used if the
 %		 dive/altitude data are very accurate and you need to detect shallow dives/flights.
@@ -37,7 +37,7 @@ function    T = find_dives(p,varargin)
 %		use T.start(k). 
 %
 %		Example:
-%		 loadnc('testset3')
+%		 load_nc('testset3')
 %		 T = find_dives(P,300)
 % 	    returns a structure with fields including:
 %			T.start = [431,4053,7608,11313]'

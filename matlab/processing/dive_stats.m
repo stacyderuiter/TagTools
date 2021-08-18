@@ -2,7 +2,7 @@ function Y = dive_stats(P, dive_cues, X, fs, prop, angular, X_name)
 
 % Compute summary statistics for dives or flights, given a depth/altitude profile and a series of dive/flight start and end times
 % 
-% In addition to the maximum excursion and duration, dive_stats} 
+% In addition to the maximum excursion and duration, dive_stats 
 % divides each excursion into three phases:
 % "to" (descent for dives, ascent for flights), "from" (ascent for dives, descent for flights),
 % and "destination". 
@@ -70,6 +70,17 @@ function Y = dive_stats(P, dive_cues, X, fs, prop, angular, X_name)
 %                                        % a vector sampled at fs Hz
 % Y = dive_stats(P, dive_cues, X, [],[],1) % two sensor data structures,
 %                                           % second one is angular data
+%
+% Standalone example:
+% load_nc('testset7');           
+% dive_cues = find_dives(P, 5); % get dive cues for dives deeper than 5 m
+% dive_cues_matrix = [dive_cues.start'; dive_cues.end']
+% Y = dive_stats(P, dive_cues_matrix'); % need to transpose the matrix
+%                                       % since we put it in two rows
+%                                       % but we need it in two columns
+% Y
+% 
+%
 % valid: Matlab, Octave
 % sld33@calvin.edu
 % Last modified: 7 Aug 2017

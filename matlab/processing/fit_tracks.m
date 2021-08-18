@@ -3,7 +3,7 @@ function    [D,C] = fit_tracks(P,T,D,fs)
 %      [D,C] = fit_tracks(P,T,D,fs)
 %      Simple track integration method to merge infrequent
 %      but accurate positions with a regularly sampled track
-%      that is not absolutely accurate.
+%      that is not absolutely accurate (or in fact very inaccurate).
 %
 %      Inputs:
 %      P is a two column matrix containing the anchor positions.
@@ -36,7 +36,17 @@ function    [D,C] = fit_tracks(P,T,D,fs)
 %       the input data.
 %
 %	    Example:
-%		   TBD
+%		   load_nc('testset7')
+%          sampling_rate = P.sampling_rate
+%          v = depth_rate(P);
+%          plott(P, sampling_rate, v, sampling_rate) % figure out vertical
+%                                       % speed for dead-reckoning
+%          spd = 1.7 % m/s vertical speed during ascent/descents
+%          DR = ptrack(A, M, spd);
+%          plot(DR(2,:), DR(1,:))
+%          title('Dead-Reckoned Track')
+%          xlabel('Easting, m')
+%          ylabel('Northing, m')
 %
 %      Valid: Matlab, Octave
 %      markjohnson@st-andrews.ac.uk
