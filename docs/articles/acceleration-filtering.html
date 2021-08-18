@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Detectors.html">Detectors</a>
+    </li>
+    <li>
+      <a href="../articles/TagTools.html">Tagtools vignettes: overview and introduction</a>
+    </li>
+    <li>
       <a href="../articles/acceleration-filtering.html">Complementary filtering for acceleration: low- &amp; high-frequency</a>
     </li>
     <li>
@@ -61,9 +67,6 @@
     </li>
     <li>
       <a href="../articles/detectors-draft.html">detectors draft</a>
-    </li>
-    <li>
-      <a href="../articles/Detectors.html">Detectors</a>
     </li>
     <li>
       <a href="../articles/dive-stats.html">Using dive_stats</a>
@@ -90,9 +93,6 @@
       <a href="../articles/mahalanobis-distance.html">Mahalanobis distance</a>
     </li>
     <li>
-      <a href="../articles/overview.html">Tagtools vignettes: overview and introduction</a>
-    </li>
-    <li>
       <a href="../articles/plots-and-cropping.html">Plots and cropping</a>
     </li>
     <li>
@@ -117,13 +117,13 @@
 
       
 
-      </header><script src="acceleration-filtering_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="acceleration-filtering_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Complementary filtering for acceleration: low- &amp; high-frequency</h1>
                         <h4 class="author">tagtools project team</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 class="date">2021-08-18</h4>
       
       
       <div class="hidden name"><code>acceleration-filtering.Rmd</code></div>
@@ -133,7 +133,7 @@
     
     
 <p>Welcome to the <code>acceleration-filtering</code> vignette! Thanks for taking some time to learn our package; we hope it’s, thus far, all you’ve dreamed it would be.</p>
-<p>In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you’ll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and locomotion (high frequency), in order to gain insight about the movements of a beaked whale.</p>
+<p>In this vignette, you will explore postural dynamics and specific acceleration in the time and frequency domains. Specifically, you’ll load in some new data and use complementary filters to separate intervals of movements into distinct frequency bands, i.e., posture (low frequency) and strikes/flinches (high frequency), in order to gain insight about the movements of a beaked whale.</p>
 <p><em>Estimated time for this practical: 20 minutes.</em></p>
 <p>These vignettes all assume that you have R/Rstudio installed on your machine, some basic experience working with them, and can execute provided code, making some user-specific changes along the way (e.g. to help R find a file you downloaded). We will provide you with quite a few lines. To boost your own learning, you would do well to try and write them before opening what we give, using this just to check your work.</p>
 <p>Additionally, be careful when copy-pasting special characters such as _underscores_ and ‘quotes’. If you get an error, one thing to check is that you have just a single, simple underscore, and <code>'straight quotes'</code>, whether <code>'single'</code> or <code>"double"</code> (rather than “smart quotes”).</p>
@@ -206,8 +206,8 @@ Show/Hide Results
 </button>
 <div id="Af" class="collapse">
 <pre><code>#&gt; List of 2
-#&gt;  $ lowpass : num [1:137976, 1:3] -1.33 -1.32 -1.31 -1.3 -1.28 ...
-#&gt;  $ highpass: num [1:137976, 1:3] -0.52 -0.454 -0.412 -0.405 -0.364 ...</code></pre>
+#&gt;  $ lowpass : num [1:137976, 1:3] -1.22 -1.22 -1.21 -1.19 -1.17 ...
+#&gt;  $ highpass: num [1:137976, 1:3] -0.624 -0.558 -0.516 -0.511 -0.471 ...</code></pre>
 </div>
 <p>The complementary filter returns a list containing two data matrices: the low-pass filtered data and the high-pass filtered data. Each of these is a three-column matrix because the filter is run on each column of the input data. So it is like you now have two accelerometers in the tag—one is only sensitive to low frequencies and the other is only sensitive to high frequencies. If you would like to get each matrix out of the cell array, do:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -319,7 +319,7 @@ Show/Hide Results
 <p>Aaaaand… congrats! You’ve aced this vignette.</p>
 <p><em>If you’d like to continue working through these vignettes, <code>jerk-transients</code> is a very logical choice. So is <code>magnetometer-filtering</code>. These three vignettes all go together. Perhaps the most logical ordering is <code>acceleration-filtering</code>, then <code>jerk-transients</code>, then <code>magnetometer-filtering</code>. But, you do what suits your fancy/data!</em></p>
 <hr>
-<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for source code)</p>
+<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for latest beta source code), <a href="https://stacyderuiter.github.io/TagTools/articles/TagTools" class="uri">https://stacyderuiter.github.io/TagTools/articles/TagTools</a> (vignettes overview)</p>
 </div>
   </div>
 

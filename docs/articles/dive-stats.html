@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Detectors.html">Detectors</a>
+    </li>
+    <li>
+      <a href="../articles/TagTools.html">Tagtools vignettes: overview and introduction</a>
+    </li>
+    <li>
       <a href="../articles/acceleration-filtering.html">Complementary filtering for acceleration: low- &amp; high-frequency</a>
     </li>
     <li>
@@ -61,9 +67,6 @@
     </li>
     <li>
       <a href="../articles/detectors-draft.html">detectors draft</a>
-    </li>
-    <li>
-      <a href="../articles/Detectors.html">Detectors</a>
     </li>
     <li>
       <a href="../articles/dive-stats.html">Using dive_stats</a>
@@ -90,9 +93,6 @@
       <a href="../articles/mahalanobis-distance.html">Mahalanobis distance</a>
     </li>
     <li>
-      <a href="../articles/overview.html">Tagtools vignettes: overview and introduction</a>
-    </li>
-    <li>
       <a href="../articles/plots-and-cropping.html">Plots and cropping</a>
     </li>
     <li>
@@ -117,13 +117,13 @@
 
       
 
-      </header><script src="dive-stats_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="dive-stats_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using dive_stats</h1>
                         <h4 class="author">tagtools project team</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 class="date">2021-08-18</h4>
       
       
       <div class="hidden name"><code>dive-stats.Rmd</code></div>
@@ -209,6 +209,7 @@ Show/Hide Results
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mindepth</span> <span class="op">&lt;-</span> <span class="co"># your chosen minimum depth here</span>
 <span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_dives.html">find_dives</a></span><span class="op">(</span><span class="va">ZPCr</span>, mindepth<span class="op">=</span><span class="va">mindepth</span><span class="op">)</span> </code></pre></div>
+<p>Going forward, the code will have assumed a minimum depth of <span class="math inline">\(50 m\)</span>.</p>
 <ol start="5" style="list-style-type: decimal">
 <li>Now use <code>dive_stats</code> to compute summary statistics for all the dives you detected.</li>
 </ol>
@@ -336,8 +337,11 @@ Show/Hide Results
 <a href="#review" class="anchor"></a>Review</h1>
 <p>You’ve learned a couple of ways to use <code>dive-stats</code>. Well done!</p>
 <p><em>If you’d like to continue working through these practicals, consider <code>rotation-test</code> or <code>fine-scale-tracking</code> .</em></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">'rotation-test'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">'fine-scale-tracking'</span><span class="op">)</span></code></pre></div>
 <hr>
-<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for source code)</p>
+<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for latest beta source code), <a href="https://stacyderuiter.github.io/TagTools/articles/TagTools" class="uri">https://stacyderuiter.github.io/TagTools/articles/TagTools</a> (vignettes overview)</p>
 </div>
   </div>
 

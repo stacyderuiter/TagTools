@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Detectors.html">Detectors</a>
+    </li>
+    <li>
+      <a href="../articles/TagTools.html">Tagtools vignettes: overview and introduction</a>
+    </li>
+    <li>
       <a href="../articles/acceleration-filtering.html">Complementary filtering for acceleration: low- &amp; high-frequency</a>
     </li>
     <li>
@@ -61,9 +67,6 @@
     </li>
     <li>
       <a href="../articles/detectors-draft.html">detectors draft</a>
-    </li>
-    <li>
-      <a href="../articles/Detectors.html">Detectors</a>
     </li>
     <li>
       <a href="../articles/dive-stats.html">Using dive_stats</a>
@@ -90,9 +93,6 @@
       <a href="../articles/mahalanobis-distance.html">Mahalanobis distance</a>
     </li>
     <li>
-      <a href="../articles/overview.html">Tagtools vignettes: overview and introduction</a>
-    </li>
-    <li>
       <a href="../articles/plots-and-cropping.html">Plots and cropping</a>
     </li>
     <li>
@@ -117,13 +117,13 @@
 
       
 
-      </header><script src="mahalanobis-distance_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="mahalanobis-distance_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Mahalanobis distance</h1>
                         <h4 class="author">tagtools project team</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 class="date">2021-08-18</h4>
       
       
       <div class="hidden name"><code>mahalanobis-distance.Rmd</code></div>
@@ -141,7 +141,7 @@
 <h1 class="hasAnchor">
 <a href="#what-is-mahalanobis-distance" class="anchor"></a>What is Mahalanobis distance?</h1>
 <p>Put concisely, Mahalanobis distance is a way of comparing how different some data is to what we would expect it to be like. By plotting more than one variable and seeing what the distribution is like graphically, we can determine more accurately how out-of-the-ordinary something is by computing the distance from that point to the centroid of the points. The picture below is taken from Schwarz et al. 2012, J. Neuroscience Methods 206(2): 120-131 and appears in the “Statistics for”Tag Data" lecture on the animaltags website.</p>
-<p><img src="../../../../../../Stacy%20DeRuiter/Dropbox/TagTools/R/tagtools/vignettes/mahalanobis-dist-illus.png" width="242"></p>
+<p><img src="mahalanobis-dist-illus.png" width="242"></p>
 <p>See <a href="https://blogs.sas.com/content/iml/2012/02/15/what-is-mahalanobis-distance.html">this blog post</a> for another explanation of Mahalanobis distance. You can also consult slides on this topic in the “Statistics for Tag Data” lecture on the animaltags website, <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> or <a href="https://animaltags.netlify.app" class="uri">https://animaltags.netlify.app</a> .</p>
 </div>
 <div id="load-inspect-data" class="section level1">
@@ -192,9 +192,12 @@ Show/Hide Results
 <h1 class="hasAnchor">
 <a href="#review" class="anchor"></a>Review</h1>
 <p>You’ve learned to use <code>m_dist</code> to calculate Mahalanobis distance with some real-world data. Well done!</p>
-<p><em>If you’d like to continue working through these vignettes, consider <code>Detectors</code>, <code>rotation-test</code>, or <code>fine-scale-tracking</code>.</em></p>
+<p><em>If you’d like to continue working through these vignettes, consider <code>rotation-test</code> or <code>fine-scale-tracking</code>.</em></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">'rotation-test'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">'fine-scale-tracking'</span><span class="op">)</span></code></pre></div>
 <hr>
-<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for source code)</p>
+<p>Animaltags home pages: <a href="http://animaltags.org/" class="uri">http://animaltags.org/</a> (old), <a href="https://animaltags.netlify.app/" class="uri">https://animaltags.netlify.app/</a> (new), <a href="https://github.com/stacyderuiter/TagTools" class="uri">https://github.com/stacyderuiter/TagTools</a> (for latest beta source code), <a href="https://stacyderuiter.github.io/TagTools/articles/TagTools" class="uri">https://stacyderuiter.github.io/TagTools/articles/TagTools</a> (vignettes overview)</p>
 </div>
   </div>
 
