@@ -14,11 +14,13 @@ function    [t,ti] = rms_track(T,fs,intvl)
 %
 %    Inputs:
 %    T contains the animal positions in a local horizontal plane. T has a row
-%     for each position and two columns: northing and easting. The
+%     for each position and two columns: northing and easting, i.e. T = [northing, easting]. The
 %     positions can be in any consistent spatial unit, e.g., metres, km,
 %     nautical miles, and are referenced to an arbitrary 0,0 location. 
 %     T cannot be in degrees as the distance equivalent to a degree latitude 
-%     is not the same as for a degree longitude.
+%     is not the same as for a degree longitude. Consider using lalo2llf to
+%     convert from latitude/longitude data to meters northing & easting in
+%     a local-level frame.
 %    fs is the sampling rate of the positions in Hertz (samples per
 %     second).
 %    intvl is the time interval in seconds over which tortuosity is
@@ -46,7 +48,13 @@ function    [t,ti] = rms_track(T,fs,intvl)
 %    perpendicular.
 %
 %	  Example:
-%		TBD
+%       load_nc('testset1')
+%       sampling_rate = P.sampling_rate;
+%		v = ocdr(P,A);
+%		s = sqrt(max(1-v.^2,0));
+%		Track = ptrack(A,M,s);
+%       intvl = [0 600]
+%       [RMStrackLength, RMStrackLengthScaled] = rms_track(Track, sampling_rate, intvl)
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk

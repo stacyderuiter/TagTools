@@ -2,7 +2,11 @@
 function [track] = track3D(z,phi,psi,sf,r,q1p,q2p,q3p,tagonx,tagony,enforce,x,y)
 % Reconstruct a track from pitch, heading and depth data, given a starting position
 %
-% This function will use data from a tag to reconstruct a track by fitting a state space model using a Kalman filter. If no x,y observations are provided then this corresponds to a pseudo-track obtained via dead reckoning and extreme care is required in interpreting the results.
+% This function will use data from a tag to reconstruct a track 
+% by fitting a state space model using a Kalman filter. 
+% If no x,y observations are provided then this corresponds 
+% to a *pseudo-track* obtained via dead reckoning,
+% and *extreme care* is required in interpreting the results.
 % 
 % Inputs:
 % z         A vector with depth over time (in meters, an observation)

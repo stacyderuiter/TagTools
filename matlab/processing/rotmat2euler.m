@@ -12,8 +12,9 @@ function    prh = rotmat2euler(Q)
 %		  r is the roll angle in radians, h is the heading or yaw angle in radians.
 %
 %		 Example:
-%		  prh = rotmat2euler()
-% 	     returns: prh = ?
+%          Q = [0.7601 0.0346 -0.6489; 0.4936 0.6187 0.6112; 0.4226 -0.7849 0.4532]
+%		   prh = rotmat2euler(Q)
+% 	     returns: prh = [0.4363, -1.0472, 0.5760] radians.
 %
 %      Valid: Matlab, Octave
 %      markjohnson@st-andrews.ac.uk

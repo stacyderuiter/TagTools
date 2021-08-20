@@ -25,7 +25,7 @@ function			[x,fs] = get_audio(fname,samples)
 %		 of samples-per-channel and the number of channels.
 %
 %		Example:
-%		 [x,fs]=getaudio(sound_sample1.wav','size')
+%		 [x,fs]=get_audio('sound_sample1.wav','size')
 % 	    returns: x=[576000,2], fs=192000
 %
 %     Valid: Matlab, Octave

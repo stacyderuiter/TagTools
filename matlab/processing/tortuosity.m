@@ -32,8 +32,14 @@ function    t = tortuosity(T,fs,intvl)
 %    describe the positions are perpendicular.
 %
 %	  Example:
-%		t = tortuosity(T,fs,90)
-% 	   returns: .
+%       load_nc('testset1')
+%       sampling_rate = P.sampling_rate;
+%		v = ocdr(P,A);
+%		s = sqrt(max(1-v.^2,0));
+%		Track = ptrack(A,M,s);
+%		t = tortuosity(Track,sampling_rate,1200)
+% 	   returns: t = [0.4921 5.8226; 0.2963 17.6704; 0.0119 136.4259; 0.1517 19.1493]
+%       
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk

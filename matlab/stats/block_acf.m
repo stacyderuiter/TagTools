@@ -25,13 +25,17 @@ function [block_ac] = block_acf(resids, blocks, make_plot, max_lag)
 %               specify a max_lag longer than the shortest block if you so choose.
 %
 % Example:
+% rng(1) % to control the seed
 % resids = randn(150,1) 
 % % in real life resids are normally residuals from a
 % % fitted model, not random numbers
 % blocks = [repmat('animal1', 25, 1); repmat('animal2', 70, 1); ...
 %           repmat('animal3', (150-25-70), 1)] ;
 % block_ac = block_acf(resids, blocks, 1, 10) ; %plot 1st 10 lags
+% block_ac % and the first 10 lags ARE...
+%          % [1.0000; -0.0292; 0.0253; 0.1040; 0.0042; 0.0414; -0.1767; -0.0472; 0.1063; -0.0906; -0.0132]
 % 
+%
 
 
 if length(blocks) ~= length(resids)

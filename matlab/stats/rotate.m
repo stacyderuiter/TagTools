@@ -32,6 +32,8 @@ function rot_event_times = rotate(event_times, full_period)
 %   my_events = 1500*rand(1,10) %10 events at "times" between 0 and 1500
 %   rotated_events = rotate(my_events, [0,1500])
 %   rotated_events
+%   rotated_events - my_events
+%   % shows how much each has been rotated by; ten of all the same number
 
 %Input checking
 %============================================================================

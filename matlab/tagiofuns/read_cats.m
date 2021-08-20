@@ -26,7 +26,7 @@ function 	ncfile = read_cats(fname,depid)
 %
 % 		Example:
 % 		fn = read_cats('cats_test_sample','mn16_209a')
-%		loadnc(fn)
+%		load_nc(fn)
 %		% The workspace should now contain variables A, M, G, T, P, L and info
 %		% each of which is a structure.
 %

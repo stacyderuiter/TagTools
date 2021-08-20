@@ -70,6 +70,17 @@ function Y = dive_stats(P, dive_cues, X, fs, prop, angular, X_name)
 %                                        % a vector sampled at fs Hz
 % Y = dive_stats(P, dive_cues, X, [],[],1) % two sensor data structures,
 %                                           % second one is angular data
+%
+% Standalone example:
+% load_nc('testset7');           
+% dive_cues = find_dives(P, 5); % get dive cues for dives deeper than 5 m
+% dive_cues_matrix = [dive_cues.start'; dive_cues.end']
+% Y = dive_stats(P, dive_cues_matrix'); % need to transpose the matrix
+%                                       % since we put it in two rows
+%                                       % but we need it in two columns
+% Y
+% Returns: the summary statistics for the dive
+%
 % valid: Matlab, Octave
 % sld33@calvin.edu
 % Last modified: 7 Aug 2017

@@ -6,7 +6,7 @@ function    d3 = read_d3_xml(xmlfile)
 %		is a front-end for the xml2mat function in the XML4MATv2 toolbox
 %     which is available on the Mathworks user contributed website.
 %     Make sure that toolbox is on your matlab path before
-%     using this function.
+%     using this function. :)
 %
 %     mark johnson
 %     25 march 2012

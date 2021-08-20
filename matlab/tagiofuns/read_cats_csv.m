@@ -26,7 +26,7 @@ function    [V,HDR,EMPTY] = read_cats_csv(fname,maxsamps)
 %     EMPTY is a cell array of strings containing the names of empty fields.
 %
 %		Example:
-%		 [V,HDR,EMPTY] = read_cats_csv('mn16_212a\20160730-091117-Froback 11',100)
+%		 [V,HDR,EMPTY] = read_cats_csv('20160730-091117-Froback-11',100)
 % 	    Reads 100 samples from file 20160730-091117-Froback 11.csv and returns the 
 %      data and field information.
 %

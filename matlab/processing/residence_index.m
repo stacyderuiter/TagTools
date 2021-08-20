@@ -41,7 +41,18 @@ function    [RI,t] = residence_index(T,fs,maxt,r,tstep)
 %      to the start time of the track.
 %
 %     Example:
-%      TBD
+%       load_nc('testset1')
+%       sampling_rate = P.sampling_rate;
+%		v = ocdr(P,A);
+%		s = sqrt(max(1-v.^2,0));
+%		Track = ptrack(A,M,s);
+%       maxtime = 600;
+%       [RIvalues, timesOfIndices] = residence_index(Track, sampling_rate, maxtime)
+%       
+%     Returns:
+%       Many residence index values, the last 5 entries in RIvalues are
+%       [9.2740; 8.9640; 8.7420; 8.3300; 8.0920]
+%      And timesOfIndices is multiples of 5 from 0 through 5510
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
