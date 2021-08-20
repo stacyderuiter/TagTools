@@ -49,8 +49,10 @@ function     s=ocdr(p,A,fs,fc,plim)
 %		a negative pitch angle.
 %
 %		Example:
-%		 s = ocdr()
-% 	    returns: .
+%		 load_nc('testset1')
+%        v = ocdr(P,A);
+% 	    returns: Forward speed estimates for this depth & acceleration
+% 	    data.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

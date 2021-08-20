@@ -47,7 +47,9 @@ function    [PA,R,T] = posture_change(A,M,fs,t)
 %		by this function will be the cardinal axes of the tag, not the animal.
 %
 %		Example:
-%		 TBD
+%		 load_nc('testset1')
+%        PC = posture_change(A, M, [0 0.5]);
+%       Returns: the posture change in the first half second: PC = 0.1183 radians.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

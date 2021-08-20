@@ -54,7 +54,18 @@ function    [T,pe] = ptrack(A,M,s,fs,fc)
 %	  medium. There are numerous other sources of error so use at your own risk!
 %
 %	  Example:
-%		TBD
+%       load_nc('testset1')
+%       fs = P.sampling_rate;
+%		v = ocdr(P,A);
+%		s = sqrt(max(1-v.^2,0));
+%		T = ptrack(A,M,s);
+%       figure
+%       xlabel('Easting, m')
+%       ylabel('Northing, m')
+%       title('Dead-Reckoned Track')
+%       hold on
+%       plot(T(:,2),T(:,1))
+%    Returns: (plot of) the dead-reckoned track.
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk

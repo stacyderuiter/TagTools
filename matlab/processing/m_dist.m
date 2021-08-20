@@ -43,7 +43,17 @@ function D = m_dist(data,fs, smoothDur, overlap, consec, cumSum, expStart, expEn
 %        reported. If a smoothDur was applied, then the reported times will be the 
 %        start times of each "comparison" window.
 %     dist: Mahalanobis distances between the specified baseline period and 
-%        the specified "comparison" periods             
+%        the specified "comparison" periods  
+%
+% Example:
+%       load_nc('zc11_267a') % needs to be in your current folder, or
+%                            % added to your path
+%       To be completed later. See this practical for an idea of what we're
+%       trying to do: http://animaltags.org/lib/exe/fetch.php?media=tagwiki:practicals:ttp004_practical4_stats.pdf
+%       (especially pp.8-9)
+%
+%
+%
 
 if isempty(fs)
     fs = 1;

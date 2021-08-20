@@ -24,7 +24,16 @@ function    NE = lalo2llf(trk,pt)
 %     tools in Matlab/Octave.
 %
 %	   Example:
-%		  TBD
+%		  load_nc('testset7')
+%         POSLLF = lalo2llf([POS.data(:,2),POS.data(:,3)]);
+%         figure
+%         xlabel("Easting, m")
+%         ylabel("Northing, m")
+%         title("Known positions in local-level frame")
+%         hold on
+%         plot(POSLLF(:,2),POSLLF(:,1))
+%      Returns: plot of known positions of a whale at the surface in a local-level
+%      frame
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

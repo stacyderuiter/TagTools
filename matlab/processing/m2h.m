@@ -41,7 +41,7 @@ function     [h,v,incl] = m2h(M,A,fs,fc)
 %		a positive heading is a clockwise rotation around the z-axis. 
 %
 %		Example:
-%		 [h,v,incl] = m2h([22 -22 14],[-0.3 0.52 0.8])
+%		 [h,v,incl] = m2h([22 -22 14],[-0.3 0.52 0.8],1,1)
 % 	    returns: h=0.89486 radians, v=34.117, incl=0.20181 radians.
 %
 %     Valid: Matlab, Octave

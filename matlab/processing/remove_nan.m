@@ -5,6 +5,13 @@ function    X = remove_nan(X)
 %     number in the same column. If an entire column is NaN, the first
 %     non-NaN number in the matrix is used as a filler. If the entire
 %     matrix is NaN, 1 is used as a filler.
+%   
+%    Example:
+%     sampleNaNnyMatrix = [1 NaN 3 NaN; NaN 5 NaN NaN; 7 NaN 9 NaN]
+%     sampleNaNnyMatrixTwo = [1 2 3; NaN NaN NaN; NaN NaN NaN]
+%     notNaNnyAnymore = remove_nan(sampleNaNnyMatrix)
+%     notNaNnyAnymoreEither = remove_nan(sampleNaNnyMatrixTwo)
+%
 %
 %    Valid: Matlab, Octave
 %    markjohnson@st-andrews.ac.uk
