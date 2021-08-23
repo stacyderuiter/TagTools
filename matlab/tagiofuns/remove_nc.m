@@ -12,7 +12,7 @@ function		remove_nc(fname,vname)
 %
 %		Example:
 %		 remove_nc('dog17_124a','A')
-% 	    rremoves variable A from file dog17_124a.nc.
+% 	    removes variable A from file dog17_124a.nc.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk

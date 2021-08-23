@@ -21,7 +21,7 @@ function 	ncfile = read_dd(fname,depid)
 %
 % 		Example:
 % 		fn = read_dd('C:\tag\octave\tagtools\testdata\dd_oa14_319a\oa_14_319a_data','oa14_319a')
-%		loadnc(fn)
+%		load_nc(fn)
 %		% The workspace should now contain variables A, M, T and info
 %		% each of which is a structure.
 %

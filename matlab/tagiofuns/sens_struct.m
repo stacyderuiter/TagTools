@@ -39,7 +39,8 @@ function    X = sens_struct(data,fs,depid,type,name)
 %     sensor_names.csv file. Change these as needed to the correct values.
 %
 %    Example:
-%     A = sens_struct(Aw,fs,'md13_134a','acc')
+%     load_nc('testset3')
+%     A = sens_struct(A.data, A.sampling_rate, 'testset3')
 %     A.frame = 'animal' ;     % change frame indication
 %
 %    Valid: Matlab, Octave

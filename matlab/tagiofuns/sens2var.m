@@ -25,7 +25,7 @@ function    [X,Y,fs] = sens2var(Sx,Sy,r)
 %     respect to the start time of the data in the sensor structure.
 %
 %    Example:
-%     loadnc('testset3')
+%     load_nc('testset3')
 %     [pca_dur,pca_time] = sens2var(PCA)
 %
 %    Valid: Matlab, Octave

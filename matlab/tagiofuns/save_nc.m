@@ -3,7 +3,7 @@ function    save_nc(fname,X,varargin)
 %     save_nc(fname,X,...)
 %     Save one or more variables to a NetCDF archive file.
 %     Warning, this will overwrite any previous NetCDF file with the same name.
-%		it is created. The file is assumed to be in the current working directory 
+%		If the file is missing, it is created. The file is assumed to be in the current working directory 
 %		unless a pathname is added to the beginning of fname.
 %
 %		Inputs:
@@ -16,6 +16,8 @@ function    save_nc(fname,X,varargin)
 %		 usual 'save' function in Matlab and Octave.
 %
 %		Example:
+%        load_nc('testset1') % or another NetCDF file with variables A, M,
+%                            % P, info
 %		 save_nc('dog17_124a',A,M,P,info)
 % 	    generates a file dog17_124a.nc and adds variables A, M and P, and a metadata
 %		 structure.
