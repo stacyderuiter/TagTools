@@ -71,7 +71,7 @@ elseif nargin<3,
 end
 
 if ischar(fh),				% 'wilson' or 'vedba' method is selected
-	n = 2*floor(n/2)+1 ; 	% make sure n is odd
+	n = 2*floor(fs/2)+1 ; 	% make sure n is odd
 	nz = floor(n/2) ;
 	h = [zeros(nz,1);1;zeros(nz,1)]-ones(n,1)/n ;
 	Ah = filter(h,1,[zeros(nz,size(A,2));A;zeros(nz,size(A,2))]) ;
