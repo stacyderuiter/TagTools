@@ -46,13 +46,14 @@ odba <- function(A, sampling_rate = NULL, fh = NULL, method = "fir", n = NULL) {
         matrix(0, nrow = nz, ncol = 1)
       ) -
         matrix(1, nrow = n, ncol = 1) / n
+      # filter A with h
       Ah <- signal::filter(h, 1, x = rbind(
         matrix(0, nrow = nz, ncol = ncol(A)),
         A,
         matrix(0, nrow = nz, ncol = ncol(A))
       ))
       Ah <- matrix(Ah, byrow = FALSE, ncol = 3)
-      Ah <- Ah[nz + c(1:nrow(A)), ]
+      Ah <- Ah[n - 1 + c(1:nrow(A)), ]
       if (method == "vedba") {
         e <- sqrt(rowSums(abs(Ah)^2)) # use 2-norm
       } else {
