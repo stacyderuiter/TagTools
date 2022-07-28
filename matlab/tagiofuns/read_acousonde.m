@@ -104,7 +104,7 @@ for k=1:length(ftype),
    for kk=1:length(fn),
       fname = [fbase ftype(k) sprintf('%05d',fn(kk)) '.mt'] ;
       fnames = [fnames 'fname,'] ;
-      [d,hdr,md] = MTRead(fname);
+      [d,hdr,md] = MTRead(fname);	% use acousonde raw data reader function
       if kk==1,
          chname{k} = hdr.abbrev ;
       end

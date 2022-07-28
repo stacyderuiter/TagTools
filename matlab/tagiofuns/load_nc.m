@@ -1,12 +1,14 @@
-function    X = load_nc(fname,vname)
+function    X = load_nc(fname,vname,nodata)
 
 %     load_nc
 %     or
 %     load_nc(fname)
-%		or
-%		X=load_nc(fname)
 %     or
-%		X=load_nc(fname,vname)
+%     load_nc(fname,vname)
+%     or
+%     load_nc(fname,vname,nodata)
+%		or
+%		X=load_nc(...)
 %
 %     Load variables from a NetCDF archive file. The file is assumed to be in 
 %		the current working directory unless a pathname is added to the beginning 
@@ -19,23 +21,27 @@ function    X = load_nc(fname,vname)
 %		Inputs:
 %		fname is the name of the metadata file. If the name does not include a .nc
 %		 suffix, this will be added automatically.
-%     vname is the name of a single variable to read in. If not specified, all variables
-%      in the file are read.
+%     vname is the name of a single variable to read in. If not specified, or if
+%      vname is empty, all variables in the file are read. vname can also be a 
+%      cell array specifying multiple variables to read.
+%     nodata if 1 all of the requested variables will be read in but with only 
+%      their metadata fields, i.e., without data.
 %
 %		Returns:
 %		X, if specified, is a structure containing sensor and metadata structures. The
 %		 field names in X will be the same as the names of the variables in the NetCDF
 %		 file, e.g., if the file contains A and P, X will have fields X.A, X.P and
-%		 X.info (the file metadata).
+%		 X.info (the file metadata). If no output argument is given, the
+%		 variables will be created in the calling workplace.
 %
 %		Example:
 %		 load_nc('testset1')
 % 	    loads variables from file testset1.nc into the workplace.
 %
 %     Valid: Matlab, Octave
-%     markjohnson@st-andrews.ac.uk
-%     last modified: 05 July 2018
-%        added file selection ui window
+%     markjohnson@bios.au.dk
+%     modified: 05 July 2018 added file selection ui window
+%               05 June 2021 added nodata option
 
 X = [] ;
 if nargin<1,
@@ -69,16 +75,24 @@ if ~exist(fname,'file'),
 	return ;
 end
 
+if nargin<2,
+   vname = [] ;
+end
+
+if nargin<3,
+   nodata = 0 ;
+end
+
 T = ncinfo(fname) ;
 if ~isempty(T.Attributes),
    F = {T.Attributes(:).Name} ;
    V = {T.Attributes(:).Value} ;
    info = struct ;
    for k=1:length(F),
-      info.(matlab.lang.makeValidName(F{k})) = V{k} ;
+      info.(F{k}) = V{k} ;
    end
 
-   if nargin<2 || any(strcmp(vname,'info')),
+   if isempty(vname) || any(strcmp(vname,'info')),
       if nargout==0,
          assignin('caller','info',info) ;
       else
@@ -92,9 +106,13 @@ F = {T.Variables(:).Name} ;
 for k=1:length(F),
 	fn = F{k} ;
  	if fn(1)=='_', continue, end		% skip place-holder variable
-   if nargin==2 && all(strcmp(vname,fn)==0), continue, end
-
-	X.(fn).data = ncread(fname,fn);
+   if ~isempty(vname) && all(strcmp(vname,fn)==0), continue, end
+   if nodata == 1,
+      X.(fn).data = [] ;
+   else
+   	X.(fn).data = ncread(fname,fn);
+   end
+   
 	if (T.Variables(k).Size(1)==1) && (X.(fn).data(1) == T.Variables(k).FillValue), %RJS updated 2017-08-02
 		X.(fn).data = [] ;
 	end

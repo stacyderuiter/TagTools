@@ -41,9 +41,6 @@ function    C = get_d3_cuetab(recdir,prefix,suffix)
 %		C.start_time is the UNIX time at the start of the first recording.
 %		C.dtype is a string containing the tag type ('D3' or 'D4').
 %
-%     Example:
-%         TBD
-%
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
 %     Last modified: 2 March 2018 - fixed bug at line 68

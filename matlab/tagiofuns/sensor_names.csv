@@ -18,3 +18,4 @@ Audit,cue,cue,Sound audit cues,1,s,seconds,s,,,
 AFA,acc,Aa,triaxial acceleration,3,m/s2,metres per second squared,m/s^2,animal,FRU,"x,y,z"
 AFM,mag,Ma,triaxial magnetometer,3,uT,micro Tesla,\muT,animal,FRU,"x,y,z"
 ECG,ecg,E,skin surface potential,1,V,Volts,V,,,
+PCA,cue,cue,prey capture attempts,1,s,seconds,s,,,
