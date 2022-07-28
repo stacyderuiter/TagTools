@@ -65,8 +65,12 @@ end
 if isstruct(A),
    if nargin==2,
       fh = fs ;
+      [A,fs]=sens2var(A,'regular') ;
+   else
+      n = fs;
+      [A,fs]=sens2var(A,'regular') ;
+      fs = n;
    end
-   [A,fs]=sens2var(A,'regular') ;
    if isempty(A), return, end
 elseif nargin<3,
    help odba
