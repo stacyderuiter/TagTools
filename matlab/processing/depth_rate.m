@@ -19,7 +19,7 @@ function     v = depth_rate(p,fs,fc)
 %      a sensor structure.
 %     fc is an optional smoothing filter cut-off frequency in Hz. If fc
 %		 is not given, a default value is used of 0.2 Hz (i.e., a smoothing
-%      time constant of 5 seconds).
+%      time constant of 5 seconds). Specify fc=0 to avoid any filtering.
 %
 %     Returns
 %     v is the vertical velocity with the same sampling rate as p. v
@@ -30,14 +30,14 @@ function     v = depth_rate(p,fs,fc)
 %		The group delay of the filters is removed.
 %
 %		Example:
-%		 load_nc('testset1')
+%		 loadnc('testset1')
 %		 v = depth_rate(P);
 %		 plott(v,P.sampling_rate)
 % 	    % plots the vertical speed for the example dive profile.
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 18 August 2021
+%     Last modified: 10 May 2017
 
 v = [] ;
 if nargin<1,
@@ -66,8 +66,10 @@ if isempty(fc),
    fc = 0.2 ;
 end
 
-nf = round(4*fs/fc) ;
 % use central differences to avoid a half sample delay
-diffp = [p(2)-p(1);(p(3:end)-p(1:end-2))/2;p(end)-p(end-1)]*fs ;
-% low pass filter to reduce sensor noise
-v = fir_nodelay(diffp,nf,fc/(fs/2)) ;
+v = [p(2)-p(1);(p(3:end)-p(1:end-2))/2;p(end)-p(end-1)]*fs ;
+if fc>0,
+   % low pass filter to reduce sensor noise
+   nf = round(4*fs/fc) ;
+   v = fir_nodelay(v,nf,fc/(fs/2)) ;
+end

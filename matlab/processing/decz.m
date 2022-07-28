@@ -9,7 +9,7 @@ function      [y,Z,X] = decz(x,Z)
 %		memory. See wavdec() for a use of this function to decimate an
 %		entire WAV format file.
 %     The first time decz is called, use the following format:
-%		  y = decz(x,df) ; 
+%		 [y,z] = decz(x,df) ; 
 %     The subsequent calls to decz for contiguous input data are:
 %		 [y,z] = decz(x,z)
 %     The final call when there is no more input data is:
