@@ -41,17 +41,6 @@ function peaks = detect_peaks(data, sr, FUN, thresh, bktime, plot_peaks, varargi
 %       peak detection. The plot output is only given if the input for 
 %       plot_peaks is specified as true or if the input is left 
 %       missing/empty.
-%
-%        Example: 
-%            load_nc('testset1')
-%            jerk = njerk(A, A.sampling_rate);
-%            sr = A.sampling_rate;
-%            detect_peaks(jerk, sr)
-%
-%     Valid: Matlab, Octave
-%     markjohnson@st-andrews.ac.uk
-%     Last modified: 18 August 2021
-
 
 if nargin < 2
     help detect_peaks

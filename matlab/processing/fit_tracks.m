@@ -1,9 +1,9 @@
-function    [D,C] = fit_tracks(P,T,D,fs)
+function    [D,C,T] = fit_tracks(P,T,D,fs)
 
-%      [D,C] = fit_tracks(P,T,D,fs)
+%      [D,C,T] = fit_tracks(P,T,D,fs)
 %      Simple track integration method to merge infrequent
 %      but accurate positions with a regularly sampled track
-%      that is not absolutely accurate (or in fact very inaccurate).
+%      that is not absolutely accurate.
 %
 %      Inputs:
 %      P is a two column matrix containing the anchor positions.
@@ -29,28 +29,20 @@ function    [D,C] = fit_tracks(P,T,D,fs)
 %       the same number of track points as the input D and is sampled 
 %       at the same rate (fs). The units, axes and frame are the same as for
 %       the input data.
-%      C is a two column matrix the same size as D containing the track
-%		  increments needed to match the tracks. If the difference between the
-%		  two tracks is due to the media moving, C can be considered an estimate
-%		  of the current in m/s. The axes and frame are the same as for
-%       the input data.
+%      C is a two column matrix with one less row than P containing the
+%       inferred currents between pairs of GPS points needed to match the tracks.
+%       If the difference between the two tracks is due to the media moving, 
+%       C can be considered an estimate of the current in m/s. The axes and frame
+%       are the same as for the input data.
+%      T is a vector of times corresponding to each row of C.
 %
 %	    Example:
-%		   load_nc('testset7')
-%          sampling_rate = P.sampling_rate
-%          v = depth_rate(P);
-%          plott(P, sampling_rate, v, sampling_rate) % figure out vertical
-%                                       % speed for dead-reckoning
-%          spd = 1.7 % m/s vertical speed during ascent/descents
-%          DR = ptrack(A, M, spd);
-%          plot(DR(2,:), DR(1,:))
-%          title('Dead-Reckoned Track')
-%          xlabel('Easting, m')
-%          ylabel('Northing, m')
+%		   TBD
 %
 %      Valid: Matlab, Octave
-%      markjohnson@st-andrews.ac.uk
-%      last modified: 2 Feb 2018 - fixed handling of DR track after last fix 
+%      markjohnson@bios.au.dk
+%      last modified: 18 April 2021 - fixed handling of DR track outside of fixes
+%        - changed pseudo-current reporting.
      
 if nargin<4,
 	help fit_tracks
@@ -59,15 +51,35 @@ end
 	
 kg = find(T>=0 & T<size(D,1)/fs) ;  % find position fixes that coincide in time with the DR track
 k = round(T(kg)*fs)+1 ;             % find the corresponding DR track sample numbers
-V = [0,0;P(kg,:)-D(k,:)] ;          % errors between fixes and DR track at fix times
-% repeat last error - this will be applied to the remnant DR track after last fix
-V(end+1,:) = V(end,:) ;             
-
-dk = [k(1);diff(k);size(D,1)-k(end)] ;               
-ki = [0;cumsum(dk)] ;
-C = zeros(size(D,1),2) ;            % make space for the merged track
-for kk=1:length(dk),
-   C(ki(kk)+1:ki(kk+1),:) = repmat(V(kk,:),dk(kk),1)+1/dk(kk)*(0:dk(kk)-1)'*(V(kk+1,:)-V(kk,:)) ;
+if length(k)==1,
+   D = D-repmat(D(k(1),:),size(D,1),1) ;  % reference track to first GPS point
+   C = [] ;
+   return
 end
-D = D+C ;
-C = [zeros(1,size(C,2));diff(C)*fs] ;		% estimated 'currents'
+
+P = P(kg,:) ;
+D1 = D(k(1),:) ;
+C = NaN(length(k)-1,2) ;
+for gk=1:length(k)-1,
+	kk = k(gk):k(gk+1) ;
+	d = D(kk,:)+repmat(P(gk,:)-D(kk(1),:),length(kk),1) ;
+	C(gk,:) = (P(gk+1,:)-d(end,:))/(length(kk)-1) ;
+	D(kk(1:end-1),:) = d(1:length(kk)-1,:)+repmat(C(gk,:),length(kk)-1,1).*repmat((0:length(kk)-2)',1,2) ;
+end
+
+% do points before first gps position - use first current estimate
+kk = 1:k(1)-1 ;
+if ~isempty(kk),
+	d = D(kk,:)+repmat(P(1,:)-D1,length(kk),1) ;
+	D(kk,:) = d+repmat(C(1,:),length(kk),1).*repmat((-length(kk):-1)',1,2) ;
+end
+
+% do points after last gps position - use final current estimate
+kk = k(end):size(D,1) ;
+if ~isempty(kk),
+	d = D(kk,:)+repmat(P(end,:)-D(kk(1),:),length(kk),1) ;
+	D(kk,:) = d+repmat(C(end,:),length(kk),1).*repmat((0:length(kk)-1)',1,2) ;
+end
+
+C = C/fs ;
+T = (T(1:end-1)+T(2:end))/2 ;

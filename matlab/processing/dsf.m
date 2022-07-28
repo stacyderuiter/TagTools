@@ -1,4 +1,4 @@
-function    [fpk,q] = dsf(A,fs,fc,Nfft)
+function    [fpk,q] = dsf(A,varargin)
 
 %     [fpk,q] = dsf(X)                 % X is a sensor structure
 %     or
@@ -8,6 +8,8 @@ function    [fpk,q] = dsf(A,fs,fc,Nfft)
 %     [fpk,q] = dsf(...,fc)
 %     or
 %     [fpk,q] = dsf(...,fc,Nfft)
+%     or
+%     [fpk,q] = dsf(...,fc,Nfft,doplot)
 %
 %		Estimate the dominant stroke frequency from accelerometer or
 %     magnetometer data. Animals tend to produce propulsive movements 
@@ -34,6 +36,8 @@ function    [fpk,q] = dsf(A,fs,fc,Nfft)
 %		 an analysis block length of about 20 s and a frequency resolution of about
 %		 0.05 Hz. A shorter FFT may be required if movement behaviour is very variable.
 %		 A longer FFT may work well if propulsion is continuous and stereotyped.
+%		doplot (optional) enables plotting of the power spectrum if doplot=1. The
+%		 default is no plotting.
 %
 %     Returns:
 %		fpk is the dominant stroke frequency (i.e., the peak frequency in the
@@ -54,41 +58,40 @@ function    [fpk,q] = dsf(A,fs,fc,Nfft)
 %        TBD
 %
 %     Valid: Matlab, Octave
-%     markjohnson@st-andrews.ac.uk
-%     Last modified: 10 May 2017
+%     markjohnson@bio.au.dk
+%     Last modified: 7 April 2022
+%							Added doplot input argument to enable plotting
 
 if nargin<1,
    help dsf
    return
 end	
 
+fc = [] ; Nfft = [] ; doplot = 0 ;
+
 if isstruct(A),
-   if nargin>2,
-      Nfft = fc ;
-   else
-      Nfft = [] ;
-   end
-	if nargin>1,
-      fc = fs ;
-   else
-      fc = [] ;
-   end
 	[A,fs] = sens2var(A) ;
    if isempty(A),
       return
    end
-
+	fopt = 1 ;
 else
    if nargin<2,
       help dsf
       return
    end
-   if nargin<4,
-      Nfft = [] ;
-   end
-   if nargin<3,
-      fc = [] ;
-   end
+	fs = varargin{1} ;
+	fopt = 2 ;
+end
+	
+if nargin>fopt+2,
+	doplot = varargin{fopt+2} ;
+end
+if nargin>fopt+1,
+	Nfft = varargin{fopt+1} ;
+end
+if nargin>fopt,
+	fc = varargin{fopt} ;
 end	
 
 if isempty(fc),
@@ -100,7 +103,7 @@ if isempty(Nfft),
 end
 
 PCNT = 20 ;
-if fc>fs/2,
+if fc>0.9*fs/2,	% if low-pass filter is close-to or above the Nyquist, ignore it
    fc = [] ;
 end
 
@@ -119,7 +122,12 @@ end
 
 [S,f] = spectrum_level(Af,Nfft,fs,Nfft,floor(Nfft/2));
 v = sum(10.^(S/10),2) ;      % sum spectral power in the three axes
-%plot(f,v)
+if doplot
+	figure
+	plot(f,v*fs/Nfft)		% plot power per bin (v is in power per Hertz)
+	xlabel('Frequency, Hz')
+	ylabel('Magnitude, power/bin')
+end
 [m,n] = max(v) ;
 if n>1 && n<length(f),
    p = polyfit(f(n+(-1:1))',v(n+(-1:1)),2) ;
