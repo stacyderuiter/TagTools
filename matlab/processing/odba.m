@@ -45,7 +45,10 @@ function    e = odba(A,fs,fh)
 %		   odba([1,-0.5,0.1;0.8,-0.2,0.6;0.5,-0.9,-0.7],5,'vedba')
 %		   returns: [0.68475;0.93393;0.83600;0.65744]
 %
-%	     See Wilson et al. (2006) ?? [need full ref]
+%	     See Wilson et al. 2006 Moving towards acceleration for estimates of activity 
+%       specific metabolic rate in free living animals: the case of the cormorant.
+%		  J. Animal Ecology 75:1081-1090. https://doi.org/10.1111/j.1365-2656.2006.01127.x
+%
 %		  Delay-free filtering is used for all filter types.
 %
 %       Valid: Matlab, Octave
