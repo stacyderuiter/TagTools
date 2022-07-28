@@ -98,7 +98,12 @@ else
 end
 
 if isempty(fc),
-   fc = 0.2 ;
+   fc = min(fs/4,0.2) ;
+end
+
+if fc>fs/2,
+   fc = fs/4 ;
+   fprintf('Low-pass filter is too high for the sampling rate. Changing to %1.1f Hz\n', fc) ;
 end
 
 if length(s)>1,

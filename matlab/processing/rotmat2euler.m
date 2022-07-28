@@ -1,6 +1,6 @@
 function    prh = rotmat2euler(Q)
 %
-%      prh = euler2rotmat(Q)
+%      prh = rotmat2euler(Q)
 %      Decompose a rotation (or direction cosine) matrix into Euler angles,
 %		 pitch, roll, and heading.
 %
