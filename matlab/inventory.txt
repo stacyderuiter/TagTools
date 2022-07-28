@@ -1,5 +1,6 @@
 calibration
- apply_cal
+ auto_cal_acc
+ auto_cal_mag
  check_AM
  crop
  crop_all
@@ -11,14 +12,17 @@ calibration
  fix_pressure
  interp2length
  load_cal
+ lssolve3
  offset2cal
+ pick_segments
  rough_cal_3d
  spherical_cal
+ spherical_ls
  undo_cal
 
 compatibility
- NOTE: only unzip this folder if you are using an old version of Matlab
-       that does not have the function audioinfo 
+ NOTE: Include this folder if you are using an old version of Matlab that
+       does not have the function audioinfo. Otherwise delete this folder.
 
 constants
  absorption
@@ -40,6 +44,7 @@ plotting
 processing
  a2pr
  block_mean
+ block_median
  block_rms
  block_std
  body_axes
@@ -55,6 +60,7 @@ processing
  find_dives
  fir_nodelay
  fit_tracks
+ get_br
  hilbert_env
  htrack
  inclination
@@ -83,6 +89,7 @@ processing
  tag2animal
  tortuosity
  trimmed_mean
+ unify_positions
  zero_crossings
 
 sound
@@ -97,14 +104,8 @@ sound
 stats
  acf
  block_acf
- circ_confmean
- circ_mean
- circ_r
- circ_var
  dive_stats
  m_dist
- plot_acf
- rotate
  rotation_test
 
 tagiofuns
@@ -117,6 +118,8 @@ tagiofuns
  get_start_time
  load_nc
  make_info
+ MTread
+ read_acousonde
  read_cats
  read_cats_csv
  read_csv
