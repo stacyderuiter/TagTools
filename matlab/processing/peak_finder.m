@@ -154,7 +154,7 @@ end
 % merge pulses that are within blanking distance
 done = 0 ;
 while ~done,
-   kg = find(cc(2:end)-cend(1:end-1)>blanking) ;
+   kg = find(cc(2:end)-cend(1:end-1)>blanking(1)) ;
    done = length(kg) == (length(cc)-1) ;
    cc = cc([1;kg+1]) ;
    cend = cend([kg;end]) ;
@@ -163,6 +163,16 @@ end
 if cend(end)==length(x),
    cc = cc(1:end-1);
    cend = cend(1:end-1);
+end
+
+% remove short peaks
+if length(blanking)>1,
+   k = find(cend-cc>=blanking(2)) ;
+   cc = cc(k) ;
+   cend = cend(k) ;
+   minlen = blanking(2)/fs ;
+else
+   minlen = 1/fs ;
 end
 
 % determine the time and maximum of each peak
@@ -174,6 +184,8 @@ for a = 1:length(cc),
     peak_max(a) = m ;
 end
 
+if isempty(cc), return, end
+
 % make output structure
 peaks.start_time = (cc-1)/fs ;
 peaks.end_time = (cend-1)/fs ;
@@ -181,4 +193,5 @@ peaks.maxtime = (peak_time-1)/fs ;
 peaks.max = peak_max ;
 peaks.thresh = thresh ;
 peaks.bktime = blanking/fs ;
+peaks.minlen = minlen ;
 return

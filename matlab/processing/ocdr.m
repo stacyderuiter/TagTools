@@ -49,14 +49,13 @@ function     s=ocdr(p,A,fs,fc,plim)
 %		a negative pitch angle.
 %
 %		Example:
-%		 load_nc('testset1')
-%        v = ocdr(P,A);
-% 	    returns: Forward speed estimates for this depth & acceleration
-% 	    data.
+%		 s = ocdr()
+% 	    returns: .
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 15 May 2017
+%     Last modified: 3 Feb 2021 - fixed sign error that was returning
+%     negative speeds.
 
 s = [] ;
 if nargin<2,
@@ -102,4 +101,4 @@ v = fir_nodelay(diffp,nf,fc/(fs/2)) ;
 A = fir_nodelay(A,nf,fc/(fs/2)) ;
 pitch = a2pr(A) ;
 pitch(abs(pitch)<plim) = NaN ;
-s = v./sin(pitch) ;
+s = -v./sin(pitch) ;    % mj added -ve sign here 3/2/21

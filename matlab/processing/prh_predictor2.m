@@ -31,7 +31,7 @@ function    PRH = prh_predictor2(P,A,fs,MAXD)
 %		 This is used to find contiguous surface intervals suitable for analysis.
 %
 %     Returns:
-%	   PRH = [cue,p0,r0,h0,q] with a row for each dive edge analysed.
+%	   PRH = [cue,p0,r0,h0,q,length] with a row for each dive edge analysed.
 %      cue is the time in second-since-tagon of the dive edge analysed.
 %		 [p0,r0,h0] are the deduced tag orientation angles in radians.
 %		 q is the quality indicator with a low value (e.g., <0.05) indicating
@@ -42,7 +42,9 @@ function    PRH = prh_predictor2(P,A,fs,MAXD)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     Last modified: 13 Feb 2020 - fixed a couple of minor bugs
+%     Modified: 13 Feb 2020 - fixed a couple of minor bugs
+%               19 July 2021 - improved segment splitting and added 'a'
+%               feature
 
 MINSEG = 30 ;		% minimum surface segment length in seconds
 MAXSEG = 300 ;		% maximum surface segment length in seconds
@@ -77,59 +79,75 @@ v = depth_rate(P,fs,0.2) ;					% vertical speed
 
 if isempty(MAXD),
 	MAXD = 10 ;
+elseif size(MAXD,2)==6,
+   S = [MAXD(:,1) MAXD(:,1)+MAXD(:,6)] ;
+   MAXD = [] ;
+else
+   MAXD = max(MAXD(1),2) ;
 end
 	
-MAXD = max(MAXD,2) ;
-T = find_dives(P,fs,MAXD) ; 	% find dives more than MAXD from the surface
-if isempty(T),
-	fprintf(' No dives deeper than %d found in dive profile - change MAXD\n',MAXD) ;
-	return
-end
+if ~isempty(MAXD),
+   fprintf('Finding dives > %d meters\n',MAXD);
+   T = find_dives(P,fs,MAXD) ; 	% find dives more than MAXD from the surface
+   if isempty(T),
+      fprintf(' No dives deeper than %d found in dive profile - change MAXD\n',MAXD) ;
+      return
+   end
+   fprintf('Found %d dives\n',length(T.start));
 
-T.start = T.start-GAP ;
-T.end = T.end+GAP ;
+   T.start = T.start-GAP ;
+   T.end = T.end+GAP ;
 
-% check if there is a segment before first dive and after last dive
-s1 = [max(T.start(1)-MAXSEG,0),T.start(1)] ;
-se = [T.end(end),min(T.end(end)+MAXSEG,(length(P)-1)/fs)] ;
-k = find(P(round(fs*s1(1))+1:round(fs*s1(2)))>MAXD,1,'last') ;
-if ~isempty(k),
-	s1(1) = s1(1)+k/fs ;
-end
-k = find(P(round(fs*se(1))+1:round(fs*se(2)))>MAXD,1) ;
-if ~isempty(k),
-	se(2) = se(1)+(k-1)/fs ;
-end
-S = [s1;[T.end(1:end-1) T.start(2:end)];se] ;
-S = S(find(diff(S,[],2)>MINSEG),:) ;
+   % check if there is a segment before first dive and after last dive
+   s1 = [max(T.start(1)-MAXSEG,0),T.start(1)] ;
+   se = [T.end(end),min(T.end(end)+MAXSEG,(length(P)-1)/fs)] ;
+   k = find(P(round(fs*s1(1))+1:round(fs*s1(2)))>MAXD,1,'last') ;
+   if ~isempty(k),
+      s1(1) = s1(1)+k/fs ;
+   end
+   k = find(P(round(fs*se(1))+1:round(fs*se(2)))>MAXD,1) ;
+   if ~isempty(k),
+      se(2) = se(1)+(k-1)/fs ;
+   end
+   S = [s1;[T.end(1:end-1) T.start(2:end)];se] ;
+   S = S(find(diff(S,[],2)>MINSEG),:) ;
 
-% break up long surfacing intervals
-while 1,
-	k = find(diff(S,[],2)>MAXSEG,1) ;
-	if isempty(k), break, end
-	S = [S(1:k-1,:);S(k,1)+[0 MAXSEG];S(k,1)+MAXSEG S(k,2);S(k+1:end,:)] ;
+   fprintf('Breaking up surface intervals\n');
+   % break up long surfacing intervals
+   k = find(diff(S,[],2)>=2*(MAXSEG+MINSEG)) ;
+   n = floor((S(k,2)-S(k,1))/(MAXSEG+MINSEG)) ;
+   for kk=1:length(k),
+      S(end+(1:n(kk)),:) = repmat(S(k(kk),1)+(1:n(kk))'*(MAXSEG+MINSEG),1,2)+repmat([0 MAXSEG],n(kk),1) ;
+   end
+   S(k,2) = S(k,1)+MAXSEG ;
+   [s,I] = sort(S(:,1)) ;
+   S = S(I,:) ;
+   fprintf('Found %d surface intervals\n',size(S,1));
 end
 
 % check for segments with sufficient variation in orientation
 V = zeros(size(S,1),1) ;
 for k=1:size(S,1),
-	ks = round(S(k,1)*fs)+1:round(S(k,2)*fs) ;
-	V(k) = norm(std(A(ks,:))) ;
+   ks = round(S(k,1)*fs)+1:round(S(k,2)*fs) ;
+   V(k) = norm(std(A(ks,:))) ;
 end
 
-thr = nanmedian(V)+1.5*iqr(V)*[-1 1] ;
-S = S(V>thr(1) & V<thr(2),:) ;
-PRH = NaN(size(S,1),5) ;
+if ~isempty(MAXD),
+   thr = nanmedian(V)+1.5*iqr(V)*[-1 1] ;
+   S = S(V>thr(1) & V<thr(2),:) ;
+end
+PRH = NaN(size(S,1),6) ;
 
 if isempty(S),
    fprintf('No suitable surface analysis intervals found - check data\n') ;
    return
 end
 
+fprintf('Applying method 2\n');
 for k=1:size(S,1),	% apply prh inference method on segments
    prh = applymethod2(A,v,fs,S(k,:)) ;
 	if isempty(prh), continue, end
-	PRH(k,:) = [mean(S(k,1:2)) prh] ;
+	PRH(k,:) = [S(k,1) prh S(k,2)-S(k,1)] ;
 end
 
 figure(1),clf
@@ -153,9 +171,22 @@ while 1,                % user input to adjust results
 				else
 					S(k,:) = ss ;
 					prh = applymethod2(A,v,fs,ss) ;
-					PRH(k,:) = [mean(ss) prh] ;
+					PRH(k,:) = [ss(1) prh diff(ss)] ;
 				end
  				plot_fig1(P,fs,PRH) ;
+        case 'a'
+            ss = gx+MINSEG*[-1,1] ;
+			   prh = applymethod2(A,v,fs,ss) ;
+				ss = plot_fig2(A,v,fs,ss,[mean(ss) prh]) ;
+				if ~isempty(ss),
+					prh = applymethod2(A,v,fs,ss) ;
+               S(end+1,:) = ss ;
+					PRH(end+1,:) = [ss(1) prh diff(ss)] ;
+               [s,I] = sort(S(:,1)) ;
+               S = S(I,:);
+               PRH = PRH(I,:) ;
+				end
+				plot_fig1(P,fs,PRH) ;
         case 'x'
 				z = [1:k-1 k+1:size(S,1)] ;
 				S = S(z,:) ;
@@ -254,7 +285,7 @@ subplot(311)
 plot((1:length(P))/fs,P), set(gca,'YDir','reverse'), grid
 ylabel('Depth, m')
 set(gca,'XLim',xl,'XTickLabel',[]) ;
-title('type e to edit, x to delete, z or Z to zoom in/out, or q to quit')
+title('type e to edit, x to delete, z or Z to zoom in/out, a to add a segment, or q to quit')
 subplot(312)
 plot(PRH(:,1),PRH(:,2:4)*180/pi,'*-'), grid
 set(gca,'XLim',xl,'XTickLabel',[])
@@ -272,7 +303,6 @@ function		seg = plot_fig2(A,v,fs,seg,prh)
 YEXT = 12.5 ;           % vertical extent of accelerometry plots +/-m/s^2
 rctx = [0 1 1 0;1 1 0 0] ;
 rcty = [0 0 1 1;0 1 1 0] ;
-
 while 1,
 	figure(2),clf
 	xl = seg+[-30 30] ;
@@ -306,6 +336,6 @@ while 1,
       figure(1)
       return
 	end
-	prh(2:end) = applymethod2(A,v,fs,seg) ;
+	prh(2:5) = applymethod2(A,v,fs,seg) ;
 end
 return

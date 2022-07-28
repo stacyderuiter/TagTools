@@ -118,7 +118,6 @@ T.end = T.end+GAP ;
 % make descent analysis segments
 S = repmat(T.start,1,4)+repmat([-SURFLEN-GAP -GAP GAP GAP+DIVELEN],length(T.start),1) ;
 S(:,end+1) = -1 ;		% descent indicator
-S = S(S(:,1) >= 0, :); % added SDR 7/28/2020
 
 if DIR==1,		% make ascent segments
 	SS = repmat(T.end,1,4)+repmat([GAP SURFLEN+GAP -GAP-DIVELEN -GAP],length(T.end),1) ;
