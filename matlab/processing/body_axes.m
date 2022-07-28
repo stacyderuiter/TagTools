@@ -85,8 +85,11 @@ else
 		fprintf('body_axes: A and M must both be structures or matrices, not one of each\n') ;
 		return
 	end
-	if nargin==3,
+	if nargin<=3,
 		fc = [] ;
+      if nargin<3,
+         fs = [] ;
+      end
 	end
 end	
 

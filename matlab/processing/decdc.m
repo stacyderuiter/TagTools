@@ -1,4 +1,4 @@
-function      [y,xx,v,h] = decdc(x,df)
+function      [y,h] = decdc(x,df)
 
 %     y = decdc(x,df)
 %     Reduce the sampling rate of a time series by an integer factor.
@@ -37,8 +37,9 @@ function      [y,xx,v,h] = decdc(x,df)
 %
 %     Valid: Matlab, Octave
 %     markjohnson@st-andrews.ac.uk
-%     last modified: May 2017
+%     modified: June 2021 - added check on column orientation (line 57)
 
+y = [] ; h = [] ;
 if nargin<2,
    help decdc ;
    return
@@ -52,6 +53,10 @@ end
 if isstruct(x),
 	X = x ;
 	x = sens2var(x,'regular') ;
+end
+
+if size(x,1)==1,  % make sure data is column-oriented
+   x = x' ;
 end
 
 flen = 12*df ;
@@ -71,11 +76,11 @@ end
 if exist('X','var'),
 	X.data = y ;
 	X.sampling_rate = X.sampling_rate/df ;
-	h = sprintf('decdc(%d)',df) ;
+	hh = sprintf('decdc(%d)',df) ;
 	if ~isfield(X,'history') || isempty(X.history),
-		X.history = h ;
+		X.history = hh ;
 	else
-		X.history = [X.history ',' h] ;
+		X.history = [X.history ',' hh] ;
 	end
 	y = X ;
 end

@@ -1,7 +1,7 @@
-function    [Y,t] = block_mean(X,n,nov)
+function    [Y,t] = block_median(X,n,nov)
 
-%     [Y,t] = block_mean(X,n,nov)
-%	   Compute the mean of successive blocks of samples.
+%     [Y,t] = block_median(X,n,nov)
+%	   Compute the median of successive blocks of samples.
 %		
 %		Inputs: 
 %		X is a vector or a matrix containing samples of a signal in each column.
@@ -9,12 +9,9 @@ function    [Y,t] = block_mean(X,n,nov)
 % 	   nov is the number of samples that the next block overlaps the previous block.
 %
 %		Returns:
-%		Y is a vector or matrix containing the mean value of each block. If X is a
-%		mxq matrix, Y is pxq where p is the number of complete n-length blocks with 
-%		nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m.
-%     t is a px1 length vector containing the time cues (in samples) of the
-%     central point in each block.
-%
+%		Y is a vector or matrix containing the median value of each block. If X is a
+%		mxn matrix, Y is pxn where p is the number of complete n-length blocks with 
+%		nov that can be made out of m samples, i.e., n+(p-1)*(n-nov) < m
 %		Example:
 %		 TBD 
 %
@@ -23,7 +20,7 @@ function    [Y,t] = block_mean(X,n,nov)
 %     Last modified: 10 May 2017
 
 if nargin<2,
-	help block_mean
+	help block_median
 	return
 end
 	
@@ -41,7 +38,7 @@ Y = zeros(size(ss,2),size(X,2)) ;
 Y(:,1) = mean(ss)' ;
 for k=2:size(X,2),
    [ss,z] = buffer(X(:,k),n,nov,'nodelay') ;
-   Y(:,k) = mean(ss)' ;
+   Y(:,k) = median(ss)' ;
 end
 
 t = round(n/2+(0:size(Y,1)-1)*(n-nov))' ;

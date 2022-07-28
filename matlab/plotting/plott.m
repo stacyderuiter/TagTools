@@ -150,7 +150,8 @@ for k=1:length(X),
    end
 end
 
-spann = ned-nst ;
+%spann = ned-nst ;
+spann = ned ;
 for divk=length(brk):-1:1,
    if spann>=brk(divk), break, end
 end

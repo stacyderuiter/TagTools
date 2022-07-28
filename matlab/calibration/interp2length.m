@@ -106,7 +106,7 @@ if isstruct(X),
 		X.history = h ;
 	else
 		X.history = [X.history ',' h] ;
-    end
+   end
    X.data = y ;
    y = X ;
 end
