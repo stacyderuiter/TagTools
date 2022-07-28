@@ -17,12 +17,14 @@ function      n = julian_day(y,m,d)
 %		 	Returns the Julian day number for each year, month, day.
 %
 %		 Example:
+%			julian_day([2016,10,12])	% returns 286
 %			julian_day(2016,10,12)	% returns 286
 %			julian_day(2016,286)		% returns [2016,10,12]
 %
 %      Valid: Matlab, Octave
-%      markjohnson@st-andrews.ac.uk
-%      Last modified: 4 May 2017
+%      markjohnson@bios.au.dk
+%      Last modified: 11 March 2022
+%		  - added matrix input argument
 
 n = [] ;
 switch nargin,
@@ -30,6 +32,16 @@ switch nargin,
 		d = clock ;
 		t = now ;
 		n = floor(t-datenum([d(1) 1 1 0 0 0]))+1 ;
+	case 1,
+		if size(y,2)==1,
+			y = y' ;
+		end
+		if size(y,2)~=3,
+			fprintf('Matrix argument to julian_day must have 3 columns\n') ;
+			return
+		end
+		t = datenum(y) ;
+		n = floor(t-datenum([y(:,1) repmat([1 1 0 0 0],size(y,1),1)]))+1 ;
 	case 2,
 		k = max([length(y) length(m)]) ;
 		if length(y)<k,
