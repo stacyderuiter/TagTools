@@ -9,7 +9,7 @@ bleach @ file:///tmp/build/80754af9/bleach_1612211392645/work
 Bottleneck @ file:///C:/ci/bottleneck_1607557040328/work
 brotlipy==0.7.0
 cached-property @ file:///tmp/build/80754af9/cached-property_1600785575025/work
-certifi==2021.5.30
+certifi==2022.12.7
 cffi @ file:///C:/ci/cffi_1613247431367/work
 cftime @ file:///C:/ci/cftime_1621828424485/work
 chardet @ file:///C:/ci/chardet_1607706937985/work
